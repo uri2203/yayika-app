@@ -84,7 +84,7 @@ const PRODUCTS = [
     id: '8',
     name: 'Planner de Ciclo',
     price: '$99 MXN',
-    icon: 'heartbeat' as const,
+    icon: 'fitness' as const,
     color: '#8B5CF6',
     url: '#',
     category: 'Planners',

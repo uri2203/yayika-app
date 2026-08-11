@@ -67,11 +67,11 @@ const AI_CONFIG = {
   },
 };
 
-function routeMessage(message: string): keyof typeof AI_CONFIG.routing {
+function routeMessage(message: string): string {
   const lower = message.toLowerCase();
   for (const [category, keywords] of Object.entries(AI_CONFIG.routing)) {
     for (const keyword of keywords) {
-      if (lower.includes(keyword)) return category as keyof typeof AI_CONFIG.routing;
+      if (lower.includes(keyword)) return category;
     }
   }
   return 'general';
@@ -79,7 +79,7 @@ function routeMessage(message: string): keyof typeof AI_CONFIG.routing {
 
 function generateResponse(message: string): string {
   const category = routeMessage(message);
-  const responses = AI_CONFIG.responses[category]?.es || AI_CONFIG.responses.general.es;
+  const responses = AI_CONFIG.responses[category as keyof typeof AI_CONFIG.responses]?.es || AI_CONFIG.responses.general.es;
   return responses[Math.floor(Math.random() * responses.length)];
 }
 

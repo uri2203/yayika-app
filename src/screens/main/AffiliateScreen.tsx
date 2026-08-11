@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Alert, Share } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import { useAuth } from '../../contexts/AuthContext';
 import { colors, typography, spacing, borderRadius } from '../../config/theme';
 import Card from '../../components/Card';
 import Button from '../../components/Button';
@@ -10,9 +9,9 @@ import Button from '../../components/Button';
 const AFFILIATE_CODE = 'GUERRERA20';
 
 const stats = [
-  { label: 'Visitas', value: '124', icon: 'eye', color: colors.primary },
-  { label: 'Conversiones', value: '18', icon: 'cart', color: colors.turquoise },
-  { label: 'Ganancias', value: '$1,440', icon: 'cash', color: colors.gold },
+  { label: 'Visitas', value: '124', icon: 'eye' as keyof typeof Ionicons.glyphMap, color: colors.primary },
+  { label: 'Conversiones', value: '18', icon: 'cart' as keyof typeof Ionicons.glyphMap, color: colors.turquoise },
+  { label: 'Ganancias', value: '$1,440', icon: 'cash' as keyof typeof Ionicons.glyphMap, color: colors.gold },
 ];
 
 const history = [
@@ -22,7 +21,6 @@ const history = [
 ];
 
 export default function AffiliateScreen() {
-  const { user } = useAuth();
   const [affiliateCode] = useState(AFFILIATE_CODE);
 
   const handleShare = async () => {
@@ -59,7 +57,7 @@ export default function AffiliateScreen() {
         <View style={styles.statsRow}>
           {stats.map((stat, index) => (
             <Card key={index} style={styles.statCard}>
-              <Ionicons name={stat.icon as any} size={22} color={stat.color} />
+              <Ionicons name={stat.icon} size={22} color={stat.color} />
               <Text style={styles.statValue}>{stat.value}</Text>
               <Text style={styles.statLabel}>{stat.label}</Text>
             </Card>

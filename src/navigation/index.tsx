@@ -61,6 +61,7 @@ function HomeStackNavigator() {
       <HomeStack.Screen name="HomeMain" component={HomeScreen} />
       <HomeStack.Screen name="CycleTracker" component={CycleTrackerScreen} />
       <HomeStack.Screen name="FinancialTracker" component={FinancialTrackerScreen} />
+      <HomeStack.Screen name="Wallet" component={WalletScreen} />
       <HomeStack.Screen name="Challenges" component={ChallengesScreen} />
       <HomeStack.Screen name="Badges" component={BadgesScreen} />
       <HomeStack.Screen name="Rankings" component={RankingsScreen} />
