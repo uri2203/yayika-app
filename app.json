@@ -6,6 +6,11 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
+    "extra": {
+      "eas": {
+        "projectId": "bf0d56b5-0317-49eb-a0f0-0bed2a823fb1"
+      }
+    },
     "splash": {
       "backgroundColor": "#4E3470"
     },
