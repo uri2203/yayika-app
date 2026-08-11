@@ -1,20 +1,37 @@
+import React, { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { View, StyleSheet } from 'react-native';
+import { AuthProvider } from './src/contexts/AuthContext';
+import Navigation from './src/navigation';
+import LoadingSpinner from './src/components/LoadingSpinner';
+import { colors } from './src/config/theme';
 
 export default function App() {
+  const [appReady, setAppReady] = useState(false);
+
+  useEffect(() => {
+    setTimeout(() => setAppReady(true), 500);
+  }, []);
+
+  if (!appReady) {
+    return (
+      <View style={styles.splash}>
+        <LoadingSpinner />
+      </View>
+    );
+  }
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
+    <AuthProvider>
+      <Navigation />
       <StatusBar style="auto" />
-    </View>
+    </AuthProvider>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  splash: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: colors.primary,
   },
 });
