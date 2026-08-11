@@ -15,6 +15,7 @@ import ProductsScreen from '../screens/main/ProductsScreen';
 import MembershipScreen from '../screens/main/MembershipScreen';
 import AffiliateScreen from '../screens/main/AffiliateScreen';
 import ProfileScreen from '../screens/main/ProfileScreen';
+import ChatScreen from '../screens/main/ChatScreen';
 
 const AuthStack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -68,6 +69,9 @@ function MainTabs() {
             case 'Afiliadas':
               iconName = focused ? 'people' : 'people-outline';
               break;
+            case 'Laura':
+              iconName = focused ? 'chatbubble' : 'chatbubble-outline';
+              break;
             case 'Perfil':
               iconName = focused ? 'person' : 'person-outline';
               break;
@@ -81,6 +85,7 @@ function MainTabs() {
       <Tab.Screen name="Productos" component={ProductsScreen} />
       <Tab.Screen name="Membresía" component={MembershipScreen} />
       <Tab.Screen name="Afiliadas" component={AffiliateScreen} />
+      <Tab.Screen name="Laura" component={ChatScreen} />
       <Tab.Screen name="Perfil" component={ProfileScreen} />
     </Tab.Navigator>
   );
