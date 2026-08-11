@@ -11,6 +11,7 @@ const TIPS = [
   'Cada pequeño paso cuenta para alcanzar tus metas.',
   'Tu valor no depende de los números en tu cuenta bancaria.',
   'Las mujeres que negocian ganan más. ¡Tú puedes!',
+  'Tu ciclo es tu superpoder. Úsalo a tu favor.',
 ];
 
 export default function HomeScreen({ navigation }: any) {
@@ -21,6 +22,7 @@ export default function HomeScreen({ navigation }: any) {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
+        {/* Header */}
         <View style={styles.header}>
           <View>
             <Text style={styles.greeting}>Hola, {userName} 👋</Text>
@@ -32,52 +34,126 @@ export default function HomeScreen({ navigation }: any) {
           </View>
         </View>
 
-        <View style={styles.xpContainer}>
+        {/* XP Bar */}
+        <Card style={styles.xpContainer}>
           <View style={styles.xpRow}>
             <Ionicons name="star" size={18} color={colors.gold} />
             <Text style={styles.xpText}>240 XP</Text>
+            <Text style={styles.xpLevel}>Nivel 3</Text>
           </View>
           <View style={styles.xpBar}>
             <View style={[styles.xpFill, { width: '60%' }]} />
           </View>
-          <Text style={styles.xpLevel}>Nivel 3</Text>
+        </Card>
+
+        {/* Quick Actions Grid */}
+        <Text style={styles.sectionTitle}>Accesos rápidos</Text>
+        <View style={styles.grid}>
+          <TouchableOpacity
+            style={styles.gridItem}
+            onPress={() => navigation.navigate('Explorar')}
+          >
+            <View style={[styles.gridIcon, { backgroundColor: colors.primaryLight || '#E8D5F5' }]}>
+              <Ionicons name="compass" size={22} color={colors.primary} />
+            </View>
+            <Text style={styles.gridTitle}>Explorar</Text>
+            <Text style={styles.gridSub}>Tienda y cursos</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.gridItem}
+            onPress={() => navigation.navigate('Mi Progreso')}
+          >
+            <View style={[styles.gridIcon, { backgroundColor: '#D1FAE5' }]}>
+              <Ionicons name="trending-up" size={22} color={colors.turquoise} />
+            </View>
+            <Text style={styles.gridTitle}>Mi Progreso</Text>
+            <Text style={styles.gridSub}>Ciclo y finanzas</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.gridItem}
+            onPress={() => navigation.navigate('Inicio', { screen: 'CycleTracker' })}
+          >
+            <View style={[styles.gridIcon, { backgroundColor: '#FDE68A' }]}>
+              <Ionicons name="moon" size={22} color={colors.gold} />
+            </View>
+            <Text style={styles.gridTitle}>Mi Ciclo</Text>
+            <Text style={styles.gridSub}>Fase actual</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.gridItem}
+            onPress={() => navigation.navigate('Inicio', { screen: 'FinancialTracker' })}
+          >
+            <View style={[styles.gridIcon, { backgroundColor: '#FCE7F3' }]}>
+              <Ionicons name="wallet" size={22} color={colors.rose} />
+            </View>
+            <Text style={styles.gridTitle}>Finanzas</Text>
+            <Text style={styles.gridSub}>Ingresos y gastos</Text>
+          </TouchableOpacity>
         </View>
 
-        <View style={styles.quickActions}>
-          <TouchableOpacity
-            style={styles.actionCard}
-            onPress={() => navigation.navigate('Productos')}
-          >
-            <View style={[styles.actionIcon, { backgroundColor: colors.primaryLight }]}>
-              <Ionicons name="bag-handle" size={24} color={colors.primary} />
-            </View>
-            <Text style={styles.actionTitle}>Ver productos</Text>
-            <Text style={styles.actionSubtitle}>Cursos y guías</Text>
-          </TouchableOpacity>
+        {/* Feature Cards */}
+        <Text style={styles.sectionTitle}>Herramientas</Text>
 
-          <TouchableOpacity
-            style={styles.actionCard}
-            onPress={() => navigation.navigate('Membresía')}
-          >
-            <View style={[styles.actionIcon, { backgroundColor: '#FDE68A' }]}>
-              <Ionicons name="diamond" size={24} color={colors.gold} />
-            </View>
-            <Text style={styles.actionTitle}>Mi membresía</Text>
-            <Text style={styles.actionSubtitle}>Plan actual</Text>
-          </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.featureCard}
+          onPress={() => navigation.navigate('Inicio', { screen: 'Challenges' })}
+        >
+          <View style={[styles.featureIcon, { backgroundColor: '#FEF3C7' }]}>
+            <Ionicons name="trophy" size={24} color={colors.gold} />
+          </View>
+          <View style={styles.featureInfo}>
+            <Text style={styles.featureTitle}>Retos de la semana</Text>
+            <Text style={styles.featureSub}>3/5 completados</Text>
+          </View>
+          <Ionicons name="chevron-forward" size={20} color={colors.subtleText} />
+        </TouchableOpacity>
 
-          <TouchableOpacity
-            style={styles.actionCard}
-            onPress={() => navigation.navigate('Afiliadas')}
-          >
-            <View style={[styles.actionIcon, { backgroundColor: '#D1FAE5' }]}>
-              <Ionicons name="people" size={24} color={colors.turquoise} />
-            </View>
-            <Text style={styles.actionTitle}>Mi portal</Text>
-            <Text style={styles.actionSubtitle}>Comisiones</Text>
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity
+          style={styles.featureCard}
+          onPress={() => navigation.navigate('Inicio', { screen: 'Badges' })}
+        >
+          <View style={[styles.featureIcon, { backgroundColor: '#E0E7FF' }]}>
+            <Ionicons name="ribbon" size={24} color={colors.primary} />
+          </View>
+          <View style={styles.featureInfo}>
+            <Text style={styles.featureTitle}>Mis Logros</Text>
+            <Text style={styles.featureSub}>12/30 desbloqueados</Text>
+          </View>
+          <Ionicons name="chevron-forward" size={20} color={colors.subtleText} />
+        </TouchableOpacity>
 
+        <TouchableOpacity
+          style={styles.featureCard}
+          onPress={() => navigation.navigate('Inicio', { screen: 'Rankings' })}
+        >
+          <View style={[styles.featureIcon, { backgroundColor: '#FEE2E2' }]}>
+            <Ionicons name="flame" size={24} color="#EF4444" />
+          </View>
+          <View style={styles.featureInfo}>
+            <Text style={styles.featureTitle}>Rankings</Text>
+            <Text style={styles.featureSub}>Posición #15</Text>
+          </View>
+          <Ionicons name="chevron-forward" size={20} color={colors.subtleText} />
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.featureCard}
+          onPress={() => navigation.navigate('Inicio', { screen: 'Wallet' })}
+        >
+          <View style={[styles.featureIcon, { backgroundColor: '#D1FAE5' }]}>
+            <Ionicons name="card" size={24} color={colors.turquoise} />
+          </View>
+          <View style={styles.featureInfo}>
+            <Text style={styles.featureTitle}>Mi Billetera</Text>
+            <Text style={styles.featureSub}>$1,247.50 MXN</Text>
+          </View>
+          <Ionicons name="chevron-forward" size={20} color={colors.subtleText} />
+        </TouchableOpacity>
+
+        {/* Daily Tip */}
         <Card style={styles.tipCard}>
           <View style={styles.tipHeader}>
             <Ionicons name="bulb" size={20} color={colors.gold} />
@@ -136,9 +212,6 @@ const styles = StyleSheet.create({
     color: colors.gold,
   },
   xpContainer: {
-    backgroundColor: colors.white,
-    borderRadius: borderRadius.md,
-    padding: spacing.md,
     marginBottom: spacing.lg,
   },
   xpRow: {
@@ -152,61 +225,102 @@ const styles = StyleSheet.create({
     fontWeight: typography.weights.bold,
     color: colors.gold,
   },
+  xpLevel: {
+    marginLeft: 'auto',
+    fontSize: typography.sizes.xs,
+    color: colors.subtleText,
+  },
   xpBar: {
     height: 8,
     backgroundColor: colors.border,
     borderRadius: 4,
     overflow: 'hidden',
-    marginBottom: spacing.xs,
   },
   xpFill: {
     height: '100%',
     backgroundColor: colors.gold,
     borderRadius: 4,
   },
-  xpLevel: {
-    fontSize: typography.sizes.xs,
-    color: colors.subtleText,
+  sectionTitle: {
+    fontSize: typography.sizes.lg,
+    fontWeight: typography.weights.bold,
+    color: colors.text,
+    marginBottom: spacing.md,
+    marginTop: spacing.sm,
   },
-  quickActions: {
+  grid: {
     flexDirection: 'row',
+    flexWrap: 'wrap',
     justifyContent: 'space-between',
     marginBottom: spacing.lg,
   },
-  actionCard: {
-    flex: 1,
+  gridItem: {
+    width: '48%',
     backgroundColor: colors.white,
     borderRadius: borderRadius.md,
     padding: spacing.md,
-    marginHorizontal: spacing.xs,
-    alignItems: 'center',
+    marginBottom: spacing.md,
     shadowColor: colors.black,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.06,
     shadowRadius: 6,
     elevation: 2,
   },
-  actionIcon: {
-    width: 48,
-    height: 48,
+  gridIcon: {
+    width: 44,
+    height: 44,
     borderRadius: borderRadius.md,
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: spacing.sm,
   },
-  actionTitle: {
+  gridTitle: {
     fontSize: typography.sizes.sm,
     fontWeight: typography.weights.semibold,
     color: colors.text,
-    textAlign: 'center',
   },
-  actionSubtitle: {
+  gridSub: {
+    fontSize: typography.sizes.xs,
+    color: colors.subtleText,
+    marginTop: 2,
+  },
+  featureCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: colors.white,
+    borderRadius: borderRadius.md,
+    padding: spacing.md,
+    marginBottom: spacing.sm,
+    shadowColor: colors.black,
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.04,
+    shadowRadius: 4,
+    elevation: 1,
+  },
+  featureIcon: {
+    width: 44,
+    height: 44,
+    borderRadius: borderRadius.md,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: spacing.md,
+  },
+  featureInfo: {
+    flex: 1,
+  },
+  featureTitle: {
+    fontSize: typography.sizes.sm,
+    fontWeight: typography.weights.semibold,
+    color: colors.text,
+  },
+  featureSub: {
     fontSize: typography.sizes.xs,
     color: colors.subtleText,
     marginTop: 2,
   },
   tipCard: {
     backgroundColor: '#FFF9E6',
+    marginTop: spacing.md,
   },
   tipHeader: {
     flexDirection: 'row',

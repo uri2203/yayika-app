@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Yayika",
-    "slug": "yayika-app",
+    "slug": "yayika",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -14,7 +14,9 @@
     "splash": {
       "backgroundColor": "#4E3470"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.yayika.app"
@@ -31,6 +33,9 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "plugins": ["expo-secure-store"]
+    "plugins": [
+      "expo-secure-store"
+    ],
+    "owner": "uri2203ps-team"
   }
 }

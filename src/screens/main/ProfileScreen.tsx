@@ -6,7 +6,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { colors, typography, spacing, borderRadius } from '../../config/theme';
 import Card from '../../components/Card';
 
-export default function ProfileScreen() {
+export default function ProfileScreen({ navigation }: any) {
   const { user, signOut } = useAuth();
   const userName = user?.user_metadata?.name || 'Guerrera';
   const userEmail = user?.email || '';
@@ -55,7 +55,7 @@ export default function ProfileScreen() {
         <Card style={styles.sectionCard}>
           <Text style={styles.sectionTitle}>Soporte</Text>
 
-          <TouchableOpacity style={styles.menuItem}>
+          <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Support')}>
             <View style={styles.menuLeft}>
               <Ionicons name="help-circle-outline" size={22} color={colors.primary} />
               <Text style={styles.menuText}>Centro de ayuda</Text>
@@ -63,7 +63,7 @@ export default function ProfileScreen() {
             <Ionicons name="chevron-forward" size={20} color={colors.subtleText} />
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.menuItem}>
+          <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Legal')}>
             <View style={styles.menuLeft}>
               <Ionicons name="document-text-outline" size={22} color={colors.primary} />
               <Text style={styles.menuText}>Términos y condiciones</Text>
@@ -71,7 +71,7 @@ export default function ProfileScreen() {
             <Ionicons name="chevron-forward" size={20} color={colors.subtleText} />
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.menuItem}>
+          <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Legal')}>
             <View style={styles.menuLeft}>
               <Ionicons name="shield-outline" size={22} color={colors.primary} />
               <Text style={styles.menuText}>Política de privacidad</Text>
