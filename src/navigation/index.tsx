@@ -29,6 +29,8 @@ import ChallengesScreen from '../screens/main/ChallengesScreen';
 import BadgesScreen from '../screens/main/BadgesScreen';
 import SupportScreen from '../screens/main/SupportScreen';
 import LegalScreen from '../screens/main/LegalScreen';
+import ProductDetailScreen from '../screens/main/ProductDetailScreen';
+import CourseDetailScreen from '../screens/main/CourseDetailScreen';
 
 const AuthStack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -74,7 +76,9 @@ function ExploreStackNavigator() {
     <ExploreStack.Navigator screenOptions={{ headerShown: false }}>
       <ExploreStack.Screen name="StoreMain" component={StoreScreen} />
       <ExploreStack.Screen name="Products" component={ProductsScreen} />
+      <ExploreStack.Screen name="ProductDetail" component={ProductDetailScreen} />
       <ExploreStack.Screen name="Courses" component={CoursesScreen} />
+      <ExploreStack.Screen name="CourseDetail" component={CourseDetailScreen} />
       <ExploreStack.Screen name="Membership" component={MembershipScreen} />
     </ExploreStack.Navigator>
   );

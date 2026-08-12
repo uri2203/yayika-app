@@ -48,3 +48,13 @@ export const borderRadius = {
   xl: 24,
   full: 999,
 };
+
+export const darkColors = {
+  ...colors,
+  background: '#1a1a2e',
+  white: '#16213e',
+  text: '#e2e8f0',
+  subtleText: '#94a3b8',
+  border: '#334155',
+  primaryLight: '#2d1b4e',
+};

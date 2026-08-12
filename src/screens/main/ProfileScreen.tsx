@@ -1,13 +1,16 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert, Switch } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '../../contexts/AuthContext';
-import { colors, typography, spacing, borderRadius } from '../../config/theme';
+import { useTheme } from '../../contexts/ThemeContext';
+import { colors as defaultColors, typography, spacing, borderRadius } from '../../config/theme';
 import Card from '../../components/Card';
 
 export default function ProfileScreen({ navigation }: any) {
   const { user, signOut } = useAuth();
+  const { isDark, toggleTheme, currentColors } = useTheme();
+  const colors = currentColors;
   const userName = user?.user_metadata?.name || 'Guerrera';
   const userEmail = user?.email || '';
 
@@ -32,12 +35,17 @@ export default function ProfileScreen({ navigation }: any) {
         <Card style={styles.sectionCard}>
           <Text style={styles.sectionTitle}>Configuración</Text>
 
-          <TouchableOpacity style={styles.menuItem}>
+          <TouchableOpacity style={styles.menuItem} onPress={toggleTheme}>
             <View style={styles.menuLeft}>
               <Ionicons name="moon-outline" size={22} color={colors.primary} />
-              <Text style={styles.menuText}>Modo oscuro</Text>
+              <Text style={[styles.menuText, { color: colors.text }]}>Modo oscuro</Text>
             </View>
-            <Ionicons name="chevron-forward" size={20} color={colors.subtleText} />
+            <Switch
+              value={isDark}
+              onValueChange={toggleTheme}
+              trackColor={{ false: colors.border, true: colors.primary }}
+              thumbColor={colors.white}
+            />
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.menuItem}>
@@ -94,7 +102,7 @@ export default function ProfileScreen({ navigation }: any) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background,
+    backgroundColor: defaultColors.background,
   },
   scrollContent: {
     paddingHorizontal: spacing.lg,
@@ -108,7 +116,7 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80,
     borderRadius: 40,
-    backgroundColor: colors.primary,
+    backgroundColor: defaultColors.primary,
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: spacing.md,
@@ -116,16 +124,16 @@ const styles = StyleSheet.create({
   avatarText: {
     fontSize: 32,
     fontWeight: typography.weights.bold,
-    color: colors.white,
+    color: defaultColors.white,
   },
   userName: {
     fontSize: typography.sizes.xl,
     fontWeight: typography.weights.bold,
-    color: colors.text,
+    color: defaultColors.text,
   },
   userEmail: {
     fontSize: typography.sizes.md,
-    color: colors.subtleText,
+    color: defaultColors.subtleText,
     marginTop: spacing.xs,
   },
   sectionCard: {
@@ -134,7 +142,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: typography.sizes.sm,
     fontWeight: typography.weights.semibold,
-    color: colors.subtleText,
+    color: defaultColors.subtleText,
     textTransform: 'uppercase',
     letterSpacing: 1,
     marginBottom: spacing.md,
@@ -145,7 +153,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: spacing.md,
     borderBottomWidth: 1,
-    borderBottomColor: colors.border,
+    borderBottomColor: defaultColors.border,
   },
   menuLeft: {
     flexDirection: 'row',
@@ -153,7 +161,7 @@ const styles = StyleSheet.create({
   },
   menuText: {
     fontSize: typography.sizes.md,
-    color: colors.text,
+    color: defaultColors.text,
     marginLeft: spacing.md,
   },
   menuRight: {
@@ -162,7 +170,7 @@ const styles = StyleSheet.create({
   },
   menuValue: {
     fontSize: typography.sizes.md,
-    color: colors.subtleText,
+    color: defaultColors.subtleText,
     marginRight: spacing.xs,
   },
   signOutButton: {
@@ -177,12 +185,12 @@ const styles = StyleSheet.create({
   signOutText: {
     fontSize: typography.sizes.md,
     fontWeight: typography.weights.semibold,
-    color: colors.error,
+    color: defaultColors.error,
     marginLeft: spacing.sm,
   },
   version: {
     textAlign: 'center',
-    color: colors.subtleText,
+    color: defaultColors.subtleText,
     fontSize: typography.sizes.xs,
     marginTop: spacing.lg,
   },

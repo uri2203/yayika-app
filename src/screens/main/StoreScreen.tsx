@@ -104,16 +104,8 @@ export default function StoreScreen({ navigation }: any) {
     return matchesCategory && matchesSearch;
   });
 
-  const handlePurchase = async (url: string, name: string) => {
-    if (url === '#') {
-      Alert.alert('Próximamente', `${name} estará disponible pronto.`);
-      return;
-    }
-    try {
-      await WebBrowser.openBrowserAsync(url);
-    } catch {
-      Alert.alert('Error', 'No se pudo abrir el enlace de pago');
-    }
+  const handleProductPress = (product: (typeof PRODUCTS)[0]) => {
+    navigation.navigate('ProductDetail', { product });
   };
 
   const renderProduct = ({ item }: { item: (typeof PRODUCTS)[0] }) => (
@@ -129,7 +121,7 @@ export default function StoreScreen({ navigation }: any) {
       <Text style={styles.productPrice}>{item.price}</Text>
       <TouchableOpacity
         style={[styles.buyButton, { backgroundColor: item.color }]}
-        onPress={() => handlePurchase(item.url, item.name)}
+        onPress={() => handleProductPress(item)}
       >
         <Text style={styles.buyButtonText}>Comprar</Text>
       </TouchableOpacity>

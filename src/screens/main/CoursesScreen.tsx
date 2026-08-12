@@ -155,6 +155,7 @@ export default function CoursesScreen({ navigation }: any) {
                 styles.continueButton,
                 { backgroundColor: module.progress > 0 ? module.color : colors.border },
               ]}
+              onPress={() => navigation.navigate('CourseDetail', { module })}
             >
               <Text
                 style={[
