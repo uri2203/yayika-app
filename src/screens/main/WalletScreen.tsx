@@ -9,6 +9,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { colors, typography, spacing, borderRadius } from '../../config/theme';
+import { useLanguage } from '../../contexts/LanguageContext';
 
 const TRANSACTIONS = [
   { id: '1', desc: 'Comisión afiliada', amount: 89.5, date: '12 ago 2026', type: 'income' as const },
@@ -27,15 +28,16 @@ function formatMoney(n: number) {
 }
 
 export default function WalletScreen({ navigation }: any) {
+  const { t } = useLanguage();
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
         {/* Balance Card */}
         <View style={styles.balanceCard}>
-          <Text style={styles.balanceLabel}>Saldo disponible</Text>
+          <Text style={styles.balanceLabel}>{t('wallet_available')}</Text>
           <Text style={styles.balanceAmount}>$1,247.50 MXN</Text>
           <TouchableOpacity style={styles.withdrawButton}>
-            <Text style={styles.withdrawButtonText}>Retirar</Text>
+            <Text style={styles.withdrawButtonText}>{t('wallet_withdraw')}</Text>
           </TouchableOpacity>
         </View>
 
@@ -45,24 +47,24 @@ export default function WalletScreen({ navigation }: any) {
             <View style={[styles.actionIcon, { backgroundColor: '#D1FAE5' }]}>
               <Ionicons name="arrow-forward" size={20} color={colors.turquoise} />
             </View>
-            <Text style={styles.actionText}>Enviar</Text>
+            <Text style={styles.actionText}>{t('wallet_send')}</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.actionButton}>
             <View style={[styles.actionIcon, { backgroundColor: '#FDE68A' }]}>
               <Ionicons name="arrow-down" size={20} color={colors.gold} />
             </View>
-            <Text style={styles.actionText}>Solicitar</Text>
+            <Text style={styles.actionText}>{t('wallet_request')}</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.actionButton}>
             <View style={[styles.actionIcon, { backgroundColor: '#FCE7F3' }]}>
               <Ionicons name="time" size={20} color={colors.rose} />
             </View>
-            <Text style={styles.actionText}>Historial</Text>
+            <Text style={styles.actionText}>{t('wallet_history')}</Text>
           </TouchableOpacity>
         </View>
 
         {/* Transaction History */}
-        <Text style={styles.sectionTitle}>Historial de transacciones</Text>
+        <Text style={styles.sectionTitle}>{t('wallet_history')}</Text>
         {TRANSACTIONS.map((tx) => {
           const isIncome = tx.type === 'income';
           return (

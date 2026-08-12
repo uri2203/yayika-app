@@ -2,11 +2,13 @@ import React, { useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, Animated, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { colors, typography, spacing } from '../../config/theme';
+import { useLanguage } from '../../contexts/LanguageContext';
 
 export default function SplashScreen({ navigation }: any) {
   const logoOpacity = useRef(new Animated.Value(0)).current;
   const logoScale = useRef(new Animated.Value(0.6)).current;
   const subtitleOpacity = useRef(new Animated.Value(0)).current;
+  const { t } = useLanguage();
 
   useEffect(() => {
     Animated.parallel([
@@ -54,7 +56,7 @@ export default function SplashScreen({ navigation }: any) {
         </Animated.View>
 
         <Animated.View style={{ opacity: subtitleOpacity }}>
-          <Text style={styles.subtitle}>Tu plataforma de productos digitales</Text>
+          <Text style={styles.subtitle}>{t('splash_subtitle')}</Text>
         </Animated.View>
       </View>
 

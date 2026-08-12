@@ -3,22 +3,26 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert } from 'rea
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { colors, typography, spacing, borderRadius } from '../../config/theme';
+import { useLanguage } from '../../contexts/LanguageContext';
 
-const LEGAL_DOCUMENTS = [
-  'Términos y Condiciones',
-  'Aviso de Privacidad',
-  'Política de Cookies',
-  'Política de Contenido',
-  'Política de Comunidad',
-  'Política de Pagos',
-  'Política de IA',
-  'Protección de Datos',
-  'Guía Fiscal',
-  'Deslinde de Responsabilidades',
-  'Declaración de Accesibilidad',
-];
+
 
 export default function LegalScreen({ navigation }: any) {
+  const { t } = useLanguage();
+
+  const LEGAL_DOCUMENTS = [
+    t('legal_terms'),
+    t('legal_privacy'),
+    t('legal_cookies'),
+    t('legal_content'),
+    t('legal_community'),
+    t('legal_payments'),
+    t('legal_ai'),
+    t('legal_data'),
+    t('legal_fiscal'),
+    t('legal_disclaimer'),
+    t('legal_accessibility'),
+  ];
   const handleDocumentPress = (title: string) => {
     Alert.alert(title, 'Contenido disponible en yayika.com');
   };
@@ -28,7 +32,7 @@ export default function LegalScreen({ navigation }: any) {
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <View style={styles.header}>
           <Ionicons name="document-text" size={28} color={colors.primary} />
-          <Text style={styles.headerTitle}>Legal</Text>
+          <Text style={styles.headerTitle}>{t('legal_title')}</Text>
         </View>
 
         <View style={styles.documentList}>

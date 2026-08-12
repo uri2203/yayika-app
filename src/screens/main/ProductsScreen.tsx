@@ -4,6 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import * as WebBrowser from 'expo-web-browser';
 import { colors, typography, spacing, borderRadius } from '../../config/theme';
+import { useLanguage } from '../../contexts/LanguageContext';
 import Card from '../../components/Card';
 import Button from '../../components/Button';
 
@@ -55,6 +56,7 @@ const products: Product[] = [
 ];
 
 export default function ProductsScreen() {
+  const { t } = useLanguage();
   const handlePurchase = async (product: Product) => {
     try {
       await WebBrowser.openBrowserAsync(product.url);
@@ -66,8 +68,8 @@ export default function ProductsScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
-        <Text style={styles.title}>Productos</Text>
-        <Text style={styles.subtitle}>Invierte en tu crecimiento</Text>
+        <Text style={styles.title}>{t('products_title')}</Text>
+        <Text style={styles.subtitle}>{t('products_subtitle')}</Text>
 
         {products.map((product) => (
           <Card key={product.id} style={styles.productCard}>
@@ -80,7 +82,7 @@ export default function ProductsScreen() {
             <Text style={styles.productName}>{product.name}</Text>
             <Text style={styles.productDescription}>{product.description}</Text>
             <Button
-              title="Comprar ahora"
+              title={t('store_buy_now')}
               onPress={() => handlePurchase(product)}
               variant="primary"
               style={[styles.buyButton, { backgroundColor: product.color }]}

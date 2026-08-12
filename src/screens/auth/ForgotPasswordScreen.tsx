@@ -13,11 +13,13 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '../../contexts/AuthContext';
+import { useLanguage } from '../../contexts/LanguageContext';
 import { colors, typography, spacing, borderRadius } from '../../config/theme';
 import Button from '../../components/Button';
 
 export default function ForgotPasswordScreen({ navigation }: any) {
   const { resetPassword } = useAuth();
+  const { t } = useLanguage();
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);
@@ -53,21 +55,21 @@ export default function ForgotPasswordScreen({ navigation }: any) {
 
           <View style={styles.header}>
             <Ionicons name="lock-closed-outline" size={56} color={colors.primary} />
-            <Text style={styles.title}>Restablecer contraseña</Text>
+            <Text style={styles.title}>{t('auth_reset')}</Text>
             <Text style={styles.subtitle}>
-              Ingresa tu email y te enviaremos las instrucciones para crear una nueva contraseña.
+              {t('auth_reset_desc')}
             </Text>
           </View>
 
           {sent ? (
             <View style={styles.successContainer}>
               <Ionicons name="checkmark-circle-outline" size={56} color={colors.success} />
-              <Text style={styles.successTitle}>Email enviado</Text>
+              <Text style={styles.successTitle}>{t('auth_send')}</Text>
               <Text style={styles.successText}>
-                Revisa tu bandeja de entrada y sigue las instrucciones.
+                {t('auth_reset_desc')}
               </Text>
               <Button
-                title="Volver al login"
+                title={t('common_back')}
                 onPress={() => navigation.goBack()}
                 variant="primary"
                 style={styles.backToLoginButton}
@@ -75,7 +77,7 @@ export default function ForgotPasswordScreen({ navigation }: any) {
             </View>
           ) : (
             <View style={styles.form}>
-              <Text style={styles.label}>Email</Text>
+              <Text style={styles.label}>{t('auth_email')}</Text>
               <TextInput
                 style={styles.input}
                 placeholder="tu@email.com"
@@ -88,7 +90,7 @@ export default function ForgotPasswordScreen({ navigation }: any) {
               />
 
               <Button
-                title="Enviar instrucciones"
+                title={t('auth_send')}
                 onPress={handleReset}
                 loading={loading}
               />

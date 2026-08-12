@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { colors, typography, spacing, borderRadius } from '../../config/theme';
+import { useLanguage } from '../../contexts/LanguageContext';
 
 const lessons = [
   { id: '1', title: '¿Qué es un producto digital?', duration: '12 min', status: 'completed' },
@@ -22,6 +23,7 @@ const lessons = [
 ];
 
 export default function CourseDetailScreen({ navigation, route }: any) {
+  const { t } = useLanguage();
   const completedCount = lessons.filter(l => l.status === 'completed').length;
   const progress = completedCount / lessons.length;
 
@@ -59,7 +61,7 @@ export default function CourseDetailScreen({ navigation, route }: any) {
             <View style={styles.progressBar}>
               <View style={[styles.progressFill, { width: `${progress * 100}%` }]} />
             </View>
-            <Text style={styles.progressText}>{completedCount}/{lessons.length} lecciones</Text>
+            <Text style={styles.progressText}>{completedCount}/{lessons.length} {t('cdetail_lessons')}</Text>
           </View>
         </View>
 
@@ -75,7 +77,7 @@ export default function CourseDetailScreen({ navigation, route }: any) {
               ]}
             >
               <View style={styles.lessonInfo}>
-                <Text style={styles.lessonNumber}>Lección {lesson.id}</Text>
+                <Text style={styles.lessonNumber}>{t('cdetail_lessons')} {lesson.id}</Text>
                 <Text
                   style={[
                     styles.lessonTitle,
@@ -96,7 +98,7 @@ export default function CourseDetailScreen({ navigation, route }: any) {
       <View style={styles.bottomBar}>
         <TouchableOpacity style={styles.continueButton} onPress={handleContinue}>
           <Ionicons name="play" size={20} color="white" />
-          <Text style={styles.continueButtonText}>Continuar lección</Text>
+          <Text style={styles.continueButtonText}>{t('cdetail_continue')}</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>

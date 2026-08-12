@@ -13,6 +13,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import * as WebBrowser from 'expo-web-browser';
 import { colors, typography, spacing, borderRadius } from '../../config/theme';
+import { useLanguage } from '../../contexts/LanguageContext';
 
 const CATEGORIES = ['Todos', 'Cursos', 'Planners', 'Guías', 'Membresías'];
 
@@ -94,6 +95,7 @@ const PRODUCTS = [
 export default function StoreScreen({ navigation }: any) {
   const [search, setSearch] = useState('');
   const [activeCategory, setActiveCategory] = useState('Todos');
+  const { t } = useLanguage();
 
   const filteredProducts = PRODUCTS.filter((product) => {
     const matchesCategory =
@@ -123,7 +125,7 @@ export default function StoreScreen({ navigation }: any) {
         style={[styles.buyButton, { backgroundColor: item.color }]}
         onPress={() => handleProductPress(item)}
       >
-        <Text style={styles.buyButtonText}>Comprar</Text>
+        <Text style={styles.buyButtonText}>{t('store_buy')}</Text>
       </TouchableOpacity>
     </View>
   );
@@ -131,8 +133,8 @@ export default function StoreScreen({ navigation }: any) {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
-        <Text style={styles.title}>Tienda</Text>
-        <Text style={styles.subtitle}>Explora nuestros productos</Text>
+        <Text style={styles.title}>{t('store_title')}</Text>
+        <Text style={styles.subtitle}>{t('store_subtitle')}</Text>
 
         <View style={styles.searchContainer}>
           <Ionicons
@@ -143,7 +145,7 @@ export default function StoreScreen({ navigation }: any) {
           />
           <TextInput
             style={styles.searchInput}
-            placeholder="Buscar productos..."
+            placeholder={t('store_search')}
             placeholderTextColor={colors.subtleText}
             value={search}
             onChangeText={setSearch}

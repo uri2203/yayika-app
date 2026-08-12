@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-nati
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { colors, typography, spacing, borderRadius } from '../../config/theme';
+import { useLanguage } from '../../contexts/LanguageContext';
 
 const INCOME = [
   { id: '1', desc: 'Venta Ciclo Productiva', amount: 199, date: '01 Ago' },
@@ -35,11 +36,12 @@ function formatMoney(n: number) {
 }
 
 export default function FinancialTrackerScreen({ navigation }: any) {
+  const { t } = useLanguage();
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <View style={styles.header}>
-          <Text style={styles.title}>Mis Finanzas</Text>
+          <Text style={styles.title}>{t('finance_title')}</Text>
           <Text style={styles.subtitle}>Agosto 2026</Text>
         </View>
 
@@ -47,21 +49,21 @@ export default function FinancialTrackerScreen({ navigation }: any) {
         <View style={styles.summaryCard}>
           <View style={styles.summaryRow}>
             <View style={styles.summaryBlock}>
-              <Text style={styles.summaryLabel}>Ingresos</Text>
+              <Text style={styles.summaryLabel}>{t('finance_income')}</Text>
               <Text style={[styles.summaryAmount, { color: colors.success }]}>
                 ${TOTAL_INCOME.toLocaleString('es-MX')}
               </Text>
             </View>
             <View style={styles.summaryDivider} />
             <View style={styles.summaryBlock}>
-              <Text style={styles.summaryLabel}>Gastos</Text>
+              <Text style={styles.summaryLabel}>{t('finance_expenses')}</Text>
               <Text style={[styles.summaryAmount, { color: colors.error }]}>
                 ${TOTAL_EXPENSES.toLocaleString('es-MX')}
               </Text>
             </View>
           </View>
           <View style={[styles.balanceContainer, BALANCE < 0 && { backgroundColor: '#FEE2E2' }]}>
-            <Text style={styles.balanceLabel}>Balance</Text>
+            <Text style={styles.balanceLabel}>{t('finance_balance')}</Text>
             <Text style={[styles.balanceAmount, BALANCE >= 0 ? { color: colors.success } : { color: colors.error }]}>
               {formatMoney(BALANCE)}
             </Text>
@@ -93,7 +95,7 @@ export default function FinancialTrackerScreen({ navigation }: any) {
         {/* Budget Progress */}
         <View style={styles.budgetCard}>
           <View style={styles.budgetHeader}>
-            <Text style={styles.budgetTitle}>Presupuesto mensual</Text>
+            <Text style={styles.budgetTitle}>{t('finance_budget')}</Text>
             <Text style={styles.budgetAmount}>
               ${TOTAL_EXPENSES.toLocaleString('es-MX')} / ${BUDGET_LIMIT.toLocaleString('es-MX')}
             </Text>

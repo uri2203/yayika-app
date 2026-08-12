@@ -11,69 +11,81 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { colors, typography, spacing, borderRadius } from '../../config/theme';
+import { useLanguage } from '../../contexts/LanguageContext';
 
 const CYCLE_LENGTH = 28;
 
-const PHASES = [
-  {
-    name: 'Menstrual',
-    range: [1, 5],
-    icon: '🌙',
-    color: colors.primary,
-    bgColor: '#EDE7F6',
-    description: 'Descanso y reflexión',
-    tip: 'Escucha a tu cuerpo. Es momento de descansar, meditar y reconectar contigo misma. Evita esfuerzos excesivos.',
-  },
-  {
-    name: 'Folicular',
-    range: [6, 13],
-    icon: '🌸',
-    color: colors.rose,
-    bgColor: '#FCE4EC',
-    description: 'Creatividad alta',
-    tip: 'Tu energía sube. Es el momento ideal para iniciar proyectos, planear y ser creativa. Aprovecha esta ola.',
-  },
-  {
-    name: 'Ovulatoria',
-    range: [14, 17],
-    icon: '☀️',
-    color: colors.gold,
-    bgColor: '#FFF9C4',
-    description: 'Energía máxima',
-    tip: 'Punto máximo de energía y confianza. Ideal para reuniones importantes, negociar y socializar.',
-  },
-  {
-    name: 'Lútea',
-    range: [18, 28],
-    icon: '🍂',
-    color: '#F57C00',
-    bgColor: '#FFF3E0',
-    description: 'Enfoque en detalles',
-    tip: 'Organiza, revisa detalles y cierra pendientes. Cuida tu alimentación y establece rutinas reconfortantes.',
-  },
-];
+interface Phase {
+  name: string;
+  range: number[];
+  icon: string;
+  color: string;
+  bgColor: string;
+  description: string;
+  tip: string;
+}
 
-const SYMPTOMS = [
-  'Dolor',
-  'Energía baja',
-  'Buen ánimo',
-  'Insomnio',
-  'Hinchazón',
-  'Ansiedad',
-  'Concentración alta',
-  'Cansancio',
-];
-
-function getCurrentPhase(day: number) {
-  return PHASES.find((p) => day >= p.range[0] && day <= p.range[1]) || PHASES[0];
+function getCurrentPhase(day: number, phases: Phase[]) {
+  return phases.find((p) => day >= p.range[0] && day <= p.range[1]) || phases[0];
 }
 
 export default function CycleTrackerScreen({ navigation }: any) {
   const [currentDay] = useState(10);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedSymptoms, setSelectedSymptoms] = useState<string[]>([]);
+  const { t } = useLanguage();
 
-  const phase = getCurrentPhase(currentDay);
+  const PHASES = [
+    {
+      name: t('cycle_menstrual'),
+      range: [1, 5],
+      icon: '🌙',
+      color: colors.primary,
+      bgColor: '#EDE7F6',
+      description: t('cycle_rest'),
+      tip: 'Escucha a tu cuerpo. Es momento de descansar, meditar y reconectar contigo misma. Evita esfuerzos excesivos.',
+    },
+    {
+      name: t('cycle_follicular'),
+      range: [6, 13],
+      icon: '🌸',
+      color: colors.rose,
+      bgColor: '#FCE4EC',
+      description: t('cycle_creativity'),
+      tip: 'Tu energía sube. Es el momento ideal para iniciar proyectos, planear y ser creativa. Aprovecha esta ola.',
+    },
+    {
+      name: t('cycle_ovulatory'),
+      range: [14, 17],
+      icon: '☀️',
+      color: colors.gold,
+      bgColor: '#FFF9C4',
+      description: t('cycle_energy'),
+      tip: 'Punto máximo de energía y confianza. Ideal para reuniones importantes, negociar y socializar.',
+    },
+    {
+      name: t('cycle_luteal'),
+      range: [18, 28],
+      icon: '🍂',
+      color: '#F57C00',
+      bgColor: '#FFF3E0',
+      description: t('cycle_focus'),
+      tip: 'Organiza, revisa detalles y cierra pendientes. Cuida tu alimentación y establece rutinas reconfortantes.',
+    },
+  ];
+
+  const SYMPTOMS = [
+    'Dolor',
+    'Energía baja',
+    'Buen ánimo',
+    'Insomnio',
+    'Hinchazón',
+    'Ansiedad',
+    'Concentración alta',
+    'Cansancio',
+  ];
+
+  const phase = getCurrentPhase(currentDay, PHASES);
   const progress = currentDay / CYCLE_LENGTH;
 
   const toggleSymptom = (s: string) => {
@@ -86,13 +98,13 @@ export default function CycleTrackerScreen({ navigation }: any) {
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <View style={styles.header}>
-          <Text style={styles.title}>Rastreador de Ciclo</Text>
+          <Text style={styles.title}>{t('cycle_title')}</Text>
           <Text style={styles.subtitle}>Conoce tu cuerpo cada día</Text>
         </View>
 
         {/* Day Counter */}
         <View style={styles.dayCard}>
-          <Text style={styles.dayLabel}>Día del ciclo</Text>
+          <Text style={styles.dayLabel}>{t('cycle_day')}</Text>
           <Text style={styles.dayNumber}>{currentDay}</Text>
           <Text style={styles.dayTotal}>de {CYCLE_LENGTH} días</Text>
         </View>
@@ -118,7 +130,7 @@ export default function CycleTrackerScreen({ navigation }: any) {
         </View>
 
         {/* Phase Cards */}
-        <Text style={styles.sectionTitle}>Fases del ciclo</Text>
+        <Text style={styles.sectionTitle}>{t('cycle_phase')}</Text>
         {PHASES.map((p) => {
           const isActive = p.name === phase.name;
           return (
@@ -147,7 +159,7 @@ export default function CycleTrackerScreen({ navigation }: any) {
 
         {/* Current Phase Tip */}
         <View style={[styles.tipCard, { borderLeftColor: phase.color }]}>
-          <Text style={styles.tipTitle}>Consejo para tu fase {phase.name}</Text>
+          <Text style={styles.tipTitle}>{t('cycle_tips')}</Text>
           <Text style={styles.tipText}>{phase.tip}</Text>
         </View>
 
@@ -157,7 +169,7 @@ export default function CycleTrackerScreen({ navigation }: any) {
           onPress={() => setModalVisible(true)}
         >
           <Ionicons name="medical" size={20} color={colors.white} />
-          <Text style={styles.symptomsButtonText}>Registrar síntomas</Text>
+          <Text style={styles.symptomsButtonText}>{t('cycle_register')}</Text>
         </TouchableOpacity>
       </ScrollView>
 

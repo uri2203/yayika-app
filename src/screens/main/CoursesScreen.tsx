@@ -9,6 +9,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { colors, typography, spacing, borderRadius } from '../../config/theme';
+import { useLanguage } from '../../contexts/LanguageContext';
 
 const MODULES = [
   {
@@ -63,19 +64,20 @@ const overallProgress = 45;
 export default function CoursesScreen({ navigation }: any) {
   const totalLessons = MODULES.reduce((sum, m) => sum + m.lessons, 0);
   const totalDuration = '8h 45min';
+  const { t } = useLanguage();
 
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <View style={styles.header}>
-          <Text style={styles.title}>Mis Cursos</Text>
+          <Text style={styles.title}>{t('courses_title')}</Text>
           <Text style={styles.subtitle}>Tu camino al empoderamiento financiero</Text>
         </View>
 
         <View style={styles.progressCard}>
           <View style={styles.progressHeader}>
             <Ionicons name="trophy" size={22} color={colors.gold} />
-            <Text style={styles.progressTitle}>Progreso general: {overallProgress}%</Text>
+            <Text style={styles.progressTitle}>{t('courses_progress')}: {overallProgress}%</Text>
           </View>
           <View style={styles.progressBar}>
             <View style={[styles.progressFill, { width: `${overallProgress}%` }]} />
@@ -88,12 +90,12 @@ export default function CoursesScreen({ navigation }: any) {
             <View style={styles.statDivider} />
             <View style={styles.statItem}>
               <Text style={styles.statValue}>{totalLessons}</Text>
-              <Text style={styles.statLabel}>Lecciones</Text>
+              <Text style={styles.statLabel}>{t('courses_lessons')}</Text>
             </View>
             <View style={styles.statDivider} />
             <View style={styles.statItem}>
               <Text style={styles.statValue}>{totalDuration}</Text>
-              <Text style={styles.statLabel}>Duración</Text>
+              <Text style={styles.statLabel}>{t('courses_duration')}</Text>
             </View>
           </View>
         </View>
@@ -122,7 +124,7 @@ export default function CoursesScreen({ navigation }: any) {
                     color={colors.subtleText}
                   />
                   <Text style={styles.moduleMetaText}>
-                    {module.lessons} lecciones
+                    {module.lessons} {t('courses_lessons')}
                   </Text>
                   <Ionicons
                     name="time-outline"
@@ -163,7 +165,7 @@ export default function CoursesScreen({ navigation }: any) {
                   { color: module.progress > 0 ? colors.white : colors.subtleText },
                 ]}
               >
-                {module.progress > 0 ? 'Continuar' : 'Comenzar'}
+                {module.progress > 0 ? t('courses_continue') : t('courses_start')}
               </Text>
               <Ionicons
                 name="arrow-forward"

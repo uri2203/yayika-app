@@ -10,8 +10,10 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import * as WebBrowser from 'expo-web-browser';
 import { colors, typography, spacing, borderRadius } from '../../config/theme';
+import { useLanguage } from '../../contexts/LanguageContext';
 
 export default function ProductDetailScreen({ navigation, route }: any) {
+  const { t } = useLanguage();
   const product = route?.params?.product || {
     name: 'Ciclo Productiva',
     price: '$199 MXN',
@@ -57,7 +59,7 @@ export default function ProductDetailScreen({ navigation, route }: any) {
 
           {/* Benefits Section */}
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Lo que aprenderás</Text>
+            <Text style={styles.sectionTitle}>{t('pdetail_learns')}</Text>
             {benefits.map((benefit, index) => (
               <View key={index} style={styles.benefitRow}>
                 <Ionicons name="checkmark-circle" size={24} color={colors.turquoise} />
@@ -68,7 +70,7 @@ export default function ProductDetailScreen({ navigation, route }: any) {
 
           {/* Reviews Section */}
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Reseñas</Text>
+            <Text style={styles.sectionTitle}>{t('pdetail_reviews')}</Text>
             {reviews.map((review, index) => (
               <View key={index} style={styles.reviewCard}>
                 <View style={styles.reviewHeader}>
@@ -93,7 +95,7 @@ export default function ProductDetailScreen({ navigation, route }: any) {
           <Text style={styles.bottomPrice}>{product.price}</Text>
         </View>
         <TouchableOpacity style={styles.buyButton} onPress={handleBuy}>
-          <Text style={styles.buyButtonText}>Comprar ahora</Text>
+          <Text style={styles.buyButtonText}>{t('pdetail_buy')}</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>

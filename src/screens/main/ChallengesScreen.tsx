@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { colors, typography, spacing, borderRadius } from '../../config/theme';
+import { useLanguage } from '../../contexts/LanguageContext';
 
 const CHALLENGES = [
   { id: '1', title: 'Completar lecci\u00f3n del M\u00f3dulo 2', xp: 50, completed: true },
@@ -16,13 +17,14 @@ const completedCount = CHALLENGES.filter((c) => c.completed).length;
 const totalCount = CHALLENGES.length;
 
 export default function ChallengesScreen({ navigation }: any) {
+  const { t } = useLanguage();
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <View style={styles.header}>
           <View style={styles.headerLeft}>
             <Ionicons name="star" size={24} color={colors.gold} />
-            <Text style={styles.title}>Retos de la semana</Text>
+            <Text style={styles.title}>{t('challenges_title')}</Text>
           </View>
         </View>
 
@@ -30,7 +32,7 @@ export default function ChallengesScreen({ navigation }: any) {
           <View style={styles.progressHeader}>
             <Text style={styles.progressLabel}>Progreso</Text>
             <Text style={styles.progressCount}>
-              {completedCount}/{totalCount} completados
+              {completedCount}/{totalCount} {t('challenges_progress')}
             </Text>
           </View>
           <View style={styles.progressBar}>
@@ -60,9 +62,9 @@ export default function ChallengesScreen({ navigation }: any) {
         <View style={styles.bonusCard}>
           <View style={styles.bonusHeader}>
             <Ionicons name="gift" size={22} color={colors.gold} />
-            <Text style={styles.bonusTitle}>Reto bonus</Text>
+            <Text style={styles.bonusTitle}>{t('challenges_bonus')}</Text>
           </View>
-          <Text style={styles.bonusText}>Completar todos = +200 XP extra</Text>
+          <Text style={styles.bonusText}>{t('challenges_bonus_desc')}</Text>
           <View style={styles.bonusBar}>
             <View style={[styles.bonusFill, { width: `${(completedCount / totalCount) * 100}%` }]} />
           </View>
@@ -70,7 +72,7 @@ export default function ChallengesScreen({ navigation }: any) {
 
         <View style={styles.countdown}>
           <Ionicons name="time" size={18} color={colors.subtleText} />
-          <Text style={styles.countdownText}>Se reinicia en: 3 d\u00edas, 14 horas</Text>
+          <Text style={styles.countdownText}>{t('challenges_reset')} 3 d{'\u00ed'}as, 14 horas</Text>
         </View>
       </ScrollView>
     </SafeAreaView>

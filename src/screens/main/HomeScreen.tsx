@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-nati
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '../../contexts/AuthContext';
+import { useLanguage } from '../../contexts/LanguageContext';
 import { colors, typography, spacing, borderRadius } from '../../config/theme';
 import Card from '../../components/Card';
 
@@ -16,6 +17,7 @@ const TIPS = [
 
 export default function HomeScreen({ navigation }: any) {
   const { user } = useAuth();
+  const { t } = useLanguage();
   const userName = user?.user_metadata?.name || 'Guerrera';
   const dailyTip = TIPS[new Date().getDay() % TIPS.length];
 
@@ -25,8 +27,8 @@ export default function HomeScreen({ navigation }: any) {
         {/* Header */}
         <View style={styles.header}>
           <View>
-            <Text style={styles.greeting}>Hola, {userName} 👋</Text>
-            <Text style={styles.subtitle}>¿Qué quieres hacer hoy?</Text>
+            <Text style={styles.greeting}>{t('home_greeting')} {userName} 👋</Text>
+            <Text style={styles.subtitle}>{t('home_subtitle')}</Text>
           </View>
           <View style={styles.streakBadge}>
             <Ionicons name="flame" size={18} color={colors.gold} />
@@ -47,7 +49,7 @@ export default function HomeScreen({ navigation }: any) {
         </Card>
 
         {/* Quick Actions Grid */}
-        <Text style={styles.sectionTitle}>Accesos rápidos</Text>
+        <Text style={styles.sectionTitle}>{t('home_quick_actions')}</Text>
         <View style={styles.grid}>
           <TouchableOpacity
             style={styles.gridItem}
@@ -56,8 +58,8 @@ export default function HomeScreen({ navigation }: any) {
             <View style={[styles.gridIcon, { backgroundColor: colors.primaryLight || '#E8D5F5' }]}>
               <Ionicons name="compass" size={22} color={colors.primary} />
             </View>
-            <Text style={styles.gridTitle}>Explorar</Text>
-            <Text style={styles.gridSub}>Tienda y cursos</Text>
+            <Text style={styles.gridTitle}>{t('home_explore')}</Text>
+            <Text style={styles.gridSub}>{t('home_explore_sub')}</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -67,8 +69,8 @@ export default function HomeScreen({ navigation }: any) {
             <View style={[styles.gridIcon, { backgroundColor: '#D1FAE5' }]}>
               <Ionicons name="trending-up" size={22} color={colors.turquoise} />
             </View>
-            <Text style={styles.gridTitle}>Mi Progreso</Text>
-            <Text style={styles.gridSub}>Ciclo y finanzas</Text>
+            <Text style={styles.gridTitle}>{t('home_progress')}</Text>
+            <Text style={styles.gridSub}>{t('home_progress_sub')}</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -78,8 +80,8 @@ export default function HomeScreen({ navigation }: any) {
             <View style={[styles.gridIcon, { backgroundColor: '#FDE68A' }]}>
               <Ionicons name="moon" size={22} color={colors.gold} />
             </View>
-            <Text style={styles.gridTitle}>Mi Ciclo</Text>
-            <Text style={styles.gridSub}>Fase actual</Text>
+            <Text style={styles.gridTitle}>{t('home_my_cycle')}</Text>
+            <Text style={styles.gridSub}>{t('home_my_cycle_sub')}</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -89,13 +91,13 @@ export default function HomeScreen({ navigation }: any) {
             <View style={[styles.gridIcon, { backgroundColor: '#FCE7F3' }]}>
               <Ionicons name="wallet" size={22} color={colors.rose} />
             </View>
-            <Text style={styles.gridTitle}>Finanzas</Text>
-            <Text style={styles.gridSub}>Ingresos y gastos</Text>
+            <Text style={styles.gridTitle}>{t('home_finance')}</Text>
+            <Text style={styles.gridSub}>{t('home_finance_sub')}</Text>
           </TouchableOpacity>
         </View>
 
         {/* Feature Cards */}
-        <Text style={styles.sectionTitle}>Herramientas</Text>
+        <Text style={styles.sectionTitle}>{t('home_tools')}</Text>
 
         <TouchableOpacity
           style={styles.featureCard}
@@ -105,8 +107,8 @@ export default function HomeScreen({ navigation }: any) {
             <Ionicons name="trophy" size={24} color={colors.gold} />
           </View>
           <View style={styles.featureInfo}>
-            <Text style={styles.featureTitle}>Retos de la semana</Text>
-            <Text style={styles.featureSub}>3/5 completados</Text>
+            <Text style={styles.featureTitle}>{t('home_weekly_challenges')}</Text>
+            <Text style={styles.featureSub}>3/5 {t('home_completed')}</Text>
           </View>
           <Ionicons name="chevron-forward" size={20} color={colors.subtleText} />
         </TouchableOpacity>
@@ -119,8 +121,8 @@ export default function HomeScreen({ navigation }: any) {
             <Ionicons name="ribbon" size={24} color={colors.primary} />
           </View>
           <View style={styles.featureInfo}>
-            <Text style={styles.featureTitle}>Mis Logros</Text>
-            <Text style={styles.featureSub}>12/30 desbloqueados</Text>
+            <Text style={styles.featureTitle}>{t('home_my_badges')}</Text>
+            <Text style={styles.featureSub}>12/30 {t('home_unlocked')}</Text>
           </View>
           <Ionicons name="chevron-forward" size={20} color={colors.subtleText} />
         </TouchableOpacity>
@@ -133,8 +135,8 @@ export default function HomeScreen({ navigation }: any) {
             <Ionicons name="flame" size={24} color="#EF4444" />
           </View>
           <View style={styles.featureInfo}>
-            <Text style={styles.featureTitle}>Rankings</Text>
-            <Text style={styles.featureSub}>Posición #15</Text>
+            <Text style={styles.featureTitle}>{t('home_rankings')}</Text>
+            <Text style={styles.featureSub}>{t('home_position')} #15</Text>
           </View>
           <Ionicons name="chevron-forward" size={20} color={colors.subtleText} />
         </TouchableOpacity>
@@ -147,7 +149,7 @@ export default function HomeScreen({ navigation }: any) {
             <Ionicons name="card" size={24} color={colors.turquoise} />
           </View>
           <View style={styles.featureInfo}>
-            <Text style={styles.featureTitle}>Mi Billetera</Text>
+            <Text style={styles.featureTitle}>{t('home_wallet')}</Text>
             <Text style={styles.featureSub}>$1,247.50 MXN</Text>
           </View>
           <Ionicons name="chevron-forward" size={20} color={colors.subtleText} />
@@ -157,7 +159,7 @@ export default function HomeScreen({ navigation }: any) {
         <Card style={styles.tipCard}>
           <View style={styles.tipHeader}>
             <Ionicons name="bulb" size={20} color={colors.gold} />
-            <Text style={styles.tipTitle}>Consejo del día</Text>
+            <Text style={styles.tipTitle}>{t('home_daily_tip')}</Text>
           </View>
           <Text style={styles.tipText}>{dailyTip}</Text>
         </Card>

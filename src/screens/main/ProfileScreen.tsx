@@ -4,20 +4,22 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '../../contexts/AuthContext';
 import { useTheme } from '../../contexts/ThemeContext';
+import { useLanguage } from '../../contexts/LanguageContext';
 import { colors as defaultColors, typography, spacing, borderRadius } from '../../config/theme';
 import Card from '../../components/Card';
 
 export default function ProfileScreen({ navigation }: any) {
   const { user, signOut } = useAuth();
   const { isDark, toggleTheme, currentColors } = useTheme();
+  const { t } = useLanguage();
   const colors = currentColors;
   const userName = user?.user_metadata?.name || 'Guerrera';
   const userEmail = user?.email || '';
 
   const handleSignOut = () => {
-    Alert.alert('Cerrar sesión', '¿Estás segura?', [
-      { text: 'Cancelar', style: 'cancel' },
-      { text: 'Cerrar sesión', onPress: signOut, style: 'destructive' },
+    Alert.alert(t('profile_sign_out'), t('profile_sign_out_confirm'), [
+      { text: t('common_cancel'), style: 'cancel' },
+      { text: t('profile_sign_out'), onPress: signOut, style: 'destructive' },
     ]);
   };
 
@@ -33,12 +35,12 @@ export default function ProfileScreen({ navigation }: any) {
         </View>
 
         <Card style={styles.sectionCard}>
-          <Text style={styles.sectionTitle}>Configuración</Text>
+          <Text style={styles.sectionTitle}>{t('profile_settings')}</Text>
 
           <TouchableOpacity style={styles.menuItem} onPress={toggleTheme}>
             <View style={styles.menuLeft}>
               <Ionicons name="moon-outline" size={22} color={colors.primary} />
-              <Text style={[styles.menuText, { color: colors.text }]}>Modo oscuro</Text>
+              <Text style={[styles.menuText, { color: colors.text }]}>{t('profile_dark_mode')}</Text>
             </View>
             <Switch
               value={isDark}
@@ -51,7 +53,7 @@ export default function ProfileScreen({ navigation }: any) {
           <TouchableOpacity style={styles.menuItem}>
             <View style={styles.menuLeft}>
               <Ionicons name="language-outline" size={22} color={colors.primary} />
-              <Text style={styles.menuText}>Idioma</Text>
+              <Text style={styles.menuText}>{t('profile_language')}</Text>
             </View>
             <View style={styles.menuRight}>
               <Text style={styles.menuValue}>Español</Text>
@@ -61,12 +63,12 @@ export default function ProfileScreen({ navigation }: any) {
         </Card>
 
         <Card style={styles.sectionCard}>
-          <Text style={styles.sectionTitle}>Soporte</Text>
+          <Text style={styles.sectionTitle}>{t('profile_support')}</Text>
 
           <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Support')}>
             <View style={styles.menuLeft}>
               <Ionicons name="help-circle-outline" size={22} color={colors.primary} />
-              <Text style={styles.menuText}>Centro de ayuda</Text>
+              <Text style={styles.menuText}>{t('profile_help')}</Text>
             </View>
             <Ionicons name="chevron-forward" size={20} color={colors.subtleText} />
           </TouchableOpacity>
@@ -74,7 +76,7 @@ export default function ProfileScreen({ navigation }: any) {
           <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Legal')}>
             <View style={styles.menuLeft}>
               <Ionicons name="document-text-outline" size={22} color={colors.primary} />
-              <Text style={styles.menuText}>Términos y condiciones</Text>
+              <Text style={styles.menuText}>{t('profile_terms')}</Text>
             </View>
             <Ionicons name="chevron-forward" size={20} color={colors.subtleText} />
           </TouchableOpacity>
@@ -82,7 +84,7 @@ export default function ProfileScreen({ navigation }: any) {
           <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Legal')}>
             <View style={styles.menuLeft}>
               <Ionicons name="shield-outline" size={22} color={colors.primary} />
-              <Text style={styles.menuText}>Política de privacidad</Text>
+              <Text style={styles.menuText}>{t('profile_privacy')}</Text>
             </View>
             <Ionicons name="chevron-forward" size={20} color={colors.subtleText} />
           </TouchableOpacity>
@@ -90,7 +92,7 @@ export default function ProfileScreen({ navigation }: any) {
 
         <TouchableOpacity style={styles.signOutButton} onPress={handleSignOut}>
           <Ionicons name="log-out-outline" size={20} color={colors.error} />
-          <Text style={styles.signOutText}>Cerrar sesión</Text>
+          <Text style={styles.signOutText}>{t('profile_sign_out')}</Text>
         </TouchableOpacity>
 
         <Text style={styles.version}>Yayika v1.0.0</Text>

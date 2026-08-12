@@ -3,13 +3,9 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput, Alert,
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { colors, typography, spacing, borderRadius } from '../../config/theme';
+import { useLanguage } from '../../contexts/LanguageContext';
 
-const QUICK_LINKS = [
-  { icon: 'chatbubble-ellipses-outline' as const, label: 'Preguntas frecuentes', color: colors.primary },
-  { icon: 'mail-outline' as const, label: 'Contactar soporte', color: colors.turquoise },
-  { icon: 'book-outline' as const, label: 'Guía de uso', color: colors.gold },
-  { icon: 'bug-outline' as const, label: 'Reportar bug', color: colors.rose },
-];
+
 
 const FAQ = [
   { question: '¿Cómo creo mi cuenta?', answer: 'Ve a yayika.com y haz clic en \'Crear cuenta\'. Ingresa tu email y contraseña.' },
@@ -22,6 +18,14 @@ const FAQ = [
 
 export default function SupportScreen({ navigation }: any) {
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
+  const { t } = useLanguage();
+
+  const QUICK_LINKS = [
+    { icon: 'chatbubble-ellipses-outline' as const, label: t('support_faq'), color: colors.primary },
+    { icon: 'mail-outline' as const, label: t('support_contact'), color: colors.turquoise },
+    { icon: 'book-outline' as const, label: t('support_guide'), color: colors.gold },
+    { icon: 'bug-outline' as const, label: t('support_bug'), color: colors.rose },
+  ];
 
   const toggleFAQ = (index: number) => {
     setExpandedIndex(expandedIndex === index ? null : index);
@@ -32,12 +36,12 @@ export default function SupportScreen({ navigation }: any) {
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <View style={styles.header}>
           <Ionicons name="help-circle" size={28} color={colors.primary} />
-          <Text style={styles.headerTitle}>Soporte</Text>
+          <Text style={styles.headerTitle}>{t('support_title')}</Text>
         </View>
 
         <View style={styles.searchBar}>
           <Ionicons name="search-outline" size={20} color={colors.subtleText} />
-          <TextInput style={styles.searchInput} placeholder="Buscar ayuda..." placeholderTextColor={colors.subtleText} />
+          <TextInput style={styles.searchInput} placeholder={t('support_search')} placeholderTextColor={colors.subtleText} />
         </View>
 
         <Text style={styles.sectionTitle}>Enlaces rápidos</Text>

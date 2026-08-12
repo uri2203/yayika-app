@@ -12,36 +12,35 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import * as SecureStore from 'expo-secure-store';
 import { colors, typography, spacing, borderRadius } from '../../config/theme';
+import { useLanguage } from '../../contexts/LanguageContext';
 
 const { width } = Dimensions.get('window');
-
-const slides = [
-  {
-    emoji: '🌙',
-    title: 'Tu ciclo es tu superpoder',
-    description:
-      'Aprende a aprovechar cada fase de tu ciclo para ser más productiva y feliz.',
-    color: colors.primary,
-  },
-  {
-    emoji: '💰',
-    title: 'Finanzas sin culpa',
-    description:
-      'Gestiona tu dinero con herramientas diseñadas para mujeres. Sin juicios, sin culpas.',
-    color: colors.gold,
-  },
-  {
-    emoji: '🚀',
-    title: 'Crece con nosotras',
-    description:
-      'Únete a una comunidad de mujeres que están transformando sus vidas.',
-    color: colors.turquoise,
-  },
-];
 
 export default function OnboardingScreen({ navigation }: any) {
   const scrollRef = useRef<ScrollView>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const { t } = useLanguage();
+
+  const slides = [
+    {
+      emoji: '🌙',
+      title: t('onboarding_1_title'),
+      description: t('onboarding_1_desc'),
+      color: colors.primary,
+    },
+    {
+      emoji: '💰',
+      title: t('onboarding_2_title'),
+      description: t('onboarding_2_desc'),
+      color: colors.gold,
+    },
+    {
+      emoji: '🚀',
+      title: t('onboarding_3_title'),
+      description: t('onboarding_3_desc'),
+      color: colors.turquoise,
+    },
+  ];
 
   const handleScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
     const index = Math.round(e.nativeEvent.contentOffset.x / width);
@@ -70,7 +69,7 @@ export default function OnboardingScreen({ navigation }: any) {
   return (
     <SafeAreaView style={styles.container}>
       <TouchableOpacity onPress={skipToLast} style={styles.skipButton}>
-        <Text style={styles.skipText}>Saltar</Text>
+        <Text style={styles.skipText}>{t('onboarding_skip')}</Text>
       </TouchableOpacity>
 
       <ScrollView
@@ -112,7 +111,7 @@ export default function OnboardingScreen({ navigation }: any) {
           onPress={isLast ? handleStart : goToNext}
           activeOpacity={0.8}
         >
-          <Text style={styles.nextText}>{isLast ? '¡Empezar!' : 'Siguiente'}</Text>
+          <Text style={styles.nextText}>{isLast ? t('onboarding_start') : t('onboarding_next')}</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>

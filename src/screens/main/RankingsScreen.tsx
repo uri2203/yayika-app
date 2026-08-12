@@ -9,6 +9,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { colors, typography, spacing, borderRadius } from '../../config/theme';
+import { useLanguage } from '../../contexts/LanguageContext';
 
 const PODIUM = [
   { rank: 2, name: 'María G.', xp: 2450 },
@@ -26,7 +27,7 @@ const LIST = [
   { rank: 10, name: 'Julia F.', xp: 750 },
 ];
 
-const TABS = ['Semanal', 'Mensual', 'Total'];
+
 
 function PodiumAvatar({ rank }: { rank: number }) {
   const isFirst = rank === 1;
@@ -53,6 +54,9 @@ function PodiumAvatar({ rank }: { rank: number }) {
 
 export default function RankingsScreen({ navigation }: any) {
   const [activeTab, setActiveTab] = useState(0);
+  const { t } = useLanguage();
+
+  const TABS = [t('rankings_weekly'), t('rankings_monthly'), t('rankings_total')];
 
   return (
     <SafeAreaView style={styles.container}>
@@ -61,7 +65,7 @@ export default function RankingsScreen({ navigation }: any) {
         <View style={styles.header}>
           <View style={styles.headerLeft}>
             <Ionicons name="flame" size={24} color={colors.gold} />
-            <Text style={styles.title}>Rankings</Text>
+            <Text style={styles.title}>{t('rankings_title')}</Text>
           </View>
         </View>
 
@@ -136,7 +140,7 @@ export default function RankingsScreen({ navigation }: any) {
         {/* Your position */}
         <View style={styles.yourPosition}>
           <Ionicons name="person" size={18} color={colors.primary} />
-          <Text style={styles.yourPositionText}>Tu posición: #15 - 420 XP</Text>
+          <Text style={styles.yourPositionText}>{t('rankings_your_position')}: #15 - 420 XP</Text>
         </View>
       </ScrollView>
     </SafeAreaView>

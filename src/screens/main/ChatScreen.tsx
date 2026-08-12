@@ -13,6 +13,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { colors, typography, spacing, borderRadius } from '../../config/theme';
+import { useLanguage } from '../../contexts/LanguageContext';
 
 interface Message {
   id: string;
@@ -89,10 +90,11 @@ function getSuggestions(category: string): string[] {
 }
 
 export default function ChatScreen() {
+  const { t } = useLanguage();
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      text: '¡Hola! Soy Laura, tu asistente de Yayika. Pregúntame sobre tu ciclo, finanzas o productividad. 💜',
+      text: t('chat_welcome'),
       isUser: false,
       timestamp: new Date(),
     },
@@ -150,8 +152,8 @@ export default function ChatScreen() {
             <Text style={styles.avatarText}>L</Text>
           </View>
           <View>
-            <Text style={styles.headerTitle}>Laura</Text>
-            <Text style={styles.headerSubtitle}>Asistente Yayika</Text>
+            <Text style={styles.headerTitle}>{t('chat_title')}</Text>
+            <Text style={styles.headerSubtitle}>{t('chat_subtitle')}</Text>
           </View>
         </View>
         <View style={styles.onlineDot} />
@@ -222,7 +224,7 @@ export default function ChatScreen() {
             style={styles.input}
             value={input}
             onChangeText={setInput}
-            placeholder="Escribe tu pregunta..."
+            placeholder={t('chat_placeholder')}
             placeholderTextColor={colors.subtleText}
             onSubmitEditing={() => sendMessage()}
             returnKeyType="send"

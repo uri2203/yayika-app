@@ -13,11 +13,13 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '../../contexts/AuthContext';
+import { useLanguage } from '../../contexts/LanguageContext';
 import { colors, typography, spacing, borderRadius } from '../../config/theme';
 import Button from '../../components/Button';
 
 export default function LoginScreen({ navigation }: any) {
   const { signIn } = useAuth();
+  const { t } = useLanguage();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -50,7 +52,7 @@ export default function LoginScreen({ navigation }: any) {
           </View>
 
           <View style={styles.form}>
-            <Text style={styles.label}>Email</Text>
+            <Text style={styles.label}>{t('auth_email')}</Text>
             <TextInput
               style={styles.input}
               placeholder="tu@email.com"
@@ -62,7 +64,7 @@ export default function LoginScreen({ navigation }: any) {
               autoCorrect={false}
             />
 
-            <Text style={styles.label}>Contraseña</Text>
+            <Text style={styles.label}>{t('auth_password')}</Text>
             <View style={styles.passwordContainer}>
               <TextInput
                 style={styles.passwordInput}
@@ -85,7 +87,7 @@ export default function LoginScreen({ navigation }: any) {
             </View>
 
             <Button
-              title="Iniciar sesión"
+              title={t('auth_login')}
               onPress={handleLogin}
               loading={loading}
               style={styles.loginButton}
@@ -95,12 +97,12 @@ export default function LoginScreen({ navigation }: any) {
               onPress={() => navigation.navigate('ForgotPassword')}
               style={styles.forgotButton}
             >
-              <Text style={styles.forgotText}>¿Olvidaste tu contraseña?</Text>
+              <Text style={styles.forgotText}>{t('auth_forgot')}</Text>
             </TouchableOpacity>
           </View>
 
           <View style={styles.footer}>
-            <Text style={styles.footerText}>¿No tienes cuenta? </Text>
+            <Text style={styles.footerText}>{t('auth_no_account')} </Text>
             <TouchableOpacity onPress={() => navigation.navigate('Register')}>
               <Text style={styles.footerLink}>Regístrate</Text>
             </TouchableOpacity>

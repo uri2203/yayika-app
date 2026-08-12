@@ -13,11 +13,13 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '../../contexts/AuthContext';
+import { useLanguage } from '../../contexts/LanguageContext';
 import { colors, typography, spacing, borderRadius } from '../../config/theme';
 import Button from '../../components/Button';
 
 export default function RegisterScreen({ navigation }: any) {
   const { signUp } = useAuth();
+  const { t } = useLanguage();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -58,12 +60,12 @@ export default function RegisterScreen({ navigation }: any) {
           </TouchableOpacity>
 
           <View style={styles.header}>
-            <Text style={styles.title}>Crear cuenta</Text>
+            <Text style={styles.title}>{t('auth_register')}</Text>
             <Text style={styles.subtitle}>Únete a la comunidad Yayika</Text>
           </View>
 
           <View style={styles.form}>
-            <Text style={styles.label}>Nombre</Text>
+            <Text style={styles.label}>{t('auth_name')}</Text>
             <TextInput
               style={styles.input}
               placeholder="Tu nombre"
@@ -73,7 +75,7 @@ export default function RegisterScreen({ navigation }: any) {
               autoCapitalize="words"
             />
 
-            <Text style={styles.label}>Email</Text>
+            <Text style={styles.label}>{t('auth_email')}</Text>
             <TextInput
               style={styles.input}
               placeholder="tu@email.com"
@@ -85,7 +87,7 @@ export default function RegisterScreen({ navigation }: any) {
               autoCorrect={false}
             />
 
-            <Text style={styles.label}>Contraseña</Text>
+            <Text style={styles.label}>{t('auth_password')}</Text>
             <View style={styles.passwordContainer}>
               <TextInput
                 style={styles.passwordInput}
@@ -108,7 +110,7 @@ export default function RegisterScreen({ navigation }: any) {
             </View>
 
             <Button
-              title="Crear cuenta"
+              title={t('auth_register')}
               onPress={handleRegister}
               loading={loading}
               style={styles.registerButton}
@@ -116,7 +118,7 @@ export default function RegisterScreen({ navigation }: any) {
           </View>
 
           <View style={styles.footer}>
-            <Text style={styles.footerText}>¿Ya tienes cuenta? </Text>
+            <Text style={styles.footerText}>{t('auth_has_account')} </Text>
             <TouchableOpacity onPress={() => navigation.goBack()}>
               <Text style={styles.footerLink}>Inicia sesión</Text>
             </TouchableOpacity>

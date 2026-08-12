@@ -3,8 +3,9 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-nati
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { colors, typography, spacing, borderRadius } from '../../config/theme';
+import { useLanguage } from '../../contexts/LanguageContext';
 
-const CATEGORIES = ['Todos', 'Ciclo', 'Finanzas', 'Productividad', 'Social', 'Especiales'];
+
 
 const BADGES = [
   { emoji: '🌙', name: 'Primera fase', description: 'Registra tu primer ciclo', unlocked: true, category: 'Ciclo' },
@@ -23,6 +24,9 @@ const BADGES = [
 
 export default function BadgesScreen({ navigation }: any) {
   const [selectedCategory, setSelectedCategory] = useState('Todos');
+  const { t } = useLanguage();
+
+  const CATEGORIES = [t('badges_all'), t('badges_cycle'), t('badges_finance'), t('badges_productivity'), t('badges_social'), t('badges_special')];
 
   const filteredBadges = selectedCategory === 'Todos'
     ? BADGES
@@ -35,12 +39,12 @@ export default function BadgesScreen({ navigation }: any) {
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <View style={styles.header}>
           <Ionicons name="trophy" size={28} color={colors.gold} />
-          <Text style={styles.headerTitle}>Mis Logros</Text>
+          <Text style={styles.headerTitle}>{t('badges_title')}</Text>
         </View>
 
         <View style={styles.statsRow}>
           <Text style={styles.statsText}>
-            {unlockedCount}/{BADGES.length} logros desbloqueados
+            {unlockedCount}/{BADGES.length} {t('badges_unlocked')}
           </Text>
           <View style={styles.statsBar}>
             <View style={[styles.statsFill, { width: `${(unlockedCount / BADGES.length) * 100}%` }]} />
