@@ -5,17 +5,27 @@
   "build": {
     "development": {
       "developmentClient": true,
-      "distribution": "internal"
+      "distribution": "internal",
+      "ios": {
+        "simulator": true
+      }
     },
     "preview": {
       "distribution": "internal",
       "android": {
         "buildType": "apk"
+      },
+      "ios": {
+        "buildType": "simulator"
       }
     },
     "production": {
       "android": {
         "buildType": "app-bundle",
+        "distribution": "store",
+        "credentialsSource": "auto"
+      },
+      "ios": {
         "distribution": "store",
         "credentialsSource": "auto"
       }
@@ -27,6 +37,11 @@
         "serviceAccountKeyPath": "./google-service-account.json",
         "track": "production",
         "releaseStatus": "completed"
+      },
+      "ios": {
+        "appleId": "your-apple-id@example.com",
+        "ascAppId": "your-app-store-connect-app-id",
+        "appleTeamId": "your-apple-team-id"
       }
     }
   }
