@@ -4,6 +4,7 @@ import { View, StyleSheet } from 'react-native';
 import { AuthProvider } from './src/contexts/AuthContext';
 import { ThemeProvider } from './src/contexts/ThemeContext';
 import { LanguageProvider } from './src/contexts/LanguageContext';
+import { NotificationsProvider } from './src/contexts/NotificationsContext';
 import Navigation from './src/navigation';
 import LoadingSpinner from './src/components/LoadingSpinner';
 import { colors } from './src/config/theme';
@@ -27,8 +28,10 @@ export default function App() {
     <LanguageProvider>
       <ThemeProvider>
         <AuthProvider>
-          <Navigation />
-          <StatusBar style="auto" />
+          <NotificationsProvider>
+            <Navigation />
+            <StatusBar style="auto" />
+          </NotificationsProvider>
         </AuthProvider>
       </ThemeProvider>
     </LanguageProvider>
