@@ -16,18 +16,18 @@
         "buildType": "apk"
       },
       "ios": {
-        "buildType": "simulator"
+        "simulator": true
       }
     },
     "production": {
       "android": {
         "buildType": "app-bundle",
         "distribution": "store",
-        "credentialsSource": "auto"
+        "credentialsSource": "remote"
       },
       "ios": {
         "distribution": "store",
-        "credentialsSource": "auto"
+        "credentialsSource": "remote"
       }
     }
   },

@@ -8,7 +8,7 @@
     "userInterfaceStyle": "automatic",
     "extra": {
       "eas": {
-        "projectId": "bf0d56b5-0317-49eb-a0f0-0bed2a823fb1"
+        "projectId": "2f98a5a3-001c-49e9-bccb-7bf2426d5af7"
       }
     },
     "splash": {
@@ -43,6 +43,6 @@
         }
       ]
     ],
-    "owner": "uri2203ps-team"
+    "owner": "uri2203"
   }
 }
