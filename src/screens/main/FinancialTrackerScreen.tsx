@@ -5,30 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { colors, typography, spacing, borderRadius } from '../../config/theme';
 import { useLanguage } from '../../contexts/LanguageContext';
 
-const INCOME = [
-  { id: '1', desc: 'Venta Ciclo Productiva', amount: 199, date: '01 Ago' },
-  { id: '3', desc: 'Venta Dinero sin Pena', amount: 249, date: '04 Ago' },
-  { id: '5', desc: 'Membresía Guerrera', amount: 15, date: '07 Ago' },
-  { id: '7', desc: 'Venta Mujer que Negocia', amount: 179, date: '09 Ago' },
-];
-
-const EXPENSES = [
-  { id: '2', desc: 'Suscripción Semilla', amount: -5, date: '02 Ago' },
-  { id: '4', desc: 'Café', amount: -45, date: '05 Ago' },
-  { id: '6', desc: 'Uber', amount: -120, date: '08 Ago' },
-  { id: '8', desc: 'Supermercado', amount: -650, date: '10 Ago' },
-];
-
-const TOTAL_INCOME = INCOME.reduce((s, t) => s + t.amount, 0);
-const TOTAL_EXPENSES = EXPENSES.reduce((s, t) => s + Math.abs(t.amount), 0);
-const BALANCE = TOTAL_INCOME - TOTAL_EXPENSES;
 const BUDGET_LIMIT = 5000;
-
-const ALL_TRANSACTIONS = [...INCOME, ...EXPENSES].sort((a, b) => {
-  const da = parseInt(a.id);
-  const db = parseInt(b.id);
-  return da - db;
-});
 
 function formatMoney(n: number) {
   const sign = n >= 0 ? '+' : '';
@@ -37,12 +14,36 @@ function formatMoney(n: number) {
 
 export default function FinancialTrackerScreen({ navigation }: any) {
   const { t } = useLanguage();
+
+  const INCOME = [
+    { id: '1', desc: t('finance_sale_ciclo'), amount: 199, date: '01 Ago' },
+    { id: '3', desc: t('finance_sale_dinero'), amount: 249, date: '04 Ago' },
+    { id: '5', desc: t('finance_sale_guerrera'), amount: 15, date: '07 Ago' },
+    { id: '7', desc: t('finance_sale_mujer'), amount: 179, date: '09 Ago' },
+  ];
+
+  const EXPENSES = [
+    { id: '2', desc: t('finance_expense_semilla'), amount: -5, date: '02 Ago' },
+    { id: '4', desc: t('finance_expense_cafe'), amount: -45, date: '05 Ago' },
+    { id: '6', desc: t('finance_expense_uber'), amount: -120, date: '08 Ago' },
+    { id: '8', desc: t('finance_expense_super'), amount: -650, date: '10 Ago' },
+  ];
+
+  const TOTAL_INCOME = INCOME.reduce((s, item) => s + item.amount, 0);
+  const TOTAL_EXPENSES = EXPENSES.reduce((s, item) => s + Math.abs(item.amount), 0);
+  const BALANCE = TOTAL_INCOME - TOTAL_EXPENSES;
+
+  const ALL_TRANSACTIONS = [...INCOME, ...EXPENSES].sort((a, b) => {
+    const da = parseInt(a.id);
+    const db = parseInt(b.id);
+    return da - db;
+  });
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <View style={styles.header}>
           <Text style={styles.title}>{t('finance_title')}</Text>
-          <Text style={styles.subtitle}>Agosto 2026</Text>
+          <Text style={styles.subtitle}>{t('finance_month')}</Text>
         </View>
 
         {/* Monthly Summary */}
@@ -73,19 +74,19 @@ export default function FinancialTrackerScreen({ navigation }: any) {
         {/* Quick Stats */}
         <View style={styles.statsRow}>
           <View style={[styles.statCard, { borderLeftColor: colors.success }]}>
-            <Text style={styles.statLabel}>Ingresos</Text>
+            <Text style={styles.statLabel}>{t('finance_incomes_stat')}</Text>
             <Text style={[styles.statAmount, { color: colors.success }]}>
               ${TOTAL_INCOME.toLocaleString('es-MX')}
             </Text>
           </View>
           <View style={[styles.statCard, { borderLeftColor: colors.error }]}>
-            <Text style={styles.statLabel}>Gastos</Text>
+            <Text style={styles.statLabel}>{t('finance_expenses_stat')}</Text>
             <Text style={[styles.statAmount, { color: colors.error }]}>
               ${TOTAL_EXPENSES.toLocaleString('es-MX')}
             </Text>
           </View>
           <View style={[styles.statCard, { borderLeftColor: colors.turquoise }]}>
-            <Text style={styles.statLabel}>Ahorro</Text>
+            <Text style={styles.statLabel}>{t('finance_savings_stat')}</Text>
             <Text style={[styles.statAmount, { color: colors.turquoise }]}>
               ${BALANCE.toLocaleString('es-MX')}
             </Text>
@@ -112,12 +113,12 @@ export default function FinancialTrackerScreen({ navigation }: any) {
             />
           </View>
           <Text style={styles.budgetRemaining}>
-            Restan ${(BUDGET_LIMIT - TOTAL_EXPENSES).toLocaleString('es-MX')} disponibles
+            {t('finance_budget_remaining')} ${(BUDGET_LIMIT - TOTAL_EXPENSES).toLocaleString('es-MX')} {t('finance_budget_available')}
           </Text>
         </View>
 
         {/* Transactions */}
-        <Text style={styles.sectionTitle}>Transacciones recientes</Text>
+        <Text style={styles.sectionTitle}>{t('finance_recent_transactions')}</Text>
         {ALL_TRANSACTIONS.map((tx) => {
           const isIncome = tx.amount > 0;
           return (

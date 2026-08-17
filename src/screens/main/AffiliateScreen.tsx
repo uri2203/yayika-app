@@ -28,7 +28,7 @@ export default function AffiliateScreen() {
   const handleShare = async () => {
     try {
       await Share.share({
-        message: `Únete a Yayika con mi código ${affiliateCode} y obtén un descuento!\n\nhttps://yayika.app/ref/${affiliateCode}`,
+        message: t('aff_share_message').replace('{code}', affiliateCode),
       });
     } catch {}
   };
@@ -43,10 +43,10 @@ export default function AffiliateScreen() {
         const Clipboard = await import('expo-clipboard');
         await Clipboard.setStringAsync(affiliateCode);
       }
-      Alert.alert(t('aff_copied'), `${t('aff_your_code')}: ${affiliateCode}`);
     } catch {
-      Alert.alert(t('aff_copied'), `${t('aff_your_code')}: ${affiliateCode}`);
+      return;
     }
+    Alert.alert(t('aff_copied'), `${t('aff_your_code')}: ${affiliateCode}`);
   };
 
   return (

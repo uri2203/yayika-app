@@ -11,15 +11,15 @@ import { Ionicons } from '@expo/vector-icons';
 import { colors, typography, spacing, borderRadius } from '../../config/theme';
 import { useLanguage } from '../../contexts/LanguageContext';
 
-const TRANSACTIONS = [
-  { id: '1', desc: 'Comisión afiliada', amount: 89.5, date: '12 ago 2026', type: 'income' as const },
-  { id: '2', desc: 'Venta directa', amount: 199, date: '10 ago 2026', type: 'income' as const },
-  { id: '3', desc: 'Retiro SPEI', amount: -500, date: '8 ago 2026', type: 'expense' as const },
-  { id: '4', desc: 'Comisión afiliada', amount: 45, date: '5 ago 2026', type: 'income' as const },
-  { id: '5', desc: 'Membresía Guerrera', amount: 15, date: '3 ago 2026', type: 'income' as const },
-  { id: '6', desc: 'Venta Ciclo Productiva', amount: 199, date: '1 ago 2026', type: 'income' as const },
-  { id: '7', desc: 'Comisión afiliada', amount: 67.5, date: 'Ago 2026', type: 'income' as const },
-  { id: '8', desc: 'Retiro SPEI', amount: -300, date: 'Jul 2026', type: 'expense' as const },
+const TRANSACTIONS_DATA = [
+  { id: '1', descKey: 'wallet_tx_affiliate' as const, amount: 89.5, date: '12 ago 2026', type: 'income' as const },
+  { id: '2', descKey: 'wallet_tx_direct_sale' as const, amount: 199, date: '10 ago 2026', type: 'income' as const },
+  { id: '3', descKey: 'wallet_tx_spei' as const, amount: -500, date: '8 ago 2026', type: 'expense' as const },
+  { id: '4', descKey: 'wallet_tx_affiliate' as const, amount: 45, date: '5 ago 2026', type: 'income' as const },
+  { id: '5', descKey: 'wallet_tx_guerrera' as const, amount: 15, date: '3 ago 2026', type: 'income' as const },
+  { id: '6', descKey: 'wallet_tx_cycle_sale' as const, amount: 199, date: '1 ago 2026', type: 'income' as const },
+  { id: '7', descKey: 'wallet_tx_affiliate' as const, amount: 67.5, date: 'Ago 2026', type: 'income' as const },
+  { id: '8', descKey: 'wallet_tx_spei' as const, amount: -300, date: 'Jul 2026', type: 'expense' as const },
 ];
 
 function formatMoney(n: number) {
@@ -65,7 +65,7 @@ export default function WalletScreen({ navigation }: any) {
 
         {/* Transaction History */}
         <Text style={styles.sectionTitle}>{t('wallet_history')}</Text>
-        {TRANSACTIONS.map((tx) => {
+        {TRANSACTIONS_DATA.map((tx) => {
           const isIncome = tx.type === 'income';
           return (
             <View key={tx.id} style={styles.txRow}>
@@ -82,7 +82,7 @@ export default function WalletScreen({ navigation }: any) {
                 />
               </View>
               <View style={styles.txInfo}>
-                <Text style={styles.txDesc}>{tx.desc}</Text>
+                <Text style={styles.txDesc}>{t(tx.descKey)}</Text>
                 <Text style={styles.txDate}>{tx.date}</Text>
               </View>
               <Text

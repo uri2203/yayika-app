@@ -43,7 +43,7 @@ export default function CycleTrackerScreen({ navigation }: any) {
       color: colors.primary,
       bgColor: '#EDE7F6',
       description: t('cycle_rest'),
-      tip: 'Escucha a tu cuerpo. Es momento de descansar, meditar y reconectar contigo misma. Evita esfuerzos excesivos.',
+      tip: t('cycle_menstrual_tip'),
     },
     {
       name: t('cycle_follicular'),
@@ -52,7 +52,7 @@ export default function CycleTrackerScreen({ navigation }: any) {
       color: colors.rose,
       bgColor: '#FCE4EC',
       description: t('cycle_creativity'),
-      tip: 'Tu energía sube. Es el momento ideal para iniciar proyectos, planear y ser creativa. Aprovecha esta ola.',
+      tip: t('cycle_follicular_tip'),
     },
     {
       name: t('cycle_ovulatory'),
@@ -61,7 +61,7 @@ export default function CycleTrackerScreen({ navigation }: any) {
       color: colors.gold,
       bgColor: '#FFF9C4',
       description: t('cycle_energy'),
-      tip: 'Punto máximo de energía y confianza. Ideal para reuniones importantes, negociar y socializar.',
+      tip: t('cycle_ovulatory_tip'),
     },
     {
       name: t('cycle_luteal'),
@@ -70,19 +70,19 @@ export default function CycleTrackerScreen({ navigation }: any) {
       color: '#F57C00',
       bgColor: '#FFF3E0',
       description: t('cycle_focus'),
-      tip: 'Organiza, revisa detalles y cierra pendientes. Cuida tu alimentación y establece rutinas reconfortantes.',
+      tip: t('cycle_luteal_tip'),
     },
   ];
 
   const SYMPTOMS = [
-    'Dolor',
-    'Energía baja',
-    'Buen ánimo',
-    'Insomnio',
-    'Hinchazón',
-    'Ansiedad',
-    'Concentración alta',
-    'Cansancio',
+    t('cycle_symptom_pain'),
+    t('cycle_symptom_low_energy'),
+    t('cycle_symptom_good_mood'),
+    t('cycle_symptom_insomnia'),
+    t('cycle_symptom_bloating'),
+    t('cycle_symptom_anxiety'),
+    t('cycle_symptom_high_focus'),
+    t('cycle_symptom_fatigue'),
   ];
 
   const phase = getCurrentPhase(currentDay, PHASES);
@@ -99,14 +99,14 @@ export default function CycleTrackerScreen({ navigation }: any) {
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <View style={styles.header}>
           <Text style={styles.title}>{t('cycle_title')}</Text>
-          <Text style={styles.subtitle}>Conoce tu cuerpo cada día</Text>
+          <Text style={styles.subtitle}>{t('cycle_subtitle')}</Text>
         </View>
 
         {/* Day Counter */}
         <View style={styles.dayCard}>
           <Text style={styles.dayLabel}>{t('cycle_day')}</Text>
           <Text style={styles.dayNumber}>{currentDay}</Text>
-          <Text style={styles.dayTotal}>de {CYCLE_LENGTH} días</Text>
+          <Text style={styles.dayTotal}>{t('cycle_days_total')}</Text>
         </View>
 
         {/* Phase Badge */}
@@ -124,8 +124,8 @@ export default function CycleTrackerScreen({ navigation }: any) {
             <View style={[styles.progressFill, { width: `${progress * 100}%`, backgroundColor: phase.color }]} />
           </View>
           <View style={styles.progressLabels}>
-            <Text style={styles.progressStart}>Día 1</Text>
-            <Text style={styles.progressEnd}>Día {CYCLE_LENGTH}</Text>
+            <Text style={styles.progressStart}>{t('cycle_day_start')}</Text>
+            <Text style={styles.progressEnd}>{t('cycle_day_end')}</Text>
           </View>
         </View>
 
@@ -146,7 +146,7 @@ export default function CycleTrackerScreen({ navigation }: any) {
               </View>
               <View style={styles.phaseCardContent}>
                 <Text style={[styles.phaseCardName, { color: p.color }]}>
-                  {p.name} (Días {p.range[0]}-{p.range[1]})
+                  {p.name} ({t('cycle_phase_days')} {p.range[0]}-{p.range[1]})
                 </Text>
                 <Text style={styles.phaseCardDesc}>{p.description}</Text>
               </View>
@@ -178,12 +178,12 @@ export default function CycleTrackerScreen({ navigation }: any) {
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
             <View style={styles.modalHeader}>
-              <Text style={styles.modalTitle}>¿Cómo te sientes hoy?</Text>
+              <Text style={styles.modalTitle}>{t('cycle_modal_title')}</Text>
               <TouchableOpacity onPress={() => setModalVisible(false)}>
                 <Ionicons name="close" size={24} color={colors.text} />
               </TouchableOpacity>
             </View>
-            <Text style={styles.modalSubtitle}>Selecciona los síntomas que presentas</Text>
+            <Text style={styles.modalSubtitle}>{t('cycle_modal_subtitle')}</Text>
             <View style={styles.symptomsGrid}>
               {SYMPTOMS.map((s) => {
                 const selected = selectedSymptoms.includes(s);
@@ -204,7 +204,7 @@ export default function CycleTrackerScreen({ navigation }: any) {
               style={styles.modalSaveButton}
               onPress={() => setModalVisible(false)}
             >
-              <Text style={styles.modalSaveText}>Guardar registro</Text>
+              <Text style={styles.modalSaveText}>{t('cycle_modal_save')}</Text>
             </TouchableOpacity>
           </View>
         </View>

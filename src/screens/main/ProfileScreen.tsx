@@ -23,7 +23,7 @@ export default function ProfileScreen({ navigation }: any) {
   const { lang, setLanguage, t } = useLanguage();
   const [showLanguageModal, setShowLanguageModal] = useState(false);
   const colors = currentColors;
-  const userName = user?.user_metadata?.name || 'Guerrera';
+  const userName = user?.user_metadata?.name || t('profile_default_name');
   const userEmail = user?.email || '';
 
   const handleSignOut = () => {
@@ -145,7 +145,7 @@ export default function ProfileScreen({ navigation }: any) {
           <Text style={styles.signOutText}>{t('profile_sign_out')}</Text>
         </TouchableOpacity>
 
-        <Text style={styles.version}>Yayika v1.0.0</Text>
+        <Text style={styles.version}>{t('profile_version')}</Text>
       </ScrollView>
     </SafeAreaView>
   );

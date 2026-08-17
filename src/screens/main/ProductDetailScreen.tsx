@@ -24,16 +24,16 @@ export default function ProductDetailScreen({ navigation, route }: any) {
   };
 
   const benefits = [
-    'Identifica nichos de mercado con alta demanda',
-    'Crea productos digitales validados por el mercado',
-    'Establece precios estratégicos para maximizar ganancias',
-    'Lanza y promociona tu producto exitosamente',
+    t('pdetail_benefit_1'),
+    t('pdetail_benefit_2'),
+    t('pdetail_benefit_3'),
+    t('pdetail_benefit_4'),
   ];
 
   const reviews = [
-    { name: 'María García', rating: 5, text: 'Increíble contenido. En 2 semanas lancé mi primer producto digital.' },
-    { name: 'Carlos López', rating: 5, text: 'Muy práctico y fácil de seguir. Recomendado al 100%.' },
-    { name: 'Ana Martínez', rating: 4, text: 'Me encantó la sección de pricing. Muy completa.' },
+    { name: 'María García', rating: 5, text: t('pdetail_review_1') },
+    { name: 'Carlos López', rating: 5, text: t('pdetail_review_2') },
+    { name: 'Ana Martínez', rating: 4, text: t('pdetail_review_3') },
   ];
 
   const handleBuy = async () => {
@@ -91,7 +91,7 @@ export default function ProductDetailScreen({ navigation, route }: any) {
       {/* Bottom Bar */}
       <View style={styles.bottomBar}>
         <View style={styles.bottomPriceContainer}>
-          <Text style={styles.bottomPriceLabel}>Precio</Text>
+          <Text style={styles.bottomPriceLabel}>{t('pdetail_price')}</Text>
           <Text style={styles.bottomPrice}>{product.price}</Text>
         </View>
         <TouchableOpacity style={styles.buyButton} onPress={handleBuy}>

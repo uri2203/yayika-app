@@ -4,6 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '../contexts/AuthContext';
+import { useLanguage } from '../contexts/LanguageContext';
 import { colors, typography } from '../config/theme';
 import LoadingSpinner from '../components/LoadingSpinner';
 
@@ -109,6 +110,7 @@ function ProfileStackNavigator() {
 }
 
 function MainTabs() {
+  const { t } = useLanguage();
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -129,32 +131,42 @@ function MainTabs() {
           let iconName: keyof typeof Ionicons.glyphMap = 'home';
 
           switch (route.name) {
-            case 'Inicio':
+            case 'Home':
               iconName = focused ? 'home' : 'home-outline';
               break;
-            case 'Explorar':
+            case 'Explore':
               iconName = focused ? 'compass' : 'compass-outline';
               break;
-            case 'Mi Progreso':
+            case 'Progress':
               iconName = focused ? 'trending-up' : 'trending-up-outline';
               break;
-            case 'Laura':
+            case 'Chat':
               iconName = focused ? 'chatbubble' : 'chatbubble-outline';
               break;
-            case 'Perfil':
+            case 'Profile':
               iconName = focused ? 'person' : 'person-outline';
               break;
           }
 
           return <Ionicons name={iconName} size={size} color={color} />;
         },
+        tabBarLabel: (() => {
+          switch (route.name) {
+            case 'Home': return t('nav_home');
+            case 'Explore': return t('nav_explore');
+            case 'Progress': return t('nav_progress');
+            case 'Chat': return t('nav_chat');
+            case 'Profile': return t('nav_profile');
+            default: return '';
+          }
+        })(),
       })}
     >
-      <Tab.Screen name="Inicio" component={HomeStackNavigator} />
-      <Tab.Screen name="Explorar" component={ExploreStackNavigator} />
-      <Tab.Screen name="Mi Progreso" component={ProgressStackNavigator} />
-      <Tab.Screen name="Laura" component={ChatScreen} />
-      <Tab.Screen name="Perfil" component={ProfileStackNavigator} />
+      <Tab.Screen name="Home" component={HomeStackNavigator} />
+      <Tab.Screen name="Explore" component={ExploreStackNavigator} />
+      <Tab.Screen name="Progress" component={ProgressStackNavigator} />
+      <Tab.Screen name="Chat" component={ChatScreen} />
+      <Tab.Screen name="Profile" component={ProfileStackNavigator} />
     </Tab.Navigator>
   );
 }

@@ -7,18 +7,18 @@ import { useLanguage } from '../../contexts/LanguageContext';
 
 
 
-const FAQ = [
-  { question: '¿Cómo creo mi cuenta?', answer: 'Ve a yayika.com y haz clic en \'Crear cuenta\'. Ingresa tu email y contraseña.' },
-  { question: '¿Cómo compro un producto?', answer: 'Selecciona el producto que te gusta y haz clic en \'Comprar\'. Serás redirigida a Stripe para completar el pago.' },
-  { question: '¿Cómo funciona el programa de afiliadas?', answer: 'Comparte tu código único. Cuando alguien compre con tu código, ganas comisiones.' },
-  { question: '¿Cómo cambio mi contraseña?', answer: 'Ve a tu perfil > Configuración > Cambiar contraseña.' },
-  { question: '¿Puedo pedir reembolso?', answer: 'Sí, dentro de los primeros 30 días. Contacta soporte para procesarlo.' },
-  { question: '¿Cómo registro mi ciclo?', answer: 'Ve a la pestaña \'Ciclo\' y selecciona el día actual de tu ciclo.' },
-];
-
 export default function SupportScreen({ navigation }: any) {
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
   const { t } = useLanguage();
+
+  const FAQ = [
+    { question: t('support_faq_1_question'), answer: t('support_faq_1_answer') },
+    { question: t('support_faq_2_question'), answer: t('support_faq_2_answer') },
+    { question: t('support_faq_3_question'), answer: t('support_faq_3_answer') },
+    { question: t('support_faq_4_question'), answer: t('support_faq_4_answer') },
+    { question: t('support_faq_5_question'), answer: t('support_faq_5_answer') },
+    { question: t('support_faq_6_question'), answer: t('support_faq_6_answer') },
+  ];
 
   const QUICK_LINKS = [
     { icon: 'chatbubble-ellipses-outline' as const, label: t('support_faq'), color: colors.primary },
@@ -44,13 +44,13 @@ export default function SupportScreen({ navigation }: any) {
           <TextInput style={styles.searchInput} placeholder={t('support_search')} placeholderTextColor={colors.subtleText} />
         </View>
 
-        <Text style={styles.sectionTitle}>Enlaces rápidos</Text>
+        <Text style={styles.sectionTitle}>{t('support_quick_links')}</Text>
         <View style={styles.quickLinksGrid}>
           {QUICK_LINKS.map((link, index) => (
             <TouchableOpacity
               key={index}
               style={styles.quickLinkCard}
-              onPress={() => Alert.alert(link.label, 'Próximamente disponible')}
+              onPress={() => Alert.alert(link.label, t('support_coming_soon'))}
             >
               <View style={[styles.quickLinkIcon, { backgroundColor: link.color + '15' }]}>
                 <Ionicons name={link.icon} size={24} color={link.color} />
@@ -60,7 +60,7 @@ export default function SupportScreen({ navigation }: any) {
           ))}
         </View>
 
-        <Text style={styles.sectionTitle}>Preguntas frecuentes</Text>
+        <Text style={styles.sectionTitle}>{t('support_faq_section')}</Text>
         <View style={styles.faqContainer}>
           {FAQ.map((item, index) => (
             <TouchableOpacity
@@ -85,7 +85,7 @@ export default function SupportScreen({ navigation }: any) {
         </View>
 
         <View style={styles.contactSection}>
-          <Text style={styles.sectionTitle}>Contacto</Text>
+          <Text style={styles.sectionTitle}>{t('support_contact_section')}</Text>
           <TouchableOpacity
             style={styles.contactRow}
             onPress={() => Linking.openURL('mailto:hola@yayika.com')}

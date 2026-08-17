@@ -23,48 +23,10 @@ interface Message {
 }
 
 const AI_CONFIG = {
-  systemPrompts: {
-    cycle: 'Eres Laura, la asistente de Yayika. Ayudas a mujeres a entender su ciclo menstrual y cómo afecta su productividad.',
-    finance: 'Eres Laura, la asistente financiera de Yayika. Ayudas a mujeres a gestionar su dinero con psicología emocional femenina.',
-    productivity: 'Eres Laura, la asistente de productividad de Yayika. Ayudas a mujeres a ser más productivas aprovechando sus fases hormonales.',
-    general: 'Eres Laura, la asistente de Yayika. Respondes preguntas sobre el portal, los cursos, el tracking de ciclo, finanzas y productividad.',
-  },
   routing: {
-    cycle: ['ciclo', 'menstru', 'fase', 'ovulat', 'lutea', 'folicular', 'periodo', 'menstruación', 'síntomas', 'energía'],
-    finance: ['dinero', 'presupuesto', 'ahorro', 'gasto', 'ingreso', 'finanza', 'meta', 'invertir', 'deuda'],
-    productivity: ['productiv', 'tarea', 'trabajo', 'planificar', 'organizar', 'tiempo', 'procrastin', 'enfoque'],
-  },
-  responses: {
-    cycle: {
-      es: [
-        'Basándome en tu ciclo, cada fase tiene energía diferente. 🌙\n\n• **Menstrual**: Descansa y reflexiona\n• **Folicular**: IDEAL para empezar proyectos nuevos\n• **Ovulatoria**: Mejor momento para negociar y reuniones\n• **Lútea**: Enfócate en detalles y tareas administrativas\n\n¿En qué fase estás hoy?',
-        'Tu ciclo es tu superpoder. 💪\n\n¿Sabías que en la fase folicular tu cerebro está más receptivo a aprender cosas nuevas? Aprovecha esa energía para tomar cursos o aprender habilidades.\n\n¿Te gustaría saber qué tareas son ideales para cada fase?',
-      ],
-    },
-    finance: {
-      es: [
-        'Aquí van tips financieros para mujeres: 💰\n\n1. **Regla 50/30/20**: 50% necesidades, 30% deseos, 20% ahorro\n2. **Fondo de emergencia**: 3-6 meses de gastos\n3. **Invierte en ti**: Los cursos son la mejor inversión\n\n¿Quieres que profundicemos en alguno?',
-        'La psicología financiera femenina es diferente. 🧠\n\nLas mujeres tendemos a subestimar nuestros ingresos y sobreestimar gastos. El primer paso es ser honesta con tu situación actual.\n\n¿Quieres ayuda para crear un presupuesto?',
-      ],
-    },
-    productivity: {
-      es: [
-        'Productividad femenina = productividad cíclica. 📋\n\nNo fuerces la productividad igual todos los días. Adapta tus tareas a tu energía:\n\n• Alta energía → Tareas difíciles\n• Baja energía → Tareas simples\n• Energía media → Creatividad\n\n¿Quieres que te ayude a planificar tu semana?',
-        'El secreto de la productividad no es hacer más, sino hacer lo correcto en el momento correcto. ✨\n\n¿En qué fase de tu ciclo estás? Puedo sugerirte tareas ideales para hoy.',
-      ],
-    },
-    general: {
-      es: [
-        '¡Hola! Soy Laura, tu asistente de Yayika. 💜\n\nPuedo ayudarte con:\n• 🌙 Tu ciclo menstrual y energía\n• 💰 Finanzas personales\n• 📋 Productividad\n\n¿Qué te gustaría saber?',
-        '¡Bienvenida a Yayika! 🎉\n\nSoy Laura y estoy aquí para acompañarte. Pregúntame lo que quieras sobre tu ciclo, dinero o productividad.\n\n¿Por dónde empezamos?',
-      ],
-    },
-  },
-  suggestions: {
-    cycle: { es: ['¿En qué fase estoy?', 'Consejos de energía', '¿Qué hago hoy?'] },
-    finance: { es: ['Crear presupuesto', 'Meta de ahorro', 'Analizar gastos'] },
-    productivity: { es: ['Tareas por fase', 'Organizar semana', 'Consejos de enfoque'] },
-    general: { es: ['🌙 Mi ciclo', '💰 Mis finanzas', '📋 Productividad'] },
+    cycle: ['ciclo', 'menstru', 'fase', 'ovulat', 'lutea', 'folicular', 'periodo', 'menstruación', 'síntomas', 'energía', 'cycle', 'menstrual', 'ovulation', 'luteal', 'follicular', 'period', 'symptoms', 'energy', 'ciclo', 'menstru', 'fase', 'ovulação', 'lútea', 'folicular', 'período', 'sintomas', 'energia', 'zyklus', 'menstru', 'phase', 'ovulation', 'luteal', 'follikel', 'periode', 'symptome', 'énergie', 'menstruel', 'ovulation', 'lutéal', 'folliculaire', 'période', 'symptômes'],
+    finance: ['dinero', 'presupuesto', 'ahorro', 'gasto', 'ingreso', 'finanza', 'meta', 'invertir', 'deuda', 'money', 'budget', 'saving', 'expense', 'income', 'finance', 'goal', 'invest', 'debt', 'dinheiro', 'orçamento', 'poupança', 'despesa', 'renda', 'finança', 'meta', 'investir', 'dívida', 'argent', 'budget', 'épargne', 'dépense', 'revenu', 'finance', 'objectif', 'investir', 'dette', 'geld', 'budget', 'ersparnis', 'ausgabe', 'einkommen', 'finanzen', 'ziel', 'investieren', 'schuld'],
+    productivity: ['productiv', 'tarea', 'trabajo', 'planificar', 'organizar', 'tiempo', 'procrastin', 'enfoque', 'productivity', 'task', 'work', 'plan', 'organize', 'time', 'procrastin', 'focus', 'produtividade', 'tarefa', 'trabalho', 'planejar', 'organizar', 'tempo', 'procrastinação', 'foco', 'productivité', 'tâche', 'travail', 'planifier', 'organiser', 'temps', 'procrastination', 'concentration', 'produktivität', 'aufgabe', 'arbeit', 'planen', 'organisieren', 'zeit', 'prokrastination', 'fokus'],
   },
 };
 
@@ -78,15 +40,27 @@ function routeMessage(message: string): string {
   return 'general';
 }
 
-function generateResponse(message: string): string {
+function generateResponse(message: string, t: (key: string) => string): string {
   const category = routeMessage(message);
-  const responses = AI_CONFIG.responses[category as keyof typeof AI_CONFIG.responses]?.es || AI_CONFIG.responses.general.es;
-  return responses[Math.floor(Math.random() * responses.length)];
+  const keys = {
+    cycle: ['chat_response_cycle_1', 'chat_response_cycle_2'],
+    finance: ['chat_response_finance_1', 'chat_response_finance_2'],
+    productivity: ['chat_response_productivity_1', 'chat_response_productivity_2'],
+    general: ['chat_response_general_1', 'chat_response_general_2'],
+  };
+  const responseKeys = keys[category as keyof typeof keys] || keys.general;
+  return t(responseKeys[Math.floor(Math.random() * responseKeys.length)]);
 }
 
-function getSuggestions(category: string): string[] {
-  return AI_CONFIG.suggestions[category as keyof typeof AI_CONFIG.suggestions]?.es ||
-    AI_CONFIG.suggestions.general.es;
+function getSuggestions(category: string, t: (key: string) => string): string[] {
+  const keys = {
+    cycle: ['chat_suggestion_cycle_1', 'chat_suggestion_cycle_2', 'chat_suggestion_cycle_3'],
+    finance: ['chat_suggestion_finance_1', 'chat_suggestion_finance_2', 'chat_suggestion_finance_3'],
+    productivity: ['chat_suggestion_productivity_1', 'chat_suggestion_productivity_2', 'chat_suggestion_productivity_3'],
+    general: ['chat_suggestion_general_1', 'chat_suggestion_general_2', 'chat_suggestion_general_3'],
+  };
+  const suggestionKeys = keys[category as keyof typeof keys] || keys.general;
+  return suggestionKeys.map((key) => t(key));
 }
 
 export default function ChatScreen() {
@@ -101,7 +75,11 @@ export default function ChatScreen() {
   ]);
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
-  const [suggestions, setSuggestions] = useState<string[]>(AI_CONFIG.suggestions.general.es);
+  const [suggestions, setSuggestions] = useState<string[]>([
+    t('chat_suggestion_general_1'),
+    t('chat_suggestion_general_2'),
+    t('chat_suggestion_general_3'),
+  ]);
   const scrollViewRef = useRef<ScrollView>(null);
 
   useEffect(() => {
@@ -127,11 +105,11 @@ export default function ChatScreen() {
 
     // Update suggestions based on category
     const category = routeMessage(messageText);
-    setSuggestions(getSuggestions(category));
+    setSuggestions(getSuggestions(category, t));
 
     // Simulate AI response delay
     setTimeout(() => {
-      const responseText = generateResponse(messageText);
+      const responseText = generateResponse(messageText, t);
       const aiMessage: Message = {
         id: (Date.now() + 1).toString(),
         text: responseText,

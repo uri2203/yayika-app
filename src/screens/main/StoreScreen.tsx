@@ -35,11 +35,12 @@ const FALLBACK_PRODUCTS: Product[] = [
   { id: '8', name: 'Planner de Ciclo', price: '$99 MXN', icon: 'fitness', color: '#8B5CF6', url: '#', category: 'Planners' },
 ];
 
-const CATEGORIES = ['Todos', 'Cursos', 'Planners', 'Guías', 'Membresías'];
+const CATEGORY_KEYS = ['Todos', 'Cursos', 'Planners', 'Guias', 'Membresias'] as const;
+type CategoryKey = typeof CATEGORY_KEYS[number];
 
 export default function StoreScreen({ navigation }: any) {
   const [search, setSearch] = useState('');
-  const [activeCategory, setActiveCategory] = useState('Todos');
+  const [activeCategory, setActiveCategory] = useState<CategoryKey>(CATEGORY_KEYS[0]);
   const [products, setProducts] = useState<Product[]>(FALLBACK_PRODUCTS);
   const [loading, setLoading] = useState(true);
   const { t } = useLanguage();
@@ -78,7 +79,7 @@ export default function StoreScreen({ navigation }: any) {
   }
 
   const filteredProducts = products.filter((product) => {
-    const matchesCategory = activeCategory === 'Todos' || product.category === activeCategory;
+    const matchesCategory = activeCategory === CATEGORY_KEYS[0] || product.category === activeCategory;
     const matchesSearch = product.name.toLowerCase().includes(search.toLowerCase());
     return matchesCategory && matchesSearch;
   });
@@ -131,14 +132,14 @@ export default function StoreScreen({ navigation }: any) {
         </View>
 
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chipsContainer}>
-          {CATEGORIES.map((category) => (
+          {CATEGORY_KEYS.map((category) => (
             <TouchableOpacity
               key={category}
               style={[styles.chip, activeCategory === category && styles.chipActive]}
               onPress={() => setActiveCategory(category)}
             >
               <Text style={[styles.chipText, activeCategory === category && styles.chipTextActive]}>
-                {category}
+                {t(`store_category_${category.toLowerCase()}`)}
               </Text>
             </TouchableOpacity>
           ))}
@@ -146,14 +147,14 @@ export default function StoreScreen({ navigation }: any) {
 
         <View style={styles.productCountContainer}>
           <Text style={styles.productCount}>
-            {filteredProducts.length} producto{filteredProducts.length !== 1 ? 's' : ''}
+            {t('store_product_count', { count: filteredProducts.length })}
           </Text>
         </View>
 
         {filteredProducts.length === 0 ? (
           <View style={styles.emptyContainer}>
             <Ionicons name="search-outline" size={48} color={colors.subtleText} />
-            <Text style={styles.emptyText}>No se encontraron productos</Text>
+            <Text style={styles.emptyText}>{t('store_no_products')}</Text>
           </View>
         ) : (
           <View style={styles.productGrid}>

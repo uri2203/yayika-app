@@ -4,7 +4,7 @@ import { Language, t as translate, getSavedLanguage, saveLanguage, getLanguageNa
 interface LanguageContextType {
   lang: Language;
   setLanguage: (lang: Language) => void;
-  t: (key: string) => string;
+  t: (key: string, params?: Record<string, string | number>) => string;
   getLanguageName: (lang: Language) => string;
 }
 
@@ -27,7 +27,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     saveLanguage(newLang);
   };
 
-  const t = (key: string) => translate(lang, key);
+  const t = (key: string, params?: Record<string, string | number>) => translate(lang, key, params);
 
   return (
     <LanguageContext.Provider value={{ lang, setLanguage, t, getLanguageName }}>

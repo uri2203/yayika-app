@@ -11,67 +11,67 @@ import { Ionicons } from '@expo/vector-icons';
 import { colors, typography, spacing, borderRadius } from '../../config/theme';
 import { useLanguage } from '../../contexts/LanguageContext';
 
-const MODULES = [
-  {
-    id: 'modulo1',
-    number: 1,
-    title: 'Encuentra tu producto',
-    lessons: 8,
-    duration: '2h 30min',
-    progress: 65,
-    color: colors.primary,
-  },
-  {
-    id: 'modulo2',
-    number: 2,
-    title: 'Crea tu producto digital',
-    lessons: 6,
-    duration: '1h 45min',
-    progress: 30,
-    color: colors.turquoise,
-  },
-  {
-    id: 'modulo3',
-    number: 3,
-    title: 'Precio y venta',
-    lessons: 5,
-    duration: '1h 20min',
-    progress: 0,
-    color: colors.gold,
-  },
-  {
-    id: 'modulo4',
-    number: 4,
-    title: 'Plataformas de venta',
-    lessons: 7,
-    duration: '2h',
-    progress: 0,
-    color: colors.rose,
-  },
-  {
-    id: 'modulo5',
-    number: 5,
-    title: 'Escala tu negocio',
-    lessons: 4,
-    duration: '1h 10min',
-    progress: 0,
-    color: colors.primary,
-  },
-];
-
-const overallProgress = 45;
-
 export default function CoursesScreen({ navigation }: any) {
+  const { t } = useLanguage();
+
+  const MODULES = [
+    {
+      id: '1',
+      number: 1,
+      title: t('course_module_1_title'),
+      lessons: 8,
+      duration: '2h 30min',
+      progress: 65,
+      color: colors.primary,
+    },
+    {
+      id: '2',
+      number: 2,
+      title: t('course_module_2_title'),
+      lessons: 6,
+      duration: '1h 45min',
+      progress: 30,
+      color: colors.turquoise,
+    },
+    {
+      id: '3',
+      number: 3,
+      title: t('course_module_3_title'),
+      lessons: 5,
+      duration: '1h 20min',
+      progress: 0,
+      color: colors.gold,
+    },
+    {
+      id: '4',
+      number: 4,
+      title: t('course_module_4_title'),
+      lessons: 7,
+      duration: '2h',
+      progress: 0,
+      color: colors.rose,
+    },
+    {
+      id: '5',
+      number: 5,
+      title: t('course_module_5_title'),
+      lessons: 4,
+      duration: '1h 10min',
+      progress: 0,
+      color: colors.primary,
+    },
+  ];
+
   const totalLessons = MODULES.reduce((sum, m) => sum + m.lessons, 0);
   const totalDuration = '8h 45min';
-  const { t } = useLanguage();
+  const overallProgress = 45;
 
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <View style={styles.header}>
           <Text style={styles.title}>{t('courses_title')}</Text>
-          <Text style={styles.subtitle}>Tu camino al empoderamiento financiero</Text>
+          <Text style={styles.subtitle}>{t('courses_subtitle')}</Text>
         </View>
 
         <View style={styles.progressCard}>
@@ -85,7 +85,7 @@ export default function CoursesScreen({ navigation }: any) {
           <View style={styles.statsRow}>
             <View style={styles.statItem}>
               <Text style={styles.statValue}>{MODULES.length}</Text>
-              <Text style={styles.statLabel}>Módulos</Text>
+              <Text style={styles.statLabel}>{t('courses_modules')}</Text>
             </View>
             <View style={styles.statDivider} />
             <View style={styles.statItem}>

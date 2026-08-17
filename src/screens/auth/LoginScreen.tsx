@@ -27,13 +27,13 @@ export default function LoginScreen({ navigation }: any) {
 
   const handleLogin = async () => {
     if (!email || !password) {
-      Alert.alert('Error', 'Por favor ingresa tu email y contraseña');
+      Alert.alert(t('common_error'), t('auth_fill_email_password'));
       return;
     }
     setLoading(true);
     const { error } = await signIn(email, password);
     setLoading(false);
-    if (error) Alert.alert('Error', error);
+    if (error) Alert.alert(t('common_error'), String(error));
   };
 
   return (
@@ -48,14 +48,14 @@ export default function LoginScreen({ navigation }: any) {
         >
           <View style={styles.header}>
             <Text style={styles.logo}>Yayika</Text>
-            <Text style={styles.subtitle}>Tu poder, tu negocio</Text>
+            <Text style={styles.subtitle}>{t('auth_tagline')}</Text>
           </View>
 
           <View style={styles.form}>
             <Text style={styles.label}>{t('auth_email')}</Text>
             <TextInput
               style={styles.input}
-              placeholder="tu@email.com"
+              placeholder={t('auth_email_placeholder')}
               placeholderTextColor={colors.subtleText}
               value={email}
               onChangeText={setEmail}
@@ -104,7 +104,7 @@ export default function LoginScreen({ navigation }: any) {
           <View style={styles.footer}>
             <Text style={styles.footerText}>{t('auth_no_account')} </Text>
             <TouchableOpacity onPress={() => navigation.navigate('Register')}>
-              <Text style={styles.footerLink}>Regístrate</Text>
+              <Text style={styles.footerLink}>{t('auth_register_link')}</Text>
             </TouchableOpacity>
           </View>
         </ScrollView>

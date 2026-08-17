@@ -28,20 +28,20 @@ export default function RegisterScreen({ navigation }: any) {
 
   const handleRegister = async () => {
     if (!name || !email || !password) {
-      Alert.alert('Error', 'Por favor completa todos los campos');
+      Alert.alert(t('common_error'), t('auth_fill_all_fields'));
       return;
     }
     if (password.length < 6) {
-      Alert.alert('Error', 'La contraseña debe tener al menos 6 caracteres');
+      Alert.alert(t('common_error'), t('auth_password_min_length'));
       return;
     }
     setLoading(true);
     const { error } = await signUp(email, password, name);
     setLoading(false);
     if (error) {
-      Alert.alert('Error', error);
+      Alert.alert(t('common_error'), error || t('common_error'));
     } else {
-      Alert.alert('¡Bienvenida!', 'Tu cuenta ha sido creada. Revisa tu email para confirmar.');
+      Alert.alert(t('auth_welcome'), t('auth_account_created'));
     }
   };
 
@@ -61,14 +61,14 @@ export default function RegisterScreen({ navigation }: any) {
 
           <View style={styles.header}>
             <Text style={styles.title}>{t('auth_register')}</Text>
-            <Text style={styles.subtitle}>Únete a la comunidad Yayika</Text>
+            <Text style={styles.subtitle}>{t('auth_register_subtitle')}</Text>
           </View>
 
           <View style={styles.form}>
             <Text style={styles.label}>{t('auth_name')}</Text>
             <TextInput
               style={styles.input}
-              placeholder="Tu nombre"
+              placeholder={t('auth_name_placeholder')}
               placeholderTextColor={colors.subtleText}
               value={name}
               onChangeText={setName}
@@ -78,7 +78,7 @@ export default function RegisterScreen({ navigation }: any) {
             <Text style={styles.label}>{t('auth_email')}</Text>
             <TextInput
               style={styles.input}
-              placeholder="tu@email.com"
+              placeholder={t('auth_email_placeholder')}
               placeholderTextColor={colors.subtleText}
               value={email}
               onChangeText={setEmail}
@@ -120,7 +120,7 @@ export default function RegisterScreen({ navigation }: any) {
           <View style={styles.footer}>
             <Text style={styles.footerText}>{t('auth_has_account')} </Text>
             <TouchableOpacity onPress={() => navigation.goBack()}>
-              <Text style={styles.footerLink}>Inicia sesión</Text>
+              <Text style={styles.footerLink}>{t('auth_login_link')}</Text>
             </TouchableOpacity>
           </View>
         </ScrollView>

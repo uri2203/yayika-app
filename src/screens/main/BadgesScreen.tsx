@@ -7,19 +7,19 @@ import { useLanguage } from '../../contexts/LanguageContext';
 
 
 
-const BADGES = [
-  { emoji: '🌙', name: 'Primera fase', description: 'Registra tu primer ciclo', unlocked: true, categoryKey: 'cycle' },
-  { emoji: '💰', name: 'Ahorradora', description: 'Ahorra $500 en un mes', unlocked: true, categoryKey: 'finance' },
-  { emoji: '📋', name: 'Productiva', description: 'Completa 5 retos', unlocked: true, categoryKey: 'productivity' },
-  { emoji: '🔥', name: 'Racha de 7', description: '7 días seguidos activa', unlocked: true, categoryKey: 'productivity' },
-  { emoji: '🌸', name: 'Ciclo consciente', description: '30 días registrando', unlocked: true, categoryKey: 'cycle' },
-  { emoji: '💎', name: 'Guerrera', description: 'Suscríbete al plan Guerrera', unlocked: false, categoryKey: 'special' },
-  { emoji: '🎯', name: 'Meta cumplida', description: 'Alcanza tu meta de ahorro', unlocked: false, categoryKey: 'finance' },
-  { emoji: '👥', name: 'Influencer', description: '10 referidas activas', unlocked: false, categoryKey: 'social' },
-  { emoji: '🏆', name: 'Top 10', description: 'Entra al ranking semanal', unlocked: false, categoryKey: 'social' },
-  { emoji: '⭐', name: '5 estrellas', description: 'Recibe 5 reseñas positivas', unlocked: false, categoryKey: 'social' },
-  { emoji: '📚', name: 'Estudiosa', description: 'Completa todos los módulos', unlocked: false, categoryKey: 'productivity' },
-  { emoji: '🌟', name: 'Leyenda', description: 'Desbloquea todos los logros', unlocked: false, categoryKey: 'special' },
+const BADGES_CONFIG = [
+  { emoji: '🌙', nameKey: 'badge_1_name', descriptionKey: 'badge_1_desc', unlocked: true, categoryKey: 'cycle' },
+  { emoji: '💰', nameKey: 'badge_2_name', descriptionKey: 'badge_2_desc', unlocked: true, categoryKey: 'finance' },
+  { emoji: '📋', nameKey: 'badge_3_name', descriptionKey: 'badge_3_desc', unlocked: true, categoryKey: 'productivity' },
+  { emoji: '🔥', nameKey: 'badge_4_name', descriptionKey: 'badge_4_desc', unlocked: true, categoryKey: 'productivity' },
+  { emoji: '🌸', nameKey: 'badge_5_name', descriptionKey: 'badge_5_desc', unlocked: true, categoryKey: 'cycle' },
+  { emoji: '💎', nameKey: 'badge_6_name', descriptionKey: 'badge_6_desc', unlocked: false, categoryKey: 'special' },
+  { emoji: '🎯', nameKey: 'badge_7_name', descriptionKey: 'badge_7_desc', unlocked: false, categoryKey: 'finance' },
+  { emoji: '👥', nameKey: 'badge_8_name', descriptionKey: 'badge_8_desc', unlocked: false, categoryKey: 'social' },
+  { emoji: '🏆', nameKey: 'badge_9_name', descriptionKey: 'badge_9_desc', unlocked: false, categoryKey: 'social' },
+  { emoji: '⭐', nameKey: 'badge_10_name', descriptionKey: 'badge_10_desc', unlocked: false, categoryKey: 'social' },
+  { emoji: '📚', nameKey: 'badge_11_name', descriptionKey: 'badge_11_desc', unlocked: false, categoryKey: 'productivity' },
+  { emoji: '🌟', nameKey: 'badge_12_name', descriptionKey: 'badge_12_desc', unlocked: false, categoryKey: 'special' },
 ];
 
 const CATEGORY_KEYS = ['all', 'cycle', 'finance', 'productivity', 'social', 'special'] as const;
@@ -36,6 +36,12 @@ export default function BadgesScreen({ navigation }: any) {
     social: t('badges_social'),
     special: t('badges_special'),
   };
+
+  const BADGES = BADGES_CONFIG.map((b) => ({
+    ...b,
+    name: t(b.nameKey),
+    description: t(b.descriptionKey),
+  }));
 
   const filteredBadges = selectedCategoryKey === 'all'
     ? BADGES

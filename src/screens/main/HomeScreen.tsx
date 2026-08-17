@@ -7,19 +7,19 @@ import { useLanguage } from '../../contexts/LanguageContext';
 import { colors, typography, spacing, borderRadius } from '../../config/theme';
 import Card from '../../components/Card';
 
-const TIPS = [
-  'Invertir en ti misma es la mejor inversión que puedes hacer.',
-  'Cada pequeño paso cuenta para alcanzar tus metas.',
-  'Tu valor no depende de los números en tu cuenta bancaria.',
-  'Las mujeres que negocian ganan más. ¡Tú puedes!',
-  'Tu ciclo es tu superpoder. Úsalo a tu favor.',
-];
-
 export default function HomeScreen({ navigation }: any) {
   const { user } = useAuth();
   const { t } = useLanguage();
-  const userName = user?.user_metadata?.name || 'Guerrera';
-  const dailyTip = TIPS[new Date().getDay() % TIPS.length];
+  const userName = user?.user_metadata?.name || t('home_guerrera');
+
+  const tips = [
+    t('home_tip_1'),
+    t('home_tip_2'),
+    t('home_tip_3'),
+    t('home_tip_4'),
+    t('home_tip_5'),
+  ];
+  const dailyTip = tips[new Date().getDay() % tips.length];
 
   return (
     <SafeAreaView style={styles.container}>
@@ -41,7 +41,7 @@ export default function HomeScreen({ navigation }: any) {
           <View style={styles.xpRow}>
             <Ionicons name="star" size={18} color={colors.gold} />
             <Text style={styles.xpText}>240 XP</Text>
-            <Text style={styles.xpLevel}>Nivel 3</Text>
+            <Text style={styles.xpLevel}>{t('home_level')} 3</Text>
           </View>
           <View style={styles.xpBar}>
             <View style={[styles.xpFill, { width: '60%' }]} />
@@ -53,7 +53,7 @@ export default function HomeScreen({ navigation }: any) {
         <View style={styles.grid}>
           <TouchableOpacity
             style={styles.gridItem}
-            onPress={() => navigation.navigate('Explorar')}
+            onPress={() => navigation.navigate('Explore')}
           >
             <View style={[styles.gridIcon, { backgroundColor: colors.primaryLight || '#E8D5F5' }]}>
               <Ionicons name="compass" size={22} color={colors.primary} />
@@ -64,7 +64,7 @@ export default function HomeScreen({ navigation }: any) {
 
           <TouchableOpacity
             style={styles.gridItem}
-            onPress={() => navigation.navigate('Mi Progreso')}
+            onPress={() => navigation.navigate('Progress')}
           >
             <View style={[styles.gridIcon, { backgroundColor: '#D1FAE5' }]}>
               <Ionicons name="trending-up" size={22} color={colors.turquoise} />
@@ -75,7 +75,7 @@ export default function HomeScreen({ navigation }: any) {
 
           <TouchableOpacity
             style={styles.gridItem}
-            onPress={() => navigation.navigate('Inicio', { screen: 'CycleTracker' })}
+            onPress={() => navigation.navigate('Home', { screen: 'CycleTracker' })}
           >
             <View style={[styles.gridIcon, { backgroundColor: '#FDE68A' }]}>
               <Ionicons name="moon" size={22} color={colors.gold} />
@@ -86,7 +86,7 @@ export default function HomeScreen({ navigation }: any) {
 
           <TouchableOpacity
             style={styles.gridItem}
-            onPress={() => navigation.navigate('Inicio', { screen: 'FinancialTracker' })}
+            onPress={() => navigation.navigate('Home', { screen: 'FinancialTracker' })}
           >
             <View style={[styles.gridIcon, { backgroundColor: '#FCE7F3' }]}>
               <Ionicons name="wallet" size={22} color={colors.rose} />
@@ -101,7 +101,7 @@ export default function HomeScreen({ navigation }: any) {
 
         <TouchableOpacity
           style={styles.featureCard}
-          onPress={() => navigation.navigate('Inicio', { screen: 'Challenges' })}
+          onPress={() => navigation.navigate('Home', { screen: 'Challenges' })}
         >
           <View style={[styles.featureIcon, { backgroundColor: '#FEF3C7' }]}>
             <Ionicons name="trophy" size={24} color={colors.gold} />
@@ -115,7 +115,7 @@ export default function HomeScreen({ navigation }: any) {
 
         <TouchableOpacity
           style={styles.featureCard}
-          onPress={() => navigation.navigate('Inicio', { screen: 'Badges' })}
+          onPress={() => navigation.navigate('Home', { screen: 'Badges' })}
         >
           <View style={[styles.featureIcon, { backgroundColor: '#E0E7FF' }]}>
             <Ionicons name="ribbon" size={24} color={colors.primary} />
@@ -129,7 +129,7 @@ export default function HomeScreen({ navigation }: any) {
 
         <TouchableOpacity
           style={styles.featureCard}
-          onPress={() => navigation.navigate('Inicio', { screen: 'Rankings' })}
+          onPress={() => navigation.navigate('Home', { screen: 'Rankings' })}
         >
           <View style={[styles.featureIcon, { backgroundColor: '#FEE2E2' }]}>
             <Ionicons name="flame" size={24} color="#EF4444" />
@@ -143,7 +143,7 @@ export default function HomeScreen({ navigation }: any) {
 
         <TouchableOpacity
           style={styles.featureCard}
-          onPress={() => navigation.navigate('Inicio', { screen: 'Wallet' })}
+          onPress={() => navigation.navigate('Home', { screen: 'Wallet' })}
         >
           <View style={[styles.featureIcon, { backgroundColor: '#D1FAE5' }]}>
             <Ionicons name="card" size={24} color={colors.turquoise} />

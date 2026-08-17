@@ -24,7 +24,7 @@ export default function LegalScreen({ navigation }: any) {
     t('legal_accessibility'),
   ];
   const handleDocumentPress = (title: string) => {
-    Alert.alert(title, 'Contenido disponible en yayika.com');
+    Alert.alert(title, t('legal_content_available'));
   };
 
   return (
@@ -52,7 +52,7 @@ export default function LegalScreen({ navigation }: any) {
           ))}
         </View>
 
-        <Text style={styles.footer}>© 2026 Yayika - Todos los derechos reservados</Text>
+        <Text style={styles.footer}>{t('legal_copyright')}</Text>
       </ScrollView>
     </SafeAreaView>
   );

@@ -61,8 +61,20 @@ export default function ProductsScreen() {
     try {
       await WebBrowser.openBrowserAsync(product.url);
     } catch {
-      Alert.alert('Error', 'No se pudo abrir el enlace de pago');
+      Alert.alert(t('common_error'), t('products_open_link_error'));
     }
+  };
+
+  const productNames: Record<string, string> = {
+    'ciclo-productiva': t('product_ciclo_productiva'),
+    'dinero-sin-pena': t('product_dinero_sin_pena'),
+    'mujer-que-negocia': t('product_mujer_negocia'),
+  };
+
+  const productDescriptions: Record<string, string> = {
+    'ciclo-productiva': t('product_ciclo_productiva_desc'),
+    'dinero-sin-pena': t('product_dinero_sin_pena_desc'),
+    'mujer-que-negocia': t('product_mujer_negocia_desc'),
   };
 
   return (
@@ -79,8 +91,8 @@ export default function ProductsScreen() {
               </View>
               <Text style={styles.productPrice}>{product.price}</Text>
             </View>
-            <Text style={styles.productName}>{product.name}</Text>
-            <Text style={styles.productDescription}>{product.description}</Text>
+            <Text style={styles.productName}>{productNames[product.id]}</Text>
+            <Text style={styles.productDescription}>{productDescriptions[product.id]}</Text>
             <Button
               title={t('store_buy_now')}
               onPress={() => handlePurchase(product)}

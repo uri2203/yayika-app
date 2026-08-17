@@ -29,9 +29,9 @@ export default function MembershipScreen() {
       icon: 'leaf',
       color: colors.turquoise,
       features: [
-        'Acceso a la comunidad',
-        'Un recurso gratuito al mes',
-        'Soporte por email',
+        t('mem_semilla_feature_1'),
+        t('mem_semilla_feature_2'),
+        t('mem_semilla_feature_3'),
       ],
       url: 'https://buy.stripe.com/00wcN502q0xY2481elgA80f',
     },
@@ -42,10 +42,10 @@ export default function MembershipScreen() {
       icon: 'shield',
       color: colors.primary,
       features: [
-        'Todo lo de Semilla',
-        '3 recursos premium al mes',
-        'Masterclass mensuales',
-        'Grupo privado de WhatsApp',
+        t('mem_guerrera_feature_1'),
+        t('mem_guerrera_feature_2'),
+        t('mem_guerrera_feature_3'),
+        t('mem_guerrera_feature_4'),
       ],
       url: 'https://buy.stripe.com/14A4gzeXk0xY4cg3mtgA80g',
     },
@@ -56,11 +56,11 @@ export default function MembershipScreen() {
       icon: 'diamond',
       color: colors.gold,
       features: [
-        'Todo lo de Guerrera',
-        'Acceso ilimitado a cursos',
-        'Sesión grupal mensual',
-        'Contenido exclusivo',
-        'Soporte prioritario',
+        t('mem_diamante_feature_1'),
+        t('mem_diamante_feature_2'),
+        t('mem_diamante_feature_3'),
+        t('mem_diamante_feature_4'),
+        t('mem_diamante_feature_5'),
       ],
       url: 'https://buy.stripe.com/cNi9ATdTgfsSbEI4qxgA80h',
     },
@@ -69,7 +69,7 @@ export default function MembershipScreen() {
     try {
       await WebBrowser.openBrowserAsync(tier.url);
     } catch {
-      Alert.alert('Error', 'No se pudo abrir el enlace de pago');
+      Alert.alert(t('common_error'), t('common_open_link_error'));
     }
   };
 
@@ -77,7 +77,7 @@ export default function MembershipScreen() {
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <Text style={styles.title}>{t('mem_title')}</Text>
-        <Text style={styles.subtitle}>Elige tu plan y crece con nosotros</Text>
+        <Text style={styles.subtitle}>{t('mem_subtitle')}</Text>
 
         {tiers.map((tier) => (
           <Card

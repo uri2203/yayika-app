@@ -26,14 +26,14 @@ export default function ForgotPasswordScreen({ navigation }: any) {
 
   const handleReset = async () => {
     if (!email) {
-      Alert.alert('Error', 'Por favor ingresa tu email');
+      Alert.alert(t('common_error'), t('auth_enter_email'));
       return;
     }
     setLoading(true);
     const { error } = await resetPassword(email);
     setLoading(false);
     if (error) {
-      Alert.alert('Error', error);
+      Alert.alert(t('common_error'), String(error));
     } else {
       setSent(true);
     }
@@ -64,13 +64,13 @@ export default function ForgotPasswordScreen({ navigation }: any) {
           {sent ? (
             <View style={styles.successContainer}>
               <Ionicons name="checkmark-circle-outline" size={56} color={colors.success} />
-              <Text style={styles.successTitle}>{t('auth_send')}</Text>
+              <Text style={styles.successTitle}>{t('auth_email_sent_title')}</Text>
               <Text style={styles.successText}>
-                {t('auth_reset_desc')}
+                {t('auth_email_sent_desc')}
               </Text>
               <Button
-                title={t('common_back')}
-                onPress={() => navigation.goBack()}
+                title={t('auth_login_link')}
+                onPress={() => navigation.navigate('Login')}
                 variant="primary"
                 style={styles.backToLoginButton}
               />
@@ -80,7 +80,7 @@ export default function ForgotPasswordScreen({ navigation }: any) {
               <Text style={styles.label}>{t('auth_email')}</Text>
               <TextInput
                 style={styles.input}
-                placeholder="tu@email.com"
+                placeholder={t('auth_email_placeholder')}
                 placeholderTextColor={colors.subtleText}
                 value={email}
                 onChangeText={setEmail}

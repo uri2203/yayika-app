@@ -5,19 +5,19 @@ import { Ionicons } from '@expo/vector-icons';
 import { colors, typography, spacing, borderRadius } from '../../config/theme';
 import { useLanguage } from '../../contexts/LanguageContext';
 
-const CHALLENGES = [
-  { id: '1', title: 'Completar lecci\u00f3n del M\u00f3dulo 2', xp: 50, completed: true },
-  { id: '2', title: 'Registrar 3 d\u00edas de ciclo', xp: 30, completed: true },
-  { id: '3', title: 'Crear presupuesto mensual', xp: 40, completed: true },
-  { id: '4', title: 'Compartir producto con amiga', xp: 25, completed: false },
-  { id: '5', title: 'Escribir en el diario 5 d\u00edas', xp: 60, completed: false },
-];
-
-const completedCount = CHALLENGES.filter((c) => c.completed).length;
-const totalCount = CHALLENGES.length;
-
 export default function ChallengesScreen({ navigation }: any) {
   const { t } = useLanguage();
+
+  const CHALLENGES = [
+    { id: '1', title: t('challenge_1_title'), xp: 50, completed: true },
+    { id: '2', title: t('challenge_2_title'), xp: 30, completed: true },
+    { id: '3', title: t('challenge_3_title'), xp: 40, completed: true },
+    { id: '4', title: t('challenge_4_title'), xp: 25, completed: false },
+    { id: '5', title: t('challenge_5_title'), xp: 60, completed: false },
+  ];
+
+  const completedCount = CHALLENGES.filter((c) => c.completed).length;
+  const totalCount = CHALLENGES.length;
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
@@ -30,7 +30,7 @@ export default function ChallengesScreen({ navigation }: any) {
 
         <View style={styles.progressCard}>
           <View style={styles.progressHeader}>
-            <Text style={styles.progressLabel}>Progreso</Text>
+            <Text style={styles.progressLabel}>{t('challenges_progress_label')}</Text>
             <Text style={styles.progressCount}>
               {completedCount}/{totalCount} {t('challenges_progress')}
             </Text>
@@ -72,7 +72,7 @@ export default function ChallengesScreen({ navigation }: any) {
 
         <View style={styles.countdown}>
           <Ionicons name="time" size={18} color={colors.subtleText} />
-          <Text style={styles.countdownText}>{t('challenges_reset')} 3 d{'\u00ed'}as, 14 horas</Text>
+          <Text style={styles.countdownText}>{t('challenges_countdown', { days: 3, hours: 14 })}</Text>
         </View>
       </ScrollView>
     </SafeAreaView>
