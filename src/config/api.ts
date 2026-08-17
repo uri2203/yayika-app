@@ -152,6 +152,24 @@ export async function aiWellnessPlanner(params: WellnessParams) {
   }>('ai-wellness-planner', params);
 }
 
+// ──── AI Smart Push ──────────────────────────────────
+export interface SmartPushParams {
+  user_id: string;
+  cycle_phase?: string;
+  cycle_day?: number;
+  energy_level?: number;
+  mood?: string;
+  last_checkin?: string;
+  streak_days?: number;
+  lang?: string;
+}
+
+export async function aiSmartPush(params: SmartPushParams) {
+  return callFunction<{
+    notification: { title: string; body: string; data?: Record<string, any> } | null;
+  }>('ai-smart-push', params, true);
+}
+
 // ──── Product Catalog ────────────────────────────────
 export async function getProductCatalog(category?: string) {
   return callFunction<{

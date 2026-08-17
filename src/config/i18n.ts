@@ -42,6 +42,15 @@ const translations: Record<Language, Record<string, string>> = {
     home_streak: 'racha',
     home_xp: 'XP',
     home_level: 'Nivel',
+    home_checkin: 'Check-in diario',
+    home_checkin_sub: 'Registra tu día y gana +10 XP',
+    home_checkin_done: 'Ya hiciste check-in hoy',
+    home_checkin_success_title: '¡Check-in exitoso!',
+    home_checkin_success: 'Ganaste +10 XP. ¡Sigue así!',
+    home_wellness: 'Plan de Bienestar',
+    home_wellness_sub: 'Comida y ejercicio personalizados',
+    home_community: 'Comunidad',
+    home_community_sub: 'Conecta con otras guerreras',
 
     // Store
     store_title: 'Tienda',
@@ -394,6 +403,22 @@ const translations: Record<Language, Record<string, string>> = {
     support_faq_section: 'Preguntas frecuentes',
     support_contact_section: 'Contacto',
 
+    // Wellness Planner
+    wellness_title: 'Plan de Bienestar',
+    wellness_loading: 'Creando tu plan personalizado...',
+    wellness_meals: 'Comidas del día',
+    wellness_exercise: 'Ejercicio recomendado',
+    wellness_tip: 'Consejo de bienestar',
+
+    // Community
+    community_title: 'Comunidad',
+    community_new_post: 'Nueva publicación',
+    community_anonymous: 'Anónima',
+    community_placeholder: 'Comparte algo con la comunidad...',
+    community_publish: 'Publicar',
+    community_empty_title: 'Sin publicaciones aún',
+    community_empty_subtitle: 'Sé la primera en compartir algo',
+
     // Legal
     legal_title: 'Legal',
     legal_terms: 'Términos y Condiciones',
@@ -522,6 +547,15 @@ const translations: Record<Language, Record<string, string>> = {
     home_streak: 'streak',
     home_xp: 'XP',
     home_level: 'Level',
+    home_checkin: 'Daily check-in',
+    home_checkin_sub: 'Log your day and earn +10 XP',
+    home_checkin_done: 'Already checked in today',
+    home_checkin_success_title: 'Check-in complete!',
+    home_checkin_success: 'You earned +10 XP. Keep going!',
+    home_wellness: 'Wellness Plan',
+    home_wellness_sub: 'Personalized meals & exercise',
+    home_community: 'Community',
+    home_community_sub: 'Connect with other warriors',
 
     // Store
     store_title: 'Store',
@@ -874,6 +908,22 @@ const translations: Record<Language, Record<string, string>> = {
     support_faq_section: 'Frequently asked questions',
     support_contact_section: 'Contact',
 
+    // Wellness Planner
+    wellness_title: 'Wellness Plan',
+    wellness_loading: 'Creating your personalized plan...',
+    wellness_meals: 'Daily meals',
+    wellness_exercise: 'Recommended exercise',
+    wellness_tip: 'Wellness tip',
+
+    // Community
+    community_title: 'Community',
+    community_new_post: 'New post',
+    community_anonymous: 'Anonymous',
+    community_placeholder: 'Share something with the community...',
+    community_publish: 'Publish',
+    community_empty_title: 'No posts yet',
+    community_empty_subtitle: 'Be the first to share something',
+
     // Legal
     legal_title: 'Legal',
     legal_terms: 'Terms and Conditions',
@@ -1002,6 +1052,15 @@ const translations: Record<Language, Record<string, string>> = {
     home_streak: 'sequência',
     home_xp: 'XP',
     home_level: 'Nível',
+    home_checkin: 'Check-in diário',
+    home_checkin_sub: 'Registre seu dia e ganhe +10 XP',
+    home_checkin_done: 'Já fez check-in hoje',
+    home_checkin_success_title: 'Check-in completo!',
+    home_checkin_success: 'Você ganhou +10 XP. Continue assim!',
+    home_wellness: 'Plano de Bem-estar',
+    home_wellness_sub: 'Refeições e exercícios personalizados',
+    home_community: 'Comunidade',
+    home_community_sub: 'Conecte-se com outras guerreiras',
 
     // Store
     store_title: 'Loja',
@@ -1354,6 +1413,22 @@ const translations: Record<Language, Record<string, string>> = {
     support_faq_section: 'Perguntas frequentes',
     support_contact_section: 'Contato',
 
+    // Wellness Planner
+    wellness_title: 'Plano de Bem-estar',
+    wellness_loading: 'Criando seu plano personalizado...',
+    wellness_meals: 'Refeições do dia',
+    wellness_exercise: 'Exercício recomendado',
+    wellness_tip: 'Dica de bem-estar',
+
+    // Community
+    community_title: 'Comunidade',
+    community_new_post: 'Nova publicação',
+    community_anonymous: 'Anônima',
+    community_placeholder: 'Compartilhe algo com a comunidade...',
+    community_publish: 'Publicar',
+    community_empty_title: 'Nenhuma publicação ainda',
+    community_empty_subtitle: 'Seja a primeira a compartilhar algo',
+
     // Legal
     legal_title: 'Legal',
     legal_terms: 'Termos e Condições',
@@ -1482,6 +1557,15 @@ const translations: Record<Language, Record<string, string>> = {
     home_streak: 'série',
     home_xp: 'XP',
     home_level: 'Niveau',
+    home_checkin: 'Check-in quotidien',
+    home_checkin_sub: 'Enregistrez votre jour et gagnez +10 XP',
+    home_checkin_done: 'Déjà fait aujourd\'hui',
+    home_checkin_success_title: 'Check-in terminé!',
+    home_checkin_success: '+10 XP gagnés. Continuez!',
+    home_wellness: 'Plan Bien-être',
+    home_wellness_sub: 'Repas et exercices personnalisés',
+    home_community: 'Communauté',
+    home_community_sub: 'Connectez-vous avec d\'autres guerrières',
 
     // Store
     store_title: 'Boutique',
@@ -1834,8 +1918,23 @@ const translations: Record<Language, Record<string, string>> = {
     support_faq_section: 'Questions fréquentes',
     support_contact_section: 'Contact',
 
+    // Wellness Planner
+    wellness_title: 'Plan Bien-être',
+    wellness_loading: 'Création de votre plan personnalisé...',
+    wellness_meals: 'Repas du jour',
+    wellness_exercise: 'Exercice recommandé',
+    wellness_tip: 'Conseil bien-être',
+
+    // Community
+    community_title: 'Communauté',
+    community_new_post: 'Nouvelle publication',
+    community_anonymous: 'Anonyme',
+    community_placeholder: 'Partage quelque chose avec la communauté...',
+    community_publish: 'Publier',
+    community_empty_title: 'Aucune publication',
+    community_empty_subtitle: 'Soyez la première à partager',
+
     // Legal
-    legal_title: 'Juridique',
     legal_terms: 'Conditions Générales',
     legal_privacy: 'Politique de Confidentialité',
     legal_cookies: 'Politique de Cookies',
@@ -1962,6 +2061,15 @@ const translations: Record<Language, Record<string, string>> = {
     home_streak: 'Serie',
     home_xp: 'XP',
     home_level: 'Stufe',
+    home_checkin: 'Tägliches Check-in',
+    home_checkin_sub: 'Trage deinen Tag ein und verdiene +10 XP',
+    home_checkin_done: 'Heute bereits gemacht',
+    home_checkin_success_title: 'Check-in abgeschlossen!',
+    home_checkin_success: '+10 XP verdient. Weiter so!',
+    home_wellness: 'Wellness-Plan',
+    home_wellness_sub: 'Personalisierte Mahlzeiten & Bewegung',
+    home_community: 'Community',
+    home_community_sub: 'Vernetze dich mit anderen Kriegerinnen',
 
     // Store
     store_title: 'Shop',
@@ -2313,6 +2421,22 @@ const translations: Record<Language, Record<string, string>> = {
     support_faq_6_answer: 'Gehe zum Tab Zyklus und wähle den aktuellen Tag deines Zyklus aus.',
     support_faq_section: 'Häufig gestellte Fragen',
     support_contact_section: 'Kontakt',
+
+    // Wellness Planner
+    wellness_title: 'Wellness-Plan',
+    wellness_loading: 'Erstelle deinen personalisierten Plan...',
+    wellness_meals: 'Tagesmahlzeiten',
+    wellness_exercise: 'Empfohlene Übung',
+    wellness_tip: 'Wellness-Tipp',
+
+    // Community
+    community_title: 'Community',
+    community_new_post: 'Neuer Beitrag',
+    community_anonymous: 'Anonym',
+    community_placeholder: 'Teile etwas mit der Community...',
+    community_publish: 'Veröffentlichen',
+    community_empty_title: 'Noch keine Beiträge',
+    community_empty_subtitle: 'Sei der Erste, der etwas teilt',
 
     // Legal
     legal_title: 'Rechtliches',

@@ -1,10 +1,11 @@
-import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import * as WebBrowser from 'expo-web-browser';
 import { colors, typography, spacing, borderRadius } from '../../config/theme';
 import { useLanguage } from '../../contexts/LanguageContext';
+import { getProductCatalog } from '../../config/api';
 import Card from '../../components/Card';
 import Button from '../../components/Button';
 
@@ -14,49 +15,62 @@ interface Product {
   description: string;
   price: string;
   priceAmount: number;
-  icon: keyof typeof Ionicons.glyphMap;
+  icon: string;
   color: string;
   url: string;
 }
 
-const products: Product[] = [
-  {
-    id: 'ciclo-productiva',
-    name: 'Ciclo Productiva',
-    description:
-      'Aprende a crear productos digitales que se vendan solos. Guía completa paso a paso.',
-    price: '$199 MXN',
-    priceAmount: 199,
-    icon: 'rocket',
-    color: colors.primary,
-    url: 'https://buy.stripe.com/eVq6oH8yWfsS248cX3gA80c',
-  },
-  {
-    id: 'dinero-sin-pena',
-    name: 'Dinero sin Pena',
-    description:
-      'Supera la culpa de cobrar y aprende a valorar tu trabajo. Módulo transformador.',
-    price: '$249 MXN',
-    priceAmount: 249,
-    icon: 'cash',
-    color: colors.gold,
-    url: 'https://buy.stripe.com/4gMbJ16qO5SidMQe17gA80d',
-  },
-  {
-    id: 'mujer-que-negocia',
-    name: 'Mujer que Negocia',
-    description:
-      'Técnicas de negociación diseñadas para mujeres. Negocia con confianza.',
-    price: '$179 MXN',
-    priceAmount: 179,
-    icon: 'hand-left',
-    color: colors.rose,
-    url: 'https://buy.stripe.com/8x2eVd5mK94uaAE8GNgA80e',
-  },
-];
+const ICON_MAP: Record<string, keyof typeof Ionicons.glyphMap> = {
+  rocket: 'rocket',
+  cash: 'cash',
+  'hand-left': 'hand-left',
+  book: 'book',
+  star: 'star',
+  heart: 'heart',
+ bulb: 'bulb',
+  default: 'cube',
+};
+
+const COLOR_MAP: Record<string, string> = {
+  primary: colors.primary,
+  gold: colors.gold,
+  rose: colors.rose,
+  turquoise: colors.turquoise,
+  purple: colors.primary,
+};
 
 export default function ProductsScreen() {
   const { t } = useLanguage();
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+    async function load() {
+      try {
+        const res = await getProductCatalog();
+        if (cancelled) return;
+        const mapped = (res.products ?? []).map((p: any) => ({
+          id: p.id,
+          name: p.name,
+          description: p.description,
+          price: p.price_display ?? `$${p.price ?? ''}`,
+          priceAmount: p.price ?? 0,
+          icon: ICON_MAP[p.icon] ?? 'cube',
+          color: COLOR_MAP[p.color] ?? colors.primary,
+          url: p.checkout_url ?? p.url ?? '',
+        }));
+        setProducts(mapped);
+      } catch {
+        // keep empty on error
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+    load();
+    return () => { cancelled = true; };
+  }, []);
+
   const handlePurchase = async (product: Product) => {
     try {
       await WebBrowser.openBrowserAsync(product.url);
@@ -65,42 +79,34 @@ export default function ProductsScreen() {
     }
   };
 
-  const productNames: Record<string, string> = {
-    'ciclo-productiva': t('product_ciclo_productiva'),
-    'dinero-sin-pena': t('product_dinero_sin_pena'),
-    'mujer-que-negocia': t('product_mujer_negocia'),
-  };
-
-  const productDescriptions: Record<string, string> = {
-    'ciclo-productiva': t('product_ciclo_productiva_desc'),
-    'dinero-sin-pena': t('product_dinero_sin_pena_desc'),
-    'mujer-que-negocia': t('product_mujer_negocia_desc'),
-  };
-
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <Text style={styles.title}>{t('products_title')}</Text>
         <Text style={styles.subtitle}>{t('products_subtitle')}</Text>
 
-        {products.map((product) => (
-          <Card key={product.id} style={styles.productCard}>
-            <View style={styles.productHeader}>
-              <View style={[styles.iconContainer, { backgroundColor: product.color + '20' }]}>
-                <Ionicons name={product.icon} size={28} color={product.color} />
+        {loading ? (
+          <ActivityIndicator size="large" color={colors.primary} style={{ marginTop: spacing.xl }} />
+        ) : (
+          products.map((product) => (
+            <Card key={product.id} style={styles.productCard}>
+              <View style={styles.productHeader}>
+                <View style={[styles.iconContainer, { backgroundColor: product.color + '20' }]}>
+                  <Ionicons name={product.icon as any} size={28} color={product.color} />
+                </View>
+                <Text style={styles.productPrice}>{product.price}</Text>
               </View>
-              <Text style={styles.productPrice}>{product.price}</Text>
-            </View>
-            <Text style={styles.productName}>{productNames[product.id]}</Text>
-            <Text style={styles.productDescription}>{productDescriptions[product.id]}</Text>
-            <Button
-              title={t('store_buy_now')}
-              onPress={() => handlePurchase(product)}
-              variant="primary"
-              style={[styles.buyButton, { backgroundColor: product.color }]}
-            />
-          </Card>
-        ))}
+              <Text style={styles.productName}>{product.name}</Text>
+              <Text style={styles.productDescription}>{product.description}</Text>
+              <Button
+                title={t('store_buy_now')}
+                onPress={() => handlePurchase(product)}
+                variant="primary"
+                style={[styles.buyButton, { backgroundColor: product.color }]}
+              />
+            </Card>
+          ))
+        )}
       </ScrollView>
     </SafeAreaView>
   );

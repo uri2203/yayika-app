@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '../../contexts/AuthContext';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { colors, typography, spacing, borderRadius } from '../../config/theme';
 import Card from '../../components/Card';
-import { getProgress, aiAffirmations } from '../../config/api';
+import { getProgress, aiAffirmations, getCheckins, addCheckin, addXpEvent } from '../../config/api';
 
 export default function HomeScreen({ navigation }: any) {
   const { user, profile, progress } = useAuth();
@@ -15,6 +15,8 @@ export default function HomeScreen({ navigation }: any) {
 
   const [todayAffirmation, setTodayAffirmation] = useState<string>('');
   const [localProgress, setLocalProgress] = useState(progress);
+  const [checkedInToday, setCheckedInToday] = useState(false);
+  const [checkinLoading, setCheckinLoading] = useState(false);
 
   const xpTotal = localProgress?.xp_total ?? progress?.xp_total ?? 0;
   const streakDays = localProgress?.streak_days ?? progress?.streak_days ?? 0;
@@ -36,7 +38,30 @@ export default function HomeScreen({ navigation }: any) {
     getProgress(user.id)
       .then((p) => setLocalProgress(p))
       .catch(() => {});
+
+    getCheckins(user.id)
+      .then((checkins) => {
+        const todayCheckin = checkins.find((c) => c.checkin_date === today);
+        if (todayCheckin) setCheckedInToday(true);
+      })
+      .catch(() => {});
   }, [user?.id]);
+
+  const handleCheckin = async () => {
+    if (!user?.id || checkedInToday || checkinLoading) return;
+    try {
+      setCheckinLoading(true);
+      await addCheckin(user.id);
+      await addXpEvent(user.id, 'daily_checkin', 10);
+      setCheckedInToday(true);
+      setLocalProgress((prev: any) => ({ ...prev, xp_total: (prev?.xp_total ?? 0) + 10 }));
+      Alert.alert(t('home_checkin_success_title'), t('home_checkin_success'));
+    } catch (err) {
+      Alert.alert(t('common_error'), err instanceof Error ? err.message : 'Unknown error');
+    } finally {
+      setCheckinLoading(false);
+    }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -64,6 +89,24 @@ export default function HomeScreen({ navigation }: any) {
             <View style={[styles.xpFill, { width: `${xpInLevel}%` }]} />
           </View>
         </Card>
+
+        {/* Daily Check-in */}
+        <TouchableOpacity
+          style={[styles.checkinCard, checkedInToday && styles.checkinCardDone]}
+          onPress={handleCheckin}
+          disabled={checkedInToday || checkinLoading}
+          activeOpacity={checkedInToday ? 1 : 0.7}
+        >
+          <View style={[styles.checkinIcon, checkedInToday && styles.checkinIconDone]}>
+            <Ionicons name={checkedInToday ? 'checkmark-circle' : 'checkbox-outline'} size={28} color={checkedInToday ? colors.success : colors.primary} />
+          </View>
+          <View style={styles.checkinInfo}>
+            <Text style={[styles.checkinTitle, checkedInToday && styles.checkinTitleDone]}>{t('home_checkin')}</Text>
+            <Text style={styles.checkinSub}>{checkedInToday ? t('home_checkin_done') : t('home_checkin_sub')}</Text>
+          </View>
+          {!checkedInToday && <Text style={styles.checkinXp}>+10 XP</Text>}
+          {checkinLoading && <ActivityIndicator size="small" color={colors.primary} />}
+        </TouchableOpacity>
 
         {/* Quick Actions Grid */}
         <Text style={styles.sectionTitle}>{t('home_quick_actions')}</Text>
@@ -110,6 +153,28 @@ export default function HomeScreen({ navigation }: any) {
             </View>
             <Text style={styles.gridTitle}>{t('home_finance')}</Text>
             <Text style={styles.gridSub}>{t('home_finance_sub')}</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.gridItem}
+            onPress={() => navigation.navigate('Home', { screen: 'WellnessPlanner' })}
+          >
+            <View style={[styles.gridIcon, { backgroundColor: '#D1FAE5' }]}>
+              <Ionicons name="leaf" size={22} color={colors.turquoise} />
+            </View>
+            <Text style={styles.gridTitle}>{t('home_wellness')}</Text>
+            <Text style={styles.gridSub}>{t('home_wellness_sub')}</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.gridItem}
+            onPress={() => navigation.navigate('Home', { screen: 'Community' })}
+          >
+            <View style={[styles.gridIcon, { backgroundColor: '#E0E7FF' }]}>
+              <Ionicons name="people" size={22} color={colors.primary} />
+            </View>
+            <Text style={styles.gridTitle}>{t('home_community')}</Text>
+            <Text style={styles.gridSub}>{t('home_community_sub')}</Text>
           </TouchableOpacity>
         </View>
 
@@ -259,6 +324,46 @@ const styles = StyleSheet.create({
     height: '100%',
     backgroundColor: colors.gold,
     borderRadius: 4,
+  },
+  checkinCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#F0F4FF',
+    borderRadius: borderRadius.md,
+    padding: spacing.md,
+    marginBottom: spacing.lg,
+    borderWidth: 1.5,
+    borderColor: colors.primary,
+  },
+  checkinCardDone: {
+    backgroundColor: '#D1FAE5',
+    borderColor: colors.success,
+  },
+  checkinIcon: {
+    marginRight: spacing.md,
+  },
+  checkinIconDone: {},
+  checkinInfo: {
+    flex: 1,
+  },
+  checkinTitle: {
+    fontSize: typography.sizes.md,
+    fontWeight: typography.weights.bold,
+    color: colors.primary,
+  },
+  checkinTitleDone: {
+    color: colors.success,
+  },
+  checkinSub: {
+    fontSize: typography.sizes.xs,
+    color: colors.subtleText,
+    marginTop: 2,
+  },
+  checkinXp: {
+    fontSize: typography.sizes.sm,
+    fontWeight: typography.weights.bold,
+    color: colors.gold,
+    marginRight: spacing.sm,
   },
   sectionTitle: {
     fontSize: typography.sizes.lg,

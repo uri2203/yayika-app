@@ -32,6 +32,8 @@ import SupportScreen from '../screens/main/SupportScreen';
 import LegalScreen from '../screens/main/LegalScreen';
 import ProductDetailScreen from '../screens/main/ProductDetailScreen';
 import CourseDetailScreen from '../screens/main/CourseDetailScreen';
+import WellnessPlannerScreen from '../screens/main/WellnessPlannerScreen';
+import CommunityScreen from '../screens/main/CommunityScreen';
 
 const AuthStack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -68,6 +70,8 @@ function HomeStackNavigator() {
       <HomeStack.Screen name="Challenges" component={ChallengesScreen} />
       <HomeStack.Screen name="Badges" component={BadgesScreen} />
       <HomeStack.Screen name="Rankings" component={RankingsScreen} />
+      <HomeStack.Screen name="WellnessPlanner" component={WellnessPlannerScreen} />
+      <HomeStack.Screen name="Community" component={CommunityScreen} />
     </HomeStack.Navigator>
   );
 }

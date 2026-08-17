@@ -1,90 +1,123 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
   StyleSheet,
   ScrollView,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import * as WebBrowser from 'expo-web-browser';
 import { colors, typography, spacing, borderRadius } from '../../config/theme';
 import { useLanguage } from '../../contexts/LanguageContext';
+import { getProductDetail } from '../../config/api';
+
+const COLOR_MAP: Record<string, string> = {
+  primary: colors.primary,
+  gold: colors.gold,
+  rose: colors.rose,
+  turquoise: colors.turquoise,
+  purple: colors.primary,
+};
 
 export default function ProductDetailScreen({ navigation, route }: any) {
   const { t } = useLanguage();
-  const product = route?.params?.product || {
-    name: 'Ciclo Productiva',
-    price: '$199 MXN',
-    description: 'Aprende a crear productos digitales desde cero y genera ingresos pasivos.',
-    url: 'https://buy.stripe.com/eVq6oH8yWfsS248cX3gA80c',
-    color: '#4E3470',
-    icon: 'rocket',
-  };
+  const productId = route?.params?.productId ?? route?.params?.product?.id;
+  const fallbackProduct = route?.params?.product;
 
-  const benefits = [
-    t('pdetail_benefit_1'),
-    t('pdetail_benefit_2'),
-    t('pdetail_benefit_3'),
-    t('pdetail_benefit_4'),
-  ];
+  const [product, setProduct] = useState<any>(fallbackProduct ?? null);
+  const [benefits, setBenefits] = useState<string[]>([]);
+  const [reviews, setReviews] = useState<{ name: string; rating: number; text: string }[]>([]);
+  const [loading, setLoading] = useState(!fallbackProduct);
 
-  const reviews = [
-    { name: 'María García', rating: 5, text: t('pdetail_review_1') },
-    { name: 'Carlos López', rating: 5, text: t('pdetail_review_2') },
-    { name: 'Ana Martínez', rating: 4, text: t('pdetail_review_3') },
-  ];
+  useEffect(() => {
+    if (!productId) return;
+    let cancelled = false;
+    async function load() {
+      try {
+        const res = await getProductDetail(productId);
+        if (cancelled) return;
+        setProduct(res.product);
+        setBenefits(res.product?.benefits ?? []);
+        setReviews(res.product?.reviews ?? []);
+      } catch {
+        // keep fallback product if available
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+    load();
+    return () => { cancelled = true; };
+  }, [productId]);
+
+  const priceDisplay = product?.price_display ?? (product?.price ? `$${product.price} MXN` : '');
+  const heroColor = COLOR_MAP[product?.color] ?? product?.color ?? colors.primary;
+  const iconName = product?.icon ?? 'rocket';
 
   const handleBuy = async () => {
-    await WebBrowser.openBrowserAsync(product.url);
+    const url = product?.checkout_url ?? product?.url;
+    if (url) await WebBrowser.openBrowserAsync(url);
   };
+
+  if (loading) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <ActivityIndicator size="large" color={colors.primary} style={{ flex: 1 }} />
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
         {/* Hero Section */}
-        <View style={[styles.hero, { backgroundColor: product.color || colors.primary }]}>
-          <Ionicons name={product.icon || 'rocket'} size={80} color="white" />
+        <View style={[styles.hero, { backgroundColor: heroColor }]}>
+          <Ionicons name={iconName as any} size={80} color="white" />
         </View>
 
         {/* Product Info */}
         <View style={styles.content}>
-          <Text style={styles.productName}>{product.name}</Text>
+          <Text style={styles.productName}>{product?.name}</Text>
           <View style={styles.priceBadge}>
-            <Text style={styles.priceText}>{product.price}</Text>
+            <Text style={styles.priceText}>{priceDisplay}</Text>
           </View>
 
-          <Text style={styles.description}>{product.description}</Text>
+          <Text style={styles.description}>{product?.description}</Text>
 
           {/* Benefits Section */}
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>{t('pdetail_learns')}</Text>
-            {benefits.map((benefit, index) => (
-              <View key={index} style={styles.benefitRow}>
-                <Ionicons name="checkmark-circle" size={24} color={colors.turquoise} />
-                <Text style={styles.benefitText}>{benefit}</Text>
-              </View>
-            ))}
-          </View>
+          {benefits.length > 0 && (
+            <View style={styles.section}>
+              <Text style={styles.sectionTitle}>{t('pdetail_learns')}</Text>
+              {benefits.map((benefit: string, index: number) => (
+                <View key={index} style={styles.benefitRow}>
+                  <Ionicons name="checkmark-circle" size={24} color={colors.turquoise} />
+                  <Text style={styles.benefitText}>{benefit}</Text>
+                </View>
+              ))}
+            </View>
+          )}
 
           {/* Reviews Section */}
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>{t('pdetail_reviews')}</Text>
-            {reviews.map((review, index) => (
-              <View key={index} style={styles.reviewCard}>
-                <View style={styles.reviewHeader}>
-                  <Text style={styles.reviewName}>{review.name}</Text>
-                  <View style={styles.stars}>
-                    {Array.from({ length: review.rating }).map((_, i) => (
-                      <Ionicons key={i} name="star" size={16} color={colors.gold} />
-                    ))}
+          {reviews.length > 0 && (
+            <View style={styles.section}>
+              <Text style={styles.sectionTitle}>{t('pdetail_reviews')}</Text>
+              {reviews.map((review, index) => (
+                <View key={index} style={styles.reviewCard}>
+                  <View style={styles.reviewHeader}>
+                    <Text style={styles.reviewName}>{review.name}</Text>
+                    <View style={styles.stars}>
+                      {Array.from({ length: review.rating }).map((_, i) => (
+                        <Ionicons key={i} name="star" size={16} color={colors.gold} />
+                      ))}
+                    </View>
                   </View>
+                  <Text style={styles.reviewText}>{review.text}</Text>
                 </View>
-                <Text style={styles.reviewText}>{review.text}</Text>
-              </View>
-            ))}
-          </View>
+              ))}
+            </View>
+          )}
         </View>
       </ScrollView>
 
@@ -92,7 +125,7 @@ export default function ProductDetailScreen({ navigation, route }: any) {
       <View style={styles.bottomBar}>
         <View style={styles.bottomPriceContainer}>
           <Text style={styles.bottomPriceLabel}>{t('pdetail_price')}</Text>
-          <Text style={styles.bottomPrice}>{product.price}</Text>
+          <Text style={styles.bottomPrice}>{priceDisplay}</Text>
         </View>
         <TouchableOpacity style={styles.buyButton} onPress={handleBuy}>
           <Text style={styles.buyButtonText}>{t('pdetail_buy')}</Text>

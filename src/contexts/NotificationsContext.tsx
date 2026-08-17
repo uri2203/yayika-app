@@ -1,9 +1,11 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { Platform } from 'react-native';
 import * as Notifications from 'expo-notifications';
 import Constants from 'expo-constants';
 import { supabase } from '../config/supabase';
 import { useAuth } from './AuthContext';
+import { useLanguage } from './LanguageContext';
+import { aiSmartPush } from '../config/api';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -17,17 +19,43 @@ Notifications.setNotificationHandler({
 interface NotificationsContextType {
   expoPushToken: string | null;
   hasPermission: boolean;
+  sendSmartPush: () => Promise<void>;
 }
 
 const NotificationsContext = createContext<NotificationsContextType>({
   expoPushToken: null,
   hasPermission: false,
+  sendSmartPush: async () => {},
 });
 
 export function NotificationsProvider({ children }: { children: React.ReactNode }) {
   const [expoPushToken, setExpoPushToken] = useState<string | null>(null);
   const [hasPermission, setHasPermission] = useState(false);
-  const { user } = useAuth();
+  const { user, progress } = useAuth();
+  const { lang } = useLanguage();
+
+  const sendSmartPush = useCallback(async () => {
+    if (!user) return;
+    try {
+      const res = await aiSmartPush({
+        user_id: user.id,
+        streak_days: progress?.streak_days,
+        lang,
+      });
+      if (res.notification) {
+        await Notifications.scheduleNotificationAsync({
+          content: {
+            title: res.notification.title,
+            body: res.notification.body,
+            data: res.notification.data ?? {},
+          },
+          trigger: null,
+        });
+      }
+    } catch (err) {
+      console.warn('Smart push failed:', err);
+    }
+  }, [user, progress, lang]);
 
   useEffect(() => {
     registerForPushNotificationsAsync().then((token) => {
@@ -35,6 +63,7 @@ export function NotificationsProvider({ children }: { children: React.ReactNode 
         setExpoPushToken(token);
         setHasPermission(true);
         saveTokenToSupabase(token);
+        sendSmartPush();
       }
     });
 
@@ -45,7 +74,7 @@ export function NotificationsProvider({ children }: { children: React.ReactNode 
       notificationListener.remove();
       responseListener.remove();
     };
-  }, [user]);
+  }, [user, sendSmartPush]);
 
   async function saveTokenToSupabase(token: string) {
     if (!user) return;
@@ -83,7 +112,7 @@ export function NotificationsProvider({ children }: { children: React.ReactNode 
   }
 
   return (
-    <NotificationsContext.Provider value={{ expoPushToken, hasPermission }}>
+    <NotificationsContext.Provider value={{ expoPushToken, hasPermission, sendSmartPush }}>
       {children}
     </NotificationsContext.Provider>
   );
