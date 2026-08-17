@@ -13,39 +13,59 @@ import LoginScreen from '../screens/auth/LoginScreen';
 import RegisterScreen from '../screens/auth/RegisterScreen';
 import ForgotPasswordScreen from '../screens/auth/ForgotPasswordScreen';
 
-// Main screens
-import HomeScreen from '../screens/main/HomeScreen';
-import ProductsScreen from '../screens/main/ProductsScreen';
-import MembershipScreen from '../screens/main/MembershipScreen';
-import AffiliateScreen from '../screens/main/AffiliateScreen';
-import ProfileScreen from '../screens/main/ProfileScreen';
-import ChatScreen from '../screens/main/ChatScreen';
-import StoreScreen from '../screens/main/StoreScreen';
-import CoursesScreen from '../screens/main/CoursesScreen';
-import CycleTrackerScreen from '../screens/main/CycleTrackerScreen';
-import FinancialTrackerScreen from '../screens/main/FinancialTrackerScreen';
-import WalletScreen from '../screens/main/WalletScreen';
-import RankingsScreen from '../screens/main/RankingsScreen';
-import ChallengesScreen from '../screens/main/ChallengesScreen';
-import BadgesScreen from '../screens/main/BadgesScreen';
-import SupportScreen from '../screens/main/SupportScreen';
-import LegalScreen from '../screens/main/LegalScreen';
-import ProductDetailScreen from '../screens/main/ProductDetailScreen';
-import CourseDetailScreen from '../screens/main/CourseDetailScreen';
-import WellnessPlannerScreen from '../screens/main/WellnessPlannerScreen';
-import CommunityScreen from '../screens/main/CommunityScreen';
-import OnboardingScreen from '../screens/main/OnboardingScreen';
-import GrowthCoachScreen from '../screens/main/GrowthCoachScreen';
+// Portal Dashboard
+import PortalDashboard from '../screens/portal/PortalDashboard';
+
+// Ciclo Productiva (Course Modules)
+import ModuleListScreen from '../screens/courses/ModuleListScreen';
+import LessonViewerScreen from '../screens/courses/LessonViewerScreen';
+
+// Ciclo Inteligente (Cycle Intelligence)
+import CycleIntelligenceScreen from '../screens/cycle/CycleIntelligenceScreen';
+import CycleLogScreen from '../screens/cycle/CycleLogScreen';
+import CycleCoachScreen from '../screens/cycle/CycleCoachScreen';
+
+// Retos (Weekly Challenges)
+import ChallengesScreen from '../screens/challenges/ChallengesScreen';
+
+// Comunidad (Community)
+import CommunityFeedScreen from '../screens/community/CommunityFeedScreen';
+import PostDetailScreen from '../screens/community/PostDetailScreen';
+
+// Finanzas (Finance)
+import FinanceDashboardScreen from '../screens/finance/FinanceDashboardScreen';
+import BudgetScreen from '../screens/finance/BudgetScreen';
+import TransactionsScreen from '../screens/finance/TransactionsScreen';
+
+// Badges/Logros
+import BadgesScreen from '../screens/gamification/BadgesScreen';
+import RankingsScreen from '../screens/gamification/RankingsScreen';
+
+// Onboarding
+import OnboardingFlowScreen from '../screens/onboarding/OnboardingFlowScreen';
+
+// Afiliadas (Affiliates)
+import AffiliateDashboardScreen from '../screens/affiliates/AffiliateDashboardScreen';
+
+// Profile
+import ProfileScreen from '../screens/profile/ProfileScreen';
+import SettingsScreen from '../screens/profile/SettingsScreen';
+import LegalScreen from '../screens/profile/LegalScreen';
+
+// Shared
+import NotificationsScreen from '../screens/shared/NotificationsScreen';
+import SupportScreen from '../screens/shared/SupportScreen';
 
 const AuthStack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 const RootStack = createStackNavigator();
 
 // Stack navigators for each tab
-const HomeStack = createStackNavigator();
-const ExploreStack = createStackNavigator();
-const ProgressStack = createStackNavigator();
-const ProfileStack = createStackNavigator();
+const PortalStack = createStackNavigator();
+const CicloStack = createStackNavigator();
+const RetosStack = createStackNavigator();
+const ComunidadStack = createStackNavigator();
+const FinanzasStack = createStackNavigator();
 
 function AuthNavigator() {
   return (
@@ -62,58 +82,58 @@ function AuthNavigator() {
   );
 }
 
-function HomeStackNavigator() {
+function PortalStackNavigator() {
   return (
-    <HomeStack.Navigator screenOptions={{ headerShown: false }}>
-      <HomeStack.Screen name="HomeMain" component={HomeScreen} />
-      <HomeStack.Screen name="CycleTracker" component={CycleTrackerScreen} />
-      <HomeStack.Screen name="FinancialTracker" component={FinancialTrackerScreen} />
-      <HomeStack.Screen name="Wallet" component={WalletScreen} />
-      <HomeStack.Screen name="Challenges" component={ChallengesScreen} />
-      <HomeStack.Screen name="Badges" component={BadgesScreen} />
-      <HomeStack.Screen name="Rankings" component={RankingsScreen} />
-      <HomeStack.Screen name="WellnessPlanner" component={WellnessPlannerScreen} />
-      <HomeStack.Screen name="Community" component={CommunityScreen} />
-      <HomeStack.Screen name="Onboarding" component={OnboardingScreen} />
-      <HomeStack.Screen name="GrowthCoach" component={GrowthCoachScreen} />
-    </HomeStack.Navigator>
+    <PortalStack.Navigator screenOptions={{ headerShown: false }}>
+      <PortalStack.Screen name="Dashboard" component={PortalDashboard} />
+      <PortalStack.Screen name="Badges" component={BadgesScreen} />
+      <PortalStack.Screen name="Rankings" component={RankingsScreen} />
+      <PortalStack.Screen name="Notifications" component={NotificationsScreen} />
+      <PortalStack.Screen name="Profile" component={ProfileScreen} />
+      <PortalStack.Screen name="Settings" component={SettingsScreen} />
+      <PortalStack.Screen name="Legal" component={LegalScreen} />
+      <PortalStack.Screen name="Support" component={SupportScreen} />
+      <PortalStack.Screen name="Onboarding" component={OnboardingFlowScreen} />
+    </PortalStack.Navigator>
   );
 }
 
-function ExploreStackNavigator() {
+function CicloStackNavigator() {
   return (
-    <ExploreStack.Navigator screenOptions={{ headerShown: false }}>
-      <ExploreStack.Screen name="StoreMain" component={StoreScreen} />
-      <ExploreStack.Screen name="Products" component={ProductsScreen} />
-      <ExploreStack.Screen name="ProductDetail" component={ProductDetailScreen} />
-      <ExploreStack.Screen name="Courses" component={CoursesScreen} />
-      <ExploreStack.Screen name="CourseDetail" component={CourseDetailScreen} />
-      <ExploreStack.Screen name="Membership" component={MembershipScreen} />
-    </ExploreStack.Navigator>
+    <CicloStack.Navigator screenOptions={{ headerShown: false }}>
+      <CicloStack.Screen name="ModuleList" component={ModuleListScreen} />
+      <CicloStack.Screen name="LessonViewer" component={LessonViewerScreen} />
+      <CicloStack.Screen name="CycleIntelligence" component={CycleIntelligenceScreen} />
+      <CicloStack.Screen name="CycleLog" component={CycleLogScreen} />
+      <CicloStack.Screen name="CycleCoach" component={CycleCoachScreen} />
+    </CicloStack.Navigator>
   );
 }
 
-function ProgressStackNavigator() {
+function RetosStackNavigator() {
   return (
-    <ProgressStack.Navigator screenOptions={{ headerShown: false }}>
-      <ProgressStack.Screen name="CycleMain" component={CycleTrackerScreen} />
-      <ProgressStack.Screen name="FinanceMain" component={FinancialTrackerScreen} />
-      <ProgressStack.Screen name="Wallet" component={WalletScreen} />
-      <ProgressStack.Screen name="ChallengesMain" component={ChallengesScreen} />
-      <ProgressStack.Screen name="BadgesMain" component={BadgesScreen} />
-      <ProgressStack.Screen name="RankingsMain" component={RankingsScreen} />
-    </ProgressStack.Navigator>
+    <RetosStack.Navigator screenOptions={{ headerShown: false }}>
+      <RetosStack.Screen name="ChallengesMain" component={ChallengesScreen} />
+    </RetosStack.Navigator>
   );
 }
 
-function ProfileStackNavigator() {
+function ComunidadStackNavigator() {
   return (
-    <ProfileStack.Navigator screenOptions={{ headerShown: false }}>
-      <ProfileStack.Screen name="ProfileMain" component={ProfileScreen} />
-      <ProfileStack.Screen name="AffiliateMain" component={AffiliateScreen} />
-      <ProfileStack.Screen name="Support" component={SupportScreen} />
-      <ProfileStack.Screen name="Legal" component={LegalScreen} />
-    </ProfileStack.Navigator>
+    <ComunidadStack.Navigator screenOptions={{ headerShown: false }}>
+      <ComunidadStack.Screen name="CommunityFeed" component={CommunityFeedScreen} />
+      <ComunidadStack.Screen name="PostDetail" component={PostDetailScreen} />
+    </ComunidadStack.Navigator>
+  );
+}
+
+function FinanzasStackNavigator() {
+  return (
+    <FinanzasStack.Navigator screenOptions={{ headerShown: false }}>
+      <FinanzasStack.Screen name="FinanceDashboard" component={FinanceDashboardScreen} />
+      <FinanzasStack.Screen name="Budget" component={BudgetScreen} />
+      <FinanzasStack.Screen name="Transactions" component={TransactionsScreen} />
+    </FinanzasStack.Navigator>
   );
 }
 
@@ -139,20 +159,20 @@ function MainTabs() {
           let iconName: keyof typeof Ionicons.glyphMap = 'home';
 
           switch (route.name) {
-            case 'Home':
-              iconName = focused ? 'home' : 'home-outline';
+            case 'Portal':
+              iconName = focused ? 'grid' : 'grid-outline';
               break;
-            case 'Explore':
-              iconName = focused ? 'compass' : 'compass-outline';
+            case 'Ciclo':
+              iconName = focused ? 'moon' : 'moon-outline';
               break;
-            case 'Progress':
-              iconName = focused ? 'trending-up' : 'trending-up-outline';
+            case 'Retos':
+              iconName = focused ? 'trophy' : 'trophy-outline';
               break;
-            case 'Chat':
-              iconName = focused ? 'chatbubble' : 'chatbubble-outline';
+            case 'Comunidad':
+              iconName = focused ? 'people' : 'people-outline';
               break;
-            case 'Profile':
-              iconName = focused ? 'person' : 'person-outline';
+            case 'Finanzas':
+              iconName = focused ? 'wallet' : 'wallet-outline';
               break;
           }
 
@@ -160,21 +180,21 @@ function MainTabs() {
         },
         tabBarLabel: (() => {
           switch (route.name) {
-            case 'Home': return t('nav_home');
-            case 'Explore': return t('nav_explore');
-            case 'Progress': return t('nav_progress');
-            case 'Chat': return t('nav_chat');
-            case 'Profile': return t('nav_profile');
+            case 'Portal': return t('nav_portal');
+            case 'Ciclo': return t('nav_ciclo');
+            case 'Retos': return t('nav_retos');
+            case 'Comunidad': return t('nav_comunidad');
+            case 'Finanzas': return t('nav_finanzas');
             default: return '';
           }
         })(),
       })}
     >
-      <Tab.Screen name="Home" component={HomeStackNavigator} />
-      <Tab.Screen name="Explore" component={ExploreStackNavigator} />
-      <Tab.Screen name="Progress" component={ProgressStackNavigator} />
-      <Tab.Screen name="Chat" component={ChatScreen} />
-      <Tab.Screen name="Profile" component={ProfileStackNavigator} />
+      <Tab.Screen name="Portal" component={PortalStackNavigator} />
+      <Tab.Screen name="Ciclo" component={CicloStackNavigator} />
+      <Tab.Screen name="Retos" component={RetosStackNavigator} />
+      <Tab.Screen name="Comunidad" component={ComunidadStackNavigator} />
+      <Tab.Screen name="Finanzas" component={FinanzasStackNavigator} />
     </Tab.Navigator>
   );
 }

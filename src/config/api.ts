@@ -526,3 +526,42 @@ export async function aiShareEarn(params: { lang: string }) {
     'ai-share-earn', { action: 'getShareData', lang: params.lang }, true
   );
 }
+
+// ──── Rankings ────────────────────────────────────────
+export interface RankingEntry {
+  user_id: string;
+  full_name: string;
+  xp_total: number;
+  level: number;
+  rank: number;
+}
+
+export async function getRankings(limit = 20) {
+  const { data: progressRows, error: progressErr } = await supabase
+    .from('yayika_progress')
+    .select('user_id, xp_total')
+    .order('xp_total', { ascending: false })
+    .limit(limit);
+  if (progressErr) throw progressErr;
+
+  const userIds = (progressRows ?? []).map((r) => r.user_id);
+  if (userIds.length === 0) return { rankings: [] as RankingEntry[], total: 0 };
+
+  const { data: profileRows } = await supabase
+    .from('yayika_profiles')
+    .select('id, full_name')
+    .in('id', userIds);
+
+  const profileMap = new Map<string, string>();
+  (profileRows ?? []).forEach((p) => profileMap.set(p.id, p.full_name || 'Guerrera'));
+
+  const rankings: RankingEntry[] = (progressRows ?? []).map((row, i) => ({
+    user_id: row.user_id,
+    full_name: profileMap.get(row.user_id) || 'Guerrera',
+    xp_total: row.xp_total ?? 0,
+    level: Math.floor((row.xp_total ?? 0) / 100) + 1,
+    rank: i + 1,
+  }));
+
+  return { rankings, total: progressRows?.length ?? 0 };
+}
