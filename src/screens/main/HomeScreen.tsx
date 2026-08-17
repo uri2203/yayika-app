@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
@@ -6,20 +6,37 @@ import { useAuth } from '../../contexts/AuthContext';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { colors, typography, spacing, borderRadius } from '../../config/theme';
 import Card from '../../components/Card';
+import { getProgress, aiAffirmations } from '../../config/api';
 
 export default function HomeScreen({ navigation }: any) {
-  const { user } = useAuth();
+  const { user, profile, progress } = useAuth();
   const { t } = useLanguage();
-  const userName = user?.user_metadata?.name || t('home_guerrera');
+  const userName = profile?.full_name || user?.user_metadata?.name || t('home_guerrera');
 
-  const tips = [
-    t('home_tip_1'),
-    t('home_tip_2'),
-    t('home_tip_3'),
-    t('home_tip_4'),
-    t('home_tip_5'),
-  ];
-  const dailyTip = tips[new Date().getDay() % tips.length];
+  const [todayAffirmation, setTodayAffirmation] = useState<string>('');
+  const [localProgress, setLocalProgress] = useState(progress);
+
+  const xpTotal = localProgress?.xp_total ?? progress?.xp_total ?? 0;
+  const streakDays = localProgress?.streak_days ?? progress?.streak_days ?? 0;
+  const level = Math.floor(xpTotal / 100) + 1;
+  const xpInLevel = xpTotal % 100;
+
+  useEffect(() => {
+    if (progress) setLocalProgress(progress);
+  }, [progress]);
+
+  useEffect(() => {
+    if (!user?.id) return;
+    const today = new Date().toISOString().split('T')[0];
+
+    aiAffirmations({ user_id: user.id, lang: 'es' })
+      .then((res) => setTodayAffirmation(res.affirmation))
+      .catch(() => {});
+
+    getProgress(user.id)
+      .then((p) => setLocalProgress(p))
+      .catch(() => {});
+  }, [user?.id]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -32,7 +49,7 @@ export default function HomeScreen({ navigation }: any) {
           </View>
           <View style={styles.streakBadge}>
             <Ionicons name="flame" size={18} color={colors.gold} />
-            <Text style={styles.streakText}>7</Text>
+            <Text style={styles.streakText}>{streakDays}</Text>
           </View>
         </View>
 
@@ -40,11 +57,11 @@ export default function HomeScreen({ navigation }: any) {
         <Card style={styles.xpContainer}>
           <View style={styles.xpRow}>
             <Ionicons name="star" size={18} color={colors.gold} />
-            <Text style={styles.xpText}>240 XP</Text>
-            <Text style={styles.xpLevel}>{t('home_level')} 3</Text>
+            <Text style={styles.xpText}>{xpTotal} XP</Text>
+            <Text style={styles.xpLevel}>{t('home_level')} {level}</Text>
           </View>
           <View style={styles.xpBar}>
-            <View style={[styles.xpFill, { width: '60%' }]} />
+            <View style={[styles.xpFill, { width: `${xpInLevel}%` }]} />
           </View>
         </Card>
 
@@ -150,18 +167,18 @@ export default function HomeScreen({ navigation }: any) {
           </View>
           <View style={styles.featureInfo}>
             <Text style={styles.featureTitle}>{t('home_wallet')}</Text>
-            <Text style={styles.featureSub}>$1,247.50 MXN</Text>
+            <Text style={styles.featureSub}>{profile?.currency_code || 'MXN'}</Text>
           </View>
           <Ionicons name="chevron-forward" size={20} color={colors.subtleText} />
         </TouchableOpacity>
 
-        {/* Daily Tip */}
+        {/* Daily Affirmation */}
         <Card style={styles.tipCard}>
           <View style={styles.tipHeader}>
             <Ionicons name="bulb" size={20} color={colors.gold} />
             <Text style={styles.tipTitle}>{t('home_daily_tip')}</Text>
           </View>
-          <Text style={styles.tipText}>{dailyTip}</Text>
+          <Text style={styles.tipText}>{todayAffirmation || t('home_tip_1')}</Text>
         </Card>
       </ScrollView>
     </SafeAreaView>

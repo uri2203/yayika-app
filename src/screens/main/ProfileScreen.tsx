@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert, Switch, Modal } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
@@ -8,6 +8,7 @@ import { useLanguage } from '../../contexts/LanguageContext';
 import { Language } from '../../config/i18n';
 import { colors as defaultColors, typography, spacing, borderRadius } from '../../config/theme';
 import Card from '../../components/Card';
+import { getProfile, getSubscriptions } from '../../config/api';
 
 const LANGUAGES: { key: Language; label: string }[] = [
   { key: 'es', label: 'Español' },
@@ -22,9 +23,31 @@ export default function ProfileScreen({ navigation }: any) {
   const { isDark, toggleTheme, currentColors } = useTheme();
   const { lang, setLanguage, t } = useLanguage();
   const [showLanguageModal, setShowLanguageModal] = useState(false);
+  const [profileData, setProfileData] = useState<any>(null);
+  const [subscription, setSubscription] = useState<any>(null);
   const colors = currentColors;
-  const userName = user?.user_metadata?.name || t('profile_default_name');
-  const userEmail = user?.email || '';
+
+  useEffect(() => {
+    if (!user) return;
+    (async () => {
+      try {
+        const [profile, sub] = await Promise.all([
+          getProfile(user.id),
+          getSubscriptions(user.id),
+        ]);
+        setProfileData(profile);
+        setSubscription(sub);
+      } catch (err) {
+        console.error('Failed to fetch profile data:', err);
+      }
+    })();
+  }, [user]);
+
+  const userName = profileData?.full_name || user?.user_metadata?.name || t('profile_default_name');
+  const userEmail = profileData?.email || user?.email || '';
+  const currencyCode = profileData?.currency_code || '';
+  const countryCode = profileData?.country_code || '';
+  const planName = subscription?.plan_name || subscription?.plan || null;
 
   const handleSignOut = () => {
     Alert.alert(t('profile_sign_out'), t('profile_sign_out_confirm'), [
@@ -42,6 +65,17 @@ export default function ProfileScreen({ navigation }: any) {
           </View>
           <Text style={styles.userName}>{userName}</Text>
           <Text style={styles.userEmail}>{userEmail}</Text>
+          {(countryCode || currencyCode) && (
+            <Text style={styles.userLocation}>
+              {[countryCode, currencyCode].filter(Boolean).join(' · ')}
+            </Text>
+          )}
+          {planName && (
+            <View style={styles.planBadge}>
+              <Ionicons name="diamond" size={14} color={colors.primary} />
+              <Text style={styles.planText}>{planName}</Text>
+            </View>
+          )}
         </View>
 
         <Card style={styles.sectionCard}>
@@ -187,6 +221,26 @@ const styles = StyleSheet.create({
     fontSize: typography.sizes.md,
     color: defaultColors.subtleText,
     marginTop: spacing.xs,
+  },
+  userLocation: {
+    fontSize: typography.sizes.sm,
+    color: defaultColors.subtleText,
+    marginTop: spacing.xs,
+  },
+  planBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: spacing.sm,
+    backgroundColor: '#F3E8FF',
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.xs,
+    borderRadius: borderRadius.full,
+  },
+  planText: {
+    fontSize: typography.sizes.sm,
+    fontWeight: typography.weights.semibold,
+    color: defaultColors.primary,
+    marginLeft: spacing.xs,
   },
   sectionCard: {
     marginBottom: spacing.md,

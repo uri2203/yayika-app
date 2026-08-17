@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   View,
   Text,
@@ -7,11 +7,15 @@ import {
   TouchableOpacity,
   Modal,
   Pressable,
+  ActivityIndicator,
+  Alert,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { colors, typography, spacing, borderRadius } from '../../config/theme';
 import { useLanguage } from '../../contexts/LanguageContext';
+import { useAuth } from '../../contexts/AuthContext';
+import { aiCycleIntelligence, upsertCycleLog, upsertDailyMood, getDailyMood, type CycleDashboard } from '../../config/api';
 
 const CYCLE_LENGTH = 28;
 
@@ -30,10 +34,72 @@ function getCurrentPhase(day: number, phases: Phase[]) {
 }
 
 export default function CycleTrackerScreen({ navigation }: any) {
-  const [currentDay] = useState(10);
+  const { user } = useAuth();
+  const { t } = useLanguage();
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedSymptoms, setSelectedSymptoms] = useState<string[]>([]);
-  const { t } = useLanguage();
+  const [loading, setLoading] = useState(true);
+  const [savingSymptoms, setSavingSymptoms] = useState(false);
+  const [savingMood, setSavingMood] = useState(false);
+  const [dashboard, setDashboard] = useState<CycleDashboard | null>(null);
+  const [currentDay, setCurrentDay] = useState(10);
+  const [todayMood, setTodayMood] = useState<any>(null);
+
+  const fetchData = useCallback(async () => {
+    if (!user) return;
+    try {
+      setLoading(true);
+      const result = await aiCycleIntelligence();
+      if (result.success && result.dashboard) {
+        setDashboard(result.dashboard);
+        const daysRemaining = result.dashboard.predictions?.days_remaining ?? 0;
+        const cycleLen = result.dashboard.analytics?.avg_cycle_length ?? 28;
+        const computedDay = cycleLen - daysRemaining;
+        setCurrentDay(computedDay > 0 ? computedDay : 1);
+      }
+      const mood = await getDailyMood(user.id);
+      setTodayMood(mood);
+    } catch (e) {
+      console.log('Cycle intelligence error:', e);
+    } finally {
+      setLoading(false);
+    }
+  }, [user]);
+
+  useEffect(() => { fetchData(); }, [fetchData]);
+
+  const handleSaveSymptoms = async () => {
+    if (!user || selectedSymptoms.length === 0) {
+      setModalVisible(false);
+      return;
+    }
+    try {
+      setSavingSymptoms(true);
+      const today = new Date().toISOString().split('T')[0];
+      await upsertCycleLog(user.id, today, { symptoms: selectedSymptoms });
+      setModalVisible(false);
+      Alert.alert(t('cycle_saved_title') || 'Guardado', t('cycle_saved_msg') || 'Síntomas registrados');
+      fetchData();
+    } catch (e) {
+      console.log('Save symptoms error:', e);
+    } finally {
+      setSavingSymptoms(false);
+    }
+  };
+
+  const handleMoodPress = async (mood: string) => {
+    if (!user) return;
+    try {
+      setSavingMood(true);
+      await upsertDailyMood(user.id, { mood });
+      setTodayMood((prev: any) => ({ ...prev, mood }));
+      Alert.alert(t('cycle_saved_title') || 'Guardado', t('cycle_mood_saved_msg') || 'Ánimo registrado');
+    } catch (e) {
+      console.log('Save mood error:', e);
+    } finally {
+      setSavingMood(false);
+    }
+  };
 
   const PHASES = [
     {
@@ -102,12 +168,41 @@ export default function CycleTrackerScreen({ navigation }: any) {
           <Text style={styles.subtitle}>{t('cycle_subtitle')}</Text>
         </View>
 
+        {loading ? (
+          <ActivityIndicator size="large" color={colors.primary} style={{ marginVertical: 40 }} />
+        ) : (
+        <>
         {/* Day Counter */}
         <View style={styles.dayCard}>
           <Text style={styles.dayLabel}>{t('cycle_day')}</Text>
           <Text style={styles.dayNumber}>{currentDay}</Text>
           <Text style={styles.dayTotal}>{t('cycle_days_total')}</Text>
         </View>
+
+        {/* Predictions */}
+        {dashboard?.predictions && (
+          <View style={styles.predictionsCard}>
+            <Text style={styles.predictionsTitle}>{t('cycle_predictions') || 'Predicciones'}</Text>
+            <View style={styles.predictionRow}>
+              <Ionicons name="water" size={18} color={colors.primary} />
+              <Text style={styles.predictionText}>
+                {t('cycle_next_period') || 'Próxima regla'}: {dashboard.predictions.period_start}
+              </Text>
+            </View>
+            <View style={styles.predictionRow}>
+              <Ionicons name="sunny" size={18} color={colors.gold} />
+              <Text style={styles.predictionText}>
+                {t('cycle_ovulation') || 'Ovulación'}: {dashboard.predictions.ovulation}
+              </Text>
+            </View>
+            <View style={styles.predictionRow}>
+              <Ionicons name="time" size={18} color={colors.turquoise} />
+              <Text style={styles.predictionText}>
+                {t('cycle_days_remaining') || 'Días restantes'}: {dashboard.predictions.days_remaining}
+              </Text>
+            </View>
+          </View>
+        )}
 
         {/* Phase Badge */}
         <View style={[styles.phaseBadge, { backgroundColor: phase.bgColor }]}>
@@ -163,6 +258,34 @@ export default function CycleTrackerScreen({ navigation }: any) {
           <Text style={styles.tipText}>{phase.tip}</Text>
         </View>
 
+        {/* AI Insights */}
+        {dashboard?.insights && dashboard.insights.length > 0 && (
+          <View style={styles.insightsCard}>
+            <Text style={styles.insightsTitle}>{t('cycle_insights') || 'Insights de tu ciclo'}</Text>
+            {dashboard.insights.map((insight, i) => (
+              <View key={i} style={styles.insightRow}>
+                <Ionicons name="bulb" size={16} color={colors.gold} />
+                <Text style={styles.insightText}>{insight}</Text>
+              </View>
+            ))}
+          </View>
+        )}
+
+        {/* Today's Mood */}
+        <Text style={styles.sectionTitle}>{t('cycle_how_feeling') || '¿Cómo te sientes hoy?'}</Text>
+        <View style={styles.moodRow}>
+          {['😊', '😐', '😔', '😤', '😴'].map((emoji) => (
+            <TouchableOpacity
+              key={emoji}
+              style={[styles.moodEmoji, todayMood?.mood === emoji && styles.moodEmojiSelected]}
+              onPress={() => handleMoodPress(emoji)}
+              disabled={savingMood}
+            >
+              <Text style={styles.moodEmojiText}>{emoji}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+
         {/* Register Symptoms Button */}
         <TouchableOpacity
           style={styles.symptomsButton}
@@ -171,6 +294,8 @@ export default function CycleTrackerScreen({ navigation }: any) {
           <Ionicons name="medical" size={20} color={colors.white} />
           <Text style={styles.symptomsButtonText}>{t('cycle_register')}</Text>
         </TouchableOpacity>
+        </>
+        )}
       </ScrollView>
 
       {/* Symptoms Modal */}
@@ -202,9 +327,14 @@ export default function CycleTrackerScreen({ navigation }: any) {
             </View>
             <TouchableOpacity
               style={styles.modalSaveButton}
-              onPress={() => setModalVisible(false)}
+              onPress={handleSaveSymptoms}
+              disabled={savingSymptoms}
             >
-              <Text style={styles.modalSaveText}>{t('cycle_modal_save')}</Text>
+              {savingSymptoms ? (
+                <ActivityIndicator color={colors.white} />
+              ) : (
+                <Text style={styles.modalSaveText}>{t('cycle_modal_save')}</Text>
+              )}
             </TouchableOpacity>
           </View>
         </View>
@@ -468,5 +598,80 @@ const styles = StyleSheet.create({
     color: colors.white,
     fontSize: typography.sizes.md,
     fontWeight: typography.weights.semibold,
+  },
+  predictionsCard: {
+    backgroundColor: colors.white,
+    borderRadius: borderRadius.md,
+    padding: spacing.md,
+    marginBottom: spacing.lg,
+    shadowColor: colors.black,
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 3,
+    elevation: 1,
+  },
+  predictionsTitle: {
+    fontSize: typography.sizes.md,
+    fontWeight: typography.weights.bold,
+    color: colors.text,
+    marginBottom: spacing.sm,
+  },
+  predictionRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: spacing.xs,
+  },
+  predictionText: {
+    fontSize: typography.sizes.sm,
+    color: colors.text,
+    marginLeft: spacing.sm,
+  },
+  insightsCard: {
+    backgroundColor: '#FFFDE7',
+    borderRadius: borderRadius.md,
+    padding: spacing.md,
+    marginBottom: spacing.lg,
+    borderLeftWidth: 4,
+    borderLeftColor: colors.gold,
+  },
+  insightsTitle: {
+    fontSize: typography.sizes.md,
+    fontWeight: typography.weights.bold,
+    color: colors.text,
+    marginBottom: spacing.sm,
+  },
+  insightRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    marginBottom: spacing.xs,
+  },
+  insightText: {
+    fontSize: typography.sizes.sm,
+    color: colors.text,
+    marginLeft: spacing.sm,
+    flex: 1,
+    lineHeight: 20,
+  },
+  moodRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginBottom: spacing.lg,
+  },
+  moodEmoji: {
+    width: 52,
+    height: 52,
+    borderRadius: 26,
+    backgroundColor: colors.white,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 2,
+    borderColor: colors.border,
+  },
+  moodEmojiSelected: {
+    borderColor: colors.primary,
+    backgroundColor: '#EDE7F6',
+  },
+  moodEmojiText: {
+    fontSize: 24,
   },
 });

@@ -14,6 +14,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { colors, typography, spacing, borderRadius } from '../../config/theme';
 import { useLanguage } from '../../contexts/LanguageContext';
+import { useAuth } from '../../contexts/AuthContext';
+import { aiChat, ChatMessage } from '../../config/api';
 
 interface Message {
   id: string;
@@ -22,49 +24,9 @@ interface Message {
   timestamp: Date;
 }
 
-const AI_CONFIG = {
-  routing: {
-    cycle: ['ciclo', 'menstru', 'fase', 'ovulat', 'lutea', 'folicular', 'periodo', 'menstruación', 'síntomas', 'energía', 'cycle', 'menstrual', 'ovulation', 'luteal', 'follicular', 'period', 'symptoms', 'energy', 'ciclo', 'menstru', 'fase', 'ovulação', 'lútea', 'folicular', 'período', 'sintomas', 'energia', 'zyklus', 'menstru', 'phase', 'ovulation', 'luteal', 'follikel', 'periode', 'symptome', 'énergie', 'menstruel', 'ovulation', 'lutéal', 'folliculaire', 'période', 'symptômes'],
-    finance: ['dinero', 'presupuesto', 'ahorro', 'gasto', 'ingreso', 'finanza', 'meta', 'invertir', 'deuda', 'money', 'budget', 'saving', 'expense', 'income', 'finance', 'goal', 'invest', 'debt', 'dinheiro', 'orçamento', 'poupança', 'despesa', 'renda', 'finança', 'meta', 'investir', 'dívida', 'argent', 'budget', 'épargne', 'dépense', 'revenu', 'finance', 'objectif', 'investir', 'dette', 'geld', 'budget', 'ersparnis', 'ausgabe', 'einkommen', 'finanzen', 'ziel', 'investieren', 'schuld'],
-    productivity: ['productiv', 'tarea', 'trabajo', 'planificar', 'organizar', 'tiempo', 'procrastin', 'enfoque', 'productivity', 'task', 'work', 'plan', 'organize', 'time', 'procrastin', 'focus', 'produtividade', 'tarefa', 'trabalho', 'planejar', 'organizar', 'tempo', 'procrastinação', 'foco', 'productivité', 'tâche', 'travail', 'planifier', 'organiser', 'temps', 'procrastination', 'concentration', 'produktivität', 'aufgabe', 'arbeit', 'planen', 'organisieren', 'zeit', 'prokrastination', 'fokus'],
-  },
-};
-
-function routeMessage(message: string): string {
-  const lower = message.toLowerCase();
-  for (const [category, keywords] of Object.entries(AI_CONFIG.routing)) {
-    for (const keyword of keywords) {
-      if (lower.includes(keyword)) return category;
-    }
-  }
-  return 'general';
-}
-
-function generateResponse(message: string, t: (key: string) => string): string {
-  const category = routeMessage(message);
-  const keys = {
-    cycle: ['chat_response_cycle_1', 'chat_response_cycle_2'],
-    finance: ['chat_response_finance_1', 'chat_response_finance_2'],
-    productivity: ['chat_response_productivity_1', 'chat_response_productivity_2'],
-    general: ['chat_response_general_1', 'chat_response_general_2'],
-  };
-  const responseKeys = keys[category as keyof typeof keys] || keys.general;
-  return t(responseKeys[Math.floor(Math.random() * responseKeys.length)]);
-}
-
-function getSuggestions(category: string, t: (key: string) => string): string[] {
-  const keys = {
-    cycle: ['chat_suggestion_cycle_1', 'chat_suggestion_cycle_2', 'chat_suggestion_cycle_3'],
-    finance: ['chat_suggestion_finance_1', 'chat_suggestion_finance_2', 'chat_suggestion_finance_3'],
-    productivity: ['chat_suggestion_productivity_1', 'chat_suggestion_productivity_2', 'chat_suggestion_productivity_3'],
-    general: ['chat_suggestion_general_1', 'chat_suggestion_general_2', 'chat_suggestion_general_3'],
-  };
-  const suggestionKeys = keys[category as keyof typeof keys] || keys.general;
-  return suggestionKeys.map((key) => t(key));
-}
-
 export default function ChatScreen() {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
+  const { user } = useAuth();
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
@@ -88,6 +50,13 @@ export default function ChatScreen() {
     }, 100);
   }, [messages]);
 
+  const buildSystemPrompt = () => {
+    const name = user?.user_metadata?.name || '';
+    const base = 'Eres Laura, la asistente de Yayika. Ayudas a mujeres con su ciclo, finanzas y productividad. Responde en el idioma del usuario. No uses markdown como **negrita** ni asteriscos en tus respuestas, solo texto plano.';
+    const context = name ? `${base} La usuaria se llama ${name}.` : base;
+    return context;
+  };
+
   const sendMessage = async (text?: string) => {
     const messageText = text || input.trim();
     if (!messageText) return;
@@ -102,14 +71,21 @@ export default function ChatScreen() {
     setMessages((prev) => [...prev, userMessage]);
     setInput('');
     setIsTyping(true);
+    setSuggestions([]);
 
-    // Update suggestions based on category
-    const category = routeMessage(messageText);
-    setSuggestions(getSuggestions(category, t));
+    try {
+      const chatMessages: ChatMessage[] = [
+        { role: 'system', content: buildSystemPrompt() },
+        ...messages.slice(1).map((m) => ({
+          role: m.isUser ? ('user' as const) : ('assistant' as const),
+          content: m.text,
+        })),
+        { role: 'user', content: messageText },
+      ];
 
-    // Simulate AI response delay
-    setTimeout(() => {
-      const responseText = generateResponse(messageText, t);
+      const response = await aiChat(chatMessages, lang);
+      const responseText = response.choices?.[0]?.message?.content || 'Lo siento, hubo un error. Intenta de nuevo.';
+
       const aiMessage: Message = {
         id: (Date.now() + 1).toString(),
         text: responseText,
@@ -117,8 +93,17 @@ export default function ChatScreen() {
         timestamp: new Date(),
       };
       setMessages((prev) => [...prev, aiMessage]);
+    } catch {
+      const errorMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        text: 'Lo siento, hubo un error de conexión. Intenta de nuevo.',
+        isUser: false,
+        timestamp: new Date(),
+      };
+      setMessages((prev) => [...prev, errorMessage]);
+    } finally {
       setIsTyping(false);
-    }, 800 + Math.random() * 1200);
+    }
   };
 
   return (

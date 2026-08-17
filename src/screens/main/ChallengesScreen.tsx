@@ -1,23 +1,78 @@
-import React from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import React, { useState, useEffect, useCallback } from 'react';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { colors, typography, spacing, borderRadius } from '../../config/theme';
 import { useLanguage } from '../../contexts/LanguageContext';
+import { useAuth } from '../../contexts/AuthContext';
+import { aiWeeklyChallenges, enrollChallenge, checkinChallenge } from '../../config/api';
 
 export default function ChallengesScreen({ navigation }: any) {
   const { t } = useLanguage();
+  const { user } = useAuth();
 
-  const CHALLENGES = [
-    { id: '1', title: t('challenge_1_title'), xp: 50, completed: true },
-    { id: '2', title: t('challenge_2_title'), xp: 30, completed: true },
-    { id: '3', title: t('challenge_3_title'), xp: 40, completed: true },
-    { id: '4', title: t('challenge_4_title'), xp: 25, completed: false },
-    { id: '5', title: t('challenge_5_title'), xp: 60, completed: false },
+  const [loading, setLoading] = useState(true);
+  const [challengesData, setChallengesData] = useState<{
+    available: any[];
+    active: any[];
+    completed: any[];
+    stats: any;
+  } | null>(null);
+  const [enrollingId, setEnrollingId] = useState<string | null>(null);
+
+  const fetchChallenges = useCallback(async () => {
+    if (!user) return;
+    try {
+      setLoading(true);
+      const data = await aiWeeklyChallenges();
+      setChallengesData({
+        available: data.available || [],
+        active: data.active || [],
+        completed: data.completed || [],
+        stats: data.stats,
+      });
+    } catch (err) {
+      console.error('Failed to fetch challenges:', err);
+    } finally {
+      setLoading(false);
+    }
+  }, [user]);
+
+  useEffect(() => {
+    fetchChallenges();
+  }, [fetchChallenges]);
+
+  const handleEnroll = async (challengeId: string) => {
+    try {
+      setEnrollingId(challengeId);
+      await enrollChallenge(challengeId);
+      await fetchChallenges();
+    } catch (err) {
+      console.error('Failed to enroll:', err);
+      Alert.alert(t('common_error'), err instanceof Error ? err.message : 'Unknown error');
+    } finally {
+      setEnrollingId(null);
+    }
+  };
+
+  const completedCount = (challengesData?.completed?.length ?? 0);
+  const activeCount = (challengesData?.active?.length ?? 0);
+  const totalCount = completedCount + activeCount + (challengesData?.available?.length ?? 0);
+  const allChallenges = [
+    ...(challengesData?.active || []).map((c: any) => ({ ...c, _status: 'active' })),
+    ...(challengesData?.completed || []).map((c: any) => ({ ...c, _status: 'completed' })),
+    ...(challengesData?.available || []).map((c: any) => ({ ...c, _status: 'available' })),
   ];
+  if (loading) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <View style={[styles.scrollContent, { justifyContent: 'center', alignItems: 'center' }]}>
+          <ActivityIndicator size="large" color={colors.primary} />
+        </View>
+      </SafeAreaView>
+    );
+  }
 
-  const completedCount = CHALLENGES.filter((c) => c.completed).length;
-  const totalCount = CHALLENGES.length;
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
@@ -28,47 +83,73 @@ export default function ChallengesScreen({ navigation }: any) {
           </View>
         </View>
 
-        <View style={styles.progressCard}>
-          <View style={styles.progressHeader}>
-            <Text style={styles.progressLabel}>{t('challenges_progress_label')}</Text>
-            <Text style={styles.progressCount}>
-              {completedCount}/{totalCount} {t('challenges_progress')}
-            </Text>
-          </View>
-          <View style={styles.progressBar}>
-            <View style={[styles.progressFill, { width: `${(completedCount / totalCount) * 100}%` }]} />
-          </View>
-        </View>
-
-        {CHALLENGES.map((challenge) => (
-          <View key={challenge.id} style={styles.challengeCard}>
-            <View style={[styles.challengeIcon, challenge.completed ? styles.iconCompleted : styles.iconPending]}>
-              <Ionicons
-                name={challenge.completed ? 'checkmark-circle' : 'lock-closed'}
-                size={22}
-                color={challenge.completed ? colors.success : colors.subtleText}
-              />
-            </View>
-            <View style={styles.challengeInfo}>
-              <Text style={[styles.challengeTitle, challenge.completed && styles.titleCompleted]}>
-                {challenge.title}
+        {totalCount > 0 && (
+          <View style={styles.progressCard}>
+            <View style={styles.progressHeader}>
+              <Text style={styles.progressLabel}>{t('challenges_progress_label')}</Text>
+              <Text style={styles.progressCount}>
+                {completedCount}/{totalCount} {t('challenges_progress')}
               </Text>
-              <Text style={styles.challengeXp}>+{challenge.xp} XP</Text>
             </View>
-            {challenge.completed && <Ionicons name="checkmark-done" size={20} color={colors.success} />}
+            <View style={styles.progressBar}>
+              <View style={[styles.progressFill, { width: `${totalCount > 0 ? (completedCount / totalCount) * 100 : 0}%` }]} />
+            </View>
           </View>
-        ))}
+        )}
 
-        <View style={styles.bonusCard}>
-          <View style={styles.bonusHeader}>
-            <Ionicons name="gift" size={22} color={colors.gold} />
-            <Text style={styles.bonusTitle}>{t('challenges_bonus')}</Text>
+        {allChallenges.length === 0 && (
+          <View style={styles.progressCard}>
+            <Text style={styles.progressLabel}>{t('challenges_empty')}</Text>
           </View>
-          <Text style={styles.bonusText}>{t('challenges_bonus_desc')}</Text>
-          <View style={styles.bonusBar}>
-            <View style={[styles.bonusFill, { width: `${(completedCount / totalCount) * 100}%` }]} />
+        )}
+
+        {allChallenges.map((challenge: any) => {
+          const isCompleted = challenge._status === 'completed';
+          const isActive = challenge._status === 'active';
+          const isAvailable = challenge._status === 'available';
+          const isEnrolling = enrollingId === challenge.id;
+          const challengeId = challenge.id || challenge.challenge_id;
+
+          return (
+            <TouchableOpacity
+              key={challengeId}
+              style={styles.challengeCard}
+              onPress={() => isAvailable && handleEnroll(challengeId)}
+              disabled={!isAvailable || isEnrolling}
+              activeOpacity={isAvailable ? 0.7 : 1}
+            >
+              <View style={[styles.challengeIcon, isCompleted ? styles.iconCompleted : styles.iconPending]}>
+                <Ionicons
+                  name={isCompleted ? 'checkmark-circle' : isActive ? 'rocket' : isAvailable ? 'add-circle' : 'lock-closed'}
+                  size={22}
+                  color={isCompleted ? colors.success : isActive ? colors.primary : colors.subtleText}
+                />
+              </View>
+              <View style={styles.challengeInfo}>
+                <Text style={[styles.challengeTitle, isCompleted && styles.titleCompleted]}>
+                  {challenge.title || challenge.name || t('challenges_title')}
+                </Text>
+                <Text style={styles.challengeXp}>+{challenge.xp_reward || challenge.xp || 0} XP</Text>
+              </View>
+              {isCompleted && <Ionicons name="checkmark-done" size={20} color={colors.success} />}
+              {isAvailable && !isEnrolling && <Ionicons name="add-circle-outline" size={20} color={colors.primary} />}
+              {isEnrolling && <ActivityIndicator size="small" color={colors.primary} />}
+            </TouchableOpacity>
+          );
+        })}
+
+        {completedCount > 0 && (
+          <View style={styles.bonusCard}>
+            <View style={styles.bonusHeader}>
+              <Ionicons name="gift" size={22} color={colors.gold} />
+              <Text style={styles.bonusTitle}>{t('challenges_bonus')}</Text>
+            </View>
+            <Text style={styles.bonusText}>{t('challenges_bonus_desc')}</Text>
+            <View style={styles.bonusBar}>
+              <View style={[styles.bonusFill, { width: `${totalCount > 0 ? (completedCount / totalCount) * 100 : 0}%` }]} />
+            </View>
           </View>
-        </View>
+        )}
 
         <View style={styles.countdown}>
           <Ionicons name="time" size={18} color={colors.subtleText} />

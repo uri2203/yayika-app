@@ -1,25 +1,25 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect, useCallback } from 'react';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { colors, typography, spacing, borderRadius } from '../../config/theme';
 import { useLanguage } from '../../contexts/LanguageContext';
-
-
+import { useAuth } from '../../contexts/AuthContext';
+import { getXpEvents } from '../../config/api';
 
 const BADGES_CONFIG = [
-  { emoji: '🌙', nameKey: 'badge_1_name', descriptionKey: 'badge_1_desc', unlocked: true, categoryKey: 'cycle' },
-  { emoji: '💰', nameKey: 'badge_2_name', descriptionKey: 'badge_2_desc', unlocked: true, categoryKey: 'finance' },
-  { emoji: '📋', nameKey: 'badge_3_name', descriptionKey: 'badge_3_desc', unlocked: true, categoryKey: 'productivity' },
-  { emoji: '🔥', nameKey: 'badge_4_name', descriptionKey: 'badge_4_desc', unlocked: true, categoryKey: 'productivity' },
-  { emoji: '🌸', nameKey: 'badge_5_name', descriptionKey: 'badge_5_desc', unlocked: true, categoryKey: 'cycle' },
-  { emoji: '💎', nameKey: 'badge_6_name', descriptionKey: 'badge_6_desc', unlocked: false, categoryKey: 'special' },
-  { emoji: '🎯', nameKey: 'badge_7_name', descriptionKey: 'badge_7_desc', unlocked: false, categoryKey: 'finance' },
-  { emoji: '👥', nameKey: 'badge_8_name', descriptionKey: 'badge_8_desc', unlocked: false, categoryKey: 'social' },
-  { emoji: '🏆', nameKey: 'badge_9_name', descriptionKey: 'badge_9_desc', unlocked: false, categoryKey: 'social' },
-  { emoji: '⭐', nameKey: 'badge_10_name', descriptionKey: 'badge_10_desc', unlocked: false, categoryKey: 'social' },
-  { emoji: '📚', nameKey: 'badge_11_name', descriptionKey: 'badge_11_desc', unlocked: false, categoryKey: 'productivity' },
-  { emoji: '🌟', nameKey: 'badge_12_name', descriptionKey: 'badge_12_desc', unlocked: false, categoryKey: 'special' },
+  { emoji: '🌙', nameKey: 'badge_1_name', descriptionKey: 'badge_1_desc', requiredEvent: 'cycle_log', categoryKey: 'cycle' },
+  { emoji: '💰', nameKey: 'badge_2_name', descriptionKey: 'badge_2_desc', requiredEvent: 'transaction_added', categoryKey: 'finance' },
+  { emoji: '📋', nameKey: 'badge_3_name', descriptionKey: 'badge_3_desc', requiredEvent: 'daily_checkin', categoryKey: 'productivity' },
+  { emoji: '🔥', nameKey: 'badge_4_name', descriptionKey: 'badge_4_desc', requiredEvent: 'streak_7', categoryKey: 'productivity' },
+  { emoji: '🌸', nameKey: 'badge_5_name', descriptionKey: 'badge_5_desc', requiredEvent: 'mood_logged', categoryKey: 'cycle' },
+  { emoji: '💎', nameKey: 'badge_6_name', descriptionKey: 'badge_6_desc', requiredEvent: 'challenge_completed', categoryKey: 'special' },
+  { emoji: '🎯', nameKey: 'badge_7_name', descriptionKey: 'badge_7_desc', requiredEvent: 'financial_goal', categoryKey: 'finance' },
+  { emoji: '👥', nameKey: 'badge_8_name', descriptionKey: 'badge_8_desc', requiredEvent: 'community_post', categoryKey: 'social' },
+  { emoji: '🏆', nameKey: 'badge_9_name', descriptionKey: 'badge_9_desc', requiredEvent: 'onboarding_complete', categoryKey: 'social' },
+  { emoji: '⭐', nameKey: 'badge_10_name', descriptionKey: 'badge_10_desc', requiredEvent: 'xp_100', categoryKey: 'social' },
+  { emoji: '📚', nameKey: 'badge_11_name', descriptionKey: 'badge_11_desc', requiredEvent: 'product_access', categoryKey: 'productivity' },
+  { emoji: '🌟', nameKey: 'badge_12_name', descriptionKey: 'badge_12_desc', requiredEvent: 'xp_500', categoryKey: 'special' },
 ];
 
 const CATEGORY_KEYS = ['all', 'cycle', 'finance', 'productivity', 'social', 'special'] as const;
@@ -27,6 +27,32 @@ const CATEGORY_KEYS = ['all', 'cycle', 'finance', 'productivity', 'social', 'spe
 export default function BadgesScreen({ navigation }: any) {
   const [selectedCategoryKey, setSelectedCategoryKey] = useState<string>('all');
   const { t } = useLanguage();
+  const { user } = useAuth();
+  const [loading, setLoading] = useState(true);
+  const [xpEventTypes, setXpEventTypes] = useState<Set<string>>(new Set());
+  const [totalXp, setTotalXp] = useState(0);
+
+  useEffect(() => {
+    if (!user) return;
+    (async () => {
+      try {
+        setLoading(true);
+        const events = await getXpEvents(user.id, 200);
+        const types = new Set<string>();
+        let xpSum = 0;
+        for (const ev of events) {
+          types.add(ev.event_type);
+          xpSum += ev.xp_amount || 0;
+        }
+        setXpEventTypes(types);
+        setTotalXp(xpSum);
+      } catch (err) {
+        console.error('Failed to fetch XP events:', err);
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, [user]);
 
   const CATEGORY_LABELS: Record<string, string> = {
     all: t('badges_all'),
@@ -41,6 +67,7 @@ export default function BadgesScreen({ navigation }: any) {
     ...b,
     name: t(b.nameKey),
     description: t(b.descriptionKey),
+    unlocked: xpEventTypes.has(b.requiredEvent) || (b.requiredEvent === 'xp_100' && totalXp >= 100) || (b.requiredEvent === 'xp_500' && totalXp >= 500),
   }));
 
   const filteredBadges = selectedCategoryKey === 'all'
@@ -48,6 +75,16 @@ export default function BadgesScreen({ navigation }: any) {
     : BADGES.filter((b) => b.categoryKey === selectedCategoryKey);
 
   const unlockedCount = BADGES.filter((b) => b.unlocked).length;
+
+  if (loading) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <View style={[styles.scrollContent, { justifyContent: 'center', alignItems: 'center' }]}>
+          <ActivityIndicator size="large" color={colors.primary} />
+        </View>
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView style={styles.container}>

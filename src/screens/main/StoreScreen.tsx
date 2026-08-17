@@ -12,11 +12,12 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { colors, typography, spacing, borderRadius } from '../../config/theme';
 import { useLanguage } from '../../contexts/LanguageContext';
-import { supabase } from '../../config/supabase';
+import { getProductCatalog } from '../../config/api';
 
 interface Product {
   id: string;
   name: string;
+  description?: string;
   price: string;
   icon: string;
   color: string;
@@ -24,24 +25,14 @@ interface Product {
   category: string;
 }
 
-const FALLBACK_PRODUCTS: Product[] = [
-  { id: '1', name: 'Ciclo Productiva', price: '$199 MXN', icon: 'rocket', color: colors.primary, url: 'https://buy.stripe.com/eVq6oH8yWfsS248cX3gA80c', category: 'Cursos' },
-  { id: '2', name: 'Dinero sin Pena', price: '$249 MXN', icon: 'cash', color: colors.gold, url: 'https://buy.stripe.com/4gMbJ16qO5SidMQe17gA80d', category: 'Cursos' },
-  { id: '3', name: 'Mujer que Negocia', price: '$179 MXN', icon: 'hand-left', color: colors.rose, url: 'https://buy.stripe.com/8x2eVd5mK94uaAE8GNgA80e', category: 'Cursos' },
-  { id: '4', name: 'Planner Mensual', price: '$89 MXN', icon: 'calendar', color: colors.turquoise, url: '#', category: 'Planners' },
-  { id: '5', name: 'Guía de Finanzas', price: '$129 MXN', icon: 'wallet', color: colors.gold, url: '#', category: 'Guías' },
-  { id: '6', name: 'Kit de Productividad', price: '$149 MXN', icon: 'rocket', color: colors.primary, url: '#', category: 'Cursos' },
-  { id: '7', name: 'Curso de Negociación', price: '$299 MXN', icon: 'school', color: colors.rose, url: '#', category: 'Cursos' },
-  { id: '8', name: 'Planner de Ciclo', price: '$99 MXN', icon: 'fitness', color: '#8B5CF6', url: '#', category: 'Planners' },
-];
-
-const CATEGORY_KEYS = ['Todos', 'Cursos', 'Planners', 'Guias', 'Membresias'] as const;
+const CATEGORY_KEYS = ['Todos'] as const;
 type CategoryKey = typeof CATEGORY_KEYS[number];
 
 export default function StoreScreen({ navigation }: any) {
   const [search, setSearch] = useState('');
-  const [activeCategory, setActiveCategory] = useState<CategoryKey>(CATEGORY_KEYS[0]);
-  const [products, setProducts] = useState<Product[]>(FALLBACK_PRODUCTS);
+  const [activeCategory, setActiveCategory] = useState<CategoryKey>('Todos');
+  const [categories, setCategories] = useState<string[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const { t } = useLanguage();
 
@@ -51,35 +42,35 @@ export default function StoreScreen({ navigation }: any) {
 
   async function fetchProducts() {
     try {
-      const { data, error } = await supabase
-        .from('products')
-        .select('*')
-        .eq('active', true)
-        .order('created_at', { ascending: true });
-
-      if (error) throw error;
-      if (data && data.length > 0) {
-        setProducts(
-          data.map((p: any) => ({
-            id: p.id,
-            name: p.name,
-            price: p.price,
-            icon: p.icon || 'cart',
-            color: p.color || colors.primary,
-            url: p.url || '#',
-            category: p.category || 'Cursos',
-          }))
-        );
+      const result = await getProductCatalog();
+      if (result.success && result.products) {
+        const mapped: Product[] = result.products.map((p: any) => ({
+          id: p.id,
+          name: p.name,
+          description: p.description,
+          price: p.price,
+          icon: p.icon || 'cart',
+          color: p.color || colors.primary,
+          url: p.url || '#',
+          category: p.category || 'Cursos',
+        }));
+        setProducts(mapped);
+        const uniqueCategories = [...new Set(mapped.map((p) => p.category))];
+        setCategories(uniqueCategories);
+      } else {
+        setProducts([]);
+        setCategories([]);
       }
     } catch {
-      setProducts(FALLBACK_PRODUCTS);
+      setProducts([]);
+      setCategories([]);
     } finally {
       setLoading(false);
     }
   }
 
   const filteredProducts = products.filter((product) => {
-    const matchesCategory = activeCategory === CATEGORY_KEYS[0] || product.category === activeCategory;
+    const matchesCategory = activeCategory === 'Todos' || product.category === activeCategory;
     const matchesSearch = product.name.toLowerCase().includes(search.toLowerCase());
     return matchesCategory && matchesSearch;
   });
@@ -132,14 +123,14 @@ export default function StoreScreen({ navigation }: any) {
         </View>
 
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chipsContainer}>
-          {CATEGORY_KEYS.map((category) => (
+          {['Todos', ...categories].map((category) => (
             <TouchableOpacity
               key={category}
               style={[styles.chip, activeCategory === category && styles.chipActive]}
-              onPress={() => setActiveCategory(category)}
+              onPress={() => setActiveCategory(category as CategoryKey)}
             >
               <Text style={[styles.chipText, activeCategory === category && styles.chipTextActive]}>
-                {t(`store_category_${category.toLowerCase()}`)}
+                {category}
               </Text>
             </TouchableOpacity>
           ))}
@@ -164,6 +155,9 @@ export default function StoreScreen({ navigation }: any) {
                   <Ionicons name={item.icon as any} size={26} color={item.color} />
                 </View>
                 <Text style={styles.productName} numberOfLines={1}>{item.name}</Text>
+                {item.description ? (
+                  <Text style={styles.productDescription} numberOfLines={2}>{item.description}</Text>
+                ) : null}
                 <Text style={styles.productPrice}>{item.price}</Text>
                 <TouchableOpacity
                   style={[styles.buyButton, { backgroundColor: item.color }]}
@@ -221,6 +215,7 @@ const styles = StyleSheet.create({
     alignItems: 'center', marginBottom: spacing.sm,
   },
   productName: { fontSize: typography.sizes.sm, fontWeight: typography.weights.semibold, color: colors.text, textAlign: 'center', marginBottom: spacing.xs },
+  productDescription: { fontSize: typography.sizes.xs, color: colors.subtleText, textAlign: 'center', marginBottom: spacing.xs, lineHeight: 16 },
   productPrice: { fontSize: typography.sizes.lg, fontWeight: typography.weights.bold, color: colors.primary, marginBottom: spacing.sm },
   buyButton: { width: '100%', paddingVertical: spacing.sm, borderRadius: borderRadius.sm, alignItems: 'center' },
   buyButtonText: { color: colors.white, fontSize: typography.sizes.sm, fontWeight: typography.weights.bold },

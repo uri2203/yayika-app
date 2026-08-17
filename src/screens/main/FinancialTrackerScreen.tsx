@@ -1,9 +1,11 @@
-import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect, useCallback } from 'react';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, ActivityIndicator, Alert, TextInput, Modal } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { colors, typography, spacing, borderRadius } from '../../config/theme';
 import { useLanguage } from '../../contexts/LanguageContext';
+import { useAuth } from '../../contexts/AuthContext';
+import { getTransactions, addTransaction, aiFinancialCoach } from '../../config/api';
 
 const BUDGET_LIMIT = 5000;
 
@@ -12,31 +14,120 @@ function formatMoney(n: number) {
   return `$${sign}${n.toLocaleString('es-MX')}`;
 }
 
+function formatDate(dateStr: string) {
+  const d = new Date(dateStr);
+  const day = d.getDate();
+  const months = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  return `${day} ${months[d.getMonth()]}`;
+}
+
 export default function FinancialTrackerScreen({ navigation }: any) {
+  const { user } = useAuth();
   const { t } = useLanguage();
+  const [loading, setLoading] = useState(true);
+  const [transactions, setTransactions] = useState<any[]>([]);
+  const [advice, setAdvice] = useState<string>('');
+  const [loadingAdvice, setLoadingAdvice] = useState(false);
+  const [addModalVisible, setAddModalVisible] = useState(false);
+  const [newType, setNewType] = useState<'income' | 'expense'>('expense');
+  const [newAmount, setNewAmount] = useState('');
+  const [newCategory, setNewCategory] = useState('');
+  const [newDate, setNewDate] = useState(new Date().toISOString().split('T')[0]);
+  const [saving, setSaving] = useState(false);
 
-  const INCOME = [
-    { id: '1', desc: t('finance_sale_ciclo'), amount: 199, date: '01 Ago' },
-    { id: '3', desc: t('finance_sale_dinero'), amount: 249, date: '04 Ago' },
-    { id: '5', desc: t('finance_sale_guerrera'), amount: 15, date: '07 Ago' },
-    { id: '7', desc: t('finance_sale_mujer'), amount: 179, date: '09 Ago' },
-  ];
+  const fetchData = useCallback(async () => {
+    if (!user) return;
+    try {
+      setLoading(true);
+      const txs = await getTransactions(user.id);
+      setTransactions(txs || []);
 
-  const EXPENSES = [
-    { id: '2', desc: t('finance_expense_semilla'), amount: -5, date: '02 Ago' },
-    { id: '4', desc: t('finance_expense_cafe'), amount: -45, date: '05 Ago' },
-    { id: '6', desc: t('finance_expense_uber'), amount: -120, date: '08 Ago' },
-    { id: '8', desc: t('finance_expense_super'), amount: -650, date: '10 Ago' },
-  ];
+      if (txs && txs.length > 0) {
+        const monthlyTxs = txs.slice(0, 50);
+        const totalIncome = monthlyTxs
+          .filter((tx: any) => tx.type === 'income')
+          .reduce((s: number, tx: any) => s + tx.amount, 0);
+        const totalExpenses = monthlyTxs
+          .filter((tx: any) => tx.type === 'expense')
+          .reduce((s: number, tx: any) => s + tx.amount, 0);
+        const categories: Record<string, { total: number; count: number }> = {};
+        monthlyTxs.filter((tx: any) => tx.type === 'expense').forEach((tx: any) => {
+          const cat = tx.category || 'Otros';
+          if (!categories[cat]) categories[cat] = { total: 0, count: 0 };
+          categories[cat].total += tx.amount;
+          categories[cat].count += 1;
+        });
+        const topCategories = Object.entries(categories)
+          .sort((a, b) => b[1].total - a[1].total)
+          .slice(0, 5)
+          .map(([name, data]) => ({
+            name,
+            total: data.total,
+            percentage: totalExpenses > 0 ? Math.round((data.total / totalExpenses) * 100) : 0,
+          }));
 
-  const TOTAL_INCOME = INCOME.reduce((s, item) => s + item.amount, 0);
-  const TOTAL_EXPENSES = EXPENSES.reduce((s, item) => s + Math.abs(item.amount), 0);
+        try {
+          setLoadingAdvice(true);
+          const result = await aiFinancialCoach({
+            user_id: user.id,
+            transactions: monthlyTxs.map((tx: any) => ({
+              type: tx.type as 'expense' | 'income',
+              amount: tx.amount,
+              category: tx.category,
+              date: tx.date,
+            })),
+            monthly_summary: { totalIncome, totalExpenses, topCategories },
+          });
+          setAdvice(result.advice || '');
+        } catch (e) {
+          console.log('Financial coach error:', e);
+        } finally {
+          setLoadingAdvice(false);
+        }
+      }
+    } catch (e) {
+      console.log('Fetch transactions error:', e);
+    } finally {
+      setLoading(false);
+    }
+  }, [user]);
+
+  useEffect(() => { fetchData(); }, [fetchData]);
+
+  const handleAddTransaction = async () => {
+    if (!user || !newAmount || parseFloat(newAmount) <= 0) return;
+    try {
+      setSaving(true);
+      await addTransaction(user.id, {
+        type: newType,
+        amount: parseFloat(newAmount),
+        category: newCategory || undefined,
+        date: newDate,
+      });
+      setAddModalVisible(false);
+      setNewAmount('');
+      setNewCategory('');
+      setNewDate(new Date().toISOString().split('T')[0]);
+      Alert.alert(t('finance_saved_title') || 'Guardado', t('finance_saved_msg') || 'Transacción registrada');
+      fetchData();
+    } catch (e) {
+      console.log('Add transaction error:', e);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const TOTAL_INCOME = transactions
+    .filter((tx) => tx.type === 'income')
+    .reduce((s, tx) => s + tx.amount, 0);
+  const TOTAL_EXPENSES = transactions
+    .filter((tx) => tx.type === 'expense')
+    .reduce((s, tx) => s + tx.amount, 0);
   const BALANCE = TOTAL_INCOME - TOTAL_EXPENSES;
 
-  const ALL_TRANSACTIONS = [...INCOME, ...EXPENSES].sort((a, b) => {
-    const da = parseInt(a.id);
-    const db = parseInt(b.id);
-    return da - db;
+  const sortedTransactions = [...transactions].sort((a, b) => {
+    if (a.date && b.date) return new Date(b.date).getTime() - new Date(a.date).getTime();
+    return 0;
   });
   return (
     <SafeAreaView style={styles.container}>
@@ -119,33 +210,126 @@ export default function FinancialTrackerScreen({ navigation }: any) {
 
         {/* Transactions */}
         <Text style={styles.sectionTitle}>{t('finance_recent_transactions')}</Text>
-        {ALL_TRANSACTIONS.map((tx) => {
-          const isIncome = tx.amount > 0;
-          return (
-            <View key={tx.id} style={styles.txRow}>
-              <View style={[styles.txIcon, isIncome ? styles.txIconIncome : styles.txIconExpense]}>
-                <Ionicons
-                  name={isIncome ? 'arrow-down' : 'arrow-up'}
-                  size={16}
-                  color={isIncome ? colors.success : colors.error}
-                />
+        {loading ? (
+          <ActivityIndicator size="small" color={colors.primary} style={{ marginVertical: 20 }} />
+        ) : sortedTransactions.length === 0 ? (
+          <View style={styles.emptyState}>
+            <Ionicons name="wallet-outline" size={48} color={colors.border} />
+            <Text style={styles.emptyText}>{t('finance_no_transactions') || 'Sin transacciones aún'}</Text>
+          </View>
+        ) : (
+          sortedTransactions.slice(0, 20).map((tx) => {
+            const isIncome = tx.type === 'income';
+            return (
+              <View key={tx.id || tx.date} style={styles.txRow}>
+                <View style={[styles.txIcon, isIncome ? styles.txIconIncome : styles.txIconExpense]}>
+                  <Ionicons
+                    name={isIncome ? 'arrow-down' : 'arrow-up'}
+                    size={16}
+                    color={isIncome ? colors.success : colors.error}
+                  />
+                </View>
+                <View style={styles.txInfo}>
+                  <Text style={styles.txDesc}>{tx.category || (isIncome ? 'Ingreso' : 'Gasto')}</Text>
+                  <Text style={styles.txDate}>{tx.date ? formatDate(tx.date) : ''}</Text>
+                </View>
+                <Text style={[styles.txAmount, isIncome ? styles.txAmountIncome : styles.txAmountExpense]}>
+                  {isIncome ? `+$${tx.amount.toLocaleString('es-MX')}` : `-$${tx.amount.toLocaleString('es-MX')}`}
+                </Text>
               </View>
-              <View style={styles.txInfo}>
-                <Text style={styles.txDesc}>{tx.desc}</Text>
-                <Text style={styles.txDate}>{tx.date}</Text>
-              </View>
-              <Text style={[styles.txAmount, isIncome ? styles.txAmountIncome : styles.txAmountExpense]}>
-                {formatMoney(tx.amount)}
-              </Text>
-            </View>
-          );
-        })}
+            );
+          })
+        )}
+
+        {/* AI Financial Advice */}
+        {loadingAdvice && (
+          <View style={styles.adviceCard}>
+            <ActivityIndicator size="small" color={colors.primary} />
+            <Text style={styles.adviceLoading}>{t('finance_coaching') || 'Obteniendo consejos...'}</Text>
+          </View>
+        )}
+        {!loadingAdvice && advice ? (
+          <View style={styles.adviceCard}>
+            <Ionicons name="sparkles" size={20} color={colors.primary} />
+            <Text style={styles.adviceText}>{advice}</Text>
+          </View>
+        ) : null}
       </ScrollView>
 
       {/* FAB */}
-      <TouchableOpacity style={styles.fab}>
+      <TouchableOpacity style={styles.fab} onPress={() => setAddModalVisible(true)}>
         <Ionicons name="add" size={28} color={colors.white} />
       </TouchableOpacity>
+
+      {/* Add Transaction Modal */}
+      <Modal visible={addModalVisible} transparent animationType="slide">
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            <View style={styles.modalHeader}>
+              <Text style={styles.modalTitle}>{t('finance_add_title') || 'Nueva transacción'}</Text>
+              <TouchableOpacity onPress={() => setAddModalVisible(false)}>
+                <Ionicons name="close" size={24} color={colors.text} />
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.typeToggle}>
+              <TouchableOpacity
+                style={[styles.typeBtn, newType === 'income' && styles.typeBtnActive]}
+                onPress={() => setNewType('income')}
+              >
+                <Text style={[styles.typeBtnText, newType === 'income' && styles.typeBtnTextActive]}>
+                  {t('finance_income') || 'Ingreso'}
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.typeBtn, newType === 'expense' && styles.typeBtnActiveExpense]}
+                onPress={() => setNewType('expense')}
+              >
+                <Text style={[styles.typeBtnText, newType === 'expense' && styles.typeBtnTextActive]}>
+                  {t('finance_expenses') || 'Gasto'}
+                </Text>
+              </TouchableOpacity>
+            </View>
+
+            <Text style={styles.inputLabel}>{t('finance_amount') || 'Monto'}</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="$0.00"
+              keyboardType="numeric"
+              value={newAmount}
+              onChangeText={setNewAmount}
+            />
+
+            <Text style={styles.inputLabel}>{t('finance_category') || 'Categoría'}</Text>
+            <TextInput
+              style={styles.input}
+              placeholder={t('finance_category_placeholder') || 'Ej: Comida, Transporte...'}
+              value={newCategory}
+              onChangeText={setNewCategory}
+            />
+
+            <Text style={styles.inputLabel}>{t('finance_date') || 'Fecha'}</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="YYYY-MM-DD"
+              value={newDate}
+              onChangeText={setNewDate}
+            />
+
+            <TouchableOpacity
+              style={styles.modalSaveButton}
+              onPress={handleAddTransaction}
+              disabled={saving || !newAmount}
+            >
+              {saving ? (
+                <ActivityIndicator color={colors.white} />
+              ) : (
+                <Text style={styles.modalSaveText}>{t('finance_save') || 'Guardar'}</Text>
+              )}
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 }
@@ -360,5 +544,116 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.4,
     shadowRadius: 8,
     elevation: 6,
+  },
+  emptyState: {
+    alignItems: 'center',
+    paddingVertical: spacing.xl,
+  },
+  emptyText: {
+    fontSize: typography.sizes.sm,
+    color: colors.subtleText,
+    marginTop: spacing.sm,
+  },
+  adviceCard: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    backgroundColor: '#EDE7F6',
+    borderRadius: borderRadius.md,
+    padding: spacing.md,
+    marginTop: spacing.md,
+    marginBottom: spacing.lg,
+    borderLeftWidth: 4,
+    borderLeftColor: colors.primary,
+  },
+  adviceLoading: {
+    fontSize: typography.sizes.sm,
+    color: colors.subtleText,
+    marginLeft: spacing.sm,
+  },
+  adviceText: {
+    fontSize: typography.sizes.sm,
+    color: colors.text,
+    marginLeft: spacing.sm,
+    flex: 1,
+    lineHeight: 20,
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'flex-end',
+  },
+  modalContent: {
+    backgroundColor: colors.white,
+    borderTopLeftRadius: borderRadius.xl,
+    borderTopRightRadius: borderRadius.xl,
+    padding: spacing.lg,
+    paddingBottom: spacing.xxl,
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: spacing.md,
+  },
+  modalTitle: {
+    fontSize: typography.sizes.xl,
+    fontWeight: typography.weights.bold,
+    color: colors.text,
+  },
+  typeToggle: {
+    flexDirection: 'row',
+    marginBottom: spacing.md,
+    gap: spacing.sm,
+  },
+  typeBtn: {
+    flex: 1,
+    paddingVertical: spacing.sm,
+    borderRadius: borderRadius.sm,
+    borderWidth: 1.5,
+    borderColor: colors.border,
+    alignItems: 'center',
+  },
+  typeBtnActive: {
+    backgroundColor: '#D1FAE5',
+    borderColor: colors.success,
+  },
+  typeBtnActiveExpense: {
+    backgroundColor: '#FEE2E2',
+    borderColor: colors.error,
+  },
+  typeBtnText: {
+    fontSize: typography.sizes.sm,
+    color: colors.subtleText,
+  },
+  typeBtnTextActive: {
+    fontWeight: typography.weights.semibold,
+    color: colors.text,
+  },
+  inputLabel: {
+    fontSize: typography.sizes.sm,
+    color: colors.subtleText,
+    marginBottom: spacing.xs,
+    marginTop: spacing.sm,
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: colors.border,
+    borderRadius: borderRadius.sm,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+    fontSize: typography.sizes.md,
+    color: colors.text,
+  },
+  modalSaveButton: {
+    backgroundColor: colors.primary,
+    borderRadius: borderRadius.md,
+    paddingVertical: spacing.md,
+    alignItems: 'center',
+    marginTop: spacing.lg,
+  },
+  modalSaveText: {
+    color: colors.white,
+    fontSize: typography.sizes.md,
+    fontWeight: typography.weights.semibold,
   },
 });
