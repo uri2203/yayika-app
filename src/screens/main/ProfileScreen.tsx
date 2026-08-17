@@ -1,17 +1,27 @@
-import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert, Switch } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert, Switch, Modal } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '../../contexts/AuthContext';
 import { useTheme } from '../../contexts/ThemeContext';
 import { useLanguage } from '../../contexts/LanguageContext';
+import { Language } from '../../config/i18n';
 import { colors as defaultColors, typography, spacing, borderRadius } from '../../config/theme';
 import Card from '../../components/Card';
+
+const LANGUAGES: { key: Language; label: string }[] = [
+  { key: 'es', label: 'Español' },
+  { key: 'en', label: 'English' },
+  { key: 'pt', label: 'Português' },
+  { key: 'fr', label: 'Français' },
+  { key: 'de', label: 'Deutsch' },
+];
 
 export default function ProfileScreen({ navigation }: any) {
   const { user, signOut } = useAuth();
   const { isDark, toggleTheme, currentColors } = useTheme();
-  const { t } = useLanguage();
+  const { lang, setLanguage, t } = useLanguage();
+  const [showLanguageModal, setShowLanguageModal] = useState(false);
   const colors = currentColors;
   const userName = user?.user_metadata?.name || 'Guerrera';
   const userEmail = user?.email || '';
@@ -50,17 +60,57 @@ export default function ProfileScreen({ navigation }: any) {
             />
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.menuItem}>
+          <TouchableOpacity style={styles.menuItem} onPress={() => setShowLanguageModal(true)}>
             <View style={styles.menuLeft}>
               <Ionicons name="language-outline" size={22} color={colors.primary} />
               <Text style={styles.menuText}>{t('profile_language')}</Text>
             </View>
             <View style={styles.menuRight}>
-              <Text style={styles.menuValue}>Español</Text>
+              <Text style={styles.menuValue}>{LANGUAGES.find(l => l.key === lang)?.label || 'Español'}</Text>
               <Ionicons name="chevron-forward" size={20} color={colors.subtleText} />
             </View>
           </TouchableOpacity>
         </Card>
+
+        <Modal visible={showLanguageModal} transparent animationType="slide">
+          <View style={styles.modalOverlay}>
+            <View style={[styles.modalContent, { backgroundColor: colors.background }]}>
+              <Text style={[styles.modalTitle, { color: colors.text }]}>{t('profile_language')}</Text>
+              {LANGUAGES.map((language) => (
+                <TouchableOpacity
+                  key={language.key}
+                  style={[
+                    styles.languageOption,
+                    lang === language.key && { backgroundColor: colors.primaryLight || '#E8D5F5' },
+                  ]}
+                  onPress={() => {
+                    setLanguage(language.key);
+                    setShowLanguageModal(false);
+                  }}
+                >
+                  <Text
+                    style={[
+                      styles.languageText,
+                      { color: colors.text },
+                      lang === language.key && { color: colors.primary, fontWeight: typography.weights.bold },
+                    ]}
+                  >
+                    {language.label}
+                  </Text>
+                  {lang === language.key && (
+                    <Ionicons name="checkmark" size={22} color={colors.primary} />
+                  )}
+                </TouchableOpacity>
+              ))}
+              <TouchableOpacity
+                style={[styles.modalClose, { borderColor: colors.border }]}
+                onPress={() => setShowLanguageModal(false)}
+              >
+                <Text style={[styles.modalCloseText, { color: colors.primary }]}>{t('common_close')}</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
 
         <Card style={styles.sectionCard}>
           <Text style={styles.sectionTitle}>{t('profile_support')}</Text>
@@ -195,5 +245,46 @@ const styles = StyleSheet.create({
     color: defaultColors.subtleText,
     fontSize: typography.sizes.xs,
     marginTop: spacing.lg,
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContent: {
+    width: '80%',
+    borderRadius: borderRadius.lg,
+    padding: spacing.lg,
+    maxHeight: '60%',
+  },
+  modalTitle: {
+    fontSize: typography.sizes.xl,
+    fontWeight: typography.weights.bold,
+    marginBottom: spacing.lg,
+    textAlign: 'center',
+  },
+  languageOption: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: spacing.md,
+    paddingHorizontal: spacing.md,
+    borderRadius: borderRadius.md,
+    marginBottom: spacing.sm,
+  },
+  languageText: {
+    fontSize: typography.sizes.md,
+  },
+  modalClose: {
+    marginTop: spacing.md,
+    paddingVertical: spacing.md,
+    borderRadius: borderRadius.md,
+    borderWidth: 1,
+    alignItems: 'center',
+  },
+  modalCloseText: {
+    fontSize: typography.sizes.md,
+    fontWeight: typography.weights.semibold,
   },
 });

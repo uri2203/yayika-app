@@ -6,12 +6,10 @@ import {
   ScrollView,
   TouchableOpacity,
   TextInput,
-  FlatList,
   ActivityIndicator,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import * as WebBrowser from 'expo-web-browser';
 import { colors, typography, spacing, borderRadius } from '../../config/theme';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { supabase } from '../../config/supabase';
@@ -151,23 +149,32 @@ export default function StoreScreen({ navigation }: any) {
             {filteredProducts.length} producto{filteredProducts.length !== 1 ? 's' : ''}
           </Text>
         </View>
-      </ScrollView>
 
-      <FlatList
-        data={filteredProducts}
-        renderItem={renderProduct}
-        keyExtractor={(item) => item.id}
-        numColumns={2}
-        columnWrapperStyle={styles.productRow}
-        contentContainerStyle={styles.productGrid}
-        showsVerticalScrollIndicator={false}
-        ListEmptyComponent={
+        {filteredProducts.length === 0 ? (
           <View style={styles.emptyContainer}>
             <Ionicons name="search-outline" size={48} color={colors.subtleText} />
             <Text style={styles.emptyText}>No se encontraron productos</Text>
           </View>
-        }
-      />
+        ) : (
+          <View style={styles.productGrid}>
+            {filteredProducts.map((item) => (
+              <View key={item.id} style={styles.productCard}>
+                <View style={[styles.iconContainer, { backgroundColor: item.color + '20' }]}>
+                  <Ionicons name={item.icon as any} size={26} color={item.color} />
+                </View>
+                <Text style={styles.productName} numberOfLines={1}>{item.name}</Text>
+                <Text style={styles.productPrice}>{item.price}</Text>
+                <TouchableOpacity
+                  style={[styles.buyButton, { backgroundColor: item.color }]}
+                  onPress={() => handleProductPress(item)}
+                >
+                  <Text style={styles.buyButtonText}>{t('store_buy')}</Text>
+                </TouchableOpacity>
+              </View>
+            ))}
+          </View>
+        )}
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -195,7 +202,13 @@ const styles = StyleSheet.create({
   chipTextActive: { color: colors.white },
   productCountContainer: { marginTop: spacing.sm },
   productCount: { fontSize: typography.sizes.sm, color: colors.subtleText },
-  productGrid: { paddingHorizontal: spacing.lg, paddingBottom: spacing.xxl },
+  productGrid: { 
+    flexDirection: 'row', 
+    flexWrap: 'wrap', 
+    justifyContent: 'space-between',
+    paddingHorizontal: spacing.lg, 
+    paddingBottom: spacing.xxl 
+  },
   productRow: { justifyContent: 'space-between' },
   productCard: {
     width: '48%', backgroundColor: colors.white, borderRadius: borderRadius.md, padding: spacing.md,

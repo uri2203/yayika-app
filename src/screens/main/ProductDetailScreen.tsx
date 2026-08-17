@@ -4,9 +4,9 @@ import {
   Text,
   StyleSheet,
   ScrollView,
-  SafeAreaView,
   TouchableOpacity,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import * as WebBrowser from 'expo-web-browser';
 import { colors, typography, spacing, borderRadius } from '../../config/theme';
@@ -33,7 +33,7 @@ export default function ProductDetailScreen({ navigation, route }: any) {
   const reviews = [
     { name: 'María García', rating: 5, text: 'Increíble contenido. En 2 semanas lancé mi primer producto digital.' },
     { name: 'Carlos López', rating: 5, text: 'Muy práctico y fácil de seguir. Recomendado al 100%.' },
-    { name: 'Ana Martínez', rating: 4, text: 'Me encantó la sección de定价. Muy completa.' },
+    { name: 'Ana Martínez', rating: 4, text: 'Me encantó la sección de pricing. Muy completa.' },
   ];
 
   const handleBuy = async () => {

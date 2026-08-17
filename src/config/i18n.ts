@@ -58,6 +58,7 @@ const translations: Record<Language, Record<string, string>> = {
 
     // Courses
     courses_title: 'Mis Cursos',
+    courses_module: 'Módulo',
     courses_progress: 'Progreso general',
     courses_continue: 'Continuar',
     courses_start: 'Comenzar',
@@ -216,6 +217,20 @@ const translations: Record<Language, Record<string, string>> = {
     common_next: 'Siguiente',
     common_previous: 'Anterior',
     common_version: 'Versión',
+
+    // Affiliate
+    aff_title: 'Programa de Afiliadas',
+    aff_subtitle: 'Comparte y gana comisiones',
+    aff_your_code: 'Tu código de afiliada',
+    aff_copy: 'Copiar',
+    aff_copied: 'Código copiado',
+    aff_share: 'Compartir mi código',
+    aff_visits: 'Visitas',
+    aff_conversions: 'Conversiones',
+    aff_earnings: 'Ganancias',
+    aff_history: 'Historial de comisiones',
+    aff_paid: 'Pagado',
+    aff_pending: 'Pendiente',
   },
 
   en: {
@@ -262,6 +277,7 @@ const translations: Record<Language, Record<string, string>> = {
     pdetail_reviews: 'Reviews',
     pdetail_buy: 'Buy',
     courses_title: 'My Courses',
+    courses_module: 'Module',
     courses_progress: 'Overall progress',
     courses_continue: 'Continue',
     courses_start: 'Start',
@@ -388,6 +404,20 @@ const translations: Record<Language, Record<string, string>> = {
     common_next: 'Next',
     common_previous: 'Previous',
     common_version: 'Version',
+
+    // Affiliate
+    aff_title: 'Affiliate Program',
+    aff_subtitle: 'Share and earn commissions',
+    aff_your_code: 'Your affiliate code',
+    aff_copy: 'Copy',
+    aff_copied: 'Code copied',
+    aff_share: 'Share my code',
+    aff_visits: 'Visits',
+    aff_conversions: 'Conversions',
+    aff_earnings: 'Earnings',
+    aff_history: 'Commission history',
+    aff_paid: 'Paid',
+    aff_pending: 'Pending',
   },
 
   pt: {
@@ -434,6 +464,7 @@ const translations: Record<Language, Record<string, string>> = {
     pdetail_reviews: 'Avaliações',
     pdetail_buy: 'Comprar',
     courses_title: 'Meus Cursos',
+    courses_module: 'Módulo',
     courses_progress: 'Progresso geral',
     courses_continue: 'Continuar',
     courses_start: 'Começar',
@@ -560,6 +591,20 @@ const translations: Record<Language, Record<string, string>> = {
     common_next: 'Próximo',
     common_previous: 'Anterior',
     common_version: 'Versão',
+
+    // Affiliate
+    aff_title: 'Programa de Afiliadas',
+    aff_subtitle: 'Compartilhe e ganhe comissões',
+    aff_your_code: 'Seu código de afiliada',
+    aff_copy: 'Copiar',
+    aff_copied: 'Código copiado',
+    aff_share: 'Compartilhar meu código',
+    aff_visits: 'Visitas',
+    aff_conversions: 'Conversões',
+    aff_earnings: 'Ganhos',
+    aff_history: 'Histórico de comissões',
+    aff_paid: 'Pago',
+    aff_pending: 'Pendente',
   },
 
   fr: {
@@ -606,6 +651,7 @@ const translations: Record<Language, Record<string, string>> = {
     pdetail_reviews: 'Avis',
     pdetail_buy: 'Acheter',
     courses_title: 'Mes Cours',
+    courses_module: 'Module',
     courses_progress: 'Progrès général',
     courses_continue: 'Continuer',
     courses_start: 'Commencer',
@@ -631,7 +677,7 @@ const translations: Record<Language, Record<string, string>> = {
     cycle_menstrual: 'Menstruelle',
     cycle_follicular: 'Folliculaire',
     cycle_ovulatory: 'Ovulatoire',
-    cycle_luteal: ' lutéale',
+    cycle_luteal: 'Lutéale',
     cycle_rest: 'Repos et réflexion',
     cycle_creativity: 'Créativité élevée',
     cycle_energy: 'Énergie maximale',
@@ -732,6 +778,20 @@ const translations: Record<Language, Record<string, string>> = {
     common_next: 'Suivant',
     common_previous: 'Précédent',
     common_version: 'Version',
+
+    // Affiliate
+    aff_title: 'Programme d\'Affiliation',
+    aff_subtitle: 'Partage et gagne des commissions',
+    aff_your_code: 'Ton code d\'affiliation',
+    aff_copy: 'Copier',
+    aff_copied: 'Code copié',
+    aff_share: 'Partager mon code',
+    aff_visits: 'Visites',
+    aff_conversions: 'Conversions',
+    aff_earnings: 'Gains',
+    aff_history: 'Historique des commissions',
+    aff_paid: 'Payé',
+    aff_pending: 'En attente',
   },
 
   de: {
@@ -778,6 +838,7 @@ const translations: Record<Language, Record<string, string>> = {
     pdetail_reviews: 'Bewertungen',
     pdetail_buy: 'Kaufen',
     courses_title: 'Meine Kurse',
+    courses_module: 'Modul',
     courses_progress: 'Gesamtfortschritt',
     courses_continue: 'Fortsetzen',
     courses_start: 'Starten',
@@ -795,7 +856,7 @@ const translations: Record<Language, Record<string, string>> = {
     mem_semilla: 'Saat',
     mem_guerrera: 'Kriegerin',
     mem_diamante: 'Diamant',
-    mon_month: '/Monat',
+    mem_month: '/Monat',
     mem_popular: 'Beliebt',
     cycle_title: 'Mein Zyklus',
     cycle_day: 'Zyklustag',
@@ -904,6 +965,20 @@ const translations: Record<Language, Record<string, string>> = {
     common_next: 'Weiter',
     common_previous: 'Zurück',
     common_version: 'Version',
+
+    // Affiliate
+    aff_title: 'Affiliate-Programm',
+    aff_subtitle: 'Teile und verdiene Provisionen',
+    aff_your_code: 'Dein Affiliate-Code',
+    aff_copy: 'Kopieren',
+    aff_copied: 'Code kopiert',
+    aff_share: 'Code teilen',
+    aff_visits: 'Besuche',
+    aff_conversions: 'Conversions',
+    aff_earnings: 'Einnahmen',
+    aff_history: 'Provisionsverlauf',
+    aff_paid: 'Bezahlt',
+    aff_pending: 'Ausstehend',
   },
 };
 

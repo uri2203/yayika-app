@@ -1,52 +1,66 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, Alert, Share } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Alert, Share, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { colors, typography, spacing, borderRadius } from '../../config/theme';
+import { useLanguage } from '../../contexts/LanguageContext';
 import Card from '../../components/Card';
 import Button from '../../components/Button';
 
 const AFFILIATE_CODE = 'GUERRERA20';
 
-const stats = [
-  { label: 'Visitas', value: '124', icon: 'eye' as keyof typeof Ionicons.glyphMap, color: colors.primary },
-  { label: 'Conversiones', value: '18', icon: 'cart' as keyof typeof Ionicons.glyphMap, color: colors.turquoise },
-  { label: 'Ganancias', value: '$1,440', icon: 'cash' as keyof typeof Ionicons.glyphMap, color: colors.gold },
-];
-
-const history = [
-  { id: '1', date: '10 Ago 2026', amount: '+$120', status: 'Pagado' },
-  { id: '2', date: '05 Ago 2026', amount: '+$80', status: 'Pagado' },
-  { id: '3', date: '01 Ago 2026', amount: '+$200', status: 'Pendiente' },
-];
-
 export default function AffiliateScreen() {
   const [affiliateCode] = useState(AFFILIATE_CODE);
+  const { t } = useLanguage();
+
+  const stats = [
+    { label: t('aff_visits'), value: '124', icon: 'eye' as keyof typeof Ionicons.glyphMap, color: colors.primary },
+    { label: t('aff_conversions'), value: '18', icon: 'cart' as keyof typeof Ionicons.glyphMap, color: colors.turquoise },
+    { label: t('aff_earnings'), value: '$1,440', icon: 'cash' as keyof typeof Ionicons.glyphMap, color: colors.gold },
+  ];
+
+  const history = [
+    { id: '1', date: '10 Ago 2026', amount: '+$120', statusKey: 'aff_paid' },
+    { id: '2', date: '05 Ago 2026', amount: '+$80', statusKey: 'aff_paid' },
+    { id: '3', date: '01 Ago 2026', amount: '+$200', statusKey: 'aff_pending' },
+  ];
 
   const handleShare = async () => {
     try {
       await Share.share({
-        message: `¡Únete a Yayika con mi código ${affiliateCode} y obtén un descuento! 🎉\n\nhttps://yayika.app/ref/${affiliateCode}`,
+        message: `Únete a Yayika con mi código ${affiliateCode} y obtén un descuento!\n\nhttps://yayika.app/ref/${affiliateCode}`,
       });
     } catch {}
   };
 
-  const handleCopyCode = () => {
-    Alert.alert('Código copiado', `Tu código: ${affiliateCode}`);
+  const handleCopyCode = async () => {
+    try {
+      if (Platform.OS === 'web') {
+        if (navigator.clipboard) {
+          await navigator.clipboard.writeText(affiliateCode);
+        }
+      } else {
+        const Clipboard = await import('expo-clipboard');
+        await Clipboard.setStringAsync(affiliateCode);
+      }
+      Alert.alert(t('aff_copied'), `${t('aff_your_code')}: ${affiliateCode}`);
+    } catch {
+      Alert.alert(t('aff_copied'), `${t('aff_your_code')}: ${affiliateCode}`);
+    }
   };
 
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
-        <Text style={styles.title}>Programa de Afiliadas</Text>
-        <Text style={styles.subtitle}>Comparte y gana comisiones</Text>
+        <Text style={styles.title}>{t('aff_title')}</Text>
+        <Text style={styles.subtitle}>{t('aff_subtitle')}</Text>
 
         <Card style={styles.codeCard}>
-          <Text style={styles.codeLabel}>Tu código de afiliada</Text>
+          <Text style={styles.codeLabel}>{t('aff_your_code')}</Text>
           <View style={styles.codeRow}>
             <Text style={styles.codeText}>{affiliateCode}</Text>
             <Button
-              title="Copiar"
+              title={t('aff_copy')}
               onPress={handleCopyCode}
               variant="secondary"
               style={styles.copyButton}
@@ -65,14 +79,14 @@ export default function AffiliateScreen() {
         </View>
 
         <Button
-          title="Compartir mi código"
+          title={t('aff_share')}
           onPress={handleShare}
           variant="primary"
           style={styles.shareButton}
         />
 
         <Card style={styles.historyCard}>
-          <Text style={styles.historyTitle}>Historial de comisiones</Text>
+          <Text style={styles.historyTitle}>{t('aff_history')}</Text>
           {history.map((item) => (
             <View key={item.id} style={styles.historyRow}>
               <View>
@@ -80,10 +94,10 @@ export default function AffiliateScreen() {
                 <Text
                   style={[
                     styles.historyStatus,
-                    item.status === 'Pagado' ? styles.paid : styles.pending,
+                    item.statusKey === 'aff_paid' ? styles.paid : styles.pending,
                   ]}
                 >
-                  {item.status}
+                  {t(item.statusKey)}
                 </Text>
               </View>
               <Text style={styles.historyAmount}>{item.amount}</Text>

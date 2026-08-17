@@ -8,29 +8,38 @@ import { useLanguage } from '../../contexts/LanguageContext';
 
 
 const BADGES = [
-  { emoji: '🌙', name: 'Primera fase', description: 'Registra tu primer ciclo', unlocked: true, category: 'Ciclo' },
-  { emoji: '💰', name: 'Ahorradora', description: 'Ahorra $500 en un mes', unlocked: true, category: 'Finanzas' },
-  { emoji: '📋', name: 'Productiva', description: 'Completa 5 retos', unlocked: true, category: 'Productividad' },
-  { emoji: '🔥', name: 'Racha de 7', description: '7 días seguidos activa', unlocked: true, category: 'Productividad' },
-  { emoji: '🌸', name: 'Ciclo consciente', description: '30 días registrando', unlocked: true, category: 'Ciclo' },
-  { emoji: '💎', name: 'Guerrera', description: 'Suscríbete al plan Guerrera', unlocked: false, category: 'Especiales' },
-  { emoji: '🎯', name: 'Meta cumplida', description: 'Alcanza tu meta de ahorro', unlocked: false, category: 'Finanzas' },
-  { emoji: '👥', name: 'Influencer', description: '10 referidas activas', unlocked: false, category: 'Social' },
-  { emoji: '🏆', name: 'Top 10', description: 'Entra al ranking semanal', unlocked: false, category: 'Social' },
-  { emoji: '⭐', name: '5 estrellas', description: 'Recibe 5 reseñas positivas', unlocked: false, category: 'Social' },
-  { emoji: '📚', name: 'Estudiosa', description: 'Completa todos los módulos', unlocked: false, category: 'Productividad' },
-  { emoji: '🌟', name: 'Leyenda', description: 'Desbloquea todos los logros', unlocked: false, category: 'Especiales' },
+  { emoji: '🌙', name: 'Primera fase', description: 'Registra tu primer ciclo', unlocked: true, categoryKey: 'cycle' },
+  { emoji: '💰', name: 'Ahorradora', description: 'Ahorra $500 en un mes', unlocked: true, categoryKey: 'finance' },
+  { emoji: '📋', name: 'Productiva', description: 'Completa 5 retos', unlocked: true, categoryKey: 'productivity' },
+  { emoji: '🔥', name: 'Racha de 7', description: '7 días seguidos activa', unlocked: true, categoryKey: 'productivity' },
+  { emoji: '🌸', name: 'Ciclo consciente', description: '30 días registrando', unlocked: true, categoryKey: 'cycle' },
+  { emoji: '💎', name: 'Guerrera', description: 'Suscríbete al plan Guerrera', unlocked: false, categoryKey: 'special' },
+  { emoji: '🎯', name: 'Meta cumplida', description: 'Alcanza tu meta de ahorro', unlocked: false, categoryKey: 'finance' },
+  { emoji: '👥', name: 'Influencer', description: '10 referidas activas', unlocked: false, categoryKey: 'social' },
+  { emoji: '🏆', name: 'Top 10', description: 'Entra al ranking semanal', unlocked: false, categoryKey: 'social' },
+  { emoji: '⭐', name: '5 estrellas', description: 'Recibe 5 reseñas positivas', unlocked: false, categoryKey: 'social' },
+  { emoji: '📚', name: 'Estudiosa', description: 'Completa todos los módulos', unlocked: false, categoryKey: 'productivity' },
+  { emoji: '🌟', name: 'Leyenda', description: 'Desbloquea todos los logros', unlocked: false, categoryKey: 'special' },
 ];
 
+const CATEGORY_KEYS = ['all', 'cycle', 'finance', 'productivity', 'social', 'special'] as const;
+
 export default function BadgesScreen({ navigation }: any) {
-  const [selectedCategory, setSelectedCategory] = useState('Todos');
+  const [selectedCategoryKey, setSelectedCategoryKey] = useState<string>('all');
   const { t } = useLanguage();
 
-  const CATEGORIES = [t('badges_all'), t('badges_cycle'), t('badges_finance'), t('badges_productivity'), t('badges_social'), t('badges_special')];
+  const CATEGORY_LABELS: Record<string, string> = {
+    all: t('badges_all'),
+    cycle: t('badges_cycle'),
+    finance: t('badges_finance'),
+    productivity: t('badges_productivity'),
+    social: t('badges_social'),
+    special: t('badges_special'),
+  };
 
-  const filteredBadges = selectedCategory === 'Todos'
+  const filteredBadges = selectedCategoryKey === 'all'
     ? BADGES
-    : BADGES.filter((b) => b.category === selectedCategory);
+    : BADGES.filter((b) => b.categoryKey === selectedCategoryKey);
 
   const unlockedCount = BADGES.filter((b) => b.unlocked).length;
 
@@ -53,14 +62,14 @@ export default function BadgesScreen({ navigation }: any) {
 
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.categoriesScroll}>
           <View style={styles.categoriesRow}>
-            {CATEGORIES.map((cat) => (
+            {CATEGORY_KEYS.map((key) => (
               <TouchableOpacity
-                key={cat}
-                style={[styles.categoryChip, selectedCategory === cat && styles.categoryChipActive]}
-                onPress={() => setSelectedCategory(cat)}
+                key={key}
+                style={[styles.categoryChip, selectedCategoryKey === key && styles.categoryChipActive]}
+                onPress={() => setSelectedCategoryKey(key)}
               >
-                <Text style={[styles.categoryText, selectedCategory === cat && styles.categoryTextActive]}>
-                  {cat}
+                <Text style={[styles.categoryText, selectedCategoryKey === key && styles.categoryTextActive]}>
+                  {CATEGORY_LABELS[key]}
                 </Text>
               </TouchableOpacity>
             ))}

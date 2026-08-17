@@ -6,24 +6,59 @@ import {
   ScrollView,
   SafeAreaView,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { colors, typography, spacing, borderRadius } from '../../config/theme';
 import { useLanguage } from '../../contexts/LanguageContext';
 
-const lessons = [
-  { id: '1', title: '¿Qué es un producto digital?', duration: '12 min', status: 'completed' },
-  { id: '2', title: 'Encuentra tu nicho', duration: '18 min', status: 'completed' },
-  { id: '3', title: 'Valida tu idea', duration: '15 min', status: 'completed' },
-  { id: '4', title: 'Crea tu primer producto', duration: '25 min', status: 'current' },
-  { id: '5', title: 'Precia tu producto', duration: '20 min', status: 'locked' },
-  { id: '6', title: 'Plataformas de venta', duration: '22 min', status: 'locked' },
-  { id: '7', title: 'Marketing básico', duration: '18 min', status: 'locked' },
-  { id: '8', title: 'Lanza tu producto', duration: '15 min', status: 'locked' },
-];
+const MODULE_LESSONS: Record<string, { id: string; title: string; duration: string; status: string }[]> = {
+  '1': [
+    { id: '1', title: '¿Qué es un producto digital?', duration: '12 min', status: 'completed' },
+    { id: '2', title: 'Encuentra tu nicho', duration: '18 min', status: 'completed' },
+    { id: '3', title: 'Valida tu idea', duration: '15 min', status: 'completed' },
+    { id: '4', title: 'Crea tu primer producto', duration: '25 min', status: 'current' },
+    { id: '5', title: 'Precia tu producto', duration: '20 min', status: 'locked' },
+    { id: '6', title: 'Plataformas de venta', duration: '22 min', status: 'locked' },
+    { id: '7', title: 'Marketing básico', duration: '18 min', status: 'locked' },
+    { id: '8', title: 'Lanza tu producto', duration: '15 min', status: 'locked' },
+  ],
+  '2': [
+    { id: '1', title: 'Tipos de productos digitales', duration: '15 min', status: 'current' },
+    { id: '2', title: 'Herramientas de creación', duration: '20 min', status: 'locked' },
+    { id: '3', title: 'Diseño y branding', duration: '18 min', status: 'locked' },
+    { id: '4', title: 'Contenido de valor', duration: '22 min', status: 'locked' },
+    { id: '5', title: 'Tu primer prototipo', duration: '25 min', status: 'locked' },
+  ],
+  '3': [
+    { id: '1', title: 'Estrategias de pricing', duration: '18 min', status: 'current' },
+    { id: '2', title: 'Métodos de pago', duration: '15 min', status: 'locked' },
+    { id: '3', title: 'Embudos de venta', duration: '22 min', status: 'locked' },
+    { id: '4', title: 'Copywriting de ventas', duration: '20 min', status: 'locked' },
+    { id: '5', title: 'Ofertas irresistibles', duration: '18 min', status: 'locked' },
+  ],
+  '4': [
+    { id: '1', title: 'Gumroad y alternativas', duration: '15 min', status: 'current' },
+    { id: '2', title: 'Tu propia web', duration: '20 min', status: 'locked' },
+    { id: '3', title: 'Marketplaces', duration: '18 min', status: 'locked' },
+    { id: '4', title: 'Automatización de entrega', duration: '15 min', status: 'locked' },
+  ],
+  '5': [
+    { id: '1', title: 'Email marketing', duration: '20 min', status: 'current' },
+    { id: '2', title: 'Redes sociales', duration: '18 min', status: 'locked' },
+    { id: '3', title: 'Colaboraciones', duration: '15 min', status: 'locked' },
+    { id: '4', title: 'Paid ads básico', duration: '22 min', status: 'locked' },
+    { id: '5', title: 'Escalamiento', duration: '25 min', status: 'locked' },
+  ],
+};
 
 export default function CourseDetailScreen({ navigation, route }: any) {
   const { t } = useLanguage();
+  const module = route?.params?.module;
+  const moduleId = module?.id?.toString() || '1';
+  const moduleTitle = module?.title || 'Fundamentos de Productos Digitales';
+  const lessons = MODULE_LESSONS[moduleId] || MODULE_LESSONS['1'];
+
   const completedCount = lessons.filter(l => l.status === 'completed').length;
   const progress = completedCount / lessons.length;
 
@@ -43,8 +78,11 @@ export default function CourseDetailScreen({ navigation, route }: any) {
   const handleContinue = () => {
     const currentLesson = lessons.find(l => l.status === 'current');
     if (currentLesson) {
-      // Navigate to lesson player
-      console.log('Continuar lección:', currentLesson.title);
+      Alert.alert(
+        t('cdetail_continue'),
+        `${currentLesson.title} (${currentLesson.duration})`,
+        [{ text: t('common_close') }]
+      );
     }
   };
 
@@ -53,8 +91,8 @@ export default function CourseDetailScreen({ navigation, route }: any) {
       <ScrollView contentContainerStyle={styles.scrollContent}>
         {/* Module Header */}
         <View style={styles.header}>
-          <Text style={styles.moduleLabel}>Módulo 1</Text>
-          <Text style={styles.moduleTitle}>Fundamentos de Productos Digitales</Text>
+          <Text style={styles.moduleLabel}>{t('courses_module')} {moduleId}</Text>
+          <Text style={styles.moduleTitle}>{moduleTitle}</Text>
 
           {/* Progress Bar */}
           <View style={styles.progressContainer}>
