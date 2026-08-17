@@ -34,6 +34,8 @@ import ProductDetailScreen from '../screens/main/ProductDetailScreen';
 import CourseDetailScreen from '../screens/main/CourseDetailScreen';
 import WellnessPlannerScreen from '../screens/main/WellnessPlannerScreen';
 import CommunityScreen from '../screens/main/CommunityScreen';
+import OnboardingScreen from '../screens/main/OnboardingScreen';
+import GrowthCoachScreen from '../screens/main/GrowthCoachScreen';
 
 const AuthStack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -72,6 +74,8 @@ function HomeStackNavigator() {
       <HomeStack.Screen name="Rankings" component={RankingsScreen} />
       <HomeStack.Screen name="WellnessPlanner" component={WellnessPlannerScreen} />
       <HomeStack.Screen name="Community" component={CommunityScreen} />
+      <HomeStack.Screen name="Onboarding" component={OnboardingScreen} />
+      <HomeStack.Screen name="GrowthCoach" component={GrowthCoachScreen} />
     </HomeStack.Navigator>
   );
 }

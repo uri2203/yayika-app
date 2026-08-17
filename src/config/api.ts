@@ -76,6 +76,27 @@ export async function aiCycleIntelligence(lang = 'es') {
   );
 }
 
+// ──── AI Growth Coach ────────────────────────────────
+export interface GrowthPlan {
+  monthlyGoal: {
+    title: string;
+    description: string;
+    progress: number;
+    daysCompleted: number;
+    totalDays: number;
+  };
+  milestones: { id: string; title: string; completed: boolean }[];
+  dailyActions: { id: string; title: string; completed: boolean }[];
+  quote: string;
+  weekData: number[];
+}
+
+export async function aiGrowthCoach(params: { user_id?: string; lang?: string }) {
+  return callFunction<{ plan: GrowthPlan; lang: string }>(
+    'ai-growth-coach', params, true
+  );
+}
+
 // ──── AI Financial Coach ─────────────────────────────
 export interface FinancialCoachParams {
   user_id: string;
@@ -170,6 +191,42 @@ export async function aiSmartPush(params: SmartPushParams) {
   }>('ai-smart-push', params, true);
 }
 
+// ──── Stripe Marketplace Checkout ───────────────────
+export async function stripeMarketplaceCheckout(params: {
+  tier: string;
+  price_id?: string;
+  success_url?: string;
+  cancel_url?: string;
+}) {
+  return callFunction<{
+    url: string;
+    session_id: string;
+  }>('stripe-marketplace-checkout', params, true);
+}
+
+// ──── Stripe Connect Onboard ────────────────────────
+export async function stripeConnectOnboard() {
+  return callFunction<{
+    url: string;
+  }>('stripe-connect-onboard', {}, true);
+}
+
+// ──── Stripe Connect Payout ─────────────────────────
+export async function stripeConnectPayout(params?: { amount?: number }) {
+  return callFunction<{
+    success: boolean;
+    balance?: number;
+    message?: string;
+  }>('stripe-connect-payout', params ?? {}, true);
+}
+
+// ──── Stripe Connect Dashboard ──────────────────────
+export async function stripeConnectDashboard() {
+  return callFunction<{
+    url: string;
+  }>('stripe-connect-dashboard', {}, true);
+}
+
 // ──── Product Catalog ────────────────────────────────
 export async function getProductCatalog(category?: string) {
   return callFunction<{
@@ -197,6 +254,21 @@ export async function getProductDetail(productId: string) {
     progressPct: number;
     translations: Record<string, string>;
   }>('ai-product-catalog', { action: 'getProductDetail', product_id: productId }, true);
+}
+
+// ──── AI Onboarding Preferences ─────────────────────
+export interface OnboardingPreferences {
+  lang: string;
+  goals: string[];
+  cycle_phase: string;
+  income_range: string;
+  notifications: { push: boolean; email: boolean };
+}
+
+export async function aiOnboarding(params: OnboardingPreferences) {
+  return callFunction<{ success: boolean }>(
+    'ai-onboarding', { action: 'savePreferences', ...params }, true
+  );
 }
 
 // ──── Onboarding ─────────────────────────────────────
@@ -417,4 +489,40 @@ export async function getAffiliate(userId: string) {
     .single();
   if (error && error.code !== 'PGRST116') throw error;
   return data;
+}
+
+// ──── Affiliate: Gana con Yayika ─────────────────────
+export interface GanaConYayikaResponse {
+  affiliate_code: string;
+  referral_link: string;
+  stats: {
+    total_referrals: number;
+    total_earnings: number;
+    pending_earnings: number;
+  };
+  history: {
+    id: string;
+    date: string;
+    amount: number;
+    status: 'paid' | 'pending';
+  }[];
+}
+
+export async function aiGanaConYayika(params: { lang: string }) {
+  return callFunction<GanaConYayikaResponse>(
+    'ai-gana-con-yayika', { action: 'getAffiliateData', lang: params.lang }, true
+  );
+}
+
+// ──── Affiliate: Share & Earn ────────────────────────
+export interface ShareEarnResponse {
+  share_message: string;
+  share_link: string;
+  earnings: number;
+}
+
+export async function aiShareEarn(params: { lang: string }) {
+  return callFunction<ShareEarnResponse>(
+    'ai-share-earn', { action: 'getShareData', lang: params.lang }, true
+  );
 }

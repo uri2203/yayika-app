@@ -1,35 +1,64 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, Alert, Share, Platform } from 'react-native';
+import React, { useState, useEffect, useCallback } from 'react';
+import { View, Text, StyleSheet, ScrollView, Alert, Share, Platform, RefreshControl } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { colors, typography, spacing, borderRadius } from '../../config/theme';
 import { useLanguage } from '../../contexts/LanguageContext';
+import { useAuth } from '../../contexts/AuthContext';
+import { aiGanaConYayika, aiShareEarn, GanaConYayikaResponse, ShareEarnResponse } from '../../config/api';
 import Card from '../../components/Card';
 import Button from '../../components/Button';
 
-const AFFILIATE_CODE = 'GUERRERA20';
-
 export default function AffiliateScreen() {
-  const [affiliateCode] = useState(AFFILIATE_CODE);
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
+  const { user } = useAuth();
+  const [affiliateData, setAffiliateData] = useState<GanaConYayikaResponse | null>(null);
+  const [shareData, setShareData] = useState<ShareEarnResponse | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
 
-  const stats = [
-    { label: t('aff_visits'), value: '124', icon: 'eye' as keyof typeof Ionicons.glyphMap, color: colors.primary },
-    { label: t('aff_conversions'), value: '18', icon: 'cart' as keyof typeof Ionicons.glyphMap, color: colors.turquoise },
-    { label: t('aff_earnings'), value: '$1,440', icon: 'cash' as keyof typeof Ionicons.glyphMap, color: colors.gold },
-  ];
+  const fetchData = useCallback(async () => {
+    if (!user) return;
+    try {
+      const [aff, share] = await Promise.all([
+        aiGanaConYayika({ lang }),
+        aiShareEarn({ lang }),
+      ]);
+      setAffiliateData(aff);
+      setShareData(share);
+    } catch (e) {
+      console.error('Failed to load affiliate data', e);
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
+    }
+  }, [user, lang]);
 
-  const history = [
-    { id: '1', date: '10 Ago 2026', amount: '+$120', statusKey: 'aff_paid' },
-    { id: '2', date: '05 Ago 2026', amount: '+$80', statusKey: 'aff_paid' },
-    { id: '3', date: '01 Ago 2026', amount: '+$200', statusKey: 'aff_pending' },
-  ];
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    fetchData();
+  }, [fetchData]);
+
+  const affiliateCode = affiliateData?.affiliate_code ?? '';
+  const referralLink = affiliateData?.referral_link ?? '';
+  const stats = affiliateData
+    ? [
+        { label: t('aff_referrals'), value: String(affiliateData.stats.total_referrals), icon: 'people' as keyof typeof Ionicons.glyphMap, color: colors.primary },
+        { label: t('aff_earnings'), value: `$${affiliateData.stats.total_earnings}`, icon: 'cash' as keyof typeof Ionicons.glyphMap, color: colors.gold },
+        { label: t('aff_pending'), value: `$${affiliateData.stats.pending_earnings}`, icon: 'time' as keyof typeof Ionicons.glyphMap, color: colors.turquoise },
+      ]
+    : [];
+
+  const history = affiliateData?.history ?? [];
 
   const handleShare = async () => {
     try {
-      await Share.share({
-        message: t('aff_share_message').replace('{code}', affiliateCode),
-      });
+      const message = shareData?.share_message ?? t('aff_share_message').replace('{code}', affiliateCode);
+      await Share.share({ message });
     } catch {}
   };
 
@@ -49,9 +78,29 @@ export default function AffiliateScreen() {
     Alert.alert(t('aff_copied'), `${t('aff_your_code')}: ${affiliateCode}`);
   };
 
+  const handleCopyLink = async () => {
+    if (!referralLink) return;
+    try {
+      if (Platform.OS === 'web') {
+        if (navigator.clipboard) {
+          await navigator.clipboard.writeText(referralLink);
+        }
+      } else {
+        const Clipboard = await import('expo-clipboard');
+        await Clipboard.setStringAsync(referralLink);
+      }
+    } catch {
+      return;
+    }
+    Alert.alert(t('aff_copied'), t('aff_link_copied'));
+  };
+
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContent}>
+      <ScrollView
+        contentContainerStyle={styles.scrollContent}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={colors.primary} />}
+      >
         <Text style={styles.title}>{t('aff_title')}</Text>
         <Text style={styles.subtitle}>{t('aff_subtitle')}</Text>
 
@@ -66,6 +115,17 @@ export default function AffiliateScreen() {
               style={styles.copyButton}
             />
           </View>
+          {referralLink ? (
+            <View style={styles.linkRow}>
+              <Text style={styles.linkLabel} numberOfLines={1}>{referralLink}</Text>
+              <Button
+                title={t('aff_copy_link')}
+                onPress={handleCopyLink}
+                variant="secondary"
+                style={styles.copyButton}
+              />
+            </View>
+          ) : null}
         </Card>
 
         <View style={styles.statsRow}>
@@ -85,24 +145,35 @@ export default function AffiliateScreen() {
           style={styles.shareButton}
         />
 
+        {shareData?.earnings ? (
+          <Card style={styles.historyCard}>
+            <Text style={styles.historyTitle}>{t('aff_share_earnings')}</Text>
+            <Text style={styles.shareEarningsValue}>${shareData.earnings}</Text>
+          </Card>
+        ) : null}
+
         <Card style={styles.historyCard}>
           <Text style={styles.historyTitle}>{t('aff_history')}</Text>
-          {history.map((item) => (
-            <View key={item.id} style={styles.historyRow}>
-              <View>
-                <Text style={styles.historyDate}>{item.date}</Text>
-                <Text
-                  style={[
-                    styles.historyStatus,
-                    item.statusKey === 'aff_paid' ? styles.paid : styles.pending,
-                  ]}
-                >
-                  {t(item.statusKey)}
-                </Text>
+          {history.length === 0 && !loading ? (
+            <Text style={styles.emptyText}>{t('aff_no_history')}</Text>
+          ) : (
+            history.map((item) => (
+              <View key={item.id} style={styles.historyRow}>
+                <View>
+                  <Text style={styles.historyDate}>{item.date}</Text>
+                  <Text
+                    style={[
+                      styles.historyStatus,
+                      item.status === 'paid' ? styles.paid : styles.pending,
+                    ]}
+                  >
+                    {item.status === 'paid' ? t('aff_paid') : t('aff_pending')}
+                  </Text>
+                </View>
+                <Text style={styles.historyAmount}>+${item.amount}</Text>
               </View>
-              <Text style={styles.historyAmount}>{item.amount}</Text>
-            </View>
-          ))}
+            ))
+          )}
         </Card>
       </ScrollView>
     </SafeAreaView>
@@ -149,6 +220,17 @@ const styles = StyleSheet.create({
     letterSpacing: 2,
     marginRight: spacing.md,
   },
+  linkRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: spacing.sm,
+  },
+  linkLabel: {
+    fontSize: typography.sizes.sm,
+    color: colors.subtleText,
+    marginRight: spacing.md,
+    flex: 1,
+  },
   copyButton: {
     paddingVertical: spacing.sm,
     paddingHorizontal: spacing.md,
@@ -188,6 +270,11 @@ const styles = StyleSheet.create({
     color: colors.text,
     marginBottom: spacing.md,
   },
+  shareEarningsValue: {
+    fontSize: typography.sizes.xl,
+    fontWeight: typography.weights.bold,
+    color: colors.gold,
+  },
   historyRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -214,5 +301,11 @@ const styles = StyleSheet.create({
     fontSize: typography.sizes.md,
     fontWeight: typography.weights.bold,
     color: colors.turquoise,
+  },
+  emptyText: {
+    fontSize: typography.sizes.sm,
+    color: colors.subtleText,
+    textAlign: 'center',
+    paddingVertical: spacing.md,
   },
 });

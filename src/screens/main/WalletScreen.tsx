@@ -1,26 +1,25 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
   StyleSheet,
   ScrollView,
   TouchableOpacity,
+  Alert,
+  ActivityIndicator,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
+import * as WebBrowser from 'expo-web-browser';
 import { colors, typography, spacing, borderRadius } from '../../config/theme';
 import { useLanguage } from '../../contexts/LanguageContext';
-
-const TRANSACTIONS_DATA = [
-  { id: '1', descKey: 'wallet_tx_affiliate' as const, amount: 89.5, date: '12 ago 2026', type: 'income' as const },
-  { id: '2', descKey: 'wallet_tx_direct_sale' as const, amount: 199, date: '10 ago 2026', type: 'income' as const },
-  { id: '3', descKey: 'wallet_tx_spei' as const, amount: -500, date: '8 ago 2026', type: 'expense' as const },
-  { id: '4', descKey: 'wallet_tx_affiliate' as const, amount: 45, date: '5 ago 2026', type: 'income' as const },
-  { id: '5', descKey: 'wallet_tx_guerrera' as const, amount: 15, date: '3 ago 2026', type: 'income' as const },
-  { id: '6', descKey: 'wallet_tx_cycle_sale' as const, amount: 199, date: '1 ago 2026', type: 'income' as const },
-  { id: '7', descKey: 'wallet_tx_affiliate' as const, amount: 67.5, date: 'Ago 2026', type: 'income' as const },
-  { id: '8', descKey: 'wallet_tx_spei' as const, amount: -300, date: 'Jul 2026', type: 'expense' as const },
-];
+import { useAuth } from '../../contexts/AuthContext';
+import {
+  getProfile,
+  getTransactions,
+  stripeConnectPayout,
+  stripeConnectDashboard,
+} from '../../config/api';
 
 function formatMoney(n: number) {
   const sign = n >= 0 ? '+' : '';
@@ -29,21 +28,85 @@ function formatMoney(n: number) {
 
 export default function WalletScreen({ navigation }: any) {
   const { t } = useLanguage();
+  const { user } = useAuth();
+  const [loading, setLoading] = useState(true);
+  const [balance, setBalance] = useState(0);
+  const [transactions, setTransactions] = useState<any[]>([]);
+  const [withdrawing, setWithdrawing] = useState(false);
+
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  const loadData = async () => {
+    try {
+      if (!user) return;
+      const [profile, txs] = await Promise.all([
+        getProfile(user.id),
+        getTransactions(user.id, 20),
+      ]);
+      setBalance(profile?.balance ?? 0);
+      setTransactions(txs);
+    } catch {
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleWithdraw = async () => {
+    try {
+      setWithdrawing(true);
+      const res = await stripeConnectPayout();
+      if (res.balance !== undefined) setBalance(res.balance);
+      Alert.alert(t('wallet_withdraw_success'), res.message ?? '');
+      loadData();
+    } catch {
+      Alert.alert(t('common_error'), t('common_open_link_error'));
+    } finally {
+      setWithdrawing(false);
+    }
+  };
+
+  const handleViewInStripe = async () => {
+    try {
+      const res = await stripeConnectDashboard();
+      await WebBrowser.openBrowserAsync(res.url);
+    } catch {
+      Alert.alert(t('common_error'), t('common_open_link_error'));
+    }
+  };
+
+  if (loading) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <ActivityIndicator size="large" color={colors.primary} style={{ marginTop: 60 }} />
+      </SafeAreaView>
+    );
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
         {/* Balance Card */}
         <View style={styles.balanceCard}>
           <Text style={styles.balanceLabel}>{t('wallet_available')}</Text>
-          <Text style={styles.balanceAmount}>$1,247.50 MXN</Text>
-          <TouchableOpacity style={styles.withdrawButton}>
-            <Text style={styles.withdrawButtonText}>{t('wallet_withdraw')}</Text>
+          <Text style={styles.balanceAmount}>
+            ${balance.toLocaleString('es-MX', { minimumFractionDigits: 2 })} MXN
+          </Text>
+          <TouchableOpacity
+            style={[styles.withdrawButton, withdrawing && { opacity: 0.6 }]}
+            onPress={handleWithdraw}
+            disabled={withdrawing}
+          >
+            <Text style={styles.withdrawButtonText}>
+              {withdrawing ? t('wallet_withdrawing') : t('wallet_withdraw')}
+            </Text>
           </TouchableOpacity>
         </View>
 
         {/* Quick Actions */}
         <View style={styles.quickActions}>
-          <TouchableOpacity style={styles.actionButton}>
+          <TouchableOpacity style={styles.actionButton} onPress={handleViewInStripe}>
             <View style={[styles.actionIcon, { backgroundColor: '#D1FAE5' }]}>
               <Ionicons name="arrow-forward" size={20} color={colors.turquoise} />
             </View>
@@ -55,7 +118,7 @@ export default function WalletScreen({ navigation }: any) {
             </View>
             <Text style={styles.actionText}>{t('wallet_request')}</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.actionButton}>
+          <TouchableOpacity style={styles.actionButton} onPress={handleViewInStripe}>
             <View style={[styles.actionIcon, { backgroundColor: '#FCE7F3' }]}>
               <Ionicons name="time" size={20} color={colors.rose} />
             </View>
@@ -65,8 +128,13 @@ export default function WalletScreen({ navigation }: any) {
 
         {/* Transaction History */}
         <Text style={styles.sectionTitle}>{t('wallet_history')}</Text>
-        {TRANSACTIONS_DATA.map((tx) => {
-          const isIncome = tx.type === 'income';
+        {transactions.length === 0 && (
+          <Text style={{ color: colors.subtleText, marginBottom: spacing.md }}>
+            {t('wallet_no_transactions')}
+          </Text>
+        )}
+        {transactions.map((tx) => {
+          const isIncome = tx.amount > 0;
           return (
             <View key={tx.id} style={styles.txRow}>
               <View
@@ -82,7 +150,7 @@ export default function WalletScreen({ navigation }: any) {
                 />
               </View>
               <View style={styles.txInfo}>
-                <Text style={styles.txDesc}>{t(tx.descKey)}</Text>
+                <Text style={styles.txDesc}>{tx.category ?? tx.type}</Text>
                 <Text style={styles.txDate}>{tx.date}</Text>
               </View>
               <Text
