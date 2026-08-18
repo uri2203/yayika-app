@@ -7,6 +7,7 @@ import { LanguageProvider } from './src/contexts/LanguageContext';
 import { NotificationsProvider } from './src/contexts/NotificationsContext';
 import Navigation from './src/navigation';
 import LoadingSpinner from './src/components/LoadingSpinner';
+import ErrorBoundary from './src/components/ErrorBoundary';
 import { colors } from './src/config/theme';
 
 export default function App() {
@@ -25,16 +26,18 @@ export default function App() {
   }
 
   return (
-    <LanguageProvider>
-      <ThemeProvider>
-        <AuthProvider>
-          <NotificationsProvider>
-            <Navigation />
-            <StatusBar style="auto" />
-          </NotificationsProvider>
-        </AuthProvider>
-      </ThemeProvider>
-    </LanguageProvider>
+    <ErrorBoundary>
+      <LanguageProvider>
+        <ThemeProvider>
+          <AuthProvider>
+            <NotificationsProvider>
+              <Navigation />
+              <StatusBar style="auto" />
+            </NotificationsProvider>
+          </AuthProvider>
+        </ThemeProvider>
+      </LanguageProvider>
+    </ErrorBoundary>
   );
 }
 

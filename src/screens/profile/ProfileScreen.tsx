@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
+import * as Updates from 'expo-updates';
+import Constants from 'expo-constants';
 import { useAuth } from '../../contexts/AuthContext';
 import { useTheme } from '../../contexts/ThemeContext';
 import { useLanguage } from '../../contexts/LanguageContext';
-import { typography, spacing, borderRadius } from '../../config/theme';
+import { colors, typography, spacing, borderRadius } from '../../config/theme';
 import { supabase } from '../../config/supabase';
 
 const AVATAR_COLORS = ['#4E3470', '#2DD4BF', '#F472B6', '#D4A843', '#10B981', '#EF4444'];
@@ -81,6 +83,37 @@ export default function ProfileScreen({ navigation }: any) {
       { text: t('profile_sign_out'), onPress: signOut, style: 'destructive' },
     ]);
   };
+
+  const [updateState, setUpdateState] = useState('');
+
+  const checkForUpdates = async () => {
+    try {
+      setUpdateState('checking');
+      const result = await Updates.checkForUpdateAsync();
+      if (result.isAvailable) {
+        setUpdateState('downloading');
+        await Updates.fetchUpdateAsync();
+        Alert.alert(t('update_found_title'), t('update_found_msg'), [
+          {
+            text: t('update_restart'),
+            onPress: async () => {
+              await Updates.reloadAsync();
+            },
+          },
+          { text: t('common_cancel'), style: 'cancel' },
+        ]);
+      } else {
+        setUpdateState('none');
+        Alert.alert(t('update_none_title'), t('update_none_msg'));
+      }
+    } catch (e) {
+      setUpdateState('');
+      Alert.alert(t('common_error'), t('update_error'));
+    }
+  };
+
+  const appVersion = Constants.expoConfig?.version || '1.5.0';
+  const updateId = Updates.updateId ? Updates.updateId.slice(0, 8) : 'default';
 
   return (
     <SafeAreaView style={styles.container}>
@@ -170,12 +203,21 @@ export default function ProfileScreen({ navigation }: any) {
           </TouchableOpacity>
         </View>
 
+        <TouchableOpacity style={styles.updateButton} onPress={checkForUpdates}>
+          <Ionicons name="cloud-download-outline" size={20} color={colors.primary} />
+          <Text style={[styles.updateText, { color: colors.primary }]}>
+            {updateState === 'checking' ? t('update_checking') : updateState === 'downloading' ? t('update_downloading') : t('update_check')}
+          </Text>
+        </TouchableOpacity>
+
         <TouchableOpacity style={styles.signOutButton} onPress={handleSignOut}>
           <Ionicons name="log-out-outline" size={20} color={colors.error} />
           <Text style={[styles.signOutText, { color: colors.error }]}>{t('profile_sign_out')}</Text>
         </TouchableOpacity>
 
-        <Text style={[styles.version, { color: colors.subtleText }]}>{t('profile_version')}</Text>
+        <Text style={[styles.version, { color: colors.subtleText }]}>
+          {t('profile_version')} {appVersion} · {updateId}
+        </Text>
       </ScrollView>
     </SafeAreaView>
   );
@@ -235,6 +277,16 @@ const styles = StyleSheet.create({
   },
   menuLeft: { flexDirection: 'row', alignItems: 'center' },
   menuText: { fontSize: typography.sizes.md, marginLeft: spacing.md },
+  updateButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: spacing.md,
+    backgroundColor: colors.primaryLight,
+    borderRadius: borderRadius.md,
+    marginBottom: spacing.md,
+  },
+  updateText: { fontSize: typography.sizes.md, fontWeight: typography.weights.semibold, marginLeft: spacing.sm },
   signOutButton: {
     flexDirection: 'row',
     alignItems: 'center',
