@@ -4,6 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import * as Updates from 'expo-updates';
 import Constants from 'expo-constants';
+import * as Application from 'expo-application';
 import { useAuth } from '../../contexts/AuthContext';
 import { useTheme } from '../../contexts/ThemeContext';
 import { useLanguage } from '../../contexts/LanguageContext';
@@ -113,6 +114,7 @@ export default function ProfileScreen({ navigation }: any) {
   };
 
   const appVersion = Constants.expoConfig?.version || '1.5.0';
+  const nativeBuild = Application.nativeBuildVersion || '1';
   const updateId = Updates.updateId ? Updates.updateId.slice(0, 8) : 'default';
 
   return (
@@ -216,7 +218,7 @@ export default function ProfileScreen({ navigation }: any) {
         </TouchableOpacity>
 
         <Text style={[styles.version, { color: colors.subtleText }]}>
-          {t('profile_version')} {appVersion} · {updateId}
+          {t('profile_version')} {appVersion} ({nativeBuild}) · {updateId}
         </Text>
       </ScrollView>
     </SafeAreaView>
