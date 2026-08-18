@@ -50,6 +50,14 @@
         {
           "defaultChannel": "default"
         }
+      ],
+      [
+        "expo-navigation-bar",
+        {
+          "enforceContrast": false,
+          "hidden": true,
+          "style": "light"
+        }
       ]
     ],
     "owner": "uri2203"

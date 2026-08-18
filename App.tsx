@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, AppState, Platform } from 'react-native';
+import * as NavigationBar from 'expo-navigation-bar';
 import { AuthProvider } from './src/contexts/AuthContext';
 import { ThemeProvider } from './src/contexts/ThemeContext';
 import { LanguageProvider } from './src/contexts/LanguageContext';
@@ -10,11 +11,28 @@ import LoadingSpinner from './src/components/LoadingSpinner';
 import ErrorBoundary from './src/components/ErrorBoundary';
 import { colors } from './src/config/theme';
 
+const hideNavBar = async () => {
+  if (Platform.OS !== 'android') return;
+  try {
+    await NavigationBar.setVisibilityAsync('hidden');
+  } catch (e) {
+    console.warn('NavigationBar hide error:', e);
+  }
+};
+
 export default function App() {
   const [appReady, setAppReady] = useState(false);
 
   useEffect(() => {
     setTimeout(() => setAppReady(true), 500);
+  }, []);
+
+  useEffect(() => {
+    hideNavBar();
+    const sub = AppState.addEventListener('change', (state) => {
+      if (state === 'active') hideNavBar();
+    });
+    return () => sub.remove();
   }, []);
 
   if (!appReady) {
