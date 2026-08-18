@@ -46,8 +46,13 @@ interface PostDetailScreenProps {
 }
 
 export default function PostDetailScreen({ navigation, route }: PostDetailScreenProps) {
-  const { postId } = route.params;
+  const postId = route?.params?.postId;
   const { t } = useLanguage();
+
+  if (!postId) {
+    navigation.goBack();
+    return null;
+  }
 
   const [post, setPost] = useState<PostDetail | null>(null);
   const [loading, setLoading] = useState(true);

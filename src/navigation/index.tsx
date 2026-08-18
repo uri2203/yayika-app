@@ -94,6 +94,7 @@ function PortalStackNavigator() {
       <PortalStack.Screen name="Legal" component={LegalScreen} />
       <PortalStack.Screen name="Support" component={SupportScreen} />
       <PortalStack.Screen name="Onboarding" component={OnboardingFlowScreen} />
+      <PortalStack.Screen name="AffiliateDashboard" component={AffiliateDashboardScreen} />
     </PortalStack.Navigator>
   );
 }

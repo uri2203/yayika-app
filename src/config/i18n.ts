@@ -10,6 +10,11 @@ const translations: Record<Language, Record<string, string>> = {
     nav_progress: 'Mi Progreso',
     nav_chat: 'Laura',
     nav_profile: 'Perfil',
+    nav_portal: 'Portal',
+    nav_ciclo: 'Ciclo',
+    nav_retos: 'Retos',
+    nav_comunidad: 'Comunidad',
+    nav_finanzas: 'Finanzas',
 
     // Home
     home_greeting: 'Hola,',
@@ -642,6 +647,63 @@ const translations: Record<Language, Record<string, string>> = {
     aff_copy_link: 'Copiar enlace',
     aff_share_earnings: 'Ganancias por compartir',
     aff_referrals: 'Referidas',
+
+    // Cycle Intelligence
+    cycle_intel_title: 'Ciclo Inteligente',
+    cycle_intel_subtitle: 'Analiza tu ciclo',
+    cycle_intel_empty: 'Sin datos aún',
+    cycle_intel_empty_sub: 'Registra tu primer ciclo',
+    cycle_intel_avg_length: 'Duración promedio',
+    cycle_intel_total: 'Ciclos totales',
+    cycle_intel_regularity: 'Regularidad',
+    cycle_intel_current_phase: 'Fase actual',
+    cycle_intel_days_remaining: 'días restantes',
+    cycle_next_period: 'Próximo período',
+    cycle_ovulation: 'Ovulación',
+    cycle_intel_energy: 'Energía por fase',
+    cycle_intel_insights: 'Observaciones',
+    cycle_intel_log: 'Registrar',
+    cycle_intel_coach: 'Coach',
+
+    // Cycle Log
+    cycle_saved_title: '¡Guardado!',
+    cycle_saved_msg: 'Registro actualizado',
+    cycle_energy_level: 'Nivel de energía',
+    cycle_how_feeling: '¿Cómo te sientes?',
+    cycle_recent_logs: 'Registros recientes',
+    cycle_no_logs: 'Sin registros',
+    cycle_log_title: 'Registrar Ciclo',
+    cycle_log_subtitle: '¿Cómo te sientes hoy?',
+
+    // Cycle Coach
+    cycle_coach_title: 'Tu Coach',
+    cycle_coach_subtitle: 'Consejos personalizados',
+    cycle_coach_today: 'Hoy',
+    cycle_coach_forecast: 'Pronóstico 7 días',
+
+    // Challenges
+    challenges_active: 'Activos',
+    challenges_available: 'Disponibles',
+    challenges_completed: 'Completados',
+    challenges_empty: 'Sin retos aún',
+
+    // Finance
+    finance_needs: 'Necesidades',
+    finance_wants: 'Deseos',
+    finance_add_expense: 'Agregar gasto',
+    finance_add_income: 'Agregar ingreso',
+    finance_no_transactions: 'Sin transacciones',
+    finance_view_all: 'Ver todo',
+    finance_transactions: 'Transacciones',
+    finance_total: 'Total',
+    finance_all: 'Todas',
+    finance_add_title: 'Nueva transacción',
+    finance_amount: 'Monto',
+    finance_category: 'Categoría',
+    finance_description: 'Descripción',
+    finance_date: 'Fecha',
+    finance_save: 'Guardar',
+    finance_categories: 'Categorías',
   },
 
   en: {
@@ -651,6 +713,11 @@ const translations: Record<Language, Record<string, string>> = {
     nav_progress: 'My Progress',
     nav_chat: 'Laura',
     nav_profile: 'Profile',
+    nav_portal: 'Portal',
+    nav_ciclo: 'Cycle',
+    nav_retos: 'Challenges',
+    nav_comunidad: 'Community',
+    nav_finanzas: 'Finance',
 
     // Home
     home_greeting: 'Hello,',
@@ -1291,6 +1358,63 @@ const translations: Record<Language, Record<string, string>> = {
     aff_copy_link: 'Copy link',
     aff_share_earnings: 'Share earnings',
     aff_referrals: 'Referrals',
+
+    // Cycle Intelligence
+    cycle_intel_title: 'Cycle Intelligence',
+    cycle_intel_subtitle: 'Analyze your cycle',
+    cycle_intel_empty: 'No data yet',
+    cycle_intel_empty_sub: 'Log your first cycle',
+    cycle_intel_avg_length: 'Average length',
+    cycle_intel_total: 'Total cycles',
+    cycle_intel_regularity: 'Regularity',
+    cycle_intel_current_phase: 'Current phase',
+    cycle_intel_days_remaining: 'days remaining',
+    cycle_next_period: 'Next period',
+    cycle_ovulation: 'Ovulation',
+    cycle_intel_energy: 'Energy by phase',
+    cycle_intel_insights: 'Insights',
+    cycle_intel_log: 'Log',
+    cycle_intel_coach: 'Coach',
+
+    // Cycle Log
+    cycle_saved_title: 'Saved!',
+    cycle_saved_msg: 'Log updated',
+    cycle_energy_level: 'Energy level',
+    cycle_how_feeling: 'How are you feeling?',
+    cycle_recent_logs: 'Recent logs',
+    cycle_no_logs: 'No logs',
+    cycle_log_title: 'Log Cycle',
+    cycle_log_subtitle: 'How do you feel today?',
+
+    // Cycle Coach
+    cycle_coach_title: 'Your Coach',
+    cycle_coach_subtitle: 'Personalized tips',
+    cycle_coach_today: 'Today',
+    cycle_coach_forecast: '7-day forecast',
+
+    // Challenges
+    challenges_active: 'Active',
+    challenges_available: 'Available',
+    challenges_completed: 'Completed',
+    challenges_empty: 'No challenges yet',
+
+    // Finance
+    finance_needs: 'Needs',
+    finance_wants: 'Wants',
+    finance_add_expense: 'Add expense',
+    finance_add_income: 'Add income',
+    finance_no_transactions: 'No transactions',
+    finance_view_all: 'View all',
+    finance_transactions: 'Transactions',
+    finance_total: 'Total',
+    finance_all: 'All',
+    finance_add_title: 'New transaction',
+    finance_amount: 'Amount',
+    finance_category: 'Category',
+    finance_description: 'Description',
+    finance_date: 'Date',
+    finance_save: 'Save',
+    finance_categories: 'Categories',
   },
 
   pt: {
@@ -1300,6 +1424,11 @@ const translations: Record<Language, Record<string, string>> = {
     nav_progress: 'Meu Progresso',
     nav_chat: 'Laura',
     nav_profile: 'Perfil',
+    nav_portal: 'Portal',
+    nav_ciclo: 'Ciclo',
+    nav_retos: 'Desafios',
+    nav_comunidad: 'Comunidade',
+    nav_finanzas: 'Finanças',
 
     // Home
     home_greeting: 'Olá,',
@@ -1833,6 +1962,63 @@ const translations: Record<Language, Record<string, string>> = {
     aff_paid: 'Pago',
     aff_pending: 'Pendente',
     aff_share_message: 'Junte-se ao Yayika com meu código {code} e ganhe um desconto!',
+
+    // Cycle Intelligence
+    cycle_intel_title: 'Ciclo Inteligente',
+    cycle_intel_subtitle: 'Analise seu ciclo',
+    cycle_intel_empty: 'Sem dados ainda',
+    cycle_intel_empty_sub: 'Registre seu primeiro ciclo',
+    cycle_intel_avg_length: 'Duração média',
+    cycle_intel_total: 'Total de ciclos',
+    cycle_intel_regularity: 'Regularidade',
+    cycle_intel_current_phase: 'Fase atual',
+    cycle_intel_days_remaining: 'dias restantes',
+    cycle_next_period: 'Próximo período',
+    cycle_ovulation: 'Ovulação',
+    cycle_intel_energy: 'Energia por fase',
+    cycle_intel_insights: 'Observações',
+    cycle_intel_log: 'Registrar',
+    cycle_intel_coach: 'Coach',
+
+    // Cycle Log
+    cycle_saved_title: 'Salvo!',
+    cycle_saved_msg: 'Registro atualizado',
+    cycle_energy_level: 'Nível de energia',
+    cycle_how_feeling: 'Como você se sente?',
+    cycle_recent_logs: 'Registros recentes',
+    cycle_no_logs: 'Sem registros',
+    cycle_log_title: 'Registrar Ciclo',
+    cycle_log_subtitle: 'Como você se sente hoje?',
+
+    // Cycle Coach
+    cycle_coach_title: 'Seu Coach',
+    cycle_coach_subtitle: 'Dicas personalizadas',
+    cycle_coach_today: 'Hoje',
+    cycle_coach_forecast: 'Previsão 7 dias',
+
+    // Challenges
+    challenges_active: 'Ativos',
+    challenges_available: 'Disponíveis',
+    challenges_completed: 'Completados',
+    challenges_empty: 'Sem desafios ainda',
+
+    // Finance
+    finance_needs: 'Necessidades',
+    finance_wants: 'Desejos',
+    finance_add_expense: 'Adicionar gasto',
+    finance_add_income: 'Adicionar renda',
+    finance_no_transactions: 'Sem transações',
+    finance_view_all: 'Ver tudo',
+    finance_transactions: 'Transações',
+    finance_total: 'Total',
+    finance_all: 'Todas',
+    finance_add_title: 'Nova transação',
+    finance_amount: 'Valor',
+    finance_category: 'Categoria',
+    finance_description: 'Descrição',
+    finance_date: 'Data',
+    finance_save: 'Salvar',
+    finance_categories: 'Categorias',
   },
 
   fr: {
@@ -1842,6 +2028,11 @@ const translations: Record<Language, Record<string, string>> = {
     nav_progress: 'Mon Progrès',
     nav_chat: 'Laura',
     nav_profile: 'Profil',
+    nav_portal: 'Portail',
+    nav_ciclo: 'Cycle',
+    nav_retos: 'Défis',
+    nav_comunidad: 'Communauté',
+    nav_finanzas: 'Finance',
 
     // Home
     home_greeting: 'Bonjour,',
@@ -2374,6 +2565,63 @@ const translations: Record<Language, Record<string, string>> = {
     aff_paid: 'Payé',
     aff_pending: 'En attente',
     aff_share_message: 'Rejoins Yayika avec mon code {code} et obtiens une réduction !',
+
+    // Cycle Intelligence
+    cycle_intel_title: 'Intelligence de Cycle',
+    cycle_intel_subtitle: 'Analyse ton cycle',
+    cycle_intel_empty: 'Pas encore de données',
+    cycle_intel_empty_sub: 'Enregistre ton premier cycle',
+    cycle_intel_avg_length: 'Durée moyenne',
+    cycle_intel_total: 'Total des cycles',
+    cycle_intel_regularity: 'Régularité',
+    cycle_intel_current_phase: 'Phase actuelle',
+    cycle_intel_days_remaining: 'jours restants',
+    cycle_next_period: 'Prochaine période',
+    cycle_ovulation: 'Ovulation',
+    cycle_intel_energy: 'Énergie par phase',
+    cycle_intel_insights: 'Observations',
+    cycle_intel_log: 'Enregistrer',
+    cycle_intel_coach: 'Coach',
+
+    // Cycle Log
+    cycle_saved_title: 'Enregistré!',
+    cycle_saved_msg: 'Enregistrement mis à jour',
+    cycle_energy_level: 'Niveau d\'énergie',
+    cycle_how_feeling: 'Comment te sens-tu?',
+    cycle_recent_logs: 'Enregistrements récents',
+    cycle_no_logs: 'Pas d\'enregistrements',
+    cycle_log_title: 'Enregistrer le Cycle',
+    cycle_log_subtitle: 'Comment te sens-tu aujourd\'hui?',
+
+    // Cycle Coach
+    cycle_coach_title: 'Ton Coach',
+    cycle_coach_subtitle: 'Conseils personnalisés',
+    cycle_coach_today: 'Aujourd\'hui',
+    cycle_coach_forecast: 'Prévisions 7 jours',
+
+    // Challenges
+    challenges_active: 'Actifs',
+    challenges_available: 'Disponibles',
+    challenges_completed: 'Terminés',
+    challenges_empty: 'Pas encore de défis',
+
+    // Finance
+    finance_needs: 'Besoins',
+    finance_wants: 'Envies',
+    finance_add_expense: 'Ajouter une dépense',
+    finance_add_income: 'Ajouter un revenu',
+    finance_no_transactions: 'Pas de transactions',
+    finance_view_all: 'Voir tout',
+    finance_transactions: 'Transactions',
+    finance_total: 'Total',
+    finance_all: 'Toutes',
+    finance_add_title: 'Nouvelle transaction',
+    finance_amount: 'Montant',
+    finance_category: 'Catégorie',
+    finance_description: 'Description',
+    finance_date: 'Date',
+    finance_save: 'Enregistrer',
+    finance_categories: 'Catégories',
   },
 
   de: {
@@ -2383,6 +2631,11 @@ const translations: Record<Language, Record<string, string>> = {
     nav_progress: 'Mein Fortschritt',
     nav_chat: 'Laura',
     nav_profile: 'Profil',
+    nav_portal: 'Portal',
+    nav_ciclo: 'Zyklus',
+    nav_retos: 'Herausforderungen',
+    nav_comunidad: 'Community',
+    nav_finanzas: 'Finanzen',
 
     // Home
     home_greeting: 'Hallo,',
@@ -2916,6 +3169,63 @@ const translations: Record<Language, Record<string, string>> = {
     aff_paid: 'Bezahlt',
     aff_pending: 'Ausstehend',
     aff_share_message: 'Schließe dich Yayika mit meinem Code {code} an und erhalte einen Rabatt!',
+
+    // Cycle Intelligence
+    cycle_intel_title: 'Zyklus-Intelligenz',
+    cycle_intel_subtitle: 'Analysiere deinen Zyklus',
+    cycle_intel_empty: 'Noch keine Daten',
+    cycle_intel_empty_sub: 'Trage deinen ersten Zyklus ein',
+    cycle_intel_avg_length: 'Durchschnittliche Länge',
+    cycle_intel_total: 'Gesamtzahl Zyklen',
+    cycle_intel_regularity: 'Regelmäßigkeit',
+    cycle_intel_current_phase: 'Aktuelle Phase',
+    cycle_intel_days_remaining: 'Tage verbleibend',
+    cycle_next_period: 'Nächste Periode',
+    cycle_ovulation: 'Eisprung',
+    cycle_intel_energy: 'Energie pro Phase',
+    cycle_intel_insights: 'Erkenntnisse',
+    cycle_intel_log: 'Eintragen',
+    cycle_intel_coach: 'Coach',
+
+    // Cycle Log
+    cycle_saved_title: 'Gespeichert!',
+    cycle_saved_msg: 'Eintrag aktualisiert',
+    cycle_energy_level: 'Energieniveau',
+    cycle_how_feeling: 'Wie fühlst du dich?',
+    cycle_recent_logs: 'Letzte Einträge',
+    cycle_no_logs: 'Keine Einträge',
+    cycle_log_title: 'Zyklus eintragen',
+    cycle_log_subtitle: 'Wie fühlst du dich heute?',
+
+    // Cycle Coach
+    cycle_coach_title: 'Dein Coach',
+    cycle_coach_subtitle: 'Personalisierte Tipps',
+    cycle_coach_today: 'Heute',
+    cycle_coach_forecast: '7-Tage-Vorhersage',
+
+    // Challenges
+    challenges_active: 'Aktiv',
+    challenges_available: 'Verfügbar',
+    challenges_completed: 'Abgeschlossen',
+    challenges_empty: 'Noch keine Herausforderungen',
+
+    // Finance
+    finance_needs: 'Bedürfnisse',
+    finance_wants: 'Wünsche',
+    finance_add_expense: 'Ausgabe hinzufügen',
+    finance_add_income: 'Einkommen hinzufügen',
+    finance_no_transactions: 'Keine Transaktionen',
+    finance_view_all: 'Alle anzeigen',
+    finance_transactions: 'Transaktionen',
+    finance_total: 'Gesamt',
+    finance_all: 'Alle',
+    finance_add_title: 'Neue Transaktion',
+    finance_amount: 'Betrag',
+    finance_category: 'Kategorie',
+    finance_description: 'Beschreibung',
+    finance_date: 'Datum',
+    finance_save: 'Speichern',
+    finance_categories: 'Kategorien',
   },
 };
 
