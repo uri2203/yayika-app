@@ -32,7 +32,13 @@ export default function App() {
     const sub = AppState.addEventListener('change', (state) => {
       if (state === 'active') hideNavBar();
     });
-    return () => sub.remove();
+    const visSub = NavigationBar.addVisibilityListener?.((event) => {
+      if (event.visibility === 'visible') hideNavBar();
+    });
+    return () => {
+      sub.remove();
+      visSub?.remove();
+    };
   }, []);
 
   if (!appReady) {
