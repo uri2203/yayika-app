@@ -9,6 +9,16 @@ import { colors, typography, spacing, borderRadius } from '../../config/theme';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { useAuth } from '../../contexts/AuthContext';
 import { getCommunityFeed, createPost, toggleReaction, getCommunityCategories } from '../../config/api';
+import { Language } from '../../config/i18n';
+
+function getLocalized(value: any, lang: Language): string {
+  if (value == null) return '';
+  if (typeof value === 'string') return value;
+  if (typeof value === 'object') {
+    return value[lang] || value.es || value.en || Object.values(value)[0] || '';
+  }
+  return String(value);
+}
 
 interface Post {
   id: string;
@@ -43,7 +53,7 @@ function timeAgo(dateStr: string): string {
 }
 
 export default function CommunityFeedScreen({ navigation }: any) {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   const { user } = useAuth();
 
   const [posts, setPosts] = useState<Post[]>([]);
@@ -137,17 +147,17 @@ export default function CommunityFeedScreen({ navigation }: any) {
           <Ionicons name="person" size={20} color={colors.white} />
         </View>
         <View style={styles.postMeta}>
-          <Text style={styles.postAuthor}>{item.user_name || t('community_anonymous') || 'Anónimo'}</Text>
+          <Text style={styles.postAuthor}>{getLocalized(item.user_name, lang) || t('community_anonymous') || 'Anónimo'}</Text>
           <Text style={styles.postTime}>{timeAgo(item.created_at)}</Text>
         </View>
         {item.category ? (
           <View style={styles.categoryBadge}>
-            <Text style={styles.categoryBadgeText}>{item.category}</Text>
+            <Text style={styles.categoryBadgeText}>{getLocalized(item.category, lang)}</Text>
           </View>
         ) : null}
       </View>
 
-      <Text style={styles.postContent}>{item.content}</Text>
+      <Text style={styles.postContent}>{getLocalized(item.content, lang)}</Text>
 
       <View style={styles.postActions}>
         <TouchableOpacity
@@ -187,10 +197,10 @@ export default function CommunityFeedScreen({ navigation }: any) {
         style={[styles.chip, isActive && styles.chipActive]}
         onPress={() => onCategoryPress(isActive ? null : item.slug)}
       >
-        <Text style={[styles.chipText, isActive && styles.chipTextActive]}>{item.name}</Text>
+        <Text style={[styles.chipText, isActive && styles.chipTextActive]}>{getLocalized(item.name, lang)}</Text>
       </TouchableOpacity>
     );
-  }, [selectedCategory, onCategoryPress]);
+  }, [selectedCategory, onCategoryPress, lang]);
 
   if (loading) {
     return (
@@ -274,7 +284,7 @@ export default function CommunityFeedScreen({ navigation }: any) {
                     onPress={() => setNewPostCategory(item.slug)}
                   >
                     <Text style={[styles.chipText, newPostCategory === item.slug && styles.chipTextActive]}>
-                      {item.name}
+                      {getLocalized(item.name, lang)}
                     </Text>
                   </TouchableOpacity>
                 )}

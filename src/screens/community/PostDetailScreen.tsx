@@ -9,6 +9,16 @@ import { colors, typography, spacing, borderRadius } from '../../config/theme';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { useAuth } from '../../contexts/AuthContext';
 import { getCommunityFeed, toggleReaction, addComment } from '../../config/api';
+import { Language } from '../../config/i18n';
+
+function getLocalized(value: any, lang: Language): string {
+  if (value == null) return '';
+  if (typeof value === 'string') return value;
+  if (typeof value === 'object') {
+    return value[lang] || value.es || value.en || Object.values(value)[0] || '';
+  }
+  return String(value);
+}
 
 interface Comment {
   id: string;
@@ -47,7 +57,7 @@ interface PostDetailScreenProps {
 
 export default function PostDetailScreen({ navigation, route }: PostDetailScreenProps) {
   const postId = route?.params?.postId;
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
 
   if (!postId) {
     navigation.goBack();
@@ -170,16 +180,16 @@ export default function PostDetailScreen({ navigation, route }: PostDetailScreen
                     <Ionicons name="person" size={20} color={colors.white} />
                   </View>
                   <View style={styles.postMeta}>
-                    <Text style={styles.postAuthor}>{post.user_name || 'Anónimo'}</Text>
+                    <Text style={styles.postAuthor}>{getLocalized(post.user_name, lang) || 'Anónimo'}</Text>
                     <Text style={styles.postTime}>{timeAgo(post.created_at)}</Text>
                   </View>
                   {post.category ? (
                     <View style={styles.categoryBadge}>
-                      <Text style={styles.categoryBadgeText}>{post.category}</Text>
+                      <Text style={styles.categoryBadgeText}>{getLocalized(post.category, lang)}</Text>
                     </View>
                   ) : null}
                 </View>
-                <Text style={styles.postContent}>{post.content}</Text>
+                <Text style={styles.postContent}>{getLocalized(post.content, lang)}</Text>
                 <View style={styles.postActions}>
                   <TouchableOpacity
                     style={styles.actionButton}
@@ -218,10 +228,10 @@ export default function PostDetailScreen({ navigation, route }: PostDetailScreen
               </View>
               <View style={styles.commentBody}>
                 <View style={styles.commentHeader}>
-                  <Text style={styles.commentAuthor}>{item.user_name || 'Anónimo'}</Text>
+                  <Text style={styles.commentAuthor}>{getLocalized(item.user_name, lang) || 'Anónimo'}</Text>
                   <Text style={styles.commentTime}>{timeAgo(item.created_at)}</Text>
                 </View>
-                <Text style={styles.commentContent}>{item.content}</Text>
+                <Text style={styles.commentContent}>{getLocalized(item.content, lang)}</Text>
               </View>
             </View>
           )}
