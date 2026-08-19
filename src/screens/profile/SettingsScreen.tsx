@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput, Switch, Alert, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput, Switch, Alert, ActivityIndicator, Modal } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '../../contexts/AuthContext';
@@ -56,7 +56,7 @@ export default function SettingsScreen({ navigation }: any) {
           currency_code: currency.trim().toUpperCase(),
         }, { onConflict: 'id' });
       if (error) throw error;
-      Alert.alert(t('common_save'), t('profile_settings') + ' ✓');
+      Alert.alert(t('common_success') || 'Guardado', t('profile_settings') + ' ✓');
     } catch (err: any) {
       Alert.alert(t('common_error'), err.message || t('common_error'));
     } finally {
@@ -87,7 +87,7 @@ export default function SettingsScreen({ navigation }: any) {
             placeholderTextColor={colors.subtleText}
           />
 
-          <Text style={[styles.label, { color: colors.subtleText }]}>{t('onboard_cycle_subtitle').split(' ')[0]} / {t('auth_name')}</Text>
+          <Text style={[styles.label, { color: colors.subtleText }]}>{t('settings_country_code')}</Text>
           <TextInput
             style={[styles.input, { color: colors.text, borderColor: colors.border, backgroundColor: colors.white }]}
             value={countryCode}
@@ -98,7 +98,7 @@ export default function SettingsScreen({ navigation }: any) {
             autoCapitalize="characters"
           />
 
-          <Text style={[styles.label, { color: colors.subtleText }]}>{t('auth_name') === 'Nombre' ? 'Ciudad' : 'City'}</Text>
+          <Text style={[styles.label, { color: colors.subtleText }]}>{t('settings_city')}</Text>
           <TextInput
             style={[styles.input, { color: colors.text, borderColor: colors.border, backgroundColor: colors.white }]}
             value={city}
@@ -179,45 +179,48 @@ export default function SettingsScreen({ navigation }: any) {
           )}
         </TouchableOpacity>
 
-        <View style={styles.languageModalContainer}>
-          {showLanguageModal && (
-            <View style={styles.languageOverlay}>
-              <View style={[styles.languageModal, { backgroundColor: colors.background }]}>
-                <Text style={[styles.languageModalTitle, { color: colors.text }]}>{t('profile_language')}</Text>
-                {LANGUAGES.map((language) => (
-                  <TouchableOpacity
-                    key={language.key}
-                    style={[
-                      styles.languageOption,
-                      lang === language.key && { backgroundColor: colors.primaryLight },
-                    ]}
-                    onPress={() => {
-                      setLanguage(language.key);
-                      setShowLanguageModal(false);
-                    }}
-                  >
-                    <Text
-                      style={[
-                        styles.languageOptionText,
-                        { color: colors.text },
-                        lang === language.key && { color: colors.primary, fontWeight: typography.weights.bold },
-                      ]}
-                    >
-                      {language.label}
-                    </Text>
-                    {lang === language.key && <Ionicons name="checkmark" size={22} color={colors.primary} />}
-                  </TouchableOpacity>
-                ))}
+        <Modal
+          visible={showLanguageModal}
+          transparent
+          animationType="fade"
+          onRequestClose={() => setShowLanguageModal(false)}
+        >
+          <View style={styles.languageOverlay}>
+            <View style={[styles.languageModal, { backgroundColor: colors.background }]}>
+              <Text style={[styles.languageModalTitle, { color: colors.text }]}>{t('profile_language')}</Text>
+              {LANGUAGES.map((language) => (
                 <TouchableOpacity
-                  style={[styles.languageModalClose, { borderColor: colors.border }]}
-                  onPress={() => setShowLanguageModal(false)}
+                  key={language.key}
+                  style={[
+                    styles.languageOption,
+                    lang === language.key && { backgroundColor: colors.primaryLight },
+                  ]}
+                  onPress={() => {
+                    setLanguage(language.key);
+                    setShowLanguageModal(false);
+                  }}
                 >
-                  <Text style={[styles.languageModalCloseText, { color: colors.primary }]}>{t('common_close')}</Text>
+                  <Text
+                    style={[
+                      styles.languageOptionText,
+                      { color: colors.text },
+                      lang === language.key && { color: colors.primary, fontWeight: typography.weights.bold },
+                    ]}
+                  >
+                    {language.label}
+                  </Text>
+                  {lang === language.key && <Ionicons name="checkmark" size={22} color={colors.primary} />}
                 </TouchableOpacity>
-              </View>
+              ))}
+              <TouchableOpacity
+                style={[styles.languageModalClose, { borderColor: colors.border }]}
+                onPress={() => setShowLanguageModal(false)}
+              >
+                <Text style={[styles.languageModalCloseText, { color: colors.primary }]}>{t('common_close')}</Text>
+              </TouchableOpacity>
             </View>
-          )}
-        </View>
+          </View>
+        </Modal>
       </ScrollView>
     </SafeAreaView>
   );
@@ -276,17 +279,14 @@ const styles = StyleSheet.create({
     marginBottom: spacing.md,
   },
   saveButtonText: { fontSize: typography.sizes.md, fontWeight: typography.weights.semibold, marginLeft: spacing.sm },
-  languageModalContainer: { position: 'relative' },
   languageOverlay: {
-    position: 'absolute',
-    top: -200,
-    left: 0,
-    right: 0,
+    flex: 1,
     backgroundColor: 'rgba(0,0,0,0.5)',
-    borderRadius: borderRadius.lg,
+    justifyContent: 'center',
+    alignItems: 'center',
     padding: spacing.lg,
   },
-  languageModal: { borderRadius: borderRadius.lg, padding: spacing.lg },
+  languageModal: { width: '100%', maxWidth: 400, borderRadius: borderRadius.lg, padding: spacing.lg },
   languageModalTitle: {
     fontSize: typography.sizes.xl,
     fontWeight: typography.weights.bold,

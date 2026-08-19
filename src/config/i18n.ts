@@ -638,6 +638,11 @@ const translations: Record<Language, Record<string, string>> = {
     common_previous: 'Anterior',
     common_version: 'Versión',
     common_open_link_error: 'No se pudo abrir el enlace',
+    common_success: 'Éxito',
+
+    // Settings
+    settings_country_code: 'Código de país',
+    settings_city: 'Ciudad',
 
     // Affiliate
     aff_title: 'Programa de Afiliadas',
@@ -1358,6 +1363,11 @@ const translations: Record<Language, Record<string, string>> = {
     common_previous: 'Previous',
     common_version: 'Version',
     common_open_link_error: 'Could not open link',
+    common_success: 'Success',
+
+    // Settings
+    settings_country_code: 'Country code',
+    settings_city: 'City',
 
     // Affiliate
     aff_title: 'Affiliate Program',
@@ -1974,6 +1984,11 @@ const translations: Record<Language, Record<string, string>> = {
     common_previous: 'Anterior',
     common_version: 'Versão',
     common_open_link_error: 'Não foi possível abrir o link',
+    common_success: 'Sucesso',
+
+    // Settings
+    settings_country_code: 'Código do país',
+    settings_city: 'Cidade',
 
     // Affiliate
     aff_title: 'Programa de Afiliadas',
@@ -2586,6 +2601,11 @@ const translations: Record<Language, Record<string, string>> = {
     common_previous: 'Précédent',
     common_version: 'Version',
     common_open_link_error: 'Impossible d\'ouvrir le lien',
+    common_success: 'Succès',
+
+    // Settings
+    settings_country_code: 'Code du pays',
+    settings_city: 'Ville',
 
     // Affiliate
     aff_title: 'Programme d\'Affiliation',
@@ -3199,6 +3219,11 @@ const translations: Record<Language, Record<string, string>> = {
     common_previous: 'Zurück',
     common_version: 'Version',
     common_open_link_error: 'Link konnte nicht geöffnet werden',
+    common_success: 'Erfolg',
+
+    // Settings
+    settings_country_code: 'Ländercode',
+    settings_city: 'Stadt',
 
     // Affiliate
     aff_title: 'Affiliate-Programm',
