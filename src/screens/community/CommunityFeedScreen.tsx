@@ -190,18 +190,6 @@ export default function CommunityFeedScreen({ navigation }: any) {
     </TouchableOpacity>
   ), [handleToggleReaction, togglingId, t, navigation]);
 
-  const renderCategoryChip = useCallback(({ item }: { item: Category }) => {
-    const isActive = selectedCategory === item.slug;
-    return (
-      <TouchableOpacity
-        style={[styles.chip, isActive && styles.chipActive]}
-        onPress={() => onCategoryPress(isActive ? null : item.slug)}
-      >
-        <Text style={[styles.chipText, isActive && styles.chipTextActive]}>{getLocalized(item.name, lang)}</Text>
-      </TouchableOpacity>
-    );
-  }, [selectedCategory, onCategoryPress, lang]);
-
   if (loading) {
     return (
       <SafeAreaView style={styles.container}>
@@ -225,14 +213,19 @@ export default function CommunityFeedScreen({ navigation }: any) {
       </View>
 
       {categories.length > 0 && (
-        <FlatList
-          data={categories}
-          renderItem={renderCategoryChip}
-          keyExtractor={(item) => item.slug}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.chipContainer}
-        />
+        <View style={styles.chipContainer}>
+          {categories.map((item) => (
+            <TouchableOpacity
+              key={item.slug}
+              style={[styles.chip, selectedCategory === item.slug && styles.chipActive]}
+              onPress={() => onCategoryPress(selectedCategory === item.slug ? null : item.slug)}
+            >
+              <Text style={[styles.chipText, selectedCategory === item.slug && styles.chipTextActive]}>
+                {getLocalized(item.name, lang)}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </View>
       )}
 
       {posts.length === 0 ? (
@@ -272,14 +265,10 @@ export default function CommunityFeedScreen({ navigation }: any) {
             </View>
 
             {categories.length > 0 && (
-              <FlatList
-                data={categories}
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                contentContainerStyle={styles.modalChipContainer}
-                keyExtractor={(item) => item.slug}
-                renderItem={({ item }) => (
+              <View style={styles.modalChipContainer}>
+                {categories.map((item) => (
                   <TouchableOpacity
+                    key={item.slug}
                     style={[styles.chip, newPostCategory === item.slug && styles.chipActive]}
                     onPress={() => setNewPostCategory(item.slug)}
                   >
@@ -287,8 +276,8 @@ export default function CommunityFeedScreen({ navigation }: any) {
                       {getLocalized(item.name, lang)}
                     </Text>
                   </TouchableOpacity>
-                )}
-              />
+                ))}
+              </View>
             )}
 
             <TextInput
@@ -335,10 +324,16 @@ const styles = StyleSheet.create({
     width: 36, height: 36, borderRadius: 18, backgroundColor: colors.primary,
     justifyContent: 'center', alignItems: 'center',
   },
-  chipContainer: { paddingHorizontal: spacing.lg, paddingBottom: spacing.md },
+  chipContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    paddingHorizontal: spacing.lg,
+    paddingBottom: spacing.md,
+  },
   chip: {
     paddingHorizontal: spacing.md, paddingVertical: spacing.sm, borderRadius: borderRadius.full,
-    backgroundColor: colors.white, marginRight: spacing.sm, borderWidth: 1, borderColor: colors.border,
+    backgroundColor: colors.white, marginRight: spacing.sm, marginBottom: spacing.sm,
+    borderWidth: 1, borderColor: colors.border,
   },
   chipActive: { backgroundColor: colors.primary, borderColor: colors.primary },
   chipText: { fontSize: typography.sizes.sm, fontWeight: typography.weights.medium, color: colors.subtleText },
@@ -385,7 +380,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: spacing.md,
   },
   modalTitle: { fontSize: typography.sizes.lg, fontWeight: typography.weights.bold, color: colors.text },
-  modalChipContainer: { paddingBottom: spacing.md },
+  modalChipContainer: { flexDirection: 'row', flexWrap: 'wrap', paddingBottom: spacing.md },
   postInput: {
     backgroundColor: colors.background, borderRadius: borderRadius.md, padding: spacing.md,
     fontSize: typography.sizes.md, color: colors.text, minHeight: 120, marginBottom: spacing.sm,
