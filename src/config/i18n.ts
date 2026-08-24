@@ -253,6 +253,49 @@ const translations: Record<Language, Record<string, string>> = {
     cycle_symptom_anxiety: 'Ansiedad',
     cycle_symptom_high_focus: 'Concentración alta',
     cycle_symptom_fatigue: 'Cansancio',
+    cycle_phase_menstrual: 'Menstrual',
+    cycle_phase_follicular: 'Folicular',
+    cycle_phase_ovulatory: 'Ovulatorio',
+    cycle_phase_luteal: 'Lúteo',
+    cycle_mood_happy: 'Feliz',
+    cycle_mood_neutral: 'Neutral',
+    cycle_mood_sad: 'Triste',
+    cycle_mood_irritable: 'Irritable',
+    cycle_mood_tired: 'Cansada',
+    cycle_save_error: 'No se pudo guardar',
+    cycle_phase_unknown: 'Fase desconocida',
+
+    // Home (new)
+    home_xp_for_level: 'XP para nivel',
+    home_xp_total: 'XP Total',
+    home_modules: 'Módulos',
+    home_register_today: 'Registrar hoy',
+    home_affirmation: 'Afirmación del día',
+    home_view_all_challenges: 'Ver todos los retos',
+    home_recent_community: 'Comunidad reciente',
+    home_view_all_community: 'Ver toda la comunidad',
+
+    // Challenges (new)
+    challenges_subtitle: 'Supérate',
+
+    // Community (new)
+    community_subtitle: 'Conecta',
+    community_post_not_found: 'Publicación no encontrada',
+    community_post: 'Publicación',
+    community_you: 'Tú',
+    community_comments: 'Comentarios',
+    community_no_comments: 'Sin comentarios',
+    community_first_comment: 'Sé el primero en comentar',
+    community_comment_placeholder: 'Escribe un comentario...',
+
+    // Finance (new)
+    finance_subtitle: 'Administra',
+
+    // Badges (new)
+    badges_subtitle: 'Logros',
+
+    // Common (new)
+    common_no_data: 'Sin datos',
 
     // Financial
     finance_title: 'Mis Finanzas',
@@ -970,6 +1013,49 @@ const translations: Record<Language, Record<string, string>> = {
     cycle_symptom_anxiety: 'Anxiety',
     cycle_symptom_high_focus: 'High focus',
     cycle_symptom_fatigue: 'Fatigue',
+    cycle_phase_menstrual: 'Menstrual',
+    cycle_phase_follicular: 'Follicular',
+    cycle_phase_ovulatory: 'Ovulatory',
+    cycle_phase_luteal: 'Luteal',
+    cycle_mood_happy: 'Happy',
+    cycle_mood_neutral: 'Neutral',
+    cycle_mood_sad: 'Sad',
+    cycle_mood_irritable: 'Irritable',
+    cycle_mood_tired: 'Tired',
+    cycle_save_error: 'Could not save',
+    cycle_phase_unknown: 'Unknown phase',
+
+    // Home (new)
+    home_xp_for_level: 'XP for level',
+    home_xp_total: 'XP Total',
+    home_modules: 'Modules',
+    home_register_today: 'Register today',
+    home_affirmation: 'Affirmation of the day',
+    home_view_all_challenges: 'View all challenges',
+    home_recent_community: 'Recent community',
+    home_view_all_community: 'View all community',
+
+    // Challenges (new)
+    challenges_subtitle: 'Push yourself',
+
+    // Community (new)
+    community_subtitle: 'Connect',
+    community_post_not_found: 'Post not found',
+    community_post: 'Post',
+    community_you: 'You',
+    community_comments: 'Comments',
+    community_no_comments: 'No comments',
+    community_first_comment: 'Be the first to comment',
+    community_comment_placeholder: 'Write a comment...',
+
+    // Finance (new)
+    finance_subtitle: 'Manage',
+
+    // Badges (new)
+    badges_subtitle: 'Achievements',
+
+    // Common (new)
+    common_no_data: 'No data',
 
     // Financial
     finance_title: 'My Finances',
@@ -1695,6 +1781,49 @@ const translations: Record<Language, Record<string, string>> = {
     cycle_symptom_anxiety: 'Ansiedade',
     cycle_symptom_high_focus: 'Foco alto',
     cycle_symptom_fatigue: 'Cansaço',
+    cycle_phase_menstrual: 'Menstrual',
+    cycle_phase_follicular: 'Folicular',
+    cycle_phase_ovulatory: 'Ovulatório',
+    cycle_phase_luteal: 'Lúteo',
+    cycle_mood_happy: 'Feliz',
+    cycle_mood_neutral: 'Neutro',
+    cycle_mood_sad: 'Triste',
+    cycle_mood_irritable: 'Irritável',
+    cycle_mood_tired: 'Cansada',
+    cycle_save_error: 'Não foi possível salvar',
+    cycle_phase_unknown: 'Fase desconhecida',
+
+    // Home (new)
+    home_xp_for_level: 'XP para nível',
+    home_xp_total: 'XP Total',
+    home_modules: 'Módulos',
+    home_register_today: 'Registrar hoje',
+    home_affirmation: 'Afirmação do dia',
+    home_view_all_challenges: 'Ver todos os desafios',
+    home_recent_community: 'Comunidade recente',
+    home_view_all_community: 'Ver toda a comunidade',
+
+    // Challenges (new)
+    challenges_subtitle: 'Supere-se',
+
+    // Community (new)
+    community_subtitle: 'Conectar',
+    community_post_not_found: 'Postagem não encontrada',
+    community_post: 'Postagem',
+    community_you: 'Você',
+    community_comments: 'Comentários',
+    community_no_comments: 'Sem comentários',
+    community_first_comment: 'Seja o primeiro a comentar',
+    community_comment_placeholder: 'Escreva um comentário...',
+
+    // Finance (new)
+    finance_subtitle: 'Gerenciar',
+
+    // Badges (new)
+    badges_subtitle: 'Conquistas',
+
+    // Common (new)
+    common_no_data: 'Sem dados',
 
     // Financial
     finance_title: 'Minhas Finanças',
@@ -2061,6 +2190,27 @@ const translations: Record<Language, Record<string, string>> = {
     finance_date: 'Data',
     finance_save: 'Salvar',
     finance_categories: 'Categorias',
+
+    // Affiliate (missing)
+    aff_link_copied: 'Link copiado',
+    aff_referrals: 'Referidas',
+    aff_copy_link: 'Copiar link',
+    aff_no_history: 'Sem histórico ainda',
+
+    // Onboarding (missing)
+    onboard_error: 'Algo deu errado. Tente novamente.',
+    onboard_step: 'Passo',
+    onboard_notif_title: 'Notificações',
+    onboard_notif_push: 'Notificações push',
+    onboard_notif_email: 'Resumo por email',
+    onboarding_back: 'Voltar',
+
+    // Badges (missing)
+    badges_streak: 'Sequência',
+    badges_checkin: 'Check-in',
+    badges_challenge: 'Desafios',
+    badges_course: 'Cursos',
+    badges_referral: 'Referidas',
   },
 
   fr: {
@@ -2313,6 +2463,49 @@ const translations: Record<Language, Record<string, string>> = {
     cycle_symptom_anxiety: 'Anxiété',
     cycle_symptom_high_focus: 'Haut focus',
     cycle_symptom_fatigue: 'Épuisement',
+    cycle_phase_menstrual: 'Menstruel',
+    cycle_phase_follicular: 'Folliculaire',
+    cycle_phase_ovulatory: 'Ovulatoire',
+    cycle_phase_luteal: 'Lutéal',
+    cycle_mood_happy: 'Heureuse',
+    cycle_mood_neutral: 'Neutre',
+    cycle_mood_sad: 'Triste',
+    cycle_mood_irritable: 'Irritable',
+    cycle_mood_tired: 'Fatiguée',
+    cycle_save_error: 'Impossible de sauvegarder',
+    cycle_phase_unknown: 'Phase inconnue',
+
+    // Home (new)
+    home_xp_for_level: 'XP pour niveau',
+    home_xp_total: 'XP Total',
+    home_modules: 'Modules',
+    home_register_today: "S'inscrire aujourd'hui",
+    home_affirmation: 'Affirmation du jour',
+    home_view_all_challenges: 'Voir tous les défis',
+    home_recent_community: 'Communauté récente',
+    home_view_all_community: 'Voir toute la communauté',
+
+    // Challenges (new)
+    challenges_subtitle: 'Surpasse-toi',
+
+    // Community (new)
+    community_subtitle: 'Se connecter',
+    community_post_not_found: 'Publication non trouvée',
+    community_post: 'Publication',
+    community_you: 'Toi',
+    community_comments: 'Commentaires',
+    community_no_comments: 'Pas de commentaires',
+    community_first_comment: 'Sois le premier à commenter',
+    community_comment_placeholder: 'Écris un commentaire...',
+
+    // Finance (new)
+    finance_subtitle: 'Gérer',
+
+    // Badges (new)
+    badges_subtitle: 'Succès',
+
+    // Common (new)
+    common_no_data: 'Pas de données',
 
     // Financial
     finance_title: 'Mes Finances',
@@ -2531,6 +2724,7 @@ const translations: Record<Language, Record<string, string>> = {
     growth_quote: 'Citation du jour',
 
     // Legal
+    legal_title: 'Juridique',
     legal_terms: 'Conditions Générales',
     legal_privacy: 'Politique de Confidentialité',
     legal_cookies: 'Politique de Cookies',
@@ -2678,6 +2872,27 @@ const translations: Record<Language, Record<string, string>> = {
     finance_date: 'Date',
     finance_save: 'Enregistrer',
     finance_categories: 'Catégories',
+
+    // Affiliate (missing)
+    aff_link_copied: 'Lien copié',
+    aff_referrals: 'Parrainages',
+    aff_copy_link: 'Copier le lien',
+    aff_no_history: 'Pas encore d\'historique',
+
+    // Onboarding (missing)
+    onboard_error: 'Une erreur s\'est produite. Réessaie.',
+    onboard_step: 'Étape',
+    onboard_notif_title: 'Notifications',
+    onboard_notif_push: 'Notifications push',
+    onboard_notif_email: 'Résumé par email',
+    onboarding_back: 'Retour',
+
+    // Badges (missing)
+    badges_streak: 'Série',
+    badges_checkin: 'Check-in',
+    badges_challenge: 'Défis',
+    badges_course: 'Cours',
+    badges_referral: 'Parrainages',
   },
 
   de: {
@@ -2930,6 +3145,49 @@ const translations: Record<Language, Record<string, string>> = {
     cycle_symptom_anxiety: 'Angst',
     cycle_symptom_high_focus: 'Hoher Fokus',
     cycle_symptom_fatigue: 'Müdigkeit',
+    cycle_phase_menstrual: 'Menstruell',
+    cycle_phase_follicular: 'Follikulär',
+    cycle_phase_ovulatory: 'Ovulatorisch',
+    cycle_phase_luteal: 'Luteal',
+    cycle_mood_happy: 'Glücklich',
+    cycle_mood_neutral: 'Neutral',
+    cycle_mood_sad: 'Traurig',
+    cycle_mood_irritable: 'Reizbar',
+    cycle_mood_tired: 'Müde',
+    cycle_save_error: 'Konnte nicht gespeichert werden',
+    cycle_phase_unknown: 'Unbekannte Phase',
+
+    // Home (new)
+    home_xp_for_level: 'XP für Level',
+    home_xp_total: 'XP Gesamt',
+    home_modules: 'Module',
+    home_register_today: 'Heute eintragen',
+    home_affirmation: 'Affirmation des Tages',
+    home_view_all_challenges: 'Alle Herausforderungen anzeigen',
+    home_recent_community: 'Neueste Community',
+    home_view_all_community: 'Gesamte Community anzeigen',
+
+    // Challenges (new)
+    challenges_subtitle: 'Übertriff dich',
+
+    // Community (new)
+    community_subtitle: 'Verbinden',
+    community_post_not_found: 'Beitrag nicht gefunden',
+    community_post: 'Beitrag',
+    community_you: 'Du',
+    community_comments: 'Kommentare',
+    community_no_comments: 'Keine Kommentare',
+    community_first_comment: 'Sei der Erste, der kommentiert',
+    community_comment_placeholder: 'Schreibe einen Kommentar...',
+
+    // Finance (new)
+    finance_subtitle: 'Verwalten',
+
+    // Badges (new)
+    badges_subtitle: 'Erfolge',
+
+    // Common (new)
+    common_no_data: 'Keine Daten',
 
     // Financial
     finance_title: 'Meine Finanzen',
@@ -3296,6 +3554,27 @@ const translations: Record<Language, Record<string, string>> = {
     finance_date: 'Datum',
     finance_save: 'Speichern',
     finance_categories: 'Kategorien',
+
+    // Affiliate (missing)
+    aff_link_copied: 'Link kopiert',
+    aff_referrals: 'Weiterempfehlungen',
+    aff_copy_link: 'Link kopieren',
+    aff_no_history: 'Noch keine Historie',
+
+    // Onboarding (missing)
+    onboard_error: 'Etwas ist schiefgelaufen. Bitte versuche es erneut.',
+    onboard_step: 'Schritt',
+    onboard_notif_title: 'Benachrichtigungen',
+    onboard_notif_push: 'Push-Benachrichtigungen',
+    onboard_notif_email: 'E-Mail-Zusammenfassung',
+    onboarding_back: 'Zurück',
+
+    // Badges (missing)
+    badges_streak: 'Serie',
+    badges_checkin: 'Check-in',
+    badges_challenge: 'Herausforderungen',
+    badges_course: 'Kurse',
+    badges_referral: 'Weiterempfehlungen',
   },
 };
 

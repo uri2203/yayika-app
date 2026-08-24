@@ -20,26 +20,6 @@ import {
   getDailyMood,
 } from '../../config/api';
 
-const PHASES = [
-  { key: 'menstrual', label: 'Menstrual', color: '#C96B7A', icon: '🌙' },
-  { key: 'follicular', label: 'Follicular', color: '#3BAF7A', icon: '🌸' },
-  { key: 'ovulatory', label: 'Ovulatory', color: '#1A9E8F', icon: '☀️' },
-  { key: 'luteal', label: 'Luteal', color: '#B8943A', icon: '🍂' },
-];
-
-const MOODS = [
-  { emoji: '😊', label: 'Happy' },
-  { emoji: '😐', label: 'Neutral' },
-  { emoji: '😔', label: 'Sad' },
-  { emoji: '😤', label: 'Irritable' },
-  { emoji: '😴', label: 'Tired' },
-];
-
-const SYMPTOMS = [
-  'Dolor', 'Energía baja', 'Buen ánimo', 'Insomnio',
-  'Hinchazón', 'Ansiedad', 'Concentración alta', 'Cansancio',
-];
-
 interface CycleLogEntry {
   log_date: string;
   cycle_day?: number;
@@ -51,6 +31,29 @@ interface CycleLogEntry {
 export default function CycleLogScreen({ navigation }: any) {
   const { t } = useLanguage();
   const { user } = useAuth();
+
+  const PHASES = [
+    { key: 'menstrual', label: t('cycle_phase_menstrual') || 'Menstrual', color: '#C96B7A', icon: '🌙' },
+    { key: 'follicular', label: t('cycle_phase_follicular') || 'Follicular', color: '#3BAF7A', icon: '🌸' },
+    { key: 'ovulatory', label: t('cycle_phase_ovulatory') || 'Ovulatory', color: '#1A9E8F', icon: '☀️' },
+    { key: 'luteal', label: t('cycle_phase_luteal') || 'Luteal', color: '#B8943A', icon: '🍂' },
+  ];
+
+  const MOODS = [
+    { emoji: '😊', label: t('cycle_mood_happy') || 'Happy' },
+    { emoji: '😐', label: t('cycle_mood_neutral') || 'Neutral' },
+    { emoji: '😔', label: t('cycle_mood_sad') || 'Sad' },
+    { emoji: '😤', label: t('cycle_mood_irritable') || 'Irritable' },
+    { emoji: '😴', label: t('cycle_mood_tired') || 'Tired' },
+  ];
+
+  const SYMPTOMS = [
+    t('cycle_symptom_pain') || 'Dolor', t('cycle_symptom_low_energy') || 'Energía baja',
+    t('cycle_symptom_good_mood') || 'Buen ánimo', t('cycle_symptom_insomnia') || 'Insomnio',
+    t('cycle_symptom_bloating') || 'Hinchazón', t('cycle_symptom_anxiety') || 'Ansiedad',
+    t('cycle_symptom_high_focus') || 'Concentración alta', t('cycle_symptom_fatigue') || 'Cansancio',
+  ];
+
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [recentLogs, setRecentLogs] = useState<CycleLogEntry[]>([]);
@@ -115,7 +118,7 @@ export default function CycleLogScreen({ navigation }: any) {
       fetchData();
     } catch (e) {
       console.log('Save error:', e);
-      Alert.alert('Error', 'No se pudo guardar');
+      Alert.alert(t('common_error') || 'Error', t('cycle_save_error') || 'No se pudo guardar');
     } finally {
       setSaving(false);
     }
@@ -133,7 +136,7 @@ export default function CycleLogScreen({ navigation }: any) {
         </TouchableOpacity>
         <View style={styles.dayPickerValue}>
           <Text style={styles.dayPickerNumber}>{cycleDay}</Text>
-          <Text style={styles.dayPickerLabel}>/ 28</Text>
+          <Text style={styles.dayPickerLabel}>{t('cycle_days_total') || '/ 28'}</Text>
         </View>
         <TouchableOpacity
           style={styles.dayPickerBtn}
@@ -245,7 +248,7 @@ export default function CycleLogScreen({ navigation }: any) {
               <View style={styles.logInfo}>
                 <Text style={styles.logDate}>{log.log_date}</Text>
                 <Text style={styles.logPhase}>
-                  {phaseData?.icon} {phaseData?.label || log.phase} · Día {log.cycle_day}
+                  {phaseData?.icon} {phaseData?.label || log.phase} · {t('cycle_day') || 'Día'} {log.cycle_day}
                 </Text>
               </View>
               <View style={styles.logEnergy}>

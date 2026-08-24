@@ -84,7 +84,7 @@ export default function PortalDashboard({ navigation }: any) {
   const [cyclePhase, setCyclePhase] = useState<string | null>(null);
   const [energyLevel, setEnergyLevel] = useState<number | null>(null);
 
-  const userName = profile?.full_name || user?.user_metadata?.name || 'Guerrera';
+  const userName = profile?.full_name || user?.user_metadata?.name || t('home_guerrera');
   const xpTotal = localProgress?.xp_total ?? progress?.xp_total ?? 0;
   const streakDays = localProgress?.streak_days ?? progress?.streak_days ?? 0;
   const level = Math.floor(xpTotal / 100) + 1;
@@ -161,8 +161,8 @@ export default function PortalDashboard({ navigation }: any) {
   const quickActions = [
     {
       key: 'ciclo-productiva',
-      title: 'Ciclo\nProductiva',
-      subtitle: 'Aprende y crece',
+      title: t('home_my_cycle'),
+      subtitle: t('home_my_cycle_sub'),
       icon: 'book',
       bgColor: '#E8D5F5',
       iconColor: colors.primary,
@@ -170,8 +170,8 @@ export default function PortalDashboard({ navigation }: any) {
     },
     {
       key: 'ciclo-inteligente',
-      title: 'Ciclo\nInteligente',
-      subtitle: 'Conoce tu ciclo',
+      title: t('cycle_intel_title'),
+      subtitle: t('cycle_intel_subtitle'),
       icon: 'moon',
       bgColor: '#FDE68A',
       iconColor: colors.gold,
@@ -179,8 +179,8 @@ export default function PortalDashboard({ navigation }: any) {
     },
     {
       key: 'retos',
-      title: 'Retos',
-      subtitle: 'Supérate',
+      title: t('nav_retos'),
+      subtitle: t('challenges_subtitle'),
       icon: 'trophy',
       bgColor: '#FEF3C7',
       iconColor: colors.gold,
@@ -188,8 +188,8 @@ export default function PortalDashboard({ navigation }: any) {
     },
     {
       key: 'comunidad',
-      title: 'Comunidad',
-      subtitle: 'Conecta',
+      title: t('nav_comunidad'),
+      subtitle: t('community_subtitle'),
       icon: 'people',
       bgColor: '#E0E7FF',
       iconColor: colors.primary,
@@ -197,8 +197,8 @@ export default function PortalDashboard({ navigation }: any) {
     },
     {
       key: 'finanzas',
-      title: 'Finanzas',
-      subtitle: 'Administra',
+      title: t('nav_finanzas'),
+      subtitle: t('finance_subtitle'),
       icon: 'wallet',
       bgColor: '#FCE7F3',
       iconColor: colors.rose,
@@ -206,8 +206,8 @@ export default function PortalDashboard({ navigation }: any) {
     },
     {
       key: 'badges',
-      title: 'Badges',
-      subtitle: 'Logros',
+      title: t('badges_title'),
+      subtitle: t('badges_subtitle'),
       icon: 'ribbon',
       bgColor: '#D1FAE5',
       iconColor: colors.turquoise,
@@ -238,7 +238,7 @@ export default function PortalDashboard({ navigation }: any) {
               ) : (
                 <View style={[styles.phaseBadge, { backgroundColor: colors.border }]}>
                   <Ionicons name="ellipse-outline" size={12} color={colors.subtleText} />
-                  <Text style={[styles.phaseText, { color: colors.subtleText }]}>Sin datos</Text>
+                  <Text style={[styles.phaseText, { color: colors.subtleText }]}>{t('common_no_data')}</Text>
                 </View>
               )}
             </View>
@@ -264,7 +264,7 @@ export default function PortalDashboard({ navigation }: any) {
           <View style={styles.xpBar}>
             <View style={[styles.xpFill, { width: `${xpInLevel}%` }]} />
           </View>
-          <Text style={styles.xpHint}>{100 - xpInLevel} XP para nivel {level + 1}</Text>
+          <Text style={styles.xpHint}>{100 - xpInLevel} {t('home_xp_for_level')} {level + 1}</Text>
         </Card>
 
         {/* Stats Row */}
@@ -272,22 +272,22 @@ export default function PortalDashboard({ navigation }: any) {
           <View style={styles.statCard}>
             <Ionicons name="star" size={20} color={colors.gold} />
             <Text style={styles.statValue}>{xpTotal}</Text>
-            <Text style={styles.statLabel}>XP Total</Text>
+            <Text style={styles.statLabel}>{t('home_xp_total')}</Text>
           </View>
           <View style={styles.statCard}>
             <Ionicons name="flame" size={20} color="#EF4444" />
             <Text style={styles.statValue}>{streakDays}</Text>
-            <Text style={styles.statLabel}>Racha</Text>
+            <Text style={styles.statLabel}>{t('home_streak')}</Text>
           </View>
           <View style={styles.statCard}>
             <Ionicons name="book" size={20} color={colors.turquoise} />
             <Text style={styles.statValue}>{modulesCompleted}</Text>
-            <Text style={styles.statLabel}>Módulos</Text>
+            <Text style={styles.statLabel}>{t('home_modules')}</Text>
           </View>
           <View style={styles.statCard}>
             <Ionicons name="ribbon" size={20} color={colors.primary} />
             <Text style={styles.statValue}>{badgesEarned}</Text>
-            <Text style={styles.statLabel}>Badges</Text>
+            <Text style={styles.statLabel}>{t('badges_title')}</Text>
           </View>
         </View>
 
@@ -298,9 +298,9 @@ export default function PortalDashboard({ navigation }: any) {
               <Ionicons name="moon" size={24} color={colors.primary} />
             </View>
             <View style={styles.cycleInfo}>
-              <Text style={styles.cycleTitle}>Tu Ciclo</Text>
+              <Text style={styles.cycleTitle}>{t('home_my_cycle')}</Text>
               <Text style={styles.cyclePhase}>
-                {cyclePhase ? cyclePhase.charAt(0).toUpperCase() + cyclePhase.slice(1) : 'Fase desconocida'}
+                {cyclePhase ? cyclePhase.charAt(0).toUpperCase() + cyclePhase.slice(1) : t('cycle_phase_unknown')}
               </Text>
             </View>
             {energyLevel !== null && (
@@ -315,13 +315,13 @@ export default function PortalDashboard({ navigation }: any) {
             onPress={() => navigateToTab('Ciclo', 'CycleLog')}
             activeOpacity={0.7}
           >
-            <Text style={styles.logButtonText}>Registrar hoy</Text>
+            <Text style={styles.logButtonText}>{t('home_register_today')}</Text>
             <Ionicons name="arrow-forward" size={16} color={colors.white} />
           </TouchableOpacity>
         </Card>
 
         {/* Quick Actions Grid */}
-        <Text style={styles.sectionTitle}>Accesos rápidos</Text>
+        <Text style={styles.sectionTitle}>{t('home_quick_actions')}</Text>
         <View style={styles.grid}>
           {quickActions.map((action) => (
             <TouchableOpacity
@@ -344,7 +344,7 @@ export default function PortalDashboard({ navigation }: any) {
           <Card style={styles.affirmationCard}>
             <View style={styles.affirmationHeader}>
               <Ionicons name="sparkles" size={20} color={colors.gold} />
-              <Text style={styles.affirmationTitle}>Afirmación del día</Text>
+              <Text style={styles.affirmationTitle}>{t('home_affirmation')}</Text>
             </View>
             <Text style={styles.affirmationText}>{affirmation}</Text>
           </Card>
@@ -353,7 +353,7 @@ export default function PortalDashboard({ navigation }: any) {
         {/* Weekly Challenges */}
         {activeChallenges.length > 0 && (
           <>
-            <Text style={styles.sectionTitle}>Retos activos</Text>
+            <Text style={styles.sectionTitle}>{t('challenges_active')}</Text>
             {activeChallenges.map((challenge) => (
               <Card key={challenge.id} style={styles.challengeCard}>
                 <View style={styles.challengeHeader}>
@@ -376,7 +376,7 @@ export default function PortalDashboard({ navigation }: any) {
               style={styles.seeAllButton}
               onPress={() => navigateToTab('Retos')}
             >
-              <Text style={styles.seeAllText}>Ver todos los retos</Text>
+              <Text style={styles.seeAllText}>{t('home_view_all_challenges')}</Text>
               <Ionicons name="chevron-forward" size={16} color={colors.primary} />
             </TouchableOpacity>
           </>
@@ -385,7 +385,7 @@ export default function PortalDashboard({ navigation }: any) {
         {/* Recent Community */}
         {communityPosts.length > 0 && (
           <>
-            <Text style={styles.sectionTitle}>Comunidad reciente</Text>
+            <Text style={styles.sectionTitle}>{t('home_recent_community')}</Text>
             {communityPosts.map((post) => (
               <Card key={post.id} style={styles.postCard}>
                 <View style={styles.postHeader}>
@@ -416,7 +416,7 @@ export default function PortalDashboard({ navigation }: any) {
               style={styles.seeAllButton}
               onPress={() => navigateToTab('Comunidad')}
             >
-              <Text style={styles.seeAllText}>Ver toda la comunidad</Text>
+              <Text style={styles.seeAllText}>{t('home_view_all_community')}</Text>
               <Ionicons name="chevron-forward" size={16} color={colors.primary} />
             </TouchableOpacity>
           </>

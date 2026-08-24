@@ -119,7 +119,7 @@ export default function PostDetailScreen({ navigation, route }: PostDetailScreen
           ...prev.comments,
           {
             id: result.comment_id || Date.now().toString(),
-            user_name: 'Tú',
+            user_name: t('community_you') || 'Tú',
             content: commentText.trim(),
             created_at: new Date().toISOString(),
           },
@@ -148,7 +148,7 @@ export default function PostDetailScreen({ navigation, route }: PostDetailScreen
       <SafeAreaView style={styles.container}>
         <View style={styles.centered}>
           <Ionicons name="alert-circle-outline" size={48} color={colors.border} />
-          <Text style={styles.emptyText}>Publicación no encontrada</Text>
+          <Text style={styles.emptyText}>{t('community_post_not_found') || 'Publicación no encontrada'}</Text>
         </View>
       </SafeAreaView>
     );
@@ -160,7 +160,7 @@ export default function PostDetailScreen({ navigation, route }: PostDetailScreen
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
           <Ionicons name="arrow-back" size={24} color={colors.text} />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Publicación</Text>
+        <Text style={styles.headerTitle}>{t('community_post') || 'Publicación'}</Text>
         <View style={{ width: 32 }} />
       </View>
 
@@ -180,7 +180,7 @@ export default function PostDetailScreen({ navigation, route }: PostDetailScreen
                     <Ionicons name="person" size={20} color={colors.white} />
                   </View>
                   <View style={styles.postMeta}>
-                    <Text style={styles.postAuthor}>{getLocalized(post.user_name, lang) || 'Anónimo'}</Text>
+                    <Text style={styles.postAuthor}>{getLocalized(post.user_name, lang) || (t('community_anonymous') || 'Anónimo')}</Text>
                     <Text style={styles.postTime}>{timeAgo(post.created_at)}</Text>
                   </View>
                   {post.category ? (
@@ -217,7 +217,7 @@ export default function PostDetailScreen({ navigation, route }: PostDetailScreen
               </View>
 
               <Text style={styles.commentsTitle}>
-                {post.comments.length > 0 ? `Comentarios (${post.comments.length})` : 'Sin comentarios'}
+                {post.comments.length > 0 ? `${t('community_comments') || 'Comentarios'} (${post.comments.length})` : (t('community_no_comments') || 'Sin comentarios')}
               </Text>
             </>
           }
@@ -228,7 +228,7 @@ export default function PostDetailScreen({ navigation, route }: PostDetailScreen
               </View>
               <View style={styles.commentBody}>
                 <View style={styles.commentHeader}>
-                  <Text style={styles.commentAuthor}>{getLocalized(item.user_name, lang) || 'Anónimo'}</Text>
+                  <Text style={styles.commentAuthor}>{getLocalized(item.user_name, lang) || (t('community_anonymous') || 'Anónimo')}</Text>
                   <Text style={styles.commentTime}>{timeAgo(item.created_at)}</Text>
                 </View>
                 <Text style={styles.commentContent}>{getLocalized(item.content, lang)}</Text>
@@ -238,7 +238,7 @@ export default function PostDetailScreen({ navigation, route }: PostDetailScreen
           ListEmptyComponent={
             <View style={styles.emptyComments}>
               <Ionicons name="chatbubbles-outline" size={40} color={colors.border} />
-              <Text style={styles.emptyText}>Sé el primero en comentar</Text>
+              <Text style={styles.emptyText}>{t('community_first_comment') || 'Sé el primero en comentar'}</Text>
             </View>
           }
           ListFooterComponent={
@@ -249,7 +249,7 @@ export default function PostDetailScreen({ navigation, route }: PostDetailScreen
         <View style={styles.commentInputBar}>
           <TextInput
             style={styles.commentInput}
-            placeholder="Escribe un comentario..."
+            placeholder={t('community_comment_placeholder') || 'Escribe un comentario...'}
             placeholderTextColor={colors.subtleText}
             value={commentText}
             onChangeText={setCommentText}
