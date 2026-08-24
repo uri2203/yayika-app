@@ -18,6 +18,9 @@ import { getRankings, RankingEntry } from '../../config/api';
 const PODIUM_HEIGHTS: Record<number, number> = { 1: 80, 2: 64, 3: 52 };
 const PODIUM_COLORS: Record<number, string> = { 1: colors.gold, 2: '#C0C0C0', 3: '#CD7F32' };
 
+const safeName = (name: any) => (typeof name === 'string' && name.trim()) || 'Guerrera';
+const safeNum = (n: any) => (typeof n === 'number' && !isNaN(n)) ? n : 0;
+
 export default function RankingsScreen({ navigation }: any) {
   const { t } = useLanguage();
   const { user } = useAuth();
@@ -109,11 +112,11 @@ export default function RankingsScreen({ navigation }: any) {
                     ]}
                   >
                     <Text style={[styles.podiumInitial, { fontSize: isFirst ? 24 : 18 }]}>
-                      {entry.full_name.charAt(0)}
+                      {safeName(entry.full_name).charAt(0)}
                     </Text>
                   </View>
-                  <Text style={styles.podiumName} numberOfLines={1}>{entry.full_name}</Text>
-                  <Text style={styles.podiumXp}>{entry.xp_total.toLocaleString('es-MX')} XP</Text>
+                  <Text style={styles.podiumName} numberOfLines={1}>{safeName(entry.full_name)}</Text>
+                  <Text style={styles.podiumXp}>{safeNum(entry.xp_total).toLocaleString()} XP</Text>
                   <View style={[styles.podiumBar, { height: barHeight, backgroundColor: PODIUM_COLORS[entry.rank] }]}>
                     <Text style={styles.podiumRank}>{entry.rank}</Text>
                   </View>
@@ -135,16 +138,16 @@ export default function RankingsScreen({ navigation }: any) {
                   <Text style={[styles.listRank, isMe && styles.listRankMe]}>{entry.rank}</Text>
                   <View style={[styles.listAvatar, isMe && styles.listAvatarMe]}>
                     <Text style={[styles.listInitial, isMe && styles.listInitialMe]}>
-                      {entry.full_name.charAt(0)}
+                      {safeName(entry.full_name).charAt(0)}
                     </Text>
                   </View>
                   <View style={styles.listInfo}>
                     <Text style={[styles.listName, isMe && styles.listNameMe]} numberOfLines={1}>
-                      {entry.full_name}
+                      {safeName(entry.full_name)}
                     </Text>
                     <Text style={styles.listLevel}>{t('home_level')} {entry.level}</Text>
                   </View>
-                  <Text style={styles.listXp}>{entry.xp_total.toLocaleString('es-MX')} XP</Text>
+                  <Text style={styles.listXp}>{safeNum(entry.xp_total).toLocaleString()} XP</Text>
                 </View>
               );
             })}
@@ -155,7 +158,7 @@ export default function RankingsScreen({ navigation }: any) {
           <View style={styles.yourPosition}>
             <Ionicons name="person" size={18} color={colors.primary} />
             <Text style={styles.yourPositionText}>
-              {t('rankings_your_position')}: #{currentUserRank.rank} - {currentUserRank.xp_total.toLocaleString('es-MX')} XP
+              {t('rankings_your_position')}: #{currentUserRank.rank} - {safeNum(currentUserRank.xp_total).toLocaleString()} XP
             </Text>
           </View>
         )}

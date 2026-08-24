@@ -8,6 +8,14 @@ import { useLanguage } from '../../contexts/LanguageContext';
 import { typography, spacing, borderRadius } from '../../config/theme';
 import { supabase } from '../../config/supabase';
 import EmptyState from '../../components/EmptyState';
+import { Language } from '../../config/i18n';
+
+function getLocalized(value: any, lang: Language): string {
+  if (value == null) return '';
+  if (typeof value === 'string') return value;
+  if (typeof value === 'object') return value[lang] || value.es || value.en || Object.values(value)[0] || '';
+  return String(value);
+}
 
 interface Notification {
   id: string;
@@ -22,7 +30,7 @@ interface Notification {
 export default function NotificationsScreen({ navigation }: any) {
   const { user } = useAuth();
   const { currentColors } = useTheme();
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   const colors = currentColors;
 
   const [notifications, setNotifications] = useState<Notification[]>([]);
@@ -117,10 +125,10 @@ export default function NotificationsScreen({ navigation }: any) {
       </View>
       <View style={styles.notificationContent}>
         <Text style={[styles.notificationTitle, { color: colors.text }]} numberOfLines={1}>
-          {item.title}
+          {getLocalized(item.title, lang)}
         </Text>
         <Text style={[styles.notificationBody, { color: colors.subtleText }]} numberOfLines={2}>
-          {item.body}
+          {getLocalized(item.body, lang)}
         </Text>
         <Text style={[styles.notificationTime, { color: colors.subtleText }]}>
           {getTimeAgo(item.created_at)}

@@ -6,12 +6,27 @@ import { colors, typography, spacing, borderRadius } from '../../config/theme';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { useAuth } from '../../contexts/AuthContext';
 import { getTransactions, addTransaction } from '../../config/api';
+import { Language } from '../../config/i18n';
 
-function formatDate(dateStr: string) {
+function getLocalized(value: any, lang: Language): string {
+  if (value == null) return '';
+  if (typeof value === 'string') return value;
+  if (typeof value === 'object') return value[lang] || value.es || value.en || Object.values(value)[0] || '';
+  return String(value);
+}
+
+const MONTHS_BY_LANG: Record<string, string[]> = {
+  es: ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'],
+  en: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+  pt: ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'],
+  fr: ['Jan','Fév','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Déc'],
+  de: ['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'],
+};
+
+function formatDate(dateStr: string, lang: Language = 'es') {
   const d = new Date(dateStr);
-  const day = d.getDate();
-  const months = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
-  return `${day} ${months[d.getMonth()]}`;
+  const months = MONTHS_BY_LANG[lang] || MONTHS_BY_LANG.es;
+  return `${d.getDate()} ${months[d.getMonth()]}`;
 }
 
 interface TransactionsScreenProps {
@@ -20,7 +35,7 @@ interface TransactionsScreenProps {
 }
 
 export default function TransactionsScreen({ navigation, route }: TransactionsScreenProps) {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   const { user } = useAuth();
   const [loading, setLoading] = useState(true);
   const [transactions, setTransactions] = useState<any[]>([]);
@@ -171,11 +186,11 @@ export default function TransactionsScreen({ navigation, route }: TransactionsSc
                   <Ionicons name={isIncome ? 'arrow-down' : 'arrow-up'} size={16} color={isIncome ? colors.success : colors.error} />
                 </View>
                 <View style={styles.txInfo}>
-                  <Text style={styles.txDesc}>{tx.category || (isIncome ? 'Ingreso' : 'Gasto')}</Text>
-                  <Text style={styles.txDate}>{tx.date ? formatDate(tx.date) : ''}</Text>
+                  <Text style={styles.txDesc}>{getLocalized(tx.category, lang) || (isIncome ? t('finance_income') || 'Ingreso' : t('finance_expenses') || 'Gasto')}</Text>
+                  <Text style={styles.txDate}>{tx.date ? formatDate(tx.date, lang) : ''}</Text>
                 </View>
                 <Text style={[styles.txAmount, isIncome ? styles.txAmountIncome : styles.txAmountExpense]}>
-                  {isIncome ? `+$${tx.amount.toLocaleString('es-MX')}` : `-$${tx.amount.toLocaleString('es-MX')}`}
+                  {isIncome ? `+$${(typeof tx.amount === 'number' ? tx.amount : 0).toLocaleString()}` : `-$${(typeof tx.amount === 'number' ? tx.amount : 0).toLocaleString()}`}
                 </Text>
               </View>
             );

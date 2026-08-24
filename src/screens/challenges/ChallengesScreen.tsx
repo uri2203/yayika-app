@@ -6,6 +6,14 @@ import { colors, typography, spacing, borderRadius } from '../../config/theme';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { useAuth } from '../../contexts/AuthContext';
 import { aiWeeklyChallenges, enrollChallenge, checkinChallenge } from '../../config/api';
+import { Language } from '../../config/i18n';
+
+function getLocalized(value: any, lang: Language): string {
+  if (value == null) return '';
+  if (typeof value === 'string') return value;
+  if (typeof value === 'object') return value[lang] || value.es || value.en || Object.values(value)[0] || '';
+  return String(value);
+}
 
 export default function ChallengesScreen({ navigation }: any) {
   const { t, lang } = useLanguage();
@@ -109,8 +117,8 @@ export default function ChallengesScreen({ navigation }: any) {
                   <Ionicons name="rocket" size={22} color={colors.primary} />
                 </View>
                 <View style={styles.challengeInfo}>
-                  <Text style={styles.challengeTitle}>{ch.title || ch.name || t('challenges_title')}</Text>
-                  <Text style={styles.challengeDesc} numberOfLines={2}>{ch.description || ''}</Text>
+                  <Text style={styles.challengeTitle}>{getLocalized(ch.title, lang) || getLocalized(ch.name, lang) || t('challenges_title')}</Text>
+                  <Text style={styles.challengeDesc} numberOfLines={2}>{getLocalized(ch.description, lang) || ''}</Text>
                   <Text style={styles.challengeXp}>+{ch.xp_reward || ch.xp || 0} XP</Text>
                 </View>
                 <TouchableOpacity
@@ -146,8 +154,8 @@ export default function ChallengesScreen({ navigation }: any) {
                     <Ionicons name="add-circle" size={22} color={colors.turquoise} />
                   </View>
                   <View style={styles.challengeInfo}>
-                    <Text style={styles.challengeTitle}>{ch.title || ch.name}</Text>
-                    <Text style={styles.challengeDesc} numberOfLines={2}>{ch.description || ''}</Text>
+                    <Text style={styles.challengeTitle}>{getLocalized(ch.title, lang) || getLocalized(ch.name, lang)}</Text>
+                    <Text style={styles.challengeDesc} numberOfLines={2}>{getLocalized(ch.description, lang) || ''}</Text>
                     <Text style={styles.challengeXp}>+{ch.xp_reward || ch.xp || 0} XP</Text>
                   </View>
                   {enrollingId === cid ? (
@@ -170,7 +178,7 @@ export default function ChallengesScreen({ navigation }: any) {
                   <Ionicons name="checkmark-circle" size={22} color={colors.success} />
                 </View>
                 <View style={styles.challengeInfo}>
-                  <Text style={[styles.challengeTitle, { color: colors.subtleText }]}>{ch.title || ch.name}</Text>
+                  <Text style={[styles.challengeTitle, { color: colors.subtleText }]}>{getLocalized(ch.title, lang) || getLocalized(ch.name, lang)}</Text>
                   <Text style={styles.challengeXp}>+{ch.xp_reward || ch.xp || 0} XP</Text>
                 </View>
                 <Ionicons name="checkmark-done" size={20} color={colors.success} />
