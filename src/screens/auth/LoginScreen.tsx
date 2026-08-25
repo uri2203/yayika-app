@@ -17,7 +17,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { colors, typography, spacing, borderRadius } from '../../config/theme';
 import Button from '../../components/Button';
-const logoImg = require('../../../assets/Logo yayika.jpg');
+const logoImg = require('../../../assets/Logo yayika.png');
 
 export default function LoginScreen({ navigation }: any) {
   const { signIn } = useAuth();
