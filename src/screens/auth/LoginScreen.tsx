@@ -9,6 +9,7 @@ import {
   Platform,
   ScrollView,
   Alert,
+  Image,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
@@ -16,6 +17,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { colors, typography, spacing, borderRadius } from '../../config/theme';
 import Button from '../../components/Button';
+const logoImg = require('../../../assets/Logo yayika.jpg');
 
 export default function LoginScreen({ navigation }: any) {
   const { signIn } = useAuth();
@@ -47,6 +49,7 @@ export default function LoginScreen({ navigation }: any) {
           keyboardShouldPersistTaps="handled"
         >
           <View style={styles.header}>
+            <Image source={logoImg} style={styles.logoImage} resizeMode="contain" />
             <Text style={styles.logo}>Yayika</Text>
             <Text style={styles.subtitle}>{t('auth_tagline')}</Text>
           </View>
@@ -129,6 +132,11 @@ const styles = StyleSheet.create({
   header: {
     alignItems: 'center',
     marginBottom: spacing.xxl,
+  },
+  logoImage: {
+    width: 100,
+    height: 100,
+    marginBottom: spacing.md,
   },
   logo: {
     fontSize: 40,
