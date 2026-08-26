@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import {
   View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput,
-  ActivityIndicator, KeyboardAvoidingView, Platform,
+  ActivityIndicator, KeyboardAvoidingView, Platform, Alert,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
@@ -9,7 +9,7 @@ import { typography, spacing, borderRadius } from '../../config/theme';
 import { useTheme } from '../../contexts/ThemeContext';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { useAuth } from '../../contexts/AuthContext';
-import { getCommunityFeed, toggleReaction, addComment } from '../../config/api';
+import { getCommunityFeed, toggleReaction, addComment, reportPost } from '../../config/api';
 import { Language } from '../../config/i18n';
 
 function getLocalized(value: any, lang: Language): string {
@@ -129,6 +129,32 @@ export default function PostDetailScreen({ navigation, route }: PostDetailScreen
       justifyContent: 'center', alignItems: 'center',
     },
     sendBtnDisabled: { opacity: 0.5 },
+    reportBtn: {
+      flexDirection: 'row', alignItems: 'center', marginLeft: 'auto',
+    },
+    reportBtnText: { fontSize: typography.sizes.xs, color: colors.subtleText, marginLeft: spacing.xs },
+    modalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.4)', justifyContent: 'center', alignItems: 'center' },
+    reportModalContent: {
+      backgroundColor: colors.white, borderRadius: borderRadius.lg, padding: spacing.lg,
+      width: '85%', maxWidth: 340,
+    },
+    reportModalTitle: { fontSize: typography.sizes.lg, fontWeight: typography.weights.bold, color: colors.text, marginBottom: spacing.md },
+    reportOption: {
+      flexDirection: 'row', alignItems: 'center', paddingVertical: spacing.md,
+      borderBottomWidth: 1, borderBottomColor: colors.border,
+    },
+    reportOptionText: { fontSize: typography.sizes.md, color: colors.text, flex: 1 },
+    reportSubmitBtn: {
+      backgroundColor: colors.error, borderRadius: borderRadius.md, paddingVertical: spacing.md,
+      alignItems: 'center', marginTop: spacing.md,
+    },
+    reportSubmitBtnDisabled: { opacity: 0.5 },
+    reportSubmitBtnText: { color: colors.white, fontSize: typography.sizes.md, fontWeight: typography.weights.semibold },
+    reportCancelBtn: {
+      borderRadius: borderRadius.md, paddingVertical: spacing.md,
+      alignItems: 'center', marginTop: spacing.sm,
+    },
+    reportCancelBtnText: { color: colors.subtleText, fontSize: typography.sizes.md },
   });
 
   const postId = route?.params?.postId;
@@ -144,6 +170,8 @@ export default function PostDetailScreen({ navigation, route }: PostDetailScreen
   const [commentText, setCommentText] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [togglingLike, setTogglingLike] = useState(false);
+  const [reportModalVisible, setReportModalVisible] = useState(false);
+  const [reporting, setReporting] = useState(false);
 
   const fetchPost = useCallback(async () => {
     try {
@@ -207,6 +235,27 @@ export default function PostDetailScreen({ navigation, route }: PostDetailScreen
       setSubmitting(false);
     }
   }, [post, commentText]);
+
+  const handleReport = useCallback(async (reason: string) => {
+    if (!post) return;
+    try {
+      setReporting(true);
+      await reportPost(post.id, reason);
+      setReportModalVisible(false);
+      Alert.alert(
+        t('community_post_reported') || 'Publicación reportada',
+        t('community_post_reported_msg') || 'Gracias por ayudarnos a mantener la comunidad segura.'
+      );
+    } catch (err) {
+      console.error('Failed to report post:', err);
+      Alert.alert(
+        t('common_error') || 'Error',
+        t('community_report_error') || 'No se pudo enviar el reporte'
+      );
+    } finally {
+      setReporting(false);
+    }
+  }, [post, t]);
 
   if (loading) {
     return (
@@ -288,6 +337,13 @@ export default function PostDetailScreen({ navigation, route }: PostDetailScreen
                     <Ionicons name="chatbubble-outline" size={20} color={colors.subtleText} />
                     <Text style={styles.actionText}>{post.comment_count}</Text>
                   </View>
+                  <TouchableOpacity
+                    style={styles.reportBtn}
+                    onPress={() => setReportModalVisible(true)}
+                  >
+                    <Ionicons name="flag-outline" size={16} color={colors.subtleText} />
+                    <Text style={styles.reportBtnText}>{t('community_report') || 'Reportar'}</Text>
+                  </TouchableOpacity>
                 </View>
               </View>
 
@@ -344,6 +400,37 @@ export default function PostDetailScreen({ navigation, route }: PostDetailScreen
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
+
+      {reportModalVisible && (
+        <View style={styles.modalOverlay}>
+          <View style={styles.reportModalContent}>
+            <Text style={styles.reportModalTitle}>{t('community_report_post') || 'Reportar publicación'}</Text>
+            {[
+              { key: 'spam', label: t('community_report_spam') || 'Spam' },
+              { key: 'inappropriate', label: t('community_report_inappropriate') || 'Contenido inapropiado' },
+              { key: 'offensive', label: t('community_report_offensive') || 'Lenguaje ofensivo' },
+              { key: 'other', label: t('community_report_other') || 'Otro' },
+            ].map((option) => (
+              <TouchableOpacity
+                key={option.key}
+                style={styles.reportOption}
+                onPress={() => handleReport(option.key)}
+                disabled={reporting}
+              >
+                <Text style={styles.reportOptionText}>{option.label}</Text>
+                <Ionicons name="chevron-forward" size={16} color={colors.subtleText} />
+              </TouchableOpacity>
+            ))}
+            <TouchableOpacity
+              style={styles.reportCancelBtn}
+              onPress={() => setReportModalVisible(false)}
+              disabled={reporting}
+            >
+              <Text style={styles.reportCancelBtnText}>{t('community_report_cancel') || 'Cancelar'}</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      )}
     </SafeAreaView>
   );
 }

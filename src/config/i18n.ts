@@ -559,6 +559,21 @@ const translations: Record<Language, Record<string, string>> = {
     community_empty_title: 'Sin publicaciones aún',
     community_empty_subtitle: 'Sé la primera en compartir algo',
 
+    // Moderation
+    community_report: 'Reportar',
+    community_report_post: 'Reportar publicación',
+    community_report_reason: 'Motivo del reporte',
+    community_report_spam: 'Spam',
+    community_report_inappropriate: 'Contenido inapropiado',
+    community_report_offensive: 'Lenguaje ofensivo',
+    community_report_other: 'Otro',
+    community_report_submit: 'Enviar reporte',
+    community_report_cancel: 'Cancelar',
+    community_post_reported: 'Publicación reportada',
+    community_post_reported_msg: 'Gracias por ayudarnos a mantener la comunidad segura.',
+    community_report_error: 'No se pudo enviar el reporte',
+    community_flagged: 'Moderado',
+
     // Onboarding
     onboarding_title: 'Bienvenida a Yayika',
     onboarding_step1_title: '¿Cuáles son tus metas?',
@@ -1320,6 +1335,21 @@ const translations: Record<Language, Record<string, string>> = {
     community_publish: 'Publish',
     community_empty_title: 'No posts yet',
     community_empty_subtitle: 'Be the first to share something',
+
+    // Moderation
+    community_report: 'Report',
+    community_report_post: 'Report post',
+    community_report_reason: 'Reason for report',
+    community_report_spam: 'Spam',
+    community_report_inappropriate: 'Inappropriate content',
+    community_report_offensive: 'Offensive language',
+    community_report_other: 'Other',
+    community_report_submit: 'Submit report',
+    community_report_cancel: 'Cancel',
+    community_post_reported: 'Post reported',
+    community_post_reported_msg: 'Thank you for helping keep the community safe.',
+    community_report_error: 'Could not submit report',
+    community_flagged: 'Moderated',
 
     // Onboarding
     onboarding_title: 'Welcome to Yayika',

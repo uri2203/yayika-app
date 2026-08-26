@@ -53,26 +53,27 @@ export default function AffiliateDashboardScreen({ navigation }: any) {
   }, [fetchData]);
 
   const handleCopyCode = async () => {
-    if (!data?.affiliate_code) return;
+    const code = data?.dashboard?.referralCode;
+    if (!code) return;
     try {
       if (Platform.OS === 'web') {
-        if (navigator.clipboard) await navigator.clipboard.writeText(data.affiliate_code);
+        if (navigator.clipboard) await navigator.clipboard.writeText(code);
       } else {
         const Clipboard = await import('expo-clipboard');
-        await Clipboard.setStringAsync(data.affiliate_code);
+        await Clipboard.setStringAsync(code);
       }
     } catch { return; }
-    Alert.alert(t('aff_copied'), `${t('aff_your_code')}: ${data.affiliate_code}`);
+    Alert.alert(t('aff_copied'), `${t('aff_your_code')}: ${code}`);
   };
 
   const handleCopyLink = async () => {
-    if (!data?.referral_link) return;
+    if (!referralLink) return;
     try {
       if (Platform.OS === 'web') {
-        if (navigator.clipboard) await navigator.clipboard.writeText(data.referral_link);
+        if (navigator.clipboard) await navigator.clipboard.writeText(referralLink);
       } else {
         const Clipboard = await import('expo-clipboard');
-        await Clipboard.setStringAsync(data.referral_link);
+        await Clipboard.setStringAsync(referralLink);
       }
     } catch { return; }
     Alert.alert(t('aff_copied'), t('aff_link_copied'));
@@ -80,8 +81,10 @@ export default function AffiliateDashboardScreen({ navigation }: any) {
 
   const handleShare = async () => {
     try {
-      const message = `Únete a Yayika con mi código ${data?.affiliate_code ?? ''} y transforma tu vida! ${data?.referral_link ?? ''}`;
-      await Share.share({ message });
+      const code = data?.dashboard?.referralCode ?? '';
+      const link = code ? `https://yayika.app/join/${code}` : '';
+      const message = t('aff_share_message').replace('{code}', code);
+      await Share.share({ message: `${message} ${link}` });
     } catch {}
   };
 
@@ -154,12 +157,14 @@ export default function AffiliateDashboardScreen({ navigation }: any) {
     },
   }), [colors]);
 
-  const referralLink = data?.referral_link ?? '';
-  const stats = data
+  const referralLink = data?.dashboard?.referralCode
+    ? `https://yayika.app/join/${data.dashboard.referralCode}`
+    : '';
+  const stats = data?.dashboard
     ? [
-        { label: t('aff_referrals'), value: String(data.stats.total_referrals), icon: 'people' as const, color: colors.primary },
-        { label: t('aff_earnings'), value: `$${data.stats.total_earnings}`, icon: 'cash' as const, color: colors.gold },
-        { label: t('aff_pending'), value: `$${data.stats.pending_earnings}`, icon: 'time' as const, color: colors.turquoise },
+        { label: t('aff_referrals'), value: String(data.dashboard.stats.referralsCount), icon: 'people' as const, color: colors.primary },
+        { label: t('aff_earnings'), value: `$${data.dashboard.earnings.total / 100}`, icon: 'cash' as const, color: colors.gold },
+        { label: t('aff_pending'), value: `$${data.dashboard.earnings.pending / 100}`, icon: 'time' as const, color: colors.turquoise },
       ]
     : [];
 
@@ -192,7 +197,7 @@ export default function AffiliateDashboardScreen({ navigation }: any) {
         <Card style={styles.codeCard}>
           <Text style={styles.codeLabel}>{t('aff_your_code')}</Text>
           <View style={styles.codeRow}>
-            <Text style={styles.codeText}>{data?.affiliate_code ?? '---'}</Text>
+            <Text style={styles.codeText}>{data?.dashboard?.referralCode ?? '---'}</Text>
             <Button title={t('aff_copy')} onPress={handleCopyCode} variant="secondary" style={styles.codeBtn} />
           </View>
           {referralLink ? (
@@ -218,10 +223,10 @@ export default function AffiliateDashboardScreen({ navigation }: any) {
 
         <Card style={styles.historyCard}>
           <Text style={styles.historyTitle}>{t('aff_history')}</Text>
-          {(!data?.history || data.history.length === 0) ? (
+          {(!data?.dashboard?.recent || data.dashboard.recent.length === 0) ? (
             <Text style={styles.emptyText}>{t('aff_no_history')}</Text>
           ) : (
-            data.history.slice(0, 10).map((item) => (
+            data.dashboard.recent.slice(0, 10).map((item) => (
               <View key={item.id} style={styles.historyRow}>
                 <View style={styles.historyInfo}>
                   <Text style={styles.historyDate}>{item.date}</Text>

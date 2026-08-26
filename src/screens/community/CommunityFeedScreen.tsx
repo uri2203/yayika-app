@@ -31,6 +31,7 @@ interface Post {
   like_count: number;
   comment_count: number;
   user_has_liked: boolean;
+  is_flagged?: boolean;
 }
 
 interface Category {
@@ -192,6 +193,12 @@ export default function CommunityFeedScreen({ navigation }: any) {
     actionButton: { flexDirection: 'row', alignItems: 'center', marginRight: spacing.lg },
     actionText: { fontSize: typography.sizes.sm, color: colors.subtleText, marginLeft: spacing.xs },
     actionTextActive: { color: colors.rose, fontWeight: typography.weights.semibold },
+    flaggedBadge: {
+      flexDirection: 'row', alignItems: 'center',
+      backgroundColor: '#FEF3C7', paddingHorizontal: spacing.sm, paddingVertical: 2,
+      borderRadius: borderRadius.full, marginTop: spacing.xs,
+    },
+    flaggedText: { fontSize: typography.sizes.xs, color: '#D97706', marginLeft: spacing.xs },
     emptyTitle: { fontSize: typography.sizes.lg, fontWeight: typography.weights.bold, color: colors.text, marginTop: spacing.md },
     emptySubtitle: { fontSize: typography.sizes.sm, color: colors.subtleText, marginTop: spacing.xs, textAlign: 'center' },
     fab: {
@@ -243,6 +250,13 @@ export default function CommunityFeedScreen({ navigation }: any) {
       </View>
 
       <Text style={styles.postContent}>{getLocalized(item.content, lang)}</Text>
+
+      {item.is_flagged && (
+        <View style={styles.flaggedBadge}>
+          <Ionicons name="flag" size={12} color="#D97706" />
+          <Text style={styles.flaggedText}>{t('community_flagged') || 'Moderado'}</Text>
+        </View>
+      )}
 
       <View style={styles.postActions}>
         <TouchableOpacity

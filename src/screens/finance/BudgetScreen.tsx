@@ -9,22 +9,23 @@ import { useAuth } from '../../contexts/AuthContext';
 import { getTransactions } from '../../config/api';
 
 const CATEGORIES = [
-  { key: 'food', label: 'Alimentación', icon: 'restaurant', color: '#F59E0B' },
-  { key: 'transport', label: 'Transporte', icon: 'car', color: '#3B82F6' },
-  { key: 'housing', label: 'Vivienda', icon: 'home', color: '#8B5CF6' },
-  { key: 'entertainment', label: 'Entretenimiento', icon: 'film', color: '#EC4899' },
-  { key: 'health', label: 'Salud', icon: 'medical', color: '#10B981' },
-  { key: 'education', label: 'Educación', icon: 'school', color: '#06B6D4' },
-  { key: 'clothing', label: 'Ropa', icon: 'shirt', color: '#F97316' },
-  { key: 'other', label: 'Otros', icon: 'ellipsis-horizontal', color: '#6B7280' },
+  { key: 'food', icon: 'restaurant', color: '#F59E0B' },
+  { key: 'transport', icon: 'car', color: '#3B82F6' },
+  { key: 'housing', icon: 'home', color: '#8B5CF6' },
+  { key: 'entertainment', icon: 'film', color: '#EC4899' },
+  { key: 'health', icon: 'medical', color: '#10B981' },
+  { key: 'education', icon: 'school', color: '#06B6D4' },
+  { key: 'clothing', icon: 'shirt', color: '#F97316' },
+  { key: 'other', icon: 'ellipsis-horizontal', color: '#6B7280' },
 ];
 
 interface BudgetData {
   income: number;
 }
 
-function formatMoney(n: number) {
-  return `$${n.toLocaleString('es-MX')}`;
+function formatMoney(n: number, lang: string = 'es') {
+  const locale = lang === 'es' ? 'es-MX' : lang === 'pt' ? 'pt-BR' : 'en-US';
+  return `$${n.toLocaleString(locale)}`;
 }
 
 export default function BudgetScreen({ navigation }: any) {
@@ -94,7 +95,7 @@ export default function BudgetScreen({ navigation }: any) {
     categoryPct: { fontSize: typography.sizes.xs, fontWeight: typography.weights.bold, color: colors.subtleText, width: 32, textAlign: 'right' },
   });
 
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   const { user } = useAuth();
   const [loading, setLoading] = useState(true);
   const [income, setIncome] = useState(0);
@@ -131,7 +132,7 @@ export default function BudgetScreen({ navigation }: any) {
       return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
     });
 
-  const totalExpenses = monthExpenses.reduce((s, tx) => s + tx.amount, 0);
+  const totalExpenses = monthExpenses.reduce((s, tx) => s + (typeof tx.amount === 'number' ? tx.amount : 0), 0);
 
   const categorySpending: Record<string, number> = {};
   monthExpenses.forEach((tx) => {
@@ -182,7 +183,7 @@ export default function BudgetScreen({ navigation }: any) {
             </View>
           ) : (
             <TouchableOpacity style={styles.incomeDisplay} onPress={() => { setIncomeInput(String(income)); setEditingIncome(true); }}>
-              <Text style={styles.incomeAmount}>{formatMoney(income)}</Text>
+              <Text style={styles.incomeAmount}>{formatMoney(income, lang)}</Text>
               <Ionicons name="pencil" size={16} color={colors.subtleText} />
             </TouchableOpacity>
           )}
@@ -196,7 +197,7 @@ export default function BudgetScreen({ navigation }: any) {
                 <View style={[styles.splitDot, { backgroundColor: colors.turquoise }]} />
                 <Text style={styles.splitLabel}>50% {t('finance_needs') || 'Necesidades'}</Text>
               </View>
-              <Text style={styles.splitAmount}>{formatMoney(needsAmount)}</Text>
+              <Text style={styles.splitAmount}>{formatMoney(needsAmount, lang)}</Text>
               <View style={styles.progressBar}>
                 <View style={[styles.progressFill, { width: `${Math.min((totalExpenses * 0.625 / needsAmount) * 100, 100)}%`, backgroundColor: colors.turquoise }]} />
               </View>
@@ -206,7 +207,7 @@ export default function BudgetScreen({ navigation }: any) {
                 <View style={[styles.splitDot, { backgroundColor: colors.gold }]} />
                 <Text style={styles.splitLabel}>30% {t('finance_wants') || 'Deseos'}</Text>
               </View>
-              <Text style={styles.splitAmount}>{formatMoney(wantsAmount)}</Text>
+              <Text style={styles.splitAmount}>{formatMoney(wantsAmount, lang)}</Text>
               <View style={styles.progressBar}>
                 <View style={[styles.progressFill, { width: `${Math.min((totalExpenses * 0.375 / wantsAmount) * 100, 100)}%`, backgroundColor: colors.gold }]} />
               </View>
@@ -216,7 +217,7 @@ export default function BudgetScreen({ navigation }: any) {
                 <View style={[styles.splitDot, { backgroundColor: colors.rose }]} />
                 <Text style={styles.splitLabel}>20% {t('finance_savings_stat') || 'Ahorro'}</Text>
               </View>
-              <Text style={styles.splitAmount}>{formatMoney(savingsAmount)}</Text>
+              <Text style={styles.splitAmount}>{formatMoney(savingsAmount, lang)}</Text>
               <View style={styles.progressBar}>
                 <View style={[styles.progressFill, { width: `${Math.min((savingsAmount / (income || 1)) * 100, 100)}%`, backgroundColor: colors.rose }]} />
               </View>
@@ -235,8 +236,8 @@ export default function BudgetScreen({ navigation }: any) {
                   <Ionicons name={cat.icon as any} size={18} color={cat.color} />
                 </View>
                 <View>
-                  <Text style={styles.categoryName}>{cat.label}</Text>
-                  <Text style={styles.categoryAmount}>{formatMoney(spent)}</Text>
+                  <Text style={styles.categoryName}>{t(`category_${cat.key}`) || cat.key}</Text>
+                  <Text style={styles.categoryAmount}>{formatMoney(spent, lang)}</Text>
                 </View>
               </View>
               <View style={styles.categoryRight}>

@@ -342,6 +342,12 @@ export async function getCommunityCategories() {
   );
 }
 
+export async function reportPost(postId: string, reason: string) {
+  return callFunction<{ success: boolean }>(
+    'ai-community', { action: 'reportPost', post_id: postId, reason }, true
+  );
+}
+
 // ──── Direct Supabase Queries ────────────────────────
 export async function getProfile(userId: string) {
   const { data, error } = await supabase
@@ -493,19 +499,38 @@ export async function getAffiliate(userId: string) {
 
 // ──── Affiliate: Gana con Yayika ─────────────────────
 export interface GanaConYayikaResponse {
-  affiliate_code: string;
-  referral_link: string;
-  stats: {
-    total_referrals: number;
-    total_earnings: number;
-    pending_earnings: number;
+  success: boolean;
+  dashboard: {
+    earnings: {
+      total: number;
+      pending: number;
+      available: number;
+      paidOut: number;
+      referrals: number;
+      marketplace: number;
+      mentoring: number;
+    };
+    stats: {
+      referralsCount: number;
+      productsSold: number;
+      mentoringSessions: number;
+    };
+    recent: {
+      id: string;
+      date: string;
+      amount: number;
+      status: 'paid' | 'pending';
+    }[];
+    referralCode: string;
+    roi: number;
+    region: {
+      country: string;
+      currency: string;
+      tier: string;
+      city?: string;
+    };
+    translations: Record<string, string>;
   };
-  history: {
-    id: string;
-    date: string;
-    amount: number;
-    status: 'paid' | 'pending';
-  }[];
 }
 
 export async function aiGanaConYayika(params: { lang: string }) {

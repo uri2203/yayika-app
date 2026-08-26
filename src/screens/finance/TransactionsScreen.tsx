@@ -181,7 +181,7 @@ export default function TransactionsScreen({ navigation, route }: TransactionsSc
       setNewDate(new Date().toISOString().split('T')[0]);
       fetchData();
     } catch (e) {
-      Alert.alert('Error', e instanceof Error ? e.message : 'Error al guardar');
+      Alert.alert(t('common_error') || 'Error', e instanceof Error ? e.message : (t('finance_save_error') || 'Error al guardar'));
     } finally {
       setSaving(false);
     }
@@ -212,7 +212,7 @@ export default function TransactionsScreen({ navigation, route }: TransactionsSc
       <View style={styles.summaryBar}>
         <Text style={styles.summaryLabel}>{t('finance_total') || 'Total'}:</Text>
         <Text style={[styles.summaryAmount, totalFiltered >= 0 ? { color: colors.success } : { color: colors.error }]}>
-          {totalFiltered >= 0 ? '+' : ''}${totalFiltered.toLocaleString('es-MX')}
+          {totalFiltered >= 0 ? '+' : ''}${totalFiltered.toLocaleString()}
         </Text>
       </View>
 
@@ -324,10 +324,10 @@ export default function TransactionsScreen({ navigation, route }: TransactionsSc
             <TextInput style={styles.input} placeholder="$0.00" keyboardType="numeric" value={newAmount} onChangeText={setNewAmount} />
 
             <Text style={styles.inputLabel}>{t('finance_category') || 'Categoría'}</Text>
-            <TextInput style={styles.input} placeholder="Ej: Comida, Transporte..." value={newCategory} onChangeText={setNewCategory} />
+            <TextInput style={styles.input} placeholder={t('finance_category_placeholder') || 'Ej: Comida, Transporte...'} value={newCategory} onChangeText={setNewCategory} />
 
             <Text style={styles.inputLabel}>{t('finance_description') || 'Descripción'}</Text>
-            <TextInput style={styles.input} placeholder="Nota opcional" value={newDescription} onChangeText={setNewDescription} />
+            <TextInput style={styles.input} placeholder={t('finance_description_placeholder') || 'Nota opcional'} value={newDescription} onChangeText={setNewDescription} />
 
             <Text style={styles.inputLabel}>{t('finance_date') || 'Fecha'}</Text>
             <TextInput style={styles.input} placeholder="YYYY-MM-DD" value={newDate} onChangeText={setNewDate} />

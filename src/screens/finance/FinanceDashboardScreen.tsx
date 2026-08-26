@@ -24,9 +24,10 @@ const MONTHS_BY_LANG: Record<string, string[]> = {
   de: ['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'],
 };
 
-function formatMoney(n: any) {
+function formatMoney(n: any, lang: Language = 'es') {
   const num = typeof n === 'number' && !isNaN(n) ? n : 0;
-  return `$${num.toLocaleString()}`;
+  const locale = lang === 'es' ? 'es-MX' : lang === 'pt' ? 'pt-BR' : 'en-US';
+  return `$${num.toLocaleString(locale)}`;
 }
 
 function formatDate(dateStr: string, lang: Language = 'es') {
@@ -36,11 +37,11 @@ function formatDate(dateStr: string, lang: Language = 'es') {
 }
 
 const EXPENSE_CATEGORIES: Record<string, number> = {
-  Alimentación: 0.5,
-  Transporte: 0.15,
-  Vivienda: 0.2,
-  Entretenimiento: 0.1,
-  Otros: 0.05,
+  food: 0.5,
+  transport: 0.15,
+  housing: 0.2,
+  entertainment: 0.1,
+  other: 0.05,
 };
 
 export default function FinanceDashboardScreen({ navigation }: any) {
@@ -158,10 +159,10 @@ export default function FinanceDashboardScreen({ navigation }: any) {
 
   const totalIncome = currentMonthTxs
     .filter((tx) => tx.type === 'income')
-    .reduce((s, tx) => s + tx.amount, 0);
+    .reduce((s, tx) => s + (typeof tx.amount === 'number' ? tx.amount : 0), 0);
   const totalExpenses = currentMonthTxs
     .filter((tx) => tx.type === 'expense')
-    .reduce((s, tx) => s + tx.amount, 0);
+    .reduce((s, tx) => s + (typeof tx.amount === 'number' ? tx.amount : 0), 0);
   const savings = totalIncome - totalExpenses;
   const needs = totalExpenses * 0.625;
   const wants = totalExpenses * 0.375;
@@ -191,17 +192,17 @@ export default function FinanceDashboardScreen({ navigation }: any) {
 
         <View style={styles.incomeCard}>
           <Text style={styles.incomeLabel}>{t('finance_income') || 'Ingreso mensual'}</Text>
-          <Text style={styles.incomeAmount}>{formatMoney(totalIncome)}</Text>
+          <Text style={styles.incomeAmount}>{formatMoney(totalIncome, lang)}</Text>
           <View style={styles.balanceRow}>
             <View style={styles.balanceItem}>
               <Ionicons name="trending-down" size={16} color={colors.error} />
-              <Text style={styles.balanceVal}>{formatMoney(totalExpenses)}</Text>
+              <Text style={styles.balanceVal}>{formatMoney(totalExpenses, lang)}</Text>
               <Text style={styles.balanceLabel}>{t('finance_expenses') || 'Gastos'}</Text>
             </View>
             <View style={styles.balanceItem}>
               <Ionicons name="wallet" size={16} color={colors.turquoise} />
               <Text style={[styles.balanceVal, { color: savings >= 0 ? colors.success : colors.error }]}>
-                {formatMoney(savings)}
+                {formatMoney(savings, lang)}
               </Text>
               <Text style={styles.balanceLabel}>{t('finance_savings_stat') || 'Ahorro'}</Text>
             </View>
@@ -214,17 +215,17 @@ export default function FinanceDashboardScreen({ navigation }: any) {
             <View style={styles.splitItem}>
               <View style={[styles.splitDot, { backgroundColor: colors.turquoise }]} />
               <Text style={styles.splitLabel}>50% {t('finance_needs') || 'Necesidades'}</Text>
-              <Text style={styles.splitAmount}>{formatMoney(totalIncome * 0.5)}</Text>
+              <Text style={styles.splitAmount}>{formatMoney(totalIncome * 0.5, lang)}</Text>
             </View>
             <View style={styles.splitItem}>
               <View style={[styles.splitDot, { backgroundColor: colors.gold }]} />
               <Text style={styles.splitLabel}>30% {t('finance_wants') || 'Deseos'}</Text>
-              <Text style={styles.splitAmount}>{formatMoney(totalIncome * 0.3)}</Text>
+              <Text style={styles.splitAmount}>{formatMoney(totalIncome * 0.3, lang)}</Text>
             </View>
             <View style={styles.splitItem}>
               <View style={[styles.splitDot, { backgroundColor: colors.rose }]} />
               <Text style={styles.splitLabel}>20% {t('finance_savings_stat') || 'Ahorro'}</Text>
-              <Text style={styles.splitAmount}>{formatMoney(totalIncome * 0.2)}</Text>
+              <Text style={styles.splitAmount}>{formatMoney(totalIncome * 0.2, lang)}</Text>
             </View>
           </View>
         </View>
@@ -278,7 +279,7 @@ export default function FinanceDashboardScreen({ navigation }: any) {
                   <Text style={styles.txDate}>{tx.date ? formatDate(tx.date, lang) : ''}</Text>
                 </View>
                 <Text style={[styles.txAmount, isIncome ? styles.txAmountIncome : styles.txAmountExpense]}>
-                  {isIncome ? `+${formatMoney(tx.amount)}` : `-${formatMoney(tx.amount)}`}
+                  {isIncome ? `+${formatMoney(tx.amount, lang)}` : `-${formatMoney(tx.amount, lang)}`}
                 </Text>
               </View>
             );
