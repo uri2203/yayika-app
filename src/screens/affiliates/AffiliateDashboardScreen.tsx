@@ -13,7 +13,8 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import { colors, typography, spacing, borderRadius } from '../../config/theme';
+import { typography, spacing, borderRadius } from '../../config/theme';
+import { useTheme } from '../../contexts/ThemeContext';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { useAuth } from '../../contexts/AuthContext';
 import { aiGanaConYayika, GanaConYayikaResponse } from '../../config/api';
@@ -21,6 +22,8 @@ import Card from '../../components/Card';
 import Button from '../../components/Button';
 
 export default function AffiliateDashboardScreen({ navigation }: any) {
+  const { currentColors } = useTheme();
+  const colors = currentColors;
   const { t, lang } = useLanguage();
   const { user } = useAuth();
   const [loading, setLoading] = useState(true);
@@ -81,6 +84,75 @@ export default function AffiliateDashboardScreen({ navigation }: any) {
       await Share.share({ message });
     } catch {}
   };
+
+  const styles = React.useMemo(() => StyleSheet.create({
+    container: { flex: 1, backgroundColor: colors.background },
+    loadingWrap: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+    scrollContent: { paddingHorizontal: spacing.lg, paddingBottom: spacing.xxl },
+    header: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingTop: spacing.md,
+      marginBottom: spacing.sm,
+    },
+    backBtn: { width: 40, height: 40, justifyContent: 'center', alignItems: 'center' },
+    headerTitle: {
+      fontSize: typography.sizes.xxl,
+      fontWeight: typography.weights.bold,
+      color: colors.text,
+    },
+    subtitle: {
+      fontSize: typography.sizes.md,
+      color: colors.subtleText,
+      marginBottom: spacing.lg,
+    },
+    codeCard: { marginBottom: spacing.lg, alignItems: 'center' },
+    codeLabel: { fontSize: typography.sizes.sm, color: colors.subtleText, marginBottom: spacing.sm },
+    codeRow: { flexDirection: 'row', alignItems: 'center' },
+    codeText: {
+      fontSize: typography.sizes.xxl,
+      fontWeight: typography.weights.bold,
+      color: colors.primary,
+      letterSpacing: 2,
+      marginRight: spacing.md,
+    },
+    codeBtn: { paddingVertical: spacing.sm, paddingHorizontal: spacing.md, minHeight: 40 },
+    linkSection: { marginTop: spacing.md, width: '100%' },
+    linkLabel: { fontSize: typography.sizes.xs, color: colors.subtleText, marginBottom: spacing.sm },
+    linkActions: { flexDirection: 'row', gap: spacing.sm },
+    statsRow: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: spacing.lg },
+    statCard: { flex: 1, alignItems: 'center', marginHorizontal: spacing.xs, paddingVertical: spacing.md },
+    statValue: { fontSize: typography.sizes.lg, fontWeight: typography.weights.bold, color: colors.text, marginTop: spacing.sm },
+    statLabel: { fontSize: typography.sizes.xs, color: colors.subtleText, marginTop: 2 },
+    historyCard: { marginBottom: spacing.md },
+    historyTitle: {
+      fontSize: typography.sizes.lg,
+      fontWeight: typography.weights.bold,
+      color: colors.text,
+      marginBottom: spacing.md,
+    },
+    historyRow: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      paddingVertical: spacing.sm,
+      borderBottomWidth: 1,
+      borderBottomColor: colors.border,
+    },
+    historyInfo: { flex: 1 },
+    historyDate: { fontSize: typography.sizes.md, color: colors.text },
+    historyStatus: { fontSize: typography.sizes.xs, marginTop: 2 },
+    statusPaid: { color: colors.success },
+    statusPending: { color: colors.gold },
+    historyAmount: { fontSize: typography.sizes.md, fontWeight: typography.weights.bold, color: colors.turquoise },
+    emptyText: {
+      fontSize: typography.sizes.sm,
+      color: colors.subtleText,
+      textAlign: 'center',
+      paddingVertical: spacing.md,
+    },
+  }), [colors]);
 
   const referralLink = data?.referral_link ?? '';
   const stats = data
@@ -166,72 +238,3 @@ export default function AffiliateDashboardScreen({ navigation }: any) {
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: colors.background },
-  loadingWrap: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-  scrollContent: { paddingHorizontal: spacing.lg, paddingBottom: spacing.xxl },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingTop: spacing.md,
-    marginBottom: spacing.sm,
-  },
-  backBtn: { width: 40, height: 40, justifyContent: 'center', alignItems: 'center' },
-  headerTitle: {
-    fontSize: typography.sizes.xxl,
-    fontWeight: typography.weights.bold,
-    color: colors.text,
-  },
-  subtitle: {
-    fontSize: typography.sizes.md,
-    color: colors.subtleText,
-    marginBottom: spacing.lg,
-  },
-  codeCard: { marginBottom: spacing.lg, alignItems: 'center' },
-  codeLabel: { fontSize: typography.sizes.sm, color: colors.subtleText, marginBottom: spacing.sm },
-  codeRow: { flexDirection: 'row', alignItems: 'center' },
-  codeText: {
-    fontSize: typography.sizes.xxl,
-    fontWeight: typography.weights.bold,
-    color: colors.primary,
-    letterSpacing: 2,
-    marginRight: spacing.md,
-  },
-  codeBtn: { paddingVertical: spacing.sm, paddingHorizontal: spacing.md, minHeight: 40 },
-  linkSection: { marginTop: spacing.md, width: '100%' },
-  linkLabel: { fontSize: typography.sizes.xs, color: colors.subtleText, marginBottom: spacing.sm },
-  linkActions: { flexDirection: 'row', gap: spacing.sm },
-  statsRow: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: spacing.lg },
-  statCard: { flex: 1, alignItems: 'center', marginHorizontal: spacing.xs, paddingVertical: spacing.md },
-  statValue: { fontSize: typography.sizes.lg, fontWeight: typography.weights.bold, color: colors.text, marginTop: spacing.sm },
-  statLabel: { fontSize: typography.sizes.xs, color: colors.subtleText, marginTop: 2 },
-  historyCard: { marginBottom: spacing.md },
-  historyTitle: {
-    fontSize: typography.sizes.lg,
-    fontWeight: typography.weights.bold,
-    color: colors.text,
-    marginBottom: spacing.md,
-  },
-  historyRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingVertical: spacing.sm,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.border,
-  },
-  historyInfo: { flex: 1 },
-  historyDate: { fontSize: typography.sizes.md, color: colors.text },
-  historyStatus: { fontSize: typography.sizes.xs, marginTop: 2 },
-  statusPaid: { color: colors.success },
-  statusPending: { color: colors.gold },
-  historyAmount: { fontSize: typography.sizes.md, fontWeight: typography.weights.bold, color: colors.turquoise },
-  emptyText: {
-    fontSize: typography.sizes.sm,
-    color: colors.subtleText,
-    textAlign: 'center',
-    paddingVertical: spacing.md,
-  },
-});

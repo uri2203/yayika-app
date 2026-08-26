@@ -5,7 +5,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '../contexts/AuthContext';
 import { useLanguage } from '../contexts/LanguageContext';
-import { colors, typography } from '../config/theme';
+import { typography } from '../config/theme';
+import { useTheme } from '../contexts/ThemeContext';
 import LoadingSpinner from '../components/LoadingSpinner';
 
 // Auth
@@ -68,6 +69,8 @@ const ComunidadStack = createStackNavigator();
 const FinanzasStack = createStackNavigator();
 
 function AuthNavigator() {
+  const { currentColors } = useTheme();
+  const colors = currentColors;
   return (
     <AuthStack.Navigator
       screenOptions={{
@@ -140,6 +143,8 @@ function FinanzasStackNavigator() {
 
 function MainTabs() {
   const { t } = useLanguage();
+  const { currentColors } = useTheme();
+  const colors = currentColors;
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({

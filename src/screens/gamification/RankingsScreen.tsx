@@ -10,18 +10,141 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import { colors, typography, spacing, borderRadius } from '../../config/theme';
+import { typography, spacing, borderRadius } from '../../config/theme';
+import { useTheme } from '../../contexts/ThemeContext';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { useAuth } from '../../contexts/AuthContext';
 import { getRankings, RankingEntry } from '../../config/api';
 
 const PODIUM_HEIGHTS: Record<number, number> = { 1: 80, 2: 64, 3: 52 };
-const PODIUM_COLORS: Record<number, string> = { 1: colors.gold, 2: '#C0C0C0', 3: '#CD7F32' };
-
 const safeName = (name: any) => (typeof name === 'string' && name.trim()) || 'Guerrera';
 const safeNum = (n: any) => (typeof n === 'number' && !isNaN(n)) ? n : 0;
 
 export default function RankingsScreen({ navigation }: any) {
+  const { currentColors } = useTheme();
+  const colors = currentColors;
+  const PODIUM_COLORS: Record<number, string> = { 1: colors.gold, 2: '#C0C0C0', 3: '#CD7F32' };
+
+  const styles = StyleSheet.create({
+    container: { flex: 1, backgroundColor: colors.background },
+    loadingWrap: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+    scrollContent: { paddingHorizontal: spacing.lg, paddingBottom: spacing.xxl },
+    header: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingTop: spacing.md,
+      marginBottom: spacing.lg,
+    },
+    backBtn: { width: 40, height: 40, justifyContent: 'center', alignItems: 'center' },
+    headerTitle: {
+      fontSize: typography.sizes.xxl,
+      fontWeight: typography.weights.bold,
+      color: colors.text,
+    },
+    podiumContainer: {
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'flex-end',
+      marginBottom: spacing.xl,
+      paddingHorizontal: spacing.sm,
+    },
+    podiumColumn: { flex: 1, alignItems: 'center' },
+    crownIcon: { marginBottom: spacing.xs },
+    podiumAvatar: {
+      backgroundColor: colors.border,
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginBottom: spacing.sm,
+    },
+    podiumInitial: { fontWeight: typography.weights.bold, color: colors.text },
+    podiumName: {
+      fontSize: typography.sizes.sm,
+      fontWeight: typography.weights.semibold,
+      color: colors.text,
+      textAlign: 'center',
+      maxWidth: 80,
+    },
+    podiumXp: {
+      fontSize: typography.sizes.xs,
+      color: colors.subtleText,
+      marginBottom: spacing.sm,
+    },
+    podiumBar: {
+      width: '100%',
+      borderRadius: borderRadius.sm,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    podiumRank: {
+      fontSize: typography.sizes.lg,
+      fontWeight: typography.weights.bold,
+      color: colors.white,
+    },
+    listContainer: {
+      backgroundColor: colors.white,
+      borderRadius: borderRadius.md,
+      overflow: 'hidden',
+      marginBottom: spacing.lg,
+      shadowColor: colors.black,
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.06,
+      shadowRadius: 6,
+      elevation: 2,
+    },
+    listRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      padding: spacing.md,
+      borderBottomWidth: 1,
+      borderBottomColor: colors.border,
+    },
+    listRowMe: {
+      backgroundColor: colors.primary + '10',
+    },
+    listRank: {
+      width: 28,
+      fontSize: typography.sizes.md,
+      fontWeight: typography.weights.bold,
+      color: colors.subtleText,
+      textAlign: 'center',
+    },
+    listRankMe: { color: colors.primary },
+    listAvatar: {
+      width: 36,
+      height: 36,
+      borderRadius: 18,
+      backgroundColor: colors.primaryLight,
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginHorizontal: spacing.sm,
+    },
+    listAvatarMe: { backgroundColor: colors.primary + '30' },
+    listInitial: { fontSize: typography.sizes.sm, fontWeight: typography.weights.bold, color: colors.primary },
+    listInitialMe: { color: colors.primary },
+    listInfo: { flex: 1 },
+    listName: { fontSize: typography.sizes.md, fontWeight: typography.weights.medium, color: colors.text },
+    listNameMe: { fontWeight: typography.weights.bold, color: colors.primary },
+    listLevel: { fontSize: typography.sizes.xs, color: colors.subtleText, marginTop: 2 },
+    listXp: { fontSize: typography.sizes.sm, fontWeight: typography.weights.bold, color: colors.gold },
+    yourPosition: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: colors.primary + '15',
+      borderRadius: borderRadius.md,
+      padding: spacing.md,
+      borderWidth: 1,
+      borderColor: colors.primary + '40',
+    },
+    yourPositionText: {
+      fontSize: typography.sizes.md,
+      fontWeight: typography.weights.bold,
+      color: colors.primary,
+      marginLeft: spacing.sm,
+    },
+  });
+
   const { t } = useLanguage();
   const { user } = useAuth();
   const [loading, setLoading] = useState(true);
@@ -166,123 +289,3 @@ export default function RankingsScreen({ navigation }: any) {
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: colors.background },
-  loadingWrap: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-  scrollContent: { paddingHorizontal: spacing.lg, paddingBottom: spacing.xxl },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingTop: spacing.md,
-    marginBottom: spacing.lg,
-  },
-  backBtn: { width: 40, height: 40, justifyContent: 'center', alignItems: 'center' },
-  headerTitle: {
-    fontSize: typography.sizes.xxl,
-    fontWeight: typography.weights.bold,
-    color: colors.text,
-  },
-  podiumContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'flex-end',
-    marginBottom: spacing.xl,
-    paddingHorizontal: spacing.sm,
-  },
-  podiumColumn: { flex: 1, alignItems: 'center' },
-  crownIcon: { marginBottom: spacing.xs },
-  podiumAvatar: {
-    backgroundColor: colors.border,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: spacing.sm,
-  },
-  podiumInitial: { fontWeight: typography.weights.bold, color: colors.text },
-  podiumName: {
-    fontSize: typography.sizes.sm,
-    fontWeight: typography.weights.semibold,
-    color: colors.text,
-    textAlign: 'center',
-    maxWidth: 80,
-  },
-  podiumXp: {
-    fontSize: typography.sizes.xs,
-    color: colors.subtleText,
-    marginBottom: spacing.sm,
-  },
-  podiumBar: {
-    width: '100%',
-    borderRadius: borderRadius.sm,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  podiumRank: {
-    fontSize: typography.sizes.lg,
-    fontWeight: typography.weights.bold,
-    color: colors.white,
-  },
-  listContainer: {
-    backgroundColor: colors.white,
-    borderRadius: borderRadius.md,
-    overflow: 'hidden',
-    marginBottom: spacing.lg,
-    shadowColor: colors.black,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.06,
-    shadowRadius: 6,
-    elevation: 2,
-  },
-  listRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: spacing.md,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.border,
-  },
-  listRowMe: {
-    backgroundColor: colors.primary + '10',
-  },
-  listRank: {
-    width: 28,
-    fontSize: typography.sizes.md,
-    fontWeight: typography.weights.bold,
-    color: colors.subtleText,
-    textAlign: 'center',
-  },
-  listRankMe: { color: colors.primary },
-  listAvatar: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    backgroundColor: colors.primaryLight,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginHorizontal: spacing.sm,
-  },
-  listAvatarMe: { backgroundColor: colors.primary + '30' },
-  listInitial: { fontSize: typography.sizes.sm, fontWeight: typography.weights.bold, color: colors.primary },
-  listInitialMe: { color: colors.primary },
-  listInfo: { flex: 1 },
-  listName: { fontSize: typography.sizes.md, fontWeight: typography.weights.medium, color: colors.text },
-  listNameMe: { fontWeight: typography.weights.bold, color: colors.primary },
-  listLevel: { fontSize: typography.sizes.xs, color: colors.subtleText, marginTop: 2 },
-  listXp: { fontSize: typography.sizes.sm, fontWeight: typography.weights.bold, color: colors.gold },
-  yourPosition: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: colors.primary + '15',
-    borderRadius: borderRadius.md,
-    padding: spacing.md,
-    borderWidth: 1,
-    borderColor: colors.primary + '40',
-  },
-  yourPositionText: {
-    fontSize: typography.sizes.md,
-    fontWeight: typography.weights.bold,
-    color: colors.primary,
-    marginLeft: spacing.sm,
-  },
-});

@@ -8,7 +8,8 @@ import {
   ViewStyle,
   TextStyle,
 } from 'react-native';
-import { colors, typography, borderRadius, spacing } from '../config/theme';
+import { typography, borderRadius, spacing } from '../config/theme';
+import { useTheme } from '../contexts/ThemeContext';
 
 interface ButtonProps {
   title: string;
@@ -29,6 +30,47 @@ export default function Button({
   style,
   textStyle,
 }: ButtonProps) {
+  const { currentColors } = useTheme();
+  const colors = currentColors;
+
+  const styles = StyleSheet.create({
+    base: {
+      paddingVertical: spacing.md,
+      paddingHorizontal: spacing.lg,
+      borderRadius: borderRadius.md,
+      alignItems: 'center',
+      justifyContent: 'center',
+      minHeight: 52,
+    },
+    primary: {
+      backgroundColor: colors.primary,
+    },
+    secondary: {
+      backgroundColor: colors.primaryLight,
+    },
+    outline: {
+      backgroundColor: 'transparent',
+      borderWidth: 1.5,
+      borderColor: colors.primary,
+    },
+    disabled: {
+      opacity: 0.5,
+    },
+    text: {
+      fontSize: typography.sizes.md,
+      fontWeight: typography.weights.semibold,
+    },
+    textPrimary: {
+      color: colors.white,
+    },
+    textSecondary: {
+      color: colors.primary,
+    },
+    textOutline: {
+      color: colors.primary,
+    },
+  });
+
   const buttonStyles = [
     styles.base,
     variant === 'primary' && styles.primary,
@@ -61,41 +103,3 @@ export default function Button({
     </TouchableOpacity>
   );
 }
-
-const styles = StyleSheet.create({
-  base: {
-    paddingVertical: spacing.md,
-    paddingHorizontal: spacing.lg,
-    borderRadius: borderRadius.md,
-    alignItems: 'center',
-    justifyContent: 'center',
-    minHeight: 52,
-  },
-  primary: {
-    backgroundColor: colors.primary,
-  },
-  secondary: {
-    backgroundColor: colors.primaryLight,
-  },
-  outline: {
-    backgroundColor: 'transparent',
-    borderWidth: 1.5,
-    borderColor: colors.primary,
-  },
-  disabled: {
-    opacity: 0.5,
-  },
-  text: {
-    fontSize: typography.sizes.md,
-    fontWeight: typography.weights.semibold,
-  },
-  textPrimary: {
-    color: colors.white,
-  },
-  textSecondary: {
-    color: colors.primary,
-  },
-  textOutline: {
-    color: colors.primary,
-  },
-});

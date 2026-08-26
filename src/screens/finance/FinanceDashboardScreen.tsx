@@ -2,7 +2,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import { colors, typography, spacing, borderRadius } from '../../config/theme';
+import { typography, spacing, borderRadius } from '../../config/theme';
+import { useTheme } from '../../contexts/ThemeContext';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { useAuth } from '../../contexts/AuthContext';
 import { getTransactions } from '../../config/api';
@@ -43,6 +44,86 @@ const EXPENSE_CATEGORIES: Record<string, number> = {
 };
 
 export default function FinanceDashboardScreen({ navigation }: any) {
+  const { currentColors } = useTheme();
+  const colors = currentColors;
+
+  const styles = StyleSheet.create({
+    container: { flex: 1, backgroundColor: colors.background },
+    centered: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+    scrollContent: { paddingHorizontal: spacing.lg, paddingBottom: spacing.xxl },
+    header: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      paddingTop: spacing.md,
+      marginBottom: spacing.lg,
+    },
+    backBtn: { padding: spacing.xs },
+    title: { fontSize: typography.sizes.xxl, fontWeight: typography.weights.bold, color: colors.text },
+    incomeCard: {
+      backgroundColor: colors.primary,
+      borderRadius: borderRadius.lg,
+      padding: spacing.lg,
+      marginBottom: spacing.md,
+      shadowColor: colors.primary,
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: 0.3,
+      shadowRadius: 8,
+      elevation: 6,
+    },
+    incomeLabel: { fontSize: typography.sizes.sm, color: colors.primaryLight, marginBottom: spacing.xs },
+    incomeAmount: { fontSize: typography.sizes.xxxl, fontWeight: typography.weights.bold, color: colors.white, marginBottom: spacing.md },
+    balanceRow: { flexDirection: 'row', justifyContent: 'space-between' },
+    balanceItem: { flexDirection: 'row', alignItems: 'center', gap: spacing.xs },
+    balanceVal: { fontSize: typography.sizes.md, fontWeight: typography.weights.bold, color: colors.white },
+    balanceLabel: { fontSize: typography.sizes.xs, color: colors.primaryLight },
+    splitCard: {
+      backgroundColor: colors.white,
+      borderRadius: borderRadius.md,
+      padding: spacing.md,
+      marginBottom: spacing.md,
+      shadowColor: colors.black,
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.06,
+      shadowRadius: 6,
+      elevation: 2,
+    },
+    splitTitle: { fontSize: typography.sizes.lg, fontWeight: typography.weights.bold, color: colors.text, marginBottom: spacing.md, textAlign: 'center' },
+    splitRow: { flexDirection: 'row', justifyContent: 'space-between' },
+    splitItem: { flex: 1, alignItems: 'center' },
+    splitDot: { width: 10, height: 10, borderRadius: 5, marginBottom: spacing.xs },
+    splitLabel: { fontSize: typography.sizes.xs, color: colors.subtleText, marginBottom: 2 },
+    splitAmount: { fontSize: typography.sizes.sm, fontWeight: typography.weights.bold, color: colors.text },
+    quickActions: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: spacing.lg },
+    actionBtn: { alignItems: 'center', flex: 1 },
+    actionIcon: {
+      width: 48, height: 48, borderRadius: 24, justifyContent: 'center', alignItems: 'center', marginBottom: spacing.xs,
+    },
+    actionLabel: { fontSize: typography.sizes.xs, fontWeight: typography.weights.medium, color: colors.text },
+    sectionTitle: { fontSize: typography.sizes.lg, fontWeight: typography.weights.bold, color: colors.text, marginBottom: spacing.md },
+    txRow: {
+      flexDirection: 'row', alignItems: 'center', backgroundColor: colors.white,
+      borderRadius: borderRadius.sm, padding: spacing.md, marginBottom: spacing.sm,
+      shadowColor: colors.black, shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.04, shadowRadius: 2, elevation: 1,
+    },
+    txIcon: { width: 40, height: 40, borderRadius: 20, justifyContent: 'center', alignItems: 'center', marginRight: spacing.md },
+    txIconIncome: { backgroundColor: '#D1FAE5' },
+    txIconExpense: { backgroundColor: '#FEE2E2' },
+    txInfo: { flex: 1 },
+    txDesc: { fontSize: typography.sizes.md, fontWeight: typography.weights.medium, color: colors.text },
+    txDate: { fontSize: typography.sizes.xs, color: colors.subtleText, marginTop: 2 },
+    txAmount: { fontSize: typography.sizes.md, fontWeight: typography.weights.bold },
+    txAmountIncome: { color: colors.success },
+    txAmountExpense: { color: colors.error },
+    viewAllBtn: {
+      flexDirection: 'row', alignItems: 'center', justifyContent: 'center',
+      padding: spacing.md, marginTop: spacing.sm,
+    },
+    viewAllText: { fontSize: typography.sizes.sm, fontWeight: typography.weights.semibold, color: colors.primary, marginRight: spacing.xs },
+    emptyState: { alignItems: 'center', paddingVertical: spacing.xl },
+    emptyText: { fontSize: typography.sizes.sm, color: colors.subtleText, marginTop: spacing.sm },
+  });
+
   const { t, lang } = useLanguage();
   const { user } = useAuth();
   const [loading, setLoading] = useState(true);
@@ -215,80 +296,3 @@ export default function FinanceDashboardScreen({ navigation }: any) {
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: colors.background },
-  centered: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-  scrollContent: { paddingHorizontal: spacing.lg, paddingBottom: spacing.xxl },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingTop: spacing.md,
-    marginBottom: spacing.lg,
-  },
-  backBtn: { padding: spacing.xs },
-  title: { fontSize: typography.sizes.xxl, fontWeight: typography.weights.bold, color: colors.text },
-  incomeCard: {
-    backgroundColor: colors.primary,
-    borderRadius: borderRadius.lg,
-    padding: spacing.lg,
-    marginBottom: spacing.md,
-    shadowColor: colors.primary,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 6,
-  },
-  incomeLabel: { fontSize: typography.sizes.sm, color: colors.primaryLight, marginBottom: spacing.xs },
-  incomeAmount: { fontSize: typography.sizes.xxxl, fontWeight: typography.weights.bold, color: colors.white, marginBottom: spacing.md },
-  balanceRow: { flexDirection: 'row', justifyContent: 'space-between' },
-  balanceItem: { flexDirection: 'row', alignItems: 'center', gap: spacing.xs },
-  balanceVal: { fontSize: typography.sizes.md, fontWeight: typography.weights.bold, color: colors.white },
-  balanceLabel: { fontSize: typography.sizes.xs, color: colors.primaryLight },
-  splitCard: {
-    backgroundColor: colors.white,
-    borderRadius: borderRadius.md,
-    padding: spacing.md,
-    marginBottom: spacing.md,
-    shadowColor: colors.black,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.06,
-    shadowRadius: 6,
-    elevation: 2,
-  },
-  splitTitle: { fontSize: typography.sizes.lg, fontWeight: typography.weights.bold, color: colors.text, marginBottom: spacing.md, textAlign: 'center' },
-  splitRow: { flexDirection: 'row', justifyContent: 'space-between' },
-  splitItem: { flex: 1, alignItems: 'center' },
-  splitDot: { width: 10, height: 10, borderRadius: 5, marginBottom: spacing.xs },
-  splitLabel: { fontSize: typography.sizes.xs, color: colors.subtleText, marginBottom: 2 },
-  splitAmount: { fontSize: typography.sizes.sm, fontWeight: typography.weights.bold, color: colors.text },
-  quickActions: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: spacing.lg },
-  actionBtn: { alignItems: 'center', flex: 1 },
-  actionIcon: {
-    width: 48, height: 48, borderRadius: 24, justifyContent: 'center', alignItems: 'center', marginBottom: spacing.xs,
-  },
-  actionLabel: { fontSize: typography.sizes.xs, fontWeight: typography.weights.medium, color: colors.text },
-  sectionTitle: { fontSize: typography.sizes.lg, fontWeight: typography.weights.bold, color: colors.text, marginBottom: spacing.md },
-  txRow: {
-    flexDirection: 'row', alignItems: 'center', backgroundColor: colors.white,
-    borderRadius: borderRadius.sm, padding: spacing.md, marginBottom: spacing.sm,
-    shadowColor: colors.black, shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.04, shadowRadius: 2, elevation: 1,
-  },
-  txIcon: { width: 40, height: 40, borderRadius: 20, justifyContent: 'center', alignItems: 'center', marginRight: spacing.md },
-  txIconIncome: { backgroundColor: '#D1FAE5' },
-  txIconExpense: { backgroundColor: '#FEE2E2' },
-  txInfo: { flex: 1 },
-  txDesc: { fontSize: typography.sizes.md, fontWeight: typography.weights.medium, color: colors.text },
-  txDate: { fontSize: typography.sizes.xs, color: colors.subtleText, marginTop: 2 },
-  txAmount: { fontSize: typography.sizes.md, fontWeight: typography.weights.bold },
-  txAmountIncome: { color: colors.success },
-  txAmountExpense: { color: colors.error },
-  viewAllBtn: {
-    flexDirection: 'row', alignItems: 'center', justifyContent: 'center',
-    padding: spacing.md, marginTop: spacing.sm,
-  },
-  viewAllText: { fontSize: typography.sizes.sm, fontWeight: typography.weights.semibold, color: colors.primary, marginRight: spacing.xs },
-  emptyState: { alignItems: 'center', paddingVertical: spacing.xl },
-  emptyText: { fontSize: typography.sizes.sm, color: colors.subtleText, marginTop: spacing.sm },
-});

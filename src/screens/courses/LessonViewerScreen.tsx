@@ -11,7 +11,8 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import { colors, typography, spacing, borderRadius } from '../../config/theme';
+import { typography, spacing, borderRadius } from '../../config/theme';
+import { useTheme } from '../../contexts/ThemeContext';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { useAuth } from '../../contexts/AuthContext';
 import { getProductDetail, addXpEvent } from '../../config/api';
@@ -35,50 +36,52 @@ interface ModuleInfo {
   color: string;
 }
 
-const MODULE_COLORS: Record<string, string> = {
-  '1': colors.primary,
-  '2': colors.turquoise,
-  '3': colors.gold,
-  '4': colors.rose,
-  '5': colors.primary,
-};
-
-const MODULES_DATA: Record<string, { titleKey: string; totalLessons: number }> = {
-  '1': { titleKey: 'course_module_1_title', totalLessons: 10 },
-  '2': { titleKey: 'course_module_2_title', totalLessons: 8 },
-  '3': { titleKey: 'course_module_3_title', totalLessons: 10 },
-  '4': { titleKey: 'course_module_4_title', totalLessons: 10 },
-  '5': { titleKey: 'course_module_5_title', totalLessons: 10 },
-};
-
-const LESSON_KEYS_BY_MODULE: Record<string, string[]> = {
-  '1': [
-    'course_m1_l1', 'course_m1_l2', 'course_m1_l3', 'course_m1_l4', 'course_m1_l5',
-    'course_m1_l6', 'course_m1_l7', 'course_m1_l8', 'course_m1_l9', 'course_m1_l10',
-  ],
-  '2': [
-    'course_m2_l1', 'course_m2_l2', 'course_m2_l3', 'course_m2_l4',
-    'course_m2_l5', 'course_m2_l6', 'course_m2_l7', 'course_m2_l8',
-  ],
-  '3': [
-    'course_m3_l1', 'course_m3_l2', 'course_m3_l3', 'course_m3_l4', 'course_m3_l5',
-    'course_m3_l6', 'course_m3_l7', 'course_m3_l8', 'course_m3_l9', 'course_m3_l10',
-  ],
-  '4': [
-    'course_m4_l1', 'course_m4_l2', 'course_m4_l3', 'course_m4_l4', 'course_m4_l5',
-    'course_m4_l6', 'course_m4_l7', 'course_m4_l8', 'course_m4_l9', 'course_m4_l10',
-  ],
-  '5': [
-    'course_m5_l1', 'course_m5_l2', 'course_m5_l3', 'course_m5_l4', 'course_m5_l5',
-    'course_m5_l6', 'course_m5_l7', 'course_m5_l8', 'course_m5_l9', 'course_m5_l10',
-  ],
-};
-
-const XP_PER_LESSON = 15;
-
 export default function LessonViewerScreen({ navigation, route }: any) {
   const { t } = useLanguage();
   const { user } = useAuth();
+  const { currentColors } = useTheme();
+  const colors = currentColors;
+
+  const MODULE_COLORS: Record<string, string> = {
+    '1': colors.primary,
+    '2': colors.turquoise,
+    '3': colors.gold,
+    '4': colors.rose,
+    '5': colors.primary,
+  };
+
+  const MODULES_DATA: Record<string, { titleKey: string; totalLessons: number }> = {
+    '1': { titleKey: 'course_module_1_title', totalLessons: 10 },
+    '2': { titleKey: 'course_module_2_title', totalLessons: 8 },
+    '3': { titleKey: 'course_module_3_title', totalLessons: 10 },
+    '4': { titleKey: 'course_module_4_title', totalLessons: 10 },
+    '5': { titleKey: 'course_module_5_title', totalLessons: 10 },
+  };
+
+  const LESSON_KEYS_BY_MODULE: Record<string, string[]> = {
+    '1': [
+      'course_m1_l1', 'course_m1_l2', 'course_m1_l3', 'course_m1_l4', 'course_m1_l5',
+      'course_m1_l6', 'course_m1_l7', 'course_m1_l8', 'course_m1_l9', 'course_m1_l10',
+    ],
+    '2': [
+      'course_m2_l1', 'course_m2_l2', 'course_m2_l3', 'course_m2_l4',
+      'course_m2_l5', 'course_m2_l6', 'course_m2_l7', 'course_m2_l8',
+    ],
+    '3': [
+      'course_m3_l1', 'course_m3_l2', 'course_m3_l3', 'course_m3_l4', 'course_m3_l5',
+      'course_m3_l6', 'course_m3_l7', 'course_m3_l8', 'course_m3_l9', 'course_m3_l10',
+    ],
+    '4': [
+      'course_m4_l1', 'course_m4_l2', 'course_m4_l3', 'course_m4_l4', 'course_m4_l5',
+      'course_m4_l6', 'course_m4_l7', 'course_m4_l8', 'course_m4_l9', 'course_m4_l10',
+    ],
+    '5': [
+      'course_m5_l1', 'course_m5_l2', 'course_m5_l3', 'course_m5_l4', 'course_m5_l5',
+      'course_m5_l6', 'course_m5_l7', 'course_m5_l8', 'course_m5_l9', 'course_m5_l10',
+    ],
+  };
+
+  const XP_PER_LESSON = 15;
 
   const moduleId: string = route?.params?.moduleId || '1';
   const initialLessonId: string = route?.params?.lessonId || '1';
@@ -165,6 +168,196 @@ export default function LessonViewerScreen({ navigation, route }: any) {
     );
     return apiLesson?.video_url;
   }, [apiLessons, currentLessonId, currentLessonIndex]);
+
+  const styles = React.useMemo(() => StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: colors.background,
+    },
+    centered: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    topBar: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingHorizontal: spacing.md,
+      paddingVertical: spacing.sm,
+      backgroundColor: colors.white,
+      borderBottomWidth: 1,
+    },
+    backButton: {
+      padding: spacing.xs,
+      width: 40,
+    },
+    topBarCenter: {
+      alignItems: 'center',
+    },
+    moduleLabel: {
+      fontSize: typography.sizes.xs,
+      fontWeight: typography.weights.semibold,
+      color: colors.primary,
+      textTransform: 'uppercase',
+      letterSpacing: 1,
+    },
+    progressLabel: {
+      fontSize: typography.sizes.sm,
+      color: colors.subtleText,
+      marginTop: 2,
+    },
+    dotsContainer: {
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
+      paddingVertical: spacing.md,
+      paddingHorizontal: spacing.lg,
+      gap: 6,
+      backgroundColor: colors.white,
+    },
+    dot: {
+      width: 10,
+      height: 10,
+      borderRadius: 5,
+    },
+    dotCurrent: {
+      width: 28,
+      borderRadius: 5,
+    },
+    dotCompleted: {
+      opacity: 0.5,
+    },
+    dotInactive: {
+      backgroundColor: colors.border,
+    },
+    scrollContent: {
+      paddingHorizontal: spacing.lg,
+      paddingTop: spacing.lg,
+      paddingBottom: 120,
+    },
+    lessonTitle: {
+      fontSize: typography.sizes.xl,
+      fontWeight: typography.weights.bold,
+      color: colors.text,
+      marginBottom: spacing.lg,
+      lineHeight: 28,
+    },
+    videoContainer: {
+      width: '100%',
+      aspectRatio: 16 / 9,
+      borderRadius: borderRadius.md,
+      borderWidth: 1,
+      overflow: 'hidden',
+      marginBottom: spacing.lg,
+      backgroundColor: colors.white,
+    },
+    videoPlaceholder: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: colors.background,
+    },
+    videoText: {
+      marginTop: spacing.sm,
+      fontSize: typography.sizes.sm,
+      color: colors.subtleText,
+    },
+    videoPlaceholderText: {
+      marginTop: spacing.sm,
+      fontSize: typography.sizes.sm,
+      color: colors.subtleText,
+    },
+    contentCard: {
+      backgroundColor: colors.white,
+      borderRadius: borderRadius.md,
+      padding: spacing.lg,
+      marginBottom: spacing.lg,
+      shadowColor: colors.black,
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.06,
+      shadowRadius: 6,
+      elevation: 2,
+    },
+    contentText: {
+      fontSize: typography.sizes.md,
+      lineHeight: 26,
+      color: colors.text,
+    },
+    contentPlaceholder: {
+      fontSize: typography.sizes.md,
+      lineHeight: 26,
+      color: colors.subtleText,
+      fontStyle: 'italic',
+    },
+    completedBanner: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      padding: spacing.md,
+      borderRadius: borderRadius.sm,
+      marginBottom: spacing.lg,
+    },
+    completedText: {
+      marginLeft: spacing.sm,
+      fontSize: typography.sizes.sm,
+      fontWeight: typography.weights.semibold,
+    },
+    bottomBar: {
+      position: 'absolute',
+      bottom: 0,
+      left: 0,
+      right: 0,
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      backgroundColor: colors.white,
+      paddingHorizontal: spacing.md,
+      paddingVertical: spacing.md,
+      paddingBottom: spacing.lg,
+      borderTopWidth: 1,
+      borderTopColor: colors.border,
+      shadowColor: colors.black,
+      shadowOffset: { width: 0, height: -2 },
+      shadowOpacity: 0.06,
+      shadowRadius: 6,
+      elevation: 8,
+    },
+    navButton: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingVertical: spacing.sm,
+      paddingHorizontal: spacing.sm,
+    },
+    navButtonDisabled: {
+      opacity: 0.4,
+    },
+    navButtonText: {
+      fontSize: typography.sizes.sm,
+      fontWeight: typography.weights.medium,
+      color: colors.text,
+    },
+    navTextDisabled: {
+      color: colors.border,
+    },
+    completeButton: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      paddingVertical: spacing.sm + 2,
+      paddingHorizontal: spacing.lg,
+      borderRadius: borderRadius.md,
+      minWidth: 140,
+    },
+    completeButtonLoading: {
+      opacity: 0.7,
+    },
+    completeButtonText: {
+      marginLeft: spacing.xs,
+      fontSize: typography.sizes.sm,
+      fontWeight: typography.weights.bold,
+      color: colors.white,
+    },
+  }), [colors]);
 
   if (loading) {
     return (
@@ -334,193 +527,3 @@ export default function LessonViewerScreen({ navigation, route }: any) {
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.background,
-  },
-  centered: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  topBar: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.sm,
-    backgroundColor: colors.white,
-    borderBottomWidth: 1,
-  },
-  backButton: {
-    padding: spacing.xs,
-    width: 40,
-  },
-  topBarCenter: {
-    alignItems: 'center',
-  },
-  moduleLabel: {
-    fontSize: typography.sizes.xs,
-    fontWeight: typography.weights.semibold,
-    color: colors.primary,
-    textTransform: 'uppercase',
-    letterSpacing: 1,
-  },
-  progressLabel: {
-    fontSize: typography.sizes.sm,
-    color: colors.subtleText,
-    marginTop: 2,
-  },
-  dotsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingVertical: spacing.md,
-    paddingHorizontal: spacing.lg,
-    gap: 6,
-    backgroundColor: colors.white,
-  },
-  dot: {
-    width: 10,
-    height: 10,
-    borderRadius: 5,
-  },
-  dotCurrent: {
-    width: 28,
-    borderRadius: 5,
-  },
-  dotCompleted: {
-    opacity: 0.5,
-  },
-  dotInactive: {
-    backgroundColor: colors.border,
-  },
-  scrollContent: {
-    paddingHorizontal: spacing.lg,
-    paddingTop: spacing.lg,
-    paddingBottom: 120,
-  },
-  lessonTitle: {
-    fontSize: typography.sizes.xl,
-    fontWeight: typography.weights.bold,
-    color: colors.text,
-    marginBottom: spacing.lg,
-    lineHeight: 28,
-  },
-  videoContainer: {
-    width: '100%',
-    aspectRatio: 16 / 9,
-    borderRadius: borderRadius.md,
-    borderWidth: 1,
-    overflow: 'hidden',
-    marginBottom: spacing.lg,
-    backgroundColor: colors.white,
-  },
-  videoPlaceholder: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: colors.background,
-  },
-  videoText: {
-    marginTop: spacing.sm,
-    fontSize: typography.sizes.sm,
-    color: colors.subtleText,
-  },
-  videoPlaceholderText: {
-    marginTop: spacing.sm,
-    fontSize: typography.sizes.sm,
-    color: colors.subtleText,
-  },
-  contentCard: {
-    backgroundColor: colors.white,
-    borderRadius: borderRadius.md,
-    padding: spacing.lg,
-    marginBottom: spacing.lg,
-    shadowColor: colors.black,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.06,
-    shadowRadius: 6,
-    elevation: 2,
-  },
-  contentText: {
-    fontSize: typography.sizes.md,
-    lineHeight: 26,
-    color: colors.text,
-  },
-  contentPlaceholder: {
-    fontSize: typography.sizes.md,
-    lineHeight: 26,
-    color: colors.subtleText,
-    fontStyle: 'italic',
-  },
-  completedBanner: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: spacing.md,
-    borderRadius: borderRadius.sm,
-    marginBottom: spacing.lg,
-  },
-  completedText: {
-    marginLeft: spacing.sm,
-    fontSize: typography.sizes.sm,
-    fontWeight: typography.weights.semibold,
-  },
-  bottomBar: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    backgroundColor: colors.white,
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.md,
-    paddingBottom: spacing.lg,
-    borderTopWidth: 1,
-    borderTopColor: colors.border,
-    shadowColor: colors.black,
-    shadowOffset: { width: 0, height: -2 },
-    shadowOpacity: 0.06,
-    shadowRadius: 6,
-    elevation: 8,
-  },
-  navButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: spacing.sm,
-    paddingHorizontal: spacing.sm,
-  },
-  navButtonDisabled: {
-    opacity: 0.4,
-  },
-  navButtonText: {
-    fontSize: typography.sizes.sm,
-    fontWeight: typography.weights.medium,
-    color: colors.text,
-  },
-  navTextDisabled: {
-    color: colors.border,
-  },
-  completeButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: spacing.sm + 2,
-    paddingHorizontal: spacing.lg,
-    borderRadius: borderRadius.md,
-    minWidth: 140,
-  },
-  completeButtonLoading: {
-    opacity: 0.7,
-  },
-  completeButtonText: {
-    marginLeft: spacing.xs,
-    fontSize: typography.sizes.sm,
-    fontWeight: typography.weights.bold,
-    color: colors.white,
-  },
-});

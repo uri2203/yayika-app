@@ -2,7 +2,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import { colors, typography, spacing, borderRadius } from '../../config/theme';
+import { typography, spacing, borderRadius } from '../../config/theme';
+import { useTheme } from '../../contexts/ThemeContext';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { useAuth } from '../../contexts/AuthContext';
 import { aiWeeklyChallenges, enrollChallenge, checkinChallenge } from '../../config/api';
@@ -16,6 +17,8 @@ function getLocalized(value: any, lang: Language): string {
 }
 
 export default function ChallengesScreen({ navigation }: any) {
+  const { currentColors } = useTheme();
+  const colors = currentColors;
   const { t, lang } = useLanguage();
   const { user } = useAuth();
   const [loading, setLoading] = useState(true);
@@ -69,6 +72,51 @@ export default function ChallengesScreen({ navigation }: any) {
 
   const totalChallenges = available.length + active.length + completed.length;
   const completedCount = completed.length;
+
+  const styles = StyleSheet.create({
+    container: { flex: 1, backgroundColor: colors.background },
+    centered: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+    scrollContent: { paddingHorizontal: spacing.lg, paddingBottom: spacing.xxl },
+    header: {
+      flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',
+      paddingTop: spacing.md, marginBottom: spacing.lg,
+    },
+    backBtn: { padding: spacing.xs },
+    headerTitle: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm },
+    title: { fontSize: typography.sizes.xxl, fontWeight: typography.weights.bold, color: colors.text },
+    progressCard: {
+      backgroundColor: colors.white, borderRadius: borderRadius.md, padding: spacing.md,
+      marginBottom: spacing.lg, shadowColor: colors.black, shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.06, shadowRadius: 6, elevation: 2,
+    },
+    progressHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: spacing.sm },
+    progressLabel: { fontSize: typography.sizes.sm, fontWeight: typography.weights.semibold, color: colors.text },
+    progressCount: { fontSize: typography.sizes.sm, fontWeight: typography.weights.bold, color: colors.turquoise },
+    progressBar: { height: 10, backgroundColor: colors.border, borderRadius: 5, overflow: 'hidden' },
+    progressFill: { height: '100%', backgroundColor: colors.turquoise, borderRadius: 5 },
+    sectionTitle: {
+      fontSize: typography.sizes.lg, fontWeight: typography.weights.bold,
+      color: colors.text, marginBottom: spacing.md, marginTop: spacing.sm,
+    },
+    challengeCard: {
+      flexDirection: 'row', alignItems: 'center', backgroundColor: colors.white,
+      borderRadius: borderRadius.sm, padding: spacing.md, marginBottom: spacing.sm,
+      shadowColor: colors.black, shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.04, shadowRadius: 2, elevation: 1,
+    },
+    challengeIcon: {
+      width: 44, height: 44, borderRadius: 22, justifyContent: 'center', alignItems: 'center', marginRight: spacing.md,
+    },
+    challengeInfo: { flex: 1 },
+    challengeTitle: { fontSize: typography.sizes.md, fontWeight: typography.weights.medium, color: colors.text },
+    challengeDesc: { fontSize: typography.sizes.xs, color: colors.subtleText, marginTop: 2 },
+    challengeXp: { fontSize: typography.sizes.xs, fontWeight: typography.weights.bold, color: colors.gold, marginTop: 4 },
+    checkinBtn: {
+      width: 40, height: 40, borderRadius: 20, backgroundColor: colors.turquoise,
+      justifyContent: 'center', alignItems: 'center',
+    },
+    emptyState: { alignItems: 'center', paddingVertical: spacing.xxl },
+    emptyText: { fontSize: typography.sizes.sm, color: colors.subtleText, marginTop: spacing.sm },
+  });
 
   if (loading) {
     return (
@@ -198,47 +246,3 @@ export default function ChallengesScreen({ navigation }: any) {
   );
 }
 
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: colors.background },
-  centered: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-  scrollContent: { paddingHorizontal: spacing.lg, paddingBottom: spacing.xxl },
-  header: {
-    flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',
-    paddingTop: spacing.md, marginBottom: spacing.lg,
-  },
-  backBtn: { padding: spacing.xs },
-  headerTitle: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm },
-  title: { fontSize: typography.sizes.xxl, fontWeight: typography.weights.bold, color: colors.text },
-  progressCard: {
-    backgroundColor: colors.white, borderRadius: borderRadius.md, padding: spacing.md,
-    marginBottom: spacing.lg, shadowColor: colors.black, shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.06, shadowRadius: 6, elevation: 2,
-  },
-  progressHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: spacing.sm },
-  progressLabel: { fontSize: typography.sizes.sm, fontWeight: typography.weights.semibold, color: colors.text },
-  progressCount: { fontSize: typography.sizes.sm, fontWeight: typography.weights.bold, color: colors.turquoise },
-  progressBar: { height: 10, backgroundColor: colors.border, borderRadius: 5, overflow: 'hidden' },
-  progressFill: { height: '100%', backgroundColor: colors.turquoise, borderRadius: 5 },
-  sectionTitle: {
-    fontSize: typography.sizes.lg, fontWeight: typography.weights.bold,
-    color: colors.text, marginBottom: spacing.md, marginTop: spacing.sm,
-  },
-  challengeCard: {
-    flexDirection: 'row', alignItems: 'center', backgroundColor: colors.white,
-    borderRadius: borderRadius.sm, padding: spacing.md, marginBottom: spacing.sm,
-    shadowColor: colors.black, shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.04, shadowRadius: 2, elevation: 1,
-  },
-  challengeIcon: {
-    width: 44, height: 44, borderRadius: 22, justifyContent: 'center', alignItems: 'center', marginRight: spacing.md,
-  },
-  challengeInfo: { flex: 1 },
-  challengeTitle: { fontSize: typography.sizes.md, fontWeight: typography.weights.medium, color: colors.text },
-  challengeDesc: { fontSize: typography.sizes.xs, color: colors.subtleText, marginTop: 2 },
-  challengeXp: { fontSize: typography.sizes.xs, fontWeight: typography.weights.bold, color: colors.gold, marginTop: 4 },
-  checkinBtn: {
-    width: 40, height: 40, borderRadius: 20, backgroundColor: colors.turquoise,
-    justifyContent: 'center', alignItems: 'center',
-  },
-  emptyState: { alignItems: 'center', paddingVertical: spacing.xxl },
-  emptyText: { fontSize: typography.sizes.sm, color: colors.subtleText, marginTop: spacing.sm },
-});

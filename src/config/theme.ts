@@ -51,10 +51,16 @@ export const borderRadius = {
 
 export const darkColors = {
   ...colors,
-  background: '#1a1a2e',
-  white: '#16213e',
-  text: '#e2e8f0',
-  subtleText: '#94a3b8',
-  border: '#334155',
-  primaryLight: '#2d1b4e',
+  background: '#1E1528',
+  white: '#2A2035',
+  text: '#F0E6F6',
+  subtleText: '#B8A5C8',
+  border: '#3D2E50',
+  primaryLight: '#3A2555',
+  primary: '#9B72CF',
+  turquoise: '#5EEAD4',
+  gold: '#E8C96A',
+  rose: '#F9A8D4',
+  error: '#FB7185',
+  success: '#6EE7B7',
 };

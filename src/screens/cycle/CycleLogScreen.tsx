@@ -10,7 +10,8 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import { colors, typography, spacing, borderRadius } from '../../config/theme';
+import { typography, spacing, borderRadius } from '../../config/theme';
+import { useTheme } from '../../contexts/ThemeContext';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { useAuth } from '../../contexts/AuthContext';
 import {
@@ -31,6 +32,8 @@ interface CycleLogEntry {
 export default function CycleLogScreen({ navigation }: any) {
   const { t } = useLanguage();
   const { user } = useAuth();
+  const { currentColors } = useTheme();
+  const colors = currentColors;
 
   const PHASES = [
     { key: 'menstrual', label: t('cycle_phase_menstrual') || 'Menstrual', color: '#C96B7A', icon: '🌙' },
@@ -263,6 +266,203 @@ export default function CycleLogScreen({ navigation }: any) {
     </View>
   );
 
+  const styles = React.useMemo(() => StyleSheet.create({
+    container: { flex: 1, backgroundColor: colors.background },
+    scrollContent: { paddingHorizontal: spacing.lg, paddingBottom: spacing.xxl },
+    header: { paddingTop: spacing.md, marginBottom: spacing.lg },
+    backBtn: { marginBottom: spacing.sm },
+    title: {
+      fontSize: typography.sizes.xxl,
+      fontWeight: typography.weights.bold,
+      color: colors.text,
+    },
+    subtitle: {
+      fontSize: typography.sizes.md,
+      color: colors.subtleText,
+      marginTop: spacing.xs,
+    },
+    sectionCard: {
+      backgroundColor: colors.white,
+      borderRadius: borderRadius.lg,
+      padding: spacing.lg,
+      marginBottom: spacing.md,
+      shadowColor: colors.black,
+      shadowOffset: { width: 0, height: 1 },
+      shadowOpacity: 0.05,
+      shadowRadius: 3,
+      elevation: 1,
+    },
+    sectionTitle: {
+      fontSize: typography.sizes.md,
+      fontWeight: typography.weights.bold,
+      color: colors.text,
+      marginBottom: spacing.md,
+    },
+    dayPickerRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      gap: spacing.xl,
+    },
+    dayPickerBtn: {
+      width: 44,
+      height: 44,
+      borderRadius: 22,
+      backgroundColor: colors.background,
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderWidth: 1.5,
+      borderColor: colors.border,
+    },
+    dayPickerValue: {
+      flexDirection: 'row',
+      alignItems: 'baseline',
+    },
+    dayPickerNumber: {
+      fontSize: 48,
+      fontWeight: typography.weights.bold,
+      color: colors.primary,
+    },
+    dayPickerLabel: {
+      fontSize: typography.sizes.lg,
+      color: colors.subtleText,
+      marginLeft: spacing.xs,
+    },
+    phaseGrid: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      gap: spacing.sm,
+    },
+    phaseChip: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      borderWidth: 1.5,
+      borderColor: colors.border,
+      borderRadius: borderRadius.full,
+      paddingHorizontal: spacing.md,
+      paddingVertical: spacing.sm,
+      backgroundColor: colors.background,
+    },
+    phaseChipIcon: {
+      fontSize: 16,
+      marginRight: spacing.xs,
+    },
+    phaseChipText: {
+      fontSize: typography.sizes.sm,
+      color: colors.text,
+      fontWeight: typography.weights.medium,
+    },
+    energyRow: {
+      flexDirection: 'row',
+      justifyContent: 'center',
+      gap: spacing.md,
+    },
+    starBtn: {
+      padding: spacing.xs,
+    },
+    moodRow: {
+      flexDirection: 'row',
+      justifyContent: 'space-around',
+    },
+    moodEmoji: {
+      width: 52,
+      height: 52,
+      borderRadius: 26,
+      backgroundColor: colors.background,
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderWidth: 2,
+      borderColor: colors.border,
+    },
+    moodEmojiSelected: {
+      borderColor: colors.primary,
+      backgroundColor: '#EDE7F6',
+    },
+    moodEmojiText: {
+      fontSize: 24,
+    },
+    symptomsGrid: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      gap: spacing.sm,
+    },
+    symptomChip: {
+      borderWidth: 1.5,
+      borderColor: colors.border,
+      borderRadius: borderRadius.full,
+      paddingHorizontal: spacing.md,
+      paddingVertical: spacing.sm,
+      backgroundColor: colors.background,
+    },
+    symptomChipSelected: {
+      backgroundColor: colors.primary,
+      borderColor: colors.primary,
+    },
+    symptomText: {
+      fontSize: typography.sizes.sm,
+      color: colors.text,
+    },
+    symptomTextSelected: {
+      color: colors.white,
+      fontWeight: typography.weights.semibold,
+    },
+    saveBtn: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: colors.primary,
+      borderRadius: borderRadius.md,
+      paddingVertical: spacing.md,
+      marginBottom: spacing.lg,
+      gap: spacing.sm,
+      shadowColor: colors.primary,
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: 0.3,
+      shadowRadius: 6,
+      elevation: 4,
+    },
+    saveBtnText: {
+      color: colors.white,
+      fontSize: typography.sizes.md,
+      fontWeight: typography.weights.semibold,
+    },
+    noLogsText: {
+      fontSize: typography.sizes.sm,
+      color: colors.subtleText,
+      textAlign: 'center',
+      paddingVertical: spacing.md,
+    },
+    logRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingVertical: spacing.sm,
+      borderBottomWidth: 1,
+      borderBottomColor: colors.border,
+    },
+    logDot: {
+      width: 10,
+      height: 10,
+      borderRadius: 5,
+      marginRight: spacing.sm,
+    },
+    logInfo: {
+      flex: 1,
+    },
+    logDate: {
+      fontSize: typography.sizes.sm,
+      fontWeight: typography.weights.semibold,
+      color: colors.text,
+    },
+    logPhase: {
+      fontSize: typography.sizes.xs,
+      color: colors.subtleText,
+      marginTop: 2,
+    },
+    logEnergy: {
+      flexDirection: 'row',
+    },
+  }), [colors]);
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
@@ -306,200 +506,3 @@ export default function CycleLogScreen({ navigation }: any) {
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: colors.background },
-  scrollContent: { paddingHorizontal: spacing.lg, paddingBottom: spacing.xxl },
-  header: { paddingTop: spacing.md, marginBottom: spacing.lg },
-  backBtn: { marginBottom: spacing.sm },
-  title: {
-    fontSize: typography.sizes.xxl,
-    fontWeight: typography.weights.bold,
-    color: colors.text,
-  },
-  subtitle: {
-    fontSize: typography.sizes.md,
-    color: colors.subtleText,
-    marginTop: spacing.xs,
-  },
-  sectionCard: {
-    backgroundColor: colors.white,
-    borderRadius: borderRadius.lg,
-    padding: spacing.lg,
-    marginBottom: spacing.md,
-    shadowColor: colors.black,
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
-    shadowRadius: 3,
-    elevation: 1,
-  },
-  sectionTitle: {
-    fontSize: typography.sizes.md,
-    fontWeight: typography.weights.bold,
-    color: colors.text,
-    marginBottom: spacing.md,
-  },
-  dayPickerRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: spacing.xl,
-  },
-  dayPickerBtn: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    backgroundColor: colors.background,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 1.5,
-    borderColor: colors.border,
-  },
-  dayPickerValue: {
-    flexDirection: 'row',
-    alignItems: 'baseline',
-  },
-  dayPickerNumber: {
-    fontSize: 48,
-    fontWeight: typography.weights.bold,
-    color: colors.primary,
-  },
-  dayPickerLabel: {
-    fontSize: typography.sizes.lg,
-    color: colors.subtleText,
-    marginLeft: spacing.xs,
-  },
-  phaseGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: spacing.sm,
-  },
-  phaseChip: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderWidth: 1.5,
-    borderColor: colors.border,
-    borderRadius: borderRadius.full,
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.sm,
-    backgroundColor: colors.background,
-  },
-  phaseChipIcon: {
-    fontSize: 16,
-    marginRight: spacing.xs,
-  },
-  phaseChipText: {
-    fontSize: typography.sizes.sm,
-    color: colors.text,
-    fontWeight: typography.weights.medium,
-  },
-  energyRow: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    gap: spacing.md,
-  },
-  starBtn: {
-    padding: spacing.xs,
-  },
-  moodRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-  },
-  moodEmoji: {
-    width: 52,
-    height: 52,
-    borderRadius: 26,
-    backgroundColor: colors.background,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 2,
-    borderColor: colors.border,
-  },
-  moodEmojiSelected: {
-    borderColor: colors.primary,
-    backgroundColor: '#EDE7F6',
-  },
-  moodEmojiText: {
-    fontSize: 24,
-  },
-  symptomsGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: spacing.sm,
-  },
-  symptomChip: {
-    borderWidth: 1.5,
-    borderColor: colors.border,
-    borderRadius: borderRadius.full,
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.sm,
-    backgroundColor: colors.background,
-  },
-  symptomChipSelected: {
-    backgroundColor: colors.primary,
-    borderColor: colors.primary,
-  },
-  symptomText: {
-    fontSize: typography.sizes.sm,
-    color: colors.text,
-  },
-  symptomTextSelected: {
-    color: colors.white,
-    fontWeight: typography.weights.semibold,
-  },
-  saveBtn: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: colors.primary,
-    borderRadius: borderRadius.md,
-    paddingVertical: spacing.md,
-    marginBottom: spacing.lg,
-    gap: spacing.sm,
-    shadowColor: colors.primary,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 6,
-    elevation: 4,
-  },
-  saveBtnText: {
-    color: colors.white,
-    fontSize: typography.sizes.md,
-    fontWeight: typography.weights.semibold,
-  },
-  noLogsText: {
-    fontSize: typography.sizes.sm,
-    color: colors.subtleText,
-    textAlign: 'center',
-    paddingVertical: spacing.md,
-  },
-  logRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: spacing.sm,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.border,
-  },
-  logDot: {
-    width: 10,
-    height: 10,
-    borderRadius: 5,
-    marginRight: spacing.sm,
-  },
-  logInfo: {
-    flex: 1,
-  },
-  logDate: {
-    fontSize: typography.sizes.sm,
-    fontWeight: typography.weights.semibold,
-    color: colors.text,
-  },
-  logPhase: {
-    fontSize: typography.sizes.xs,
-    color: colors.subtleText,
-    marginTop: 2,
-  },
-  logEnergy: {
-    flexDirection: 'row',
-  },
-});

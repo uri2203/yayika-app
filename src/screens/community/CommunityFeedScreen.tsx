@@ -5,7 +5,8 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import { colors, typography, spacing, borderRadius } from '../../config/theme';
+import { typography, spacing, borderRadius } from '../../config/theme';
+import { useTheme } from '../../contexts/ThemeContext';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { useAuth } from '../../contexts/AuthContext';
 import { getCommunityFeed, createPost, toggleReaction, getCommunityCategories } from '../../config/api';
@@ -53,6 +54,8 @@ function timeAgo(dateStr: string): string {
 }
 
 export default function CommunityFeedScreen({ navigation }: any) {
+  const { currentColors } = useTheme();
+  const colors = currentColors;
   const { t, lang } = useLanguage();
   const { user } = useAuth();
 
@@ -135,6 +138,88 @@ export default function CommunityFeedScreen({ navigation }: any) {
       setTogglingId(null);
     }
   }, []);
+
+  const styles = StyleSheet.create({
+    container: { flex: 1, backgroundColor: colors.background },
+    centered: { flex: 1, justifyContent: 'center', alignItems: 'center', paddingHorizontal: spacing.xl },
+    header: {
+      flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',
+      paddingHorizontal: spacing.lg, paddingTop: spacing.md, paddingBottom: spacing.sm,
+    },
+    backBtn: { padding: spacing.xs },
+    title: { fontSize: typography.sizes.xxl, fontWeight: typography.weights.bold, color: colors.text },
+    newPostBtn: {
+      width: 36, height: 36, borderRadius: 18, backgroundColor: colors.primary,
+      justifyContent: 'center', alignItems: 'center',
+    },
+    chipContainer: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      paddingHorizontal: spacing.lg,
+      paddingBottom: spacing.md,
+    },
+    chip: {
+      paddingHorizontal: spacing.md, paddingVertical: spacing.sm, borderRadius: borderRadius.full,
+      backgroundColor: colors.white, marginRight: spacing.sm, marginBottom: spacing.sm,
+      borderWidth: 1, borderColor: colors.border,
+    },
+    chipActive: { backgroundColor: colors.primary, borderColor: colors.primary },
+    chipText: { fontSize: typography.sizes.sm, fontWeight: typography.weights.medium, color: colors.subtleText },
+    chipTextActive: { color: colors.white },
+    listContent: { paddingHorizontal: spacing.lg, paddingBottom: spacing.xxl },
+    postCard: {
+      backgroundColor: colors.white, borderRadius: borderRadius.md, padding: spacing.md,
+      marginBottom: spacing.md, shadowColor: colors.black, shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.06, shadowRadius: 6, elevation: 2,
+    },
+    postHeader: { flexDirection: 'row', alignItems: 'center', marginBottom: spacing.sm },
+    avatar: {
+      width: 40, height: 40, borderRadius: 20, backgroundColor: colors.primaryLight,
+      justifyContent: 'center', alignItems: 'center', marginRight: spacing.sm,
+    },
+    postMeta: { flex: 1 },
+    postAuthor: { fontSize: typography.sizes.sm, fontWeight: typography.weights.semibold, color: colors.text },
+    postTime: { fontSize: typography.sizes.xs, color: colors.subtleText },
+    categoryBadge: {
+      backgroundColor: colors.primaryLight, paddingHorizontal: spacing.sm, paddingVertical: 2,
+      borderRadius: borderRadius.full,
+    },
+    categoryBadgeText: { fontSize: typography.sizes.xs, fontWeight: typography.weights.medium, color: colors.primary },
+    postContent: { fontSize: typography.sizes.md, color: colors.text, lineHeight: 22, marginBottom: spacing.md },
+    postActions: {
+      flexDirection: 'row', alignItems: 'center', borderTopWidth: 1, borderTopColor: colors.border, paddingTop: spacing.sm,
+    },
+    actionButton: { flexDirection: 'row', alignItems: 'center', marginRight: spacing.lg },
+    actionText: { fontSize: typography.sizes.sm, color: colors.subtleText, marginLeft: spacing.xs },
+    actionTextActive: { color: colors.rose, fontWeight: typography.weights.semibold },
+    emptyTitle: { fontSize: typography.sizes.lg, fontWeight: typography.weights.bold, color: colors.text, marginTop: spacing.md },
+    emptySubtitle: { fontSize: typography.sizes.sm, color: colors.subtleText, marginTop: spacing.xs, textAlign: 'center' },
+    fab: {
+      position: 'absolute', right: spacing.lg, bottom: spacing.xl, width: 56, height: 56,
+      borderRadius: 28, backgroundColor: colors.primary, justifyContent: 'center', alignItems: 'center',
+      shadowColor: colors.primary, shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.4, shadowRadius: 8, elevation: 6,
+    },
+    modalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.4)', justifyContent: 'flex-end' },
+    modalContent: {
+      backgroundColor: colors.white, borderTopLeftRadius: borderRadius.xl, borderTopRightRadius: borderRadius.xl,
+      padding: spacing.lg, maxHeight: '85%',
+    },
+    modalHeader: {
+      flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: spacing.md,
+    },
+    modalTitle: { fontSize: typography.sizes.lg, fontWeight: typography.weights.bold, color: colors.text },
+    modalChipContainer: { flexDirection: 'row', flexWrap: 'wrap', paddingBottom: spacing.md },
+    postInput: {
+      backgroundColor: colors.background, borderRadius: borderRadius.md, padding: spacing.md,
+      fontSize: typography.sizes.md, color: colors.text, minHeight: 120, marginBottom: spacing.sm,
+    },
+    charCount: { fontSize: typography.sizes.xs, color: colors.subtleText, textAlign: 'right', marginBottom: spacing.md },
+    submitButton: {
+      backgroundColor: colors.primary, borderRadius: borderRadius.md, paddingVertical: spacing.md, alignItems: 'center',
+    },
+    submitButtonDisabled: { opacity: 0.5 },
+    submitButtonText: { color: colors.white, fontSize: typography.sizes.md, fontWeight: typography.weights.semibold },
+  });
 
   const renderPost = useCallback(({ item }: { item: Post }) => (
     <TouchableOpacity
@@ -311,84 +396,3 @@ export default function CommunityFeedScreen({ navigation }: any) {
   );
 }
 
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: colors.background },
-  centered: { flex: 1, justifyContent: 'center', alignItems: 'center', paddingHorizontal: spacing.xl },
-  header: {
-    flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',
-    paddingHorizontal: spacing.lg, paddingTop: spacing.md, paddingBottom: spacing.sm,
-  },
-  backBtn: { padding: spacing.xs },
-  title: { fontSize: typography.sizes.xxl, fontWeight: typography.weights.bold, color: colors.text },
-  newPostBtn: {
-    width: 36, height: 36, borderRadius: 18, backgroundColor: colors.primary,
-    justifyContent: 'center', alignItems: 'center',
-  },
-  chipContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    paddingHorizontal: spacing.lg,
-    paddingBottom: spacing.md,
-  },
-  chip: {
-    paddingHorizontal: spacing.md, paddingVertical: spacing.sm, borderRadius: borderRadius.full,
-    backgroundColor: colors.white, marginRight: spacing.sm, marginBottom: spacing.sm,
-    borderWidth: 1, borderColor: colors.border,
-  },
-  chipActive: { backgroundColor: colors.primary, borderColor: colors.primary },
-  chipText: { fontSize: typography.sizes.sm, fontWeight: typography.weights.medium, color: colors.subtleText },
-  chipTextActive: { color: colors.white },
-  listContent: { paddingHorizontal: spacing.lg, paddingBottom: spacing.xxl },
-  postCard: {
-    backgroundColor: colors.white, borderRadius: borderRadius.md, padding: spacing.md,
-    marginBottom: spacing.md, shadowColor: colors.black, shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.06, shadowRadius: 6, elevation: 2,
-  },
-  postHeader: { flexDirection: 'row', alignItems: 'center', marginBottom: spacing.sm },
-  avatar: {
-    width: 40, height: 40, borderRadius: 20, backgroundColor: colors.primaryLight,
-    justifyContent: 'center', alignItems: 'center', marginRight: spacing.sm,
-  },
-  postMeta: { flex: 1 },
-  postAuthor: { fontSize: typography.sizes.sm, fontWeight: typography.weights.semibold, color: colors.text },
-  postTime: { fontSize: typography.sizes.xs, color: colors.subtleText },
-  categoryBadge: {
-    backgroundColor: colors.primaryLight, paddingHorizontal: spacing.sm, paddingVertical: 2,
-    borderRadius: borderRadius.full,
-  },
-  categoryBadgeText: { fontSize: typography.sizes.xs, fontWeight: typography.weights.medium, color: colors.primary },
-  postContent: { fontSize: typography.sizes.md, color: colors.text, lineHeight: 22, marginBottom: spacing.md },
-  postActions: {
-    flexDirection: 'row', alignItems: 'center', borderTopWidth: 1, borderTopColor: colors.border, paddingTop: spacing.sm,
-  },
-  actionButton: { flexDirection: 'row', alignItems: 'center', marginRight: spacing.lg },
-  actionText: { fontSize: typography.sizes.sm, color: colors.subtleText, marginLeft: spacing.xs },
-  actionTextActive: { color: colors.rose, fontWeight: typography.weights.semibold },
-  emptyTitle: { fontSize: typography.sizes.lg, fontWeight: typography.weights.bold, color: colors.text, marginTop: spacing.md },
-  emptySubtitle: { fontSize: typography.sizes.sm, color: colors.subtleText, marginTop: spacing.xs, textAlign: 'center' },
-  fab: {
-    position: 'absolute', right: spacing.lg, bottom: spacing.xl, width: 56, height: 56,
-    borderRadius: 28, backgroundColor: colors.primary, justifyContent: 'center', alignItems: 'center',
-    shadowColor: colors.primary, shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.4, shadowRadius: 8, elevation: 6,
-  },
-  modalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.4)', justifyContent: 'flex-end' },
-  modalContent: {
-    backgroundColor: colors.white, borderTopLeftRadius: borderRadius.xl, borderTopRightRadius: borderRadius.xl,
-    padding: spacing.lg, maxHeight: '85%',
-  },
-  modalHeader: {
-    flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: spacing.md,
-  },
-  modalTitle: { fontSize: typography.sizes.lg, fontWeight: typography.weights.bold, color: colors.text },
-  modalChipContainer: { flexDirection: 'row', flexWrap: 'wrap', paddingBottom: spacing.md },
-  postInput: {
-    backgroundColor: colors.background, borderRadius: borderRadius.md, padding: spacing.md,
-    fontSize: typography.sizes.md, color: colors.text, minHeight: 120, marginBottom: spacing.sm,
-  },
-  charCount: { fontSize: typography.sizes.xs, color: colors.subtleText, textAlign: 'right', marginBottom: spacing.md },
-  submitButton: {
-    backgroundColor: colors.primary, borderRadius: borderRadius.md, paddingVertical: spacing.md, alignItems: 'center',
-  },
-  submitButtonDisabled: { opacity: 0.5 },
-  submitButtonText: { color: colors.white, fontSize: typography.sizes.md, fontWeight: typography.weights.semibold },
-});

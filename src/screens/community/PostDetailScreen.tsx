@@ -5,7 +5,8 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import { colors, typography, spacing, borderRadius } from '../../config/theme';
+import { typography, spacing, borderRadius } from '../../config/theme';
+import { useTheme } from '../../contexts/ThemeContext';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { useAuth } from '../../contexts/AuthContext';
 import { getCommunityFeed, toggleReaction, addComment } from '../../config/api';
@@ -56,6 +57,80 @@ interface PostDetailScreenProps {
 }
 
 export default function PostDetailScreen({ navigation, route }: PostDetailScreenProps) {
+  const { currentColors } = useTheme();
+  const colors = currentColors;
+
+  const styles = StyleSheet.create({
+    container: { flex: 1, backgroundColor: colors.background },
+    centered: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+    header: {
+      flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',
+      paddingHorizontal: spacing.lg, paddingTop: spacing.md, paddingBottom: spacing.sm,
+      borderBottomWidth: 1, borderBottomColor: colors.border,
+    },
+    backBtn: { padding: spacing.xs },
+    headerTitle: { fontSize: typography.sizes.lg, fontWeight: typography.weights.bold, color: colors.text },
+    scrollContent: { paddingHorizontal: spacing.lg, paddingTop: spacing.md },
+    postCard: {
+      backgroundColor: colors.white, borderRadius: borderRadius.md, padding: spacing.md,
+      marginBottom: spacing.lg, shadowColor: colors.black, shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.06, shadowRadius: 6, elevation: 2,
+    },
+    postHeader: { flexDirection: 'row', alignItems: 'center', marginBottom: spacing.md },
+    avatar: {
+      width: 44, height: 44, borderRadius: 22, backgroundColor: colors.primaryLight,
+      justifyContent: 'center', alignItems: 'center', marginRight: spacing.sm,
+    },
+    postMeta: { flex: 1 },
+    postAuthor: { fontSize: typography.sizes.md, fontWeight: typography.weights.semibold, color: colors.text },
+    postTime: { fontSize: typography.sizes.xs, color: colors.subtleText },
+    categoryBadge: {
+      backgroundColor: colors.primaryLight, paddingHorizontal: spacing.sm, paddingVertical: 2,
+      borderRadius: borderRadius.full,
+    },
+    categoryBadgeText: { fontSize: typography.sizes.xs, fontWeight: typography.weights.medium, color: colors.primary },
+    postContent: { fontSize: typography.sizes.md, color: colors.text, lineHeight: 22, marginBottom: spacing.md },
+    postActions: {
+      flexDirection: 'row', alignItems: 'center', borderTopWidth: 1, borderTopColor: colors.border, paddingTop: spacing.sm,
+    },
+    actionButton: { flexDirection: 'row', alignItems: 'center', marginRight: spacing.lg },
+    actionText: { fontSize: typography.sizes.sm, color: colors.subtleText, marginLeft: spacing.xs },
+    actionTextActive: { color: colors.rose, fontWeight: typography.weights.semibold },
+    commentsTitle: {
+      fontSize: typography.sizes.md, fontWeight: typography.weights.bold, color: colors.text, marginBottom: spacing.md,
+    },
+    commentCard: {
+      flexDirection: 'row', backgroundColor: colors.white, borderRadius: borderRadius.sm,
+      padding: spacing.md, marginBottom: spacing.sm,
+    },
+    commentAvatar: {
+      width: 32, height: 32, borderRadius: 16, backgroundColor: colors.primaryLight,
+      justifyContent: 'center', alignItems: 'center', marginRight: spacing.sm,
+    },
+    commentBody: { flex: 1 },
+    commentHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: spacing.xs },
+    commentAuthor: { fontSize: typography.sizes.sm, fontWeight: typography.weights.semibold, color: colors.text },
+    commentTime: { fontSize: typography.sizes.xs, color: colors.subtleText },
+    commentContent: { fontSize: typography.sizes.sm, color: colors.text, lineHeight: 18 },
+    emptyComments: { alignItems: 'center', paddingVertical: spacing.xl },
+    emptyText: { fontSize: typography.sizes.sm, color: colors.subtleText, marginTop: spacing.sm },
+    commentInputBar: {
+      flexDirection: 'row', alignItems: 'flex-end', paddingHorizontal: spacing.lg,
+      paddingVertical: spacing.sm, borderTopWidth: 1, borderTopColor: colors.border,
+      backgroundColor: colors.white,
+    },
+    commentInput: {
+      flex: 1, backgroundColor: colors.background, borderRadius: borderRadius.md,
+      paddingHorizontal: spacing.md, paddingVertical: spacing.sm, fontSize: typography.sizes.sm,
+      color: colors.text, maxHeight: 80, marginRight: spacing.sm,
+    },
+    sendBtn: {
+      width: 40, height: 40, borderRadius: 20, backgroundColor: colors.primary,
+      justifyContent: 'center', alignItems: 'center',
+    },
+    sendBtnDisabled: { opacity: 0.5 },
+  });
+
   const postId = route?.params?.postId;
   const { t, lang } = useLanguage();
 
@@ -272,74 +347,3 @@ export default function PostDetailScreen({ navigation, route }: PostDetailScreen
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: colors.background },
-  centered: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-  header: {
-    flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',
-    paddingHorizontal: spacing.lg, paddingTop: spacing.md, paddingBottom: spacing.sm,
-    borderBottomWidth: 1, borderBottomColor: colors.border,
-  },
-  backBtn: { padding: spacing.xs },
-  headerTitle: { fontSize: typography.sizes.lg, fontWeight: typography.weights.bold, color: colors.text },
-  scrollContent: { paddingHorizontal: spacing.lg, paddingTop: spacing.md },
-  postCard: {
-    backgroundColor: colors.white, borderRadius: borderRadius.md, padding: spacing.md,
-    marginBottom: spacing.lg, shadowColor: colors.black, shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.06, shadowRadius: 6, elevation: 2,
-  },
-  postHeader: { flexDirection: 'row', alignItems: 'center', marginBottom: spacing.md },
-  avatar: {
-    width: 44, height: 44, borderRadius: 22, backgroundColor: colors.primaryLight,
-    justifyContent: 'center', alignItems: 'center', marginRight: spacing.sm,
-  },
-  postMeta: { flex: 1 },
-  postAuthor: { fontSize: typography.sizes.md, fontWeight: typography.weights.semibold, color: colors.text },
-  postTime: { fontSize: typography.sizes.xs, color: colors.subtleText },
-  categoryBadge: {
-    backgroundColor: colors.primaryLight, paddingHorizontal: spacing.sm, paddingVertical: 2,
-    borderRadius: borderRadius.full,
-  },
-  categoryBadgeText: { fontSize: typography.sizes.xs, fontWeight: typography.weights.medium, color: colors.primary },
-  postContent: { fontSize: typography.sizes.md, color: colors.text, lineHeight: 22, marginBottom: spacing.md },
-  postActions: {
-    flexDirection: 'row', alignItems: 'center', borderTopWidth: 1, borderTopColor: colors.border, paddingTop: spacing.sm,
-  },
-  actionButton: { flexDirection: 'row', alignItems: 'center', marginRight: spacing.lg },
-  actionText: { fontSize: typography.sizes.sm, color: colors.subtleText, marginLeft: spacing.xs },
-  actionTextActive: { color: colors.rose, fontWeight: typography.weights.semibold },
-  commentsTitle: {
-    fontSize: typography.sizes.md, fontWeight: typography.weights.bold, color: colors.text, marginBottom: spacing.md,
-  },
-  commentCard: {
-    flexDirection: 'row', backgroundColor: colors.white, borderRadius: borderRadius.sm,
-    padding: spacing.md, marginBottom: spacing.sm,
-  },
-  commentAvatar: {
-    width: 32, height: 32, borderRadius: 16, backgroundColor: colors.primaryLight,
-    justifyContent: 'center', alignItems: 'center', marginRight: spacing.sm,
-  },
-  commentBody: { flex: 1 },
-  commentHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: spacing.xs },
-  commentAuthor: { fontSize: typography.sizes.sm, fontWeight: typography.weights.semibold, color: colors.text },
-  commentTime: { fontSize: typography.sizes.xs, color: colors.subtleText },
-  commentContent: { fontSize: typography.sizes.sm, color: colors.text, lineHeight: 18 },
-  emptyComments: { alignItems: 'center', paddingVertical: spacing.xl },
-  emptyText: { fontSize: typography.sizes.sm, color: colors.subtleText, marginTop: spacing.sm },
-  commentInputBar: {
-    flexDirection: 'row', alignItems: 'flex-end', paddingHorizontal: spacing.lg,
-    paddingVertical: spacing.sm, borderTopWidth: 1, borderTopColor: colors.border,
-    backgroundColor: colors.white,
-  },
-  commentInput: {
-    flex: 1, backgroundColor: colors.background, borderRadius: borderRadius.md,
-    paddingHorizontal: spacing.md, paddingVertical: spacing.sm, fontSize: typography.sizes.sm,
-    color: colors.text, maxHeight: 80, marginRight: spacing.sm,
-  },
-  sendBtn: {
-    width: 40, height: 40, borderRadius: 20, backgroundColor: colors.primary,
-    justifyContent: 'center', alignItems: 'center',
-  },
-  sendBtnDisabled: { opacity: 0.5 },
-});

@@ -2,7 +2,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import { colors, typography, spacing, borderRadius } from '../../config/theme';
+import { typography, spacing, borderRadius } from '../../config/theme';
+import { useTheme } from '../../contexts/ThemeContext';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { useAuth } from '../../contexts/AuthContext';
 import { getXpEvents, getProgress, getCheckins } from '../../config/api';
@@ -101,6 +102,118 @@ const TIER_BG: Record<BadgeTier, string> = {
 };
 
 export default function BadgesScreen({ navigation }: any) {
+  const { currentColors } = useTheme();
+  const colors = currentColors;
+
+  const styles = StyleSheet.create({
+    container: { flex: 1, backgroundColor: colors.background },
+    loadingWrap: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+    scrollContent: { paddingHorizontal: spacing.lg, paddingBottom: spacing.xxl },
+    header: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingTop: spacing.md,
+      marginBottom: spacing.lg,
+    },
+    backBtn: { width: 40, height: 40, justifyContent: 'center', alignItems: 'center' },
+    headerTitle: {
+      fontSize: typography.sizes.xxl,
+      fontWeight: typography.weights.bold,
+      color: colors.text,
+    },
+    progressCard: {
+      backgroundColor: colors.white,
+      borderRadius: borderRadius.md,
+      padding: spacing.md,
+      marginBottom: spacing.lg,
+      shadowColor: colors.black,
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.06,
+      shadowRadius: 6,
+      elevation: 2,
+    },
+    progressInfo: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginBottom: spacing.sm,
+    },
+    progressLabel: { fontSize: typography.sizes.sm, fontWeight: typography.weights.semibold, color: colors.text },
+    progressPct: { fontSize: typography.sizes.sm, fontWeight: typography.weights.bold, color: colors.primary },
+    progressBar: { height: 8, backgroundColor: colors.border, borderRadius: 4, overflow: 'hidden' },
+    progressFill: { height: '100%', backgroundColor: colors.gold, borderRadius: 4 },
+    xpRow: { flexDirection: 'row', alignItems: 'center', marginTop: spacing.sm, gap: 4 },
+    xpText: { fontSize: typography.sizes.xs, color: colors.subtleText },
+    catScroll: { marginBottom: spacing.lg },
+    catRow: { flexDirection: 'row', gap: spacing.sm },
+    catChip: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingHorizontal: spacing.md,
+      paddingVertical: spacing.sm,
+      borderRadius: borderRadius.full,
+      backgroundColor: colors.white,
+      borderWidth: 1,
+      borderColor: colors.border,
+      gap: 4,
+    },
+    catChipActive: { backgroundColor: colors.primary, borderColor: colors.primary },
+    catText: { fontSize: typography.sizes.xs, color: colors.subtleText, fontWeight: typography.weights.medium },
+    catTextActive: { color: colors.white },
+    badgeGrid: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' },
+    badgeCard: {
+      width: '31%',
+      backgroundColor: colors.white,
+      borderRadius: borderRadius.md,
+      padding: spacing.md,
+      marginBottom: spacing.md,
+      alignItems: 'center',
+      borderWidth: 1.5,
+      borderColor: colors.border,
+      shadowColor: colors.black,
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.06,
+      shadowRadius: 6,
+      elevation: 2,
+    },
+    badgeCircle: {
+      width: 56,
+      height: 56,
+      borderRadius: 28,
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginBottom: spacing.sm,
+    },
+    badgeIcon: { fontSize: 24 },
+    badgeIconLocked: { opacity: 0.4 },
+    tierDot: {
+      position: 'absolute',
+      bottom: -2,
+      right: -2,
+      width: 18,
+      height: 18,
+      borderRadius: 9,
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderWidth: 2,
+      borderColor: colors.white,
+    },
+    tierDotText: { fontSize: 8, fontWeight: typography.weights.bold, color: colors.white },
+    badgeName: {
+      fontSize: typography.sizes.xs,
+      fontWeight: typography.weights.semibold,
+      color: colors.text,
+      textAlign: 'center',
+      marginBottom: 2,
+    },
+    badgeNameLocked: { color: colors.subtleText },
+    badgeDesc: { fontSize: 10, color: colors.subtleText, textAlign: 'center', lineHeight: 14 },
+    badgeDescLocked: { color: colors.border },
+    badgeDate: { fontSize: 9, color: colors.turquoise, marginTop: 4 },
+    lockedBadge: { marginTop: 4 },
+  });
+
   const { t } = useLanguage();
   const { user } = useAuth();
   const [loading, setLoading] = useState(true);
@@ -275,112 +388,3 @@ export default function BadgesScreen({ navigation }: any) {
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: colors.background },
-  loadingWrap: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-  scrollContent: { paddingHorizontal: spacing.lg, paddingBottom: spacing.xxl },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingTop: spacing.md,
-    marginBottom: spacing.lg,
-  },
-  backBtn: { width: 40, height: 40, justifyContent: 'center', alignItems: 'center' },
-  headerTitle: {
-    fontSize: typography.sizes.xxl,
-    fontWeight: typography.weights.bold,
-    color: colors.text,
-  },
-  progressCard: {
-    backgroundColor: colors.white,
-    borderRadius: borderRadius.md,
-    padding: spacing.md,
-    marginBottom: spacing.lg,
-    shadowColor: colors.black,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.06,
-    shadowRadius: 6,
-    elevation: 2,
-  },
-  progressInfo: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: spacing.sm,
-  },
-  progressLabel: { fontSize: typography.sizes.sm, fontWeight: typography.weights.semibold, color: colors.text },
-  progressPct: { fontSize: typography.sizes.sm, fontWeight: typography.weights.bold, color: colors.primary },
-  progressBar: { height: 8, backgroundColor: colors.border, borderRadius: 4, overflow: 'hidden' },
-  progressFill: { height: '100%', backgroundColor: colors.gold, borderRadius: 4 },
-  xpRow: { flexDirection: 'row', alignItems: 'center', marginTop: spacing.sm, gap: 4 },
-  xpText: { fontSize: typography.sizes.xs, color: colors.subtleText },
-  catScroll: { marginBottom: spacing.lg },
-  catRow: { flexDirection: 'row', gap: spacing.sm },
-  catChip: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.sm,
-    borderRadius: borderRadius.full,
-    backgroundColor: colors.white,
-    borderWidth: 1,
-    borderColor: colors.border,
-    gap: 4,
-  },
-  catChipActive: { backgroundColor: colors.primary, borderColor: colors.primary },
-  catText: { fontSize: typography.sizes.xs, color: colors.subtleText, fontWeight: typography.weights.medium },
-  catTextActive: { color: colors.white },
-  badgeGrid: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' },
-  badgeCard: {
-    width: '31%',
-    backgroundColor: colors.white,
-    borderRadius: borderRadius.md,
-    padding: spacing.md,
-    marginBottom: spacing.md,
-    alignItems: 'center',
-    borderWidth: 1.5,
-    borderColor: colors.border,
-    shadowColor: colors.black,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.06,
-    shadowRadius: 6,
-    elevation: 2,
-  },
-  badgeCircle: {
-    width: 56,
-    height: 56,
-    borderRadius: 28,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: spacing.sm,
-  },
-  badgeIcon: { fontSize: 24 },
-  badgeIconLocked: { opacity: 0.4 },
-  tierDot: {
-    position: 'absolute',
-    bottom: -2,
-    right: -2,
-    width: 18,
-    height: 18,
-    borderRadius: 9,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 2,
-    borderColor: colors.white,
-  },
-  tierDotText: { fontSize: 8, fontWeight: typography.weights.bold, color: colors.white },
-  badgeName: {
-    fontSize: typography.sizes.xs,
-    fontWeight: typography.weights.semibold,
-    color: colors.text,
-    textAlign: 'center',
-    marginBottom: 2,
-  },
-  badgeNameLocked: { color: colors.subtleText },
-  badgeDesc: { fontSize: 10, color: colors.subtleText, textAlign: 'center', lineHeight: 14 },
-  badgeDescLocked: { color: colors.border },
-  badgeDate: { fontSize: 9, color: colors.turquoise, marginTop: 4 },
-  lockedBadge: { marginTop: 4 },
-});

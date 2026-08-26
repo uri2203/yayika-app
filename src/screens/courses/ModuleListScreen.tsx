@@ -10,7 +10,8 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import { colors, typography, spacing, borderRadius } from '../../config/theme';
+import { typography, spacing, borderRadius } from '../../config/theme';
+import { useTheme } from '../../contexts/ThemeContext';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { useAuth } from '../../contexts/AuthContext';
 import { getProductCatalog } from '../../config/api';
@@ -25,17 +26,19 @@ interface ModuleData {
   color: string;
 }
 
-const MODULE_META: Omit<ModuleData, 'completedLessons' | 'xpEarned'>[] = [
-  { id: '1', number: 1, titleKey: 'course_module_1_title', totalLessons: 10, color: colors.primary },
-  { id: '2', number: 2, titleKey: 'course_module_2_title', totalLessons: 8, color: colors.turquoise },
-  { id: '3', number: 3, titleKey: 'course_module_3_title', totalLessons: 10, color: colors.gold },
-  { id: '4', number: 4, titleKey: 'course_module_4_title', totalLessons: 10, color: colors.rose },
-  { id: '5', number: 5, titleKey: 'course_module_5_title', totalLessons: 10, color: colors.primary },
-];
-
 export default function ModuleListScreen({ navigation }: any) {
   const { t } = useLanguage();
   const { user } = useAuth();
+  const { currentColors } = useTheme();
+  const colors = currentColors;
+
+  const MODULE_META: Omit<ModuleData, 'completedLessons' | 'xpEarned'>[] = [
+    { id: '1', number: 1, titleKey: 'course_module_1_title', totalLessons: 10, color: colors.primary },
+    { id: '2', number: 2, titleKey: 'course_module_2_title', totalLessons: 8, color: colors.turquoise },
+    { id: '3', number: 3, titleKey: 'course_module_3_title', totalLessons: 10, color: colors.gold },
+    { id: '4', number: 4, titleKey: 'course_module_4_title', totalLessons: 10, color: colors.rose },
+    { id: '5', number: 5, titleKey: 'course_module_5_title', totalLessons: 10, color: colors.primary },
+  ];
   const [modules, setModules] = useState<ModuleData[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -80,6 +83,185 @@ export default function ModuleListScreen({ navigation }: any) {
   const totalCompleted = modules.reduce((s, m) => s + m.completedLessons, 0);
   const overallProgress = totalLessons > 0 ? Math.round((totalCompleted / totalLessons) * 100) : 0;
   const totalXp = modules.reduce((s, m) => s + m.xpEarned, 0);
+
+  const styles = React.useMemo(() => StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: colors.background,
+    },
+    centered: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    scrollContent: {
+      paddingHorizontal: spacing.lg,
+      paddingBottom: spacing.xxl,
+    },
+    header: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingTop: spacing.md,
+      marginBottom: spacing.lg,
+    },
+    backButton: {
+      marginRight: spacing.md,
+      padding: spacing.xs,
+    },
+    headerText: {
+      flex: 1,
+    },
+    title: {
+      fontSize: typography.sizes.xxl,
+      fontWeight: typography.weights.bold,
+      color: colors.text,
+    },
+    subtitle: {
+      fontSize: typography.sizes.md,
+      color: colors.subtleText,
+      marginTop: spacing.xs,
+    },
+    progressCard: {
+      backgroundColor: colors.white,
+      borderRadius: borderRadius.md,
+      padding: spacing.lg,
+      marginBottom: spacing.lg,
+      shadowColor: colors.black,
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.06,
+      shadowRadius: 6,
+      elevation: 2,
+    },
+    progressHeader: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: spacing.md,
+    },
+    progressTitle: {
+      marginLeft: spacing.sm,
+      fontSize: typography.sizes.md,
+      fontWeight: typography.weights.bold,
+      color: colors.text,
+    },
+    progressBar: {
+      height: 10,
+      backgroundColor: colors.border,
+      borderRadius: 5,
+      overflow: 'hidden',
+      marginBottom: spacing.lg,
+    },
+    progressFill: {
+      height: '100%',
+      backgroundColor: colors.gold,
+      borderRadius: 5,
+    },
+    statsRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-around',
+    },
+    statItem: {
+      alignItems: 'center',
+      flex: 1,
+    },
+    statValue: {
+      fontSize: typography.sizes.lg,
+      fontWeight: typography.weights.bold,
+      color: colors.text,
+    },
+    statLabel: {
+      fontSize: typography.sizes.xs,
+      color: colors.subtleText,
+      marginTop: 2,
+    },
+    statDivider: {
+      width: 1,
+      height: 32,
+      backgroundColor: colors.border,
+    },
+    moduleCard: {
+      backgroundColor: colors.white,
+      borderRadius: borderRadius.md,
+      padding: spacing.md,
+      marginBottom: spacing.md,
+      shadowColor: colors.black,
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.06,
+      shadowRadius: 6,
+      elevation: 2,
+    },
+    moduleTop: {
+      flexDirection: 'row',
+      alignItems: 'flex-start',
+      marginBottom: spacing.md,
+    },
+    moduleBadge: {
+      width: 40,
+      height: 40,
+      borderRadius: borderRadius.sm,
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginRight: spacing.md,
+    },
+    moduleNumber: {
+      fontSize: typography.sizes.xl,
+      fontWeight: typography.weights.bold,
+    },
+    moduleInfo: {
+      flex: 1,
+    },
+    moduleTitle: {
+      fontSize: typography.sizes.md,
+      fontWeight: typography.weights.bold,
+      color: colors.text,
+      marginBottom: spacing.xs,
+    },
+    moduleMeta: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    moduleMetaText: {
+      fontSize: typography.sizes.xs,
+      color: colors.subtleText,
+      marginLeft: spacing.xs,
+    },
+    moduleProgressContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: spacing.md,
+    },
+    moduleProgressBar: {
+      flex: 1,
+      height: 6,
+      backgroundColor: colors.border,
+      borderRadius: 3,
+      overflow: 'hidden',
+      marginRight: spacing.sm,
+    },
+    moduleProgressFill: {
+      height: '100%',
+      borderRadius: 3,
+    },
+    moduleProgressText: {
+      fontSize: typography.sizes.xs,
+      fontWeight: typography.weights.semibold,
+      color: colors.subtleText,
+      minWidth: 36,
+      textAlign: 'right',
+    },
+    actionButton: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      paddingVertical: spacing.sm,
+      borderRadius: borderRadius.sm,
+    },
+    actionButtonText: {
+      fontSize: typography.sizes.sm,
+      fontWeight: typography.weights.bold,
+      marginRight: spacing.xs,
+    },
+  }), [colors]);
 
   if (loading) {
     return (
@@ -232,182 +414,3 @@ export default function ModuleListScreen({ navigation }: any) {
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.background,
-  },
-  centered: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  scrollContent: {
-    paddingHorizontal: spacing.lg,
-    paddingBottom: spacing.xxl,
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingTop: spacing.md,
-    marginBottom: spacing.lg,
-  },
-  backButton: {
-    marginRight: spacing.md,
-    padding: spacing.xs,
-  },
-  headerText: {
-    flex: 1,
-  },
-  title: {
-    fontSize: typography.sizes.xxl,
-    fontWeight: typography.weights.bold,
-    color: colors.text,
-  },
-  subtitle: {
-    fontSize: typography.sizes.md,
-    color: colors.subtleText,
-    marginTop: spacing.xs,
-  },
-  progressCard: {
-    backgroundColor: colors.white,
-    borderRadius: borderRadius.md,
-    padding: spacing.lg,
-    marginBottom: spacing.lg,
-    shadowColor: colors.black,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.06,
-    shadowRadius: 6,
-    elevation: 2,
-  },
-  progressHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: spacing.md,
-  },
-  progressTitle: {
-    marginLeft: spacing.sm,
-    fontSize: typography.sizes.md,
-    fontWeight: typography.weights.bold,
-    color: colors.text,
-  },
-  progressBar: {
-    height: 10,
-    backgroundColor: colors.border,
-    borderRadius: 5,
-    overflow: 'hidden',
-    marginBottom: spacing.lg,
-  },
-  progressFill: {
-    height: '100%',
-    backgroundColor: colors.gold,
-    borderRadius: 5,
-  },
-  statsRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-around',
-  },
-  statItem: {
-    alignItems: 'center',
-    flex: 1,
-  },
-  statValue: {
-    fontSize: typography.sizes.lg,
-    fontWeight: typography.weights.bold,
-    color: colors.text,
-  },
-  statLabel: {
-    fontSize: typography.sizes.xs,
-    color: colors.subtleText,
-    marginTop: 2,
-  },
-  statDivider: {
-    width: 1,
-    height: 32,
-    backgroundColor: colors.border,
-  },
-  moduleCard: {
-    backgroundColor: colors.white,
-    borderRadius: borderRadius.md,
-    padding: spacing.md,
-    marginBottom: spacing.md,
-    shadowColor: colors.black,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.06,
-    shadowRadius: 6,
-    elevation: 2,
-  },
-  moduleTop: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    marginBottom: spacing.md,
-  },
-  moduleBadge: {
-    width: 40,
-    height: 40,
-    borderRadius: borderRadius.sm,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: spacing.md,
-  },
-  moduleNumber: {
-    fontSize: typography.sizes.xl,
-    fontWeight: typography.weights.bold,
-  },
-  moduleInfo: {
-    flex: 1,
-  },
-  moduleTitle: {
-    fontSize: typography.sizes.md,
-    fontWeight: typography.weights.bold,
-    color: colors.text,
-    marginBottom: spacing.xs,
-  },
-  moduleMeta: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  moduleMetaText: {
-    fontSize: typography.sizes.xs,
-    color: colors.subtleText,
-    marginLeft: spacing.xs,
-  },
-  moduleProgressContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: spacing.md,
-  },
-  moduleProgressBar: {
-    flex: 1,
-    height: 6,
-    backgroundColor: colors.border,
-    borderRadius: 3,
-    overflow: 'hidden',
-    marginRight: spacing.sm,
-  },
-  moduleProgressFill: {
-    height: '100%',
-    borderRadius: 3,
-  },
-  moduleProgressText: {
-    fontSize: typography.sizes.xs,
-    fontWeight: typography.weights.semibold,
-    color: colors.subtleText,
-    minWidth: 36,
-    textAlign: 'right',
-  },
-  actionButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: spacing.sm,
-    borderRadius: borderRadius.sm,
-  },
-  actionButtonText: {
-    fontSize: typography.sizes.sm,
-    fontWeight: typography.weights.bold,
-    marginRight: spacing.xs,
-  },
-});

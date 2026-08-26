@@ -135,6 +135,23 @@ export default function SettingsScreen({ navigation }: any) {
         </Card>
 
         <Card style={styles.sectionCard}>
+          <Text style={[styles.sectionTitle, { color: colors.subtleText }]}>{t('settings_appearance') || 'Apariencia'}</Text>
+
+          <View style={[styles.menuItem, { borderBottomWidth: 0 }]}>
+            <View style={styles.menuLeft}>
+              <Ionicons name={isDark ? 'moon' : 'sunny'} size={22} color={colors.primary} />
+              <Text style={[styles.menuText, { color: colors.text }]}>{t('settings_dark_mode') || 'Modo oscuro'}</Text>
+            </View>
+            <Switch
+              value={isDark}
+              onValueChange={toggleTheme}
+              trackColor={{ false: colors.border, true: colors.primary }}
+              thumbColor={colors.white}
+            />
+          </View>
+        </Card>
+
+        <Card style={styles.sectionCard}>
           <Text style={[styles.sectionTitle, { color: colors.subtleText }]}>{t('onboard_notif_title')}</Text>
 
           <View style={[styles.menuItem, { borderBottomColor: colors.border }]}>

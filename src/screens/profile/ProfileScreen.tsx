@@ -8,7 +8,7 @@ import * as Application from 'expo-application';
 import { useAuth } from '../../contexts/AuthContext';
 import { useTheme } from '../../contexts/ThemeContext';
 import { useLanguage } from '../../contexts/LanguageContext';
-import { colors, typography, spacing, borderRadius } from '../../config/theme';
+import { typography, spacing, borderRadius } from '../../config/theme';
 import { supabase } from '../../config/supabase';
 
 const AVATAR_COLORS = ['#4E3470', '#2DD4BF', '#F472B6', '#D4A843', '#10B981', '#EF4444'];
@@ -284,7 +284,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: spacing.md,
-    backgroundColor: colors.primaryLight,
+    backgroundColor: '#D4B8F5',
     borderRadius: borderRadius.md,
     marginBottom: spacing.md,
   },

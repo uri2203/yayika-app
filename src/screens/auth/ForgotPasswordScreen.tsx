@@ -14,15 +14,97 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '../../contexts/AuthContext';
 import { useLanguage } from '../../contexts/LanguageContext';
-import { colors, typography, spacing, borderRadius } from '../../config/theme';
+import { useTheme } from '../../contexts/ThemeContext';
+import { typography, spacing, borderRadius } from '../../config/theme';
 import Button from '../../components/Button';
 
 export default function ForgotPasswordScreen({ navigation }: any) {
   const { resetPassword } = useAuth();
   const { t } = useLanguage();
+  const { currentColors } = useTheme();
+  const colors = currentColors;
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);
+
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: colors.background,
+    },
+    flex: {
+      flex: 1,
+    },
+    scrollContent: {
+      flexGrow: 1,
+      paddingHorizontal: spacing.lg,
+    },
+    backButton: {
+      marginTop: spacing.sm,
+      marginBottom: spacing.md,
+      width: 40,
+    },
+    header: {
+      alignItems: 'center',
+      marginBottom: spacing.xl,
+      marginTop: spacing.lg,
+    },
+    title: {
+      fontSize: typography.sizes.xxl,
+      fontWeight: typography.weights.bold,
+      color: colors.text,
+      marginTop: spacing.md,
+      textAlign: 'center',
+    },
+    subtitle: {
+      fontSize: typography.sizes.md,
+      color: colors.subtleText,
+      marginTop: spacing.sm,
+      textAlign: 'center',
+      lineHeight: 22,
+    },
+    form: {
+      marginBottom: spacing.xl,
+    },
+    label: {
+      fontSize: typography.sizes.sm,
+      fontWeight: typography.weights.medium,
+      color: colors.text,
+      marginBottom: spacing.xs,
+    },
+    input: {
+      backgroundColor: colors.white,
+      borderWidth: 1,
+      borderColor: colors.border,
+      borderRadius: borderRadius.md,
+      paddingHorizontal: spacing.md,
+      paddingVertical: spacing.md,
+      fontSize: typography.sizes.md,
+      color: colors.text,
+      marginBottom: spacing.lg,
+    },
+    successContainer: {
+      alignItems: 'center',
+      paddingVertical: spacing.xl,
+    },
+    successTitle: {
+      fontSize: typography.sizes.xl,
+      fontWeight: typography.weights.bold,
+      color: colors.text,
+      marginTop: spacing.md,
+    },
+    successText: {
+      fontSize: typography.sizes.md,
+      color: colors.subtleText,
+      marginTop: spacing.sm,
+      textAlign: 'center',
+      lineHeight: 22,
+    },
+    backToLoginButton: {
+      marginTop: spacing.xl,
+      minWidth: 200,
+    },
+  });
 
   const handleReset = async () => {
     if (!email) {
@@ -101,82 +183,3 @@ export default function ForgotPasswordScreen({ navigation }: any) {
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.background,
-  },
-  flex: {
-    flex: 1,
-  },
-  scrollContent: {
-    flexGrow: 1,
-    paddingHorizontal: spacing.lg,
-  },
-  backButton: {
-    marginTop: spacing.sm,
-    marginBottom: spacing.md,
-    width: 40,
-  },
-  header: {
-    alignItems: 'center',
-    marginBottom: spacing.xl,
-    marginTop: spacing.lg,
-  },
-  title: {
-    fontSize: typography.sizes.xxl,
-    fontWeight: typography.weights.bold,
-    color: colors.text,
-    marginTop: spacing.md,
-    textAlign: 'center',
-  },
-  subtitle: {
-    fontSize: typography.sizes.md,
-    color: colors.subtleText,
-    marginTop: spacing.sm,
-    textAlign: 'center',
-    lineHeight: 22,
-  },
-  form: {
-    marginBottom: spacing.xl,
-  },
-  label: {
-    fontSize: typography.sizes.sm,
-    fontWeight: typography.weights.medium,
-    color: colors.text,
-    marginBottom: spacing.xs,
-  },
-  input: {
-    backgroundColor: colors.white,
-    borderWidth: 1,
-    borderColor: colors.border,
-    borderRadius: borderRadius.md,
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.md,
-    fontSize: typography.sizes.md,
-    color: colors.text,
-    marginBottom: spacing.lg,
-  },
-  successContainer: {
-    alignItems: 'center',
-    paddingVertical: spacing.xl,
-  },
-  successTitle: {
-    fontSize: typography.sizes.xl,
-    fontWeight: typography.weights.bold,
-    color: colors.text,
-    marginTop: spacing.md,
-  },
-  successText: {
-    fontSize: typography.sizes.md,
-    color: colors.subtleText,
-    marginTop: spacing.sm,
-    textAlign: 'center',
-    lineHeight: 22,
-  },
-  backToLoginButton: {
-    marginTop: spacing.xl,
-    minWidth: 200,
-  },
-});

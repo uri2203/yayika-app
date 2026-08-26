@@ -2,7 +2,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput, ActivityIndicator, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import { colors, typography, spacing, borderRadius } from '../../config/theme';
+import { typography, spacing, borderRadius } from '../../config/theme';
+import { useTheme } from '../../contexts/ThemeContext';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { useAuth } from '../../contexts/AuthContext';
 import { getTransactions } from '../../config/api';
@@ -27,6 +28,72 @@ function formatMoney(n: number) {
 }
 
 export default function BudgetScreen({ navigation }: any) {
+  const { currentColors } = useTheme();
+  const colors = currentColors;
+
+  const styles = StyleSheet.create({
+    container: { flex: 1, backgroundColor: colors.background },
+    centered: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+    scrollContent: { paddingHorizontal: spacing.lg, paddingBottom: spacing.xxl },
+    header: {
+      flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',
+      paddingTop: spacing.md, marginBottom: spacing.lg,
+    },
+    backBtn: { padding: spacing.xs },
+    title: { fontSize: typography.sizes.xxl, fontWeight: typography.weights.bold, color: colors.text },
+    incomeSection: {
+      backgroundColor: colors.white, borderRadius: borderRadius.md, padding: spacing.lg,
+      marginBottom: spacing.lg, shadowColor: colors.black, shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.06, shadowRadius: 6, elevation: 2,
+    },
+    incomeLabel: { fontSize: typography.sizes.sm, color: colors.subtleText, marginBottom: spacing.xs },
+    incomeDisplay: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm },
+    incomeAmount: { fontSize: typography.sizes.xxxl, fontWeight: typography.weights.bold, color: colors.primary },
+    incomeEdit: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm },
+    incomeInput: {
+      flex: 1, borderWidth: 1, borderColor: colors.border, borderRadius: borderRadius.sm,
+      paddingHorizontal: spacing.md, paddingVertical: spacing.sm, fontSize: typography.sizes.xl,
+      fontWeight: typography.weights.bold, color: colors.text,
+    },
+    incomeSaveBtn: {
+      width: 40, height: 40, borderRadius: 20, backgroundColor: colors.primary,
+      justifyContent: 'center', alignItems: 'center',
+    },
+    splitSection: { marginBottom: spacing.lg },
+    sectionTitle: {
+      fontSize: typography.sizes.lg, fontWeight: typography.weights.bold,
+      color: colors.text, marginBottom: spacing.md,
+    },
+    splitCard: {
+      backgroundColor: colors.white, borderRadius: borderRadius.md, padding: spacing.md,
+      shadowColor: colors.black, shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.06,
+      shadowRadius: 6, elevation: 2,
+    },
+    splitItem: { marginBottom: spacing.md },
+    splitHeader: { flexDirection: 'row', alignItems: 'center', marginBottom: spacing.xs },
+    splitDot: { width: 8, height: 8, borderRadius: 4, marginRight: spacing.sm },
+    splitLabel: { fontSize: typography.sizes.sm, color: colors.text, fontWeight: typography.weights.medium },
+    splitAmount: { fontSize: typography.sizes.md, fontWeight: typography.weights.bold, color: colors.text, marginLeft: spacing.lg },
+    progressBar: { height: 6, backgroundColor: colors.border, borderRadius: 3, overflow: 'hidden', marginTop: spacing.xs },
+    progressFill: { height: '100%', borderRadius: 3 },
+    categoryRow: {
+      flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
+      backgroundColor: colors.white, borderRadius: borderRadius.sm, padding: spacing.md,
+      marginBottom: spacing.sm, shadowColor: colors.black, shadowOffset: { width: 0, height: 1 },
+      shadowOpacity: 0.04, shadowRadius: 2, elevation: 1,
+    },
+    categoryLeft: { flexDirection: 'row', alignItems: 'center', flex: 1 },
+    categoryIcon: {
+      width: 36, height: 36, borderRadius: 18, justifyContent: 'center', alignItems: 'center', marginRight: spacing.md,
+    },
+    categoryName: { fontSize: typography.sizes.sm, fontWeight: typography.weights.medium, color: colors.text },
+    categoryAmount: { fontSize: typography.sizes.xs, color: colors.subtleText, marginTop: 2 },
+    categoryRight: { flexDirection: 'row', alignItems: 'center', width: 120 },
+    categoryBar: { flex: 1, height: 6, backgroundColor: colors.border, borderRadius: 3, overflow: 'hidden', marginRight: spacing.sm },
+    categoryFill: { height: '100%', borderRadius: 3 },
+    categoryPct: { fontSize: typography.sizes.xs, fontWeight: typography.weights.bold, color: colors.subtleText, width: 32, textAlign: 'right' },
+  });
+
   const { t } = useLanguage();
   const { user } = useAuth();
   const [loading, setLoading] = useState(true);
@@ -185,66 +252,3 @@ export default function BudgetScreen({ navigation }: any) {
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: colors.background },
-  centered: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-  scrollContent: { paddingHorizontal: spacing.lg, paddingBottom: spacing.xxl },
-  header: {
-    flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',
-    paddingTop: spacing.md, marginBottom: spacing.lg,
-  },
-  backBtn: { padding: spacing.xs },
-  title: { fontSize: typography.sizes.xxl, fontWeight: typography.weights.bold, color: colors.text },
-  incomeSection: {
-    backgroundColor: colors.white, borderRadius: borderRadius.md, padding: spacing.lg,
-    marginBottom: spacing.lg, shadowColor: colors.black, shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.06, shadowRadius: 6, elevation: 2,
-  },
-  incomeLabel: { fontSize: typography.sizes.sm, color: colors.subtleText, marginBottom: spacing.xs },
-  incomeDisplay: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm },
-  incomeAmount: { fontSize: typography.sizes.xxxl, fontWeight: typography.weights.bold, color: colors.primary },
-  incomeEdit: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm },
-  incomeInput: {
-    flex: 1, borderWidth: 1, borderColor: colors.border, borderRadius: borderRadius.sm,
-    paddingHorizontal: spacing.md, paddingVertical: spacing.sm, fontSize: typography.sizes.xl,
-    fontWeight: typography.weights.bold, color: colors.text,
-  },
-  incomeSaveBtn: {
-    width: 40, height: 40, borderRadius: 20, backgroundColor: colors.primary,
-    justifyContent: 'center', alignItems: 'center',
-  },
-  splitSection: { marginBottom: spacing.lg },
-  sectionTitle: {
-    fontSize: typography.sizes.lg, fontWeight: typography.weights.bold,
-    color: colors.text, marginBottom: spacing.md,
-  },
-  splitCard: {
-    backgroundColor: colors.white, borderRadius: borderRadius.md, padding: spacing.md,
-    shadowColor: colors.black, shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.06,
-    shadowRadius: 6, elevation: 2,
-  },
-  splitItem: { marginBottom: spacing.md },
-  splitHeader: { flexDirection: 'row', alignItems: 'center', marginBottom: spacing.xs },
-  splitDot: { width: 8, height: 8, borderRadius: 4, marginRight: spacing.sm },
-  splitLabel: { fontSize: typography.sizes.sm, color: colors.text, fontWeight: typography.weights.medium },
-  splitAmount: { fontSize: typography.sizes.md, fontWeight: typography.weights.bold, color: colors.text, marginLeft: spacing.lg },
-  progressBar: { height: 6, backgroundColor: colors.border, borderRadius: 3, overflow: 'hidden', marginTop: spacing.xs },
-  progressFill: { height: '100%', borderRadius: 3 },
-  categoryRow: {
-    flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
-    backgroundColor: colors.white, borderRadius: borderRadius.sm, padding: spacing.md,
-    marginBottom: spacing.sm, shadowColor: colors.black, shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.04, shadowRadius: 2, elevation: 1,
-  },
-  categoryLeft: { flexDirection: 'row', alignItems: 'center', flex: 1 },
-  categoryIcon: {
-    width: 36, height: 36, borderRadius: 18, justifyContent: 'center', alignItems: 'center', marginRight: spacing.md,
-  },
-  categoryName: { fontSize: typography.sizes.sm, fontWeight: typography.weights.medium, color: colors.text },
-  categoryAmount: { fontSize: typography.sizes.xs, color: colors.subtleText, marginTop: 2 },
-  categoryRight: { flexDirection: 'row', alignItems: 'center', width: 120 },
-  categoryBar: { flex: 1, height: 6, backgroundColor: colors.border, borderRadius: 3, overflow: 'hidden', marginRight: spacing.sm },
-  categoryFill: { height: '100%', borderRadius: 3 },
-  categoryPct: { fontSize: typography.sizes.xs, fontWeight: typography.weights.bold, color: colors.subtleText, width: 32, textAlign: 'right' },
-});

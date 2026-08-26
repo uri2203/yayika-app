@@ -484,6 +484,8 @@ const translations: Record<Language, Record<string, string>> = {
     // Profile
     profile_settings: 'Configuración',
     profile_dark_mode: 'Modo oscuro',
+    settings_appearance: 'Apariencia',
+    settings_dark_mode: 'Modo oscuro',
     profile_language: 'Idioma',
     profile_support: 'Soporte',
     profile_help: 'Centro de ayuda',
@@ -1244,6 +1246,8 @@ const translations: Record<Language, Record<string, string>> = {
     // Profile
     profile_settings: 'Settings',
     profile_dark_mode: 'Dark mode',
+    settings_appearance: 'Appearance',
+    settings_dark_mode: 'Dark mode',
     profile_language: 'Language',
     profile_support: 'Support',
     profile_help: 'Help center',
@@ -1945,6 +1949,8 @@ const translations: Record<Language, Record<string, string>> = {
     // Profile
     profile_settings: 'Configurações',
     profile_dark_mode: 'Modo escuro',
+    settings_appearance: 'Aparência',
+    settings_dark_mode: 'Modo escuro',
     profile_language: 'Idioma',
     profile_support: 'Suporte',
     profile_help: 'Central de ajuda',
@@ -2627,6 +2633,8 @@ const translations: Record<Language, Record<string, string>> = {
     // Profile
     profile_settings: 'Paramètres',
     profile_dark_mode: 'Mode sombre',
+    settings_appearance: 'Apparence',
+    settings_dark_mode: 'Mode sombre',
     profile_language: 'Langue',
     profile_support: 'Support',
     profile_help: 'Centre d\'aide',
@@ -3309,6 +3317,8 @@ const translations: Record<Language, Record<string, string>> = {
     // Profile
     profile_settings: 'Einstellungen',
     profile_dark_mode: 'Dunkelmodus',
+    settings_appearance: 'Erscheinungsbild',
+    settings_dark_mode: 'Dunkelmodus',
     profile_language: 'Sprache',
     profile_support: 'Support',
     profile_help: 'Hilfezentrum',

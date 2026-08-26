@@ -12,7 +12,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '../../contexts/AuthContext';
 import { useLanguage } from '../../contexts/LanguageContext';
-import { colors, typography, spacing, borderRadius } from '../../config/theme';
+import { useTheme } from '../../contexts/ThemeContext';
+import { typography, spacing, borderRadius } from '../../config/theme';
 import Card from '../../components/Card';
 import {
   getProgress,
@@ -74,6 +75,8 @@ function timeAgo(dateStr: string): string {
 export default function PortalDashboard({ navigation }: any) {
   const { user, profile, progress } = useAuth();
   const { t } = useLanguage();
+  const { currentColors } = useTheme();
+  const colors = currentColors;
 
   const [localProgress, setLocalProgress] = useState(progress);
   const [affirmation, setAffirmation] = useState('');
@@ -147,6 +150,382 @@ export default function PortalDashboard({ navigation }: any) {
   const navigateInStack = (screenName: string) => {
     navigation.navigate(screenName);
   };
+
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: colors.background,
+    },
+    loadingContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    scrollContent: {
+      paddingHorizontal: spacing.lg,
+      paddingBottom: spacing.xxl,
+    },
+    header: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'flex-start',
+      paddingTop: spacing.md,
+      marginBottom: spacing.lg,
+    },
+    headerLeft: {
+      flex: 1,
+    },
+    greeting: {
+      fontSize: typography.sizes.xxl,
+      fontWeight: typography.weights.bold,
+      color: colors.text,
+      marginBottom: spacing.xs,
+    },
+    phaseRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    phaseBadge: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingHorizontal: spacing.sm + 2,
+      paddingVertical: spacing.xs,
+      borderRadius: borderRadius.full,
+      gap: 4,
+    },
+    phaseText: {
+      fontSize: typography.sizes.xs,
+      fontWeight: typography.weights.semibold,
+      color: colors.white,
+      textTransform: 'capitalize',
+    },
+    streakBadge: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      backgroundColor: colors.white,
+      paddingHorizontal: spacing.md,
+      paddingVertical: spacing.sm,
+      borderRadius: borderRadius.full,
+      shadowColor: colors.black,
+      shadowOffset: { width: 0, height: 1 },
+      shadowOpacity: 0.1,
+      shadowRadius: 4,
+      elevation: 2,
+    },
+    streakText: {
+      marginLeft: spacing.xs,
+      fontSize: typography.sizes.md,
+      fontWeight: typography.weights.bold,
+      color: colors.gold,
+    },
+    xpCard: {
+      marginBottom: spacing.lg,
+    },
+    xpHeader: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginBottom: spacing.sm,
+    },
+    xpLeft: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: spacing.xs,
+    },
+    xpValue: {
+      fontSize: typography.sizes.lg,
+      fontWeight: typography.weights.bold,
+      color: colors.gold,
+    },
+    xpLevel: {
+      fontSize: typography.sizes.sm,
+      fontWeight: typography.weights.semibold,
+      color: colors.subtleText,
+    },
+    xpBar: {
+      height: 10,
+      backgroundColor: colors.border,
+      borderRadius: 5,
+      overflow: 'hidden',
+    },
+    xpFill: {
+      height: '100%',
+      backgroundColor: colors.gold,
+      borderRadius: 5,
+    },
+    xpHint: {
+      fontSize: typography.sizes.xs,
+      color: colors.subtleText,
+      marginTop: spacing.xs,
+      textAlign: 'right',
+    },
+    statsRow: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      marginBottom: spacing.lg,
+      gap: spacing.sm,
+    },
+    statCard: {
+      flex: 1,
+      backgroundColor: colors.white,
+      borderRadius: borderRadius.md,
+      padding: spacing.sm + 2,
+      alignItems: 'center',
+      shadowColor: colors.black,
+      shadowOffset: { width: 0, height: 1 },
+      shadowOpacity: 0.05,
+      shadowRadius: 4,
+      elevation: 1,
+    },
+    statValue: {
+      fontSize: typography.sizes.lg,
+      fontWeight: typography.weights.bold,
+      color: colors.text,
+      marginTop: spacing.xs,
+    },
+    statLabel: {
+      fontSize: typography.sizes.xs,
+      color: colors.subtleText,
+      marginTop: 2,
+    },
+    cycleCard: {
+      marginBottom: spacing.lg,
+    },
+    cycleHeader: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: spacing.md,
+    },
+    cycleIconContainer: {
+      width: 44,
+      height: 44,
+      borderRadius: borderRadius.md,
+      backgroundColor: '#E8D5F5',
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginRight: spacing.md,
+    },
+    cycleInfo: {
+      flex: 1,
+    },
+    cycleTitle: {
+      fontSize: typography.sizes.xs,
+      color: colors.subtleText,
+      fontWeight: typography.weights.medium,
+    },
+    cyclePhase: {
+      fontSize: typography.sizes.md,
+      fontWeight: typography.weights.bold,
+      color: colors.text,
+      marginTop: 2,
+    },
+    energyBadge: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      backgroundColor: '#FEF3C7',
+      paddingHorizontal: spacing.sm,
+      paddingVertical: spacing.xs,
+      borderRadius: borderRadius.full,
+      gap: 4,
+    },
+    energyText: {
+      fontSize: typography.sizes.xs,
+      fontWeight: typography.weights.semibold,
+      color: colors.gold,
+    },
+    logButton: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: colors.primary,
+      paddingVertical: spacing.sm + 2,
+      borderRadius: borderRadius.md,
+      gap: spacing.xs,
+    },
+    logButtonText: {
+      fontSize: typography.sizes.sm,
+      fontWeight: typography.weights.semibold,
+      color: colors.white,
+    },
+    sectionTitle: {
+      fontSize: typography.sizes.lg,
+      fontWeight: typography.weights.bold,
+      color: colors.text,
+      marginBottom: spacing.md,
+      marginTop: spacing.sm,
+    },
+    grid: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      justifyContent: 'space-between',
+      marginBottom: spacing.lg,
+    },
+    gridItem: {
+      width: '31%',
+      backgroundColor: colors.white,
+      borderRadius: borderRadius.md,
+      padding: spacing.md,
+      marginBottom: spacing.md,
+      alignItems: 'center',
+      shadowColor: colors.black,
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.06,
+      shadowRadius: 6,
+      elevation: 2,
+    },
+    gridIcon: {
+      width: 48,
+      height: 48,
+      borderRadius: borderRadius.md,
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginBottom: spacing.sm,
+    },
+    gridTitle: {
+      fontSize: typography.sizes.xs,
+      fontWeight: typography.weights.semibold,
+      color: colors.text,
+      textAlign: 'center',
+      lineHeight: 16,
+    },
+    gridSub: {
+      fontSize: 11,
+      color: colors.subtleText,
+      marginTop: 2,
+      textAlign: 'center',
+    },
+    affirmationCard: {
+      backgroundColor: '#FFF9E6',
+      marginBottom: spacing.lg,
+    },
+    affirmationHeader: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: spacing.sm,
+      gap: spacing.sm,
+    },
+    affirmationTitle: {
+      fontSize: typography.sizes.sm,
+      fontWeight: typography.weights.semibold,
+      color: colors.gold,
+    },
+    affirmationText: {
+      fontSize: typography.sizes.md,
+      color: colors.text,
+      lineHeight: 22,
+      fontStyle: 'italic',
+    },
+    challengeCard: {
+      marginBottom: spacing.sm,
+    },
+    challengeHeader: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'flex-start',
+      marginBottom: spacing.sm,
+    },
+    challengeInfo: {
+      flex: 1,
+      marginRight: spacing.sm,
+    },
+    challengeTitle: {
+      fontSize: typography.sizes.sm,
+      fontWeight: typography.weights.semibold,
+      color: colors.text,
+    },
+    challengeSub: {
+      fontSize: typography.sizes.xs,
+      color: colors.subtleText,
+      marginTop: 2,
+    },
+    challengeXpBadge: {
+      backgroundColor: '#FEF3C7',
+      paddingHorizontal: spacing.sm,
+      paddingVertical: spacing.xs,
+      borderRadius: borderRadius.full,
+    },
+    challengeXpText: {
+      fontSize: typography.sizes.xs,
+      fontWeight: typography.weights.bold,
+      color: colors.gold,
+    },
+    challengeBar: {
+      height: 6,
+      backgroundColor: colors.border,
+      borderRadius: 3,
+      overflow: 'hidden',
+    },
+    challengeBarFill: {
+      height: '100%',
+      backgroundColor: colors.turquoise,
+      borderRadius: 3,
+    },
+    postCard: {
+      marginBottom: spacing.sm,
+    },
+    postHeader: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: spacing.sm,
+    },
+    postAvatar: {
+      width: 36,
+      height: 36,
+      borderRadius: 18,
+      backgroundColor: colors.primaryLight,
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginRight: spacing.sm,
+    },
+    postAvatarText: {
+      fontSize: typography.sizes.sm,
+      fontWeight: typography.weights.bold,
+      color: colors.primary,
+    },
+    postMeta: {
+      flex: 1,
+    },
+    postAuthor: {
+      fontSize: typography.sizes.sm,
+      fontWeight: typography.weights.semibold,
+      color: colors.text,
+    },
+    postTime: {
+      fontSize: typography.sizes.xs,
+      color: colors.subtleText,
+    },
+    postContent: {
+      fontSize: typography.sizes.sm,
+      color: colors.text,
+      lineHeight: 20,
+      marginBottom: spacing.sm,
+    },
+    postFooter: {
+      flexDirection: 'row',
+      gap: spacing.md,
+    },
+    postStat: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 4,
+    },
+    postStatText: {
+      fontSize: typography.sizes.xs,
+      color: colors.subtleText,
+    },
+    seeAllButton: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      paddingVertical: spacing.md,
+      gap: spacing.xs,
+    },
+    seeAllText: {
+      fontSize: typography.sizes.sm,
+      fontWeight: typography.weights.semibold,
+      color: colors.primary,
+    },
+  });
 
   if (loading) {
     return (
@@ -426,378 +805,3 @@ export default function PortalDashboard({ navigation }: any) {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.background,
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  scrollContent: {
-    paddingHorizontal: spacing.lg,
-    paddingBottom: spacing.xxl,
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    paddingTop: spacing.md,
-    marginBottom: spacing.lg,
-  },
-  headerLeft: {
-    flex: 1,
-  },
-  greeting: {
-    fontSize: typography.sizes.xxl,
-    fontWeight: typography.weights.bold,
-    color: colors.text,
-    marginBottom: spacing.xs,
-  },
-  phaseRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  phaseBadge: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: spacing.sm + 2,
-    paddingVertical: spacing.xs,
-    borderRadius: borderRadius.full,
-    gap: 4,
-  },
-  phaseText: {
-    fontSize: typography.sizes.xs,
-    fontWeight: typography.weights.semibold,
-    color: colors.white,
-    textTransform: 'capitalize',
-  },
-  streakBadge: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: colors.white,
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.sm,
-    borderRadius: borderRadius.full,
-    shadowColor: colors.black,
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 2,
-  },
-  streakText: {
-    marginLeft: spacing.xs,
-    fontSize: typography.sizes.md,
-    fontWeight: typography.weights.bold,
-    color: colors.gold,
-  },
-  xpCard: {
-    marginBottom: spacing.lg,
-  },
-  xpHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: spacing.sm,
-  },
-  xpLeft: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: spacing.xs,
-  },
-  xpValue: {
-    fontSize: typography.sizes.lg,
-    fontWeight: typography.weights.bold,
-    color: colors.gold,
-  },
-  xpLevel: {
-    fontSize: typography.sizes.sm,
-    fontWeight: typography.weights.semibold,
-    color: colors.subtleText,
-  },
-  xpBar: {
-    height: 10,
-    backgroundColor: colors.border,
-    borderRadius: 5,
-    overflow: 'hidden',
-  },
-  xpFill: {
-    height: '100%',
-    backgroundColor: colors.gold,
-    borderRadius: 5,
-  },
-  xpHint: {
-    fontSize: typography.sizes.xs,
-    color: colors.subtleText,
-    marginTop: spacing.xs,
-    textAlign: 'right',
-  },
-  statsRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: spacing.lg,
-    gap: spacing.sm,
-  },
-  statCard: {
-    flex: 1,
-    backgroundColor: colors.white,
-    borderRadius: borderRadius.md,
-    padding: spacing.sm + 2,
-    alignItems: 'center',
-    shadowColor: colors.black,
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
-    shadowRadius: 4,
-    elevation: 1,
-  },
-  statValue: {
-    fontSize: typography.sizes.lg,
-    fontWeight: typography.weights.bold,
-    color: colors.text,
-    marginTop: spacing.xs,
-  },
-  statLabel: {
-    fontSize: typography.sizes.xs,
-    color: colors.subtleText,
-    marginTop: 2,
-  },
-  cycleCard: {
-    marginBottom: spacing.lg,
-  },
-  cycleHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: spacing.md,
-  },
-  cycleIconContainer: {
-    width: 44,
-    height: 44,
-    borderRadius: borderRadius.md,
-    backgroundColor: '#E8D5F5',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: spacing.md,
-  },
-  cycleInfo: {
-    flex: 1,
-  },
-  cycleTitle: {
-    fontSize: typography.sizes.xs,
-    color: colors.subtleText,
-    fontWeight: typography.weights.medium,
-  },
-  cyclePhase: {
-    fontSize: typography.sizes.md,
-    fontWeight: typography.weights.bold,
-    color: colors.text,
-    marginTop: 2,
-  },
-  energyBadge: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#FEF3C7',
-    paddingHorizontal: spacing.sm,
-    paddingVertical: spacing.xs,
-    borderRadius: borderRadius.full,
-    gap: 4,
-  },
-  energyText: {
-    fontSize: typography.sizes.xs,
-    fontWeight: typography.weights.semibold,
-    color: colors.gold,
-  },
-  logButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: colors.primary,
-    paddingVertical: spacing.sm + 2,
-    borderRadius: borderRadius.md,
-    gap: spacing.xs,
-  },
-  logButtonText: {
-    fontSize: typography.sizes.sm,
-    fontWeight: typography.weights.semibold,
-    color: colors.white,
-  },
-  sectionTitle: {
-    fontSize: typography.sizes.lg,
-    fontWeight: typography.weights.bold,
-    color: colors.text,
-    marginBottom: spacing.md,
-    marginTop: spacing.sm,
-  },
-  grid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-    marginBottom: spacing.lg,
-  },
-  gridItem: {
-    width: '31%',
-    backgroundColor: colors.white,
-    borderRadius: borderRadius.md,
-    padding: spacing.md,
-    marginBottom: spacing.md,
-    alignItems: 'center',
-    shadowColor: colors.black,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.06,
-    shadowRadius: 6,
-    elevation: 2,
-  },
-  gridIcon: {
-    width: 48,
-    height: 48,
-    borderRadius: borderRadius.md,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: spacing.sm,
-  },
-  gridTitle: {
-    fontSize: typography.sizes.xs,
-    fontWeight: typography.weights.semibold,
-    color: colors.text,
-    textAlign: 'center',
-    lineHeight: 16,
-  },
-  gridSub: {
-    fontSize: 11,
-    color: colors.subtleText,
-    marginTop: 2,
-    textAlign: 'center',
-  },
-  affirmationCard: {
-    backgroundColor: '#FFF9E6',
-    marginBottom: spacing.lg,
-  },
-  affirmationHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: spacing.sm,
-    gap: spacing.sm,
-  },
-  affirmationTitle: {
-    fontSize: typography.sizes.sm,
-    fontWeight: typography.weights.semibold,
-    color: colors.gold,
-  },
-  affirmationText: {
-    fontSize: typography.sizes.md,
-    color: colors.text,
-    lineHeight: 22,
-    fontStyle: 'italic',
-  },
-  challengeCard: {
-    marginBottom: spacing.sm,
-  },
-  challengeHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    marginBottom: spacing.sm,
-  },
-  challengeInfo: {
-    flex: 1,
-    marginRight: spacing.sm,
-  },
-  challengeTitle: {
-    fontSize: typography.sizes.sm,
-    fontWeight: typography.weights.semibold,
-    color: colors.text,
-  },
-  challengeSub: {
-    fontSize: typography.sizes.xs,
-    color: colors.subtleText,
-    marginTop: 2,
-  },
-  challengeXpBadge: {
-    backgroundColor: '#FEF3C7',
-    paddingHorizontal: spacing.sm,
-    paddingVertical: spacing.xs,
-    borderRadius: borderRadius.full,
-  },
-  challengeXpText: {
-    fontSize: typography.sizes.xs,
-    fontWeight: typography.weights.bold,
-    color: colors.gold,
-  },
-  challengeBar: {
-    height: 6,
-    backgroundColor: colors.border,
-    borderRadius: 3,
-    overflow: 'hidden',
-  },
-  challengeBarFill: {
-    height: '100%',
-    backgroundColor: colors.turquoise,
-    borderRadius: 3,
-  },
-  postCard: {
-    marginBottom: spacing.sm,
-  },
-  postHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: spacing.sm,
-  },
-  postAvatar: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    backgroundColor: colors.primaryLight,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: spacing.sm,
-  },
-  postAvatarText: {
-    fontSize: typography.sizes.sm,
-    fontWeight: typography.weights.bold,
-    color: colors.primary,
-  },
-  postMeta: {
-    flex: 1,
-  },
-  postAuthor: {
-    fontSize: typography.sizes.sm,
-    fontWeight: typography.weights.semibold,
-    color: colors.text,
-  },
-  postTime: {
-    fontSize: typography.sizes.xs,
-    color: colors.subtleText,
-  },
-  postContent: {
-    fontSize: typography.sizes.sm,
-    color: colors.text,
-    lineHeight: 20,
-    marginBottom: spacing.sm,
-  },
-  postFooter: {
-    flexDirection: 'row',
-    gap: spacing.md,
-  },
-  postStat: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-  },
-  postStatText: {
-    fontSize: typography.sizes.xs,
-    color: colors.subtleText,
-  },
-  seeAllButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: spacing.md,
-    gap: spacing.xs,
-  },
-  seeAllText: {
-    fontSize: typography.sizes.sm,
-    fontWeight: typography.weights.semibold,
-    color: colors.primary,
-  },
-});

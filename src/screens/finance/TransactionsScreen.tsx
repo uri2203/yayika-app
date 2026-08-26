@@ -2,7 +2,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput, ActivityIndicator, Alert, Modal, KeyboardAvoidingView, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import { colors, typography, spacing, borderRadius } from '../../config/theme';
+import { typography, spacing, borderRadius } from '../../config/theme';
+import { useTheme } from '../../contexts/ThemeContext';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { useAuth } from '../../contexts/AuthContext';
 import { getTransactions, addTransaction } from '../../config/api';
@@ -35,6 +36,98 @@ interface TransactionsScreenProps {
 }
 
 export default function TransactionsScreen({ navigation, route }: TransactionsScreenProps) {
+  const { currentColors } = useTheme();
+  const colors = currentColors;
+
+  const styles = StyleSheet.create({
+    container: { flex: 1, backgroundColor: colors.background },
+    centered: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+    header: {
+      flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',
+      paddingHorizontal: spacing.lg, paddingTop: spacing.md, marginBottom: spacing.sm,
+    },
+    backBtn: { padding: spacing.xs },
+    title: { fontSize: typography.sizes.xxl, fontWeight: typography.weights.bold, color: colors.text },
+    summaryBar: {
+      flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
+      backgroundColor: colors.white, marginHorizontal: spacing.lg, padding: spacing.md,
+      borderRadius: borderRadius.md, marginBottom: spacing.md,
+      shadowColor: colors.black, shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.06, shadowRadius: 6, elevation: 2,
+    },
+    summaryLabel: { fontSize: typography.sizes.sm, color: colors.subtleText },
+    summaryAmount: { fontSize: typography.sizes.xl, fontWeight: typography.weights.bold },
+    filterRow: {
+      flexDirection: 'row', paddingHorizontal: spacing.lg, gap: spacing.sm, marginBottom: spacing.sm,
+    },
+    filterBtn: {
+      paddingHorizontal: spacing.md, paddingVertical: spacing.sm, borderRadius: borderRadius.full,
+      borderWidth: 1, borderColor: colors.border, backgroundColor: colors.white,
+    },
+    filterBtnActive: { backgroundColor: colors.primary, borderColor: colors.primary },
+    filterBtnIncome: { backgroundColor: colors.success, borderColor: colors.success },
+    filterBtnExpense: { backgroundColor: colors.error, borderColor: colors.error },
+    filterText: { fontSize: typography.sizes.xs, color: colors.subtleText, fontWeight: typography.weights.medium },
+    filterTextActive: { color: colors.white },
+    categoryFilterContainer: { paddingHorizontal: spacing.lg, paddingBottom: spacing.md, gap: spacing.xs },
+    catChip: {
+      paddingHorizontal: spacing.md, paddingVertical: spacing.xs, borderRadius: borderRadius.full,
+      backgroundColor: colors.white, borderWidth: 1, borderColor: colors.border, marginRight: spacing.xs,
+    },
+    catChipActive: { backgroundColor: colors.primaryLight, borderColor: colors.primary },
+    catChipText: { fontSize: typography.sizes.xs, color: colors.subtleText },
+    catChipTextActive: { color: colors.primary, fontWeight: typography.weights.semibold },
+    listContent: { paddingHorizontal: spacing.lg, paddingBottom: spacing.xxl },
+    txRow: {
+      flexDirection: 'row', alignItems: 'center', backgroundColor: colors.white,
+      borderRadius: borderRadius.sm, padding: spacing.md, marginBottom: spacing.sm,
+      shadowColor: colors.black, shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.04, shadowRadius: 2, elevation: 1,
+    },
+    txIcon: { width: 40, height: 40, borderRadius: 20, justifyContent: 'center', alignItems: 'center', marginRight: spacing.md },
+    txIconIncome: { backgroundColor: '#D1FAE5' },
+    txIconExpense: { backgroundColor: '#FEE2E2' },
+    txInfo: { flex: 1 },
+    txDesc: { fontSize: typography.sizes.md, fontWeight: typography.weights.medium, color: colors.text },
+    txDate: { fontSize: typography.sizes.xs, color: colors.subtleText, marginTop: 2 },
+    txAmount: { fontSize: typography.sizes.md, fontWeight: typography.weights.bold },
+    txAmountIncome: { color: colors.success },
+    txAmountExpense: { color: colors.error },
+    fab: {
+      position: 'absolute', right: spacing.lg, bottom: spacing.xl, width: 56, height: 56,
+      borderRadius: 28, backgroundColor: colors.primary, justifyContent: 'center', alignItems: 'center',
+      shadowColor: colors.primary, shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.4, shadowRadius: 8, elevation: 6,
+    },
+    emptyState: { flex: 1, justifyContent: 'center', alignItems: 'center', paddingHorizontal: spacing.xl },
+    emptyText: { fontSize: typography.sizes.sm, color: colors.subtleText, marginTop: spacing.sm },
+    modalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'flex-end' },
+    modalContent: {
+      backgroundColor: colors.white, borderTopLeftRadius: borderRadius.xl, borderTopRightRadius: borderRadius.xl,
+      padding: spacing.lg, paddingBottom: spacing.xxl,
+    },
+    modalHeader: {
+      flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: spacing.md,
+    },
+    modalTitle: { fontSize: typography.sizes.xl, fontWeight: typography.weights.bold, color: colors.text },
+    typeToggle: { flexDirection: 'row', marginBottom: spacing.md, gap: spacing.sm },
+    typeBtn: {
+      flex: 1, paddingVertical: spacing.sm, borderRadius: borderRadius.sm, borderWidth: 1.5,
+      borderColor: colors.border, alignItems: 'center',
+    },
+    typeBtnIncome: { backgroundColor: '#D1FAE5', borderColor: colors.success },
+    typeBtnExpense: { backgroundColor: '#FEE2E2', borderColor: colors.error },
+    typeBtnText: { fontSize: typography.sizes.sm, color: colors.subtleText },
+    typeBtnTextActive: { fontWeight: typography.weights.semibold, color: colors.text },
+    inputLabel: { fontSize: typography.sizes.sm, color: colors.subtleText, marginBottom: spacing.xs, marginTop: spacing.sm },
+    input: {
+      borderWidth: 1, borderColor: colors.border, borderRadius: borderRadius.sm,
+      paddingHorizontal: spacing.md, paddingVertical: spacing.sm, fontSize: typography.sizes.md, color: colors.text,
+    },
+    saveButton: {
+      backgroundColor: colors.primary, borderRadius: borderRadius.md, paddingVertical: spacing.md,
+      alignItems: 'center', marginTop: spacing.lg,
+    },
+    saveButtonText: { color: colors.white, fontSize: typography.sizes.md, fontWeight: typography.weights.semibold },
+  });
+
   const { t, lang } = useLanguage();
   const { user } = useAuth();
   const [loading, setLoading] = useState(true);
@@ -256,92 +349,3 @@ export default function TransactionsScreen({ navigation, route }: TransactionsSc
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: colors.background },
-  centered: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-  header: {
-    flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',
-    paddingHorizontal: spacing.lg, paddingTop: spacing.md, marginBottom: spacing.sm,
-  },
-  backBtn: { padding: spacing.xs },
-  title: { fontSize: typography.sizes.xxl, fontWeight: typography.weights.bold, color: colors.text },
-  summaryBar: {
-    flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
-    backgroundColor: colors.white, marginHorizontal: spacing.lg, padding: spacing.md,
-    borderRadius: borderRadius.md, marginBottom: spacing.md,
-    shadowColor: colors.black, shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.06, shadowRadius: 6, elevation: 2,
-  },
-  summaryLabel: { fontSize: typography.sizes.sm, color: colors.subtleText },
-  summaryAmount: { fontSize: typography.sizes.xl, fontWeight: typography.weights.bold },
-  filterRow: {
-    flexDirection: 'row', paddingHorizontal: spacing.lg, gap: spacing.sm, marginBottom: spacing.sm,
-  },
-  filterBtn: {
-    paddingHorizontal: spacing.md, paddingVertical: spacing.sm, borderRadius: borderRadius.full,
-    borderWidth: 1, borderColor: colors.border, backgroundColor: colors.white,
-  },
-  filterBtnActive: { backgroundColor: colors.primary, borderColor: colors.primary },
-  filterBtnIncome: { backgroundColor: colors.success, borderColor: colors.success },
-  filterBtnExpense: { backgroundColor: colors.error, borderColor: colors.error },
-  filterText: { fontSize: typography.sizes.xs, color: colors.subtleText, fontWeight: typography.weights.medium },
-  filterTextActive: { color: colors.white },
-  categoryFilterContainer: { paddingHorizontal: spacing.lg, paddingBottom: spacing.md, gap: spacing.xs },
-  catChip: {
-    paddingHorizontal: spacing.md, paddingVertical: spacing.xs, borderRadius: borderRadius.full,
-    backgroundColor: colors.white, borderWidth: 1, borderColor: colors.border, marginRight: spacing.xs,
-  },
-  catChipActive: { backgroundColor: colors.primaryLight, borderColor: colors.primary },
-  catChipText: { fontSize: typography.sizes.xs, color: colors.subtleText },
-  catChipTextActive: { color: colors.primary, fontWeight: typography.weights.semibold },
-  listContent: { paddingHorizontal: spacing.lg, paddingBottom: spacing.xxl },
-  txRow: {
-    flexDirection: 'row', alignItems: 'center', backgroundColor: colors.white,
-    borderRadius: borderRadius.sm, padding: spacing.md, marginBottom: spacing.sm,
-    shadowColor: colors.black, shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.04, shadowRadius: 2, elevation: 1,
-  },
-  txIcon: { width: 40, height: 40, borderRadius: 20, justifyContent: 'center', alignItems: 'center', marginRight: spacing.md },
-  txIconIncome: { backgroundColor: '#D1FAE5' },
-  txIconExpense: { backgroundColor: '#FEE2E2' },
-  txInfo: { flex: 1 },
-  txDesc: { fontSize: typography.sizes.md, fontWeight: typography.weights.medium, color: colors.text },
-  txDate: { fontSize: typography.sizes.xs, color: colors.subtleText, marginTop: 2 },
-  txAmount: { fontSize: typography.sizes.md, fontWeight: typography.weights.bold },
-  txAmountIncome: { color: colors.success },
-  txAmountExpense: { color: colors.error },
-  fab: {
-    position: 'absolute', right: spacing.lg, bottom: spacing.xl, width: 56, height: 56,
-    borderRadius: 28, backgroundColor: colors.primary, justifyContent: 'center', alignItems: 'center',
-    shadowColor: colors.primary, shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.4, shadowRadius: 8, elevation: 6,
-  },
-  emptyState: { flex: 1, justifyContent: 'center', alignItems: 'center', paddingHorizontal: spacing.xl },
-  emptyText: { fontSize: typography.sizes.sm, color: colors.subtleText, marginTop: spacing.sm },
-  modalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'flex-end' },
-  modalContent: {
-    backgroundColor: colors.white, borderTopLeftRadius: borderRadius.xl, borderTopRightRadius: borderRadius.xl,
-    padding: spacing.lg, paddingBottom: spacing.xxl,
-  },
-  modalHeader: {
-    flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: spacing.md,
-  },
-  modalTitle: { fontSize: typography.sizes.xl, fontWeight: typography.weights.bold, color: colors.text },
-  typeToggle: { flexDirection: 'row', marginBottom: spacing.md, gap: spacing.sm },
-  typeBtn: {
-    flex: 1, paddingVertical: spacing.sm, borderRadius: borderRadius.sm, borderWidth: 1.5,
-    borderColor: colors.border, alignItems: 'center',
-  },
-  typeBtnIncome: { backgroundColor: '#D1FAE5', borderColor: colors.success },
-  typeBtnExpense: { backgroundColor: '#FEE2E2', borderColor: colors.error },
-  typeBtnText: { fontSize: typography.sizes.sm, color: colors.subtleText },
-  typeBtnTextActive: { fontWeight: typography.weights.semibold, color: colors.text },
-  inputLabel: { fontSize: typography.sizes.sm, color: colors.subtleText, marginBottom: spacing.xs, marginTop: spacing.sm },
-  input: {
-    borderWidth: 1, borderColor: colors.border, borderRadius: borderRadius.sm,
-    paddingHorizontal: spacing.md, paddingVertical: spacing.sm, fontSize: typography.sizes.md, color: colors.text,
-  },
-  saveButton: {
-    backgroundColor: colors.primary, borderRadius: borderRadius.md, paddingVertical: spacing.md,
-    alignItems: 'center', marginTop: spacing.lg,
-  },
-  saveButtonText: { color: colors.white, fontSize: typography.sizes.md, fontWeight: typography.weights.semibold },
-});

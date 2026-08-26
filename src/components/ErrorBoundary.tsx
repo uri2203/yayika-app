@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { colors, typography, spacing } from '../config/theme';
+import { typography, spacing } from '../config/theme';
+import { useTheme } from '../contexts/ThemeContext';
 
 interface ErrorBoundaryProps {
   children: React.ReactNode;
@@ -11,8 +12,11 @@ interface ErrorBoundaryState {
   message: string;
 }
 
-export default class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
-  constructor(props: ErrorBoundaryProps) {
+class ErrorBoundaryClass extends React.Component<
+  ErrorBoundaryProps & { colors: typeof import('../config/theme').colors },
+  ErrorBoundaryState
+> {
+  constructor(props: ErrorBoundaryProps & { colors: typeof import('../config/theme').colors }) {
     super(props);
     this.state = { hasError: false, message: '' };
   }
@@ -32,11 +36,11 @@ export default class ErrorBoundary extends React.Component<ErrorBoundaryProps, E
   render() {
     if (this.state.hasError) {
       return (
-        <View style={styles.container}>
-          <Text style={styles.title}>Algo salió mal</Text>
-          <Text style={styles.message}>{this.state.message}</Text>
-          <TouchableOpacity style={styles.button} onPress={this.handleReset}>
-            <Text style={styles.buttonText}>Volver a intentar</Text>
+        <View style={[styles.container, { backgroundColor: this.props.colors.background }]}>
+          <Text style={[styles.title, { color: this.props.colors.text }]}>Algo salió mal</Text>
+          <Text style={[styles.message, { color: this.props.colors.subtleText }]}>{this.state.message}</Text>
+          <TouchableOpacity style={[styles.button, { backgroundColor: this.props.colors.primary }]} onPress={this.handleReset}>
+            <Text style={[styles.buttonText, { color: this.props.colors.white }]}>Volver a intentar</Text>
           </TouchableOpacity>
         </View>
       );
@@ -45,10 +49,16 @@ export default class ErrorBoundary extends React.Component<ErrorBoundaryProps, E
   }
 }
 
+export default function ErrorBoundary({ children }: ErrorBoundaryProps) {
+  const { currentColors } = useTheme();
+  const colors = currentColors;
+
+  return <ErrorBoundaryClass colors={colors}>{children}</ErrorBoundaryClass>;
+}
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background,
     justifyContent: 'center',
     alignItems: 'center',
     padding: spacing.lg,
@@ -56,23 +66,19 @@ const styles = StyleSheet.create({
   title: {
     fontSize: typography.sizes.xl,
     fontWeight: typography.weights.bold,
-    color: colors.text,
     marginBottom: spacing.sm,
   },
   message: {
     fontSize: typography.sizes.md,
-    color: colors.subtleText,
     textAlign: 'center',
     marginBottom: spacing.lg,
   },
   button: {
-    backgroundColor: colors.primary,
     paddingHorizontal: spacing.lg,
     paddingVertical: spacing.md,
     borderRadius: 12,
   },
   buttonText: {
-    color: colors.white,
     fontSize: typography.sizes.md,
     fontWeight: typography.weights.semibold,
   },

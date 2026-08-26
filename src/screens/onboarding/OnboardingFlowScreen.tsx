@@ -10,7 +10,8 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import { colors, typography, spacing, borderRadius } from '../../config/theme';
+import { typography, spacing, borderRadius } from '../../config/theme';
+import { useTheme } from '../../contexts/ThemeContext';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { useAuth } from '../../contexts/AuthContext';
 import { getOnboardingState, completeOnboardingDay } from '../../config/api';
@@ -45,6 +46,8 @@ const DAY_EMOJIS: Record<number, string> = {
 const TASK_XP = 10;
 
 export default function OnboardingFlowScreen({ navigation }: any) {
+  const { currentColors } = useTheme();
+  const colors = currentColors;
   const { t, lang } = useLanguage();
   const { user } = useAuth();
   const [loading, setLoading] = useState(true);
@@ -98,6 +101,159 @@ export default function OnboardingFlowScreen({ navigation }: any) {
       setCompleting(false);
     }
   };
+
+  const styles = React.useMemo(() => StyleSheet.create({
+    container: { flex: 1, backgroundColor: colors.background },
+    loadingWrap: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+    emptyText: { fontSize: typography.sizes.md, color: colors.subtleText },
+    scrollContent: { paddingHorizontal: spacing.lg, paddingBottom: spacing.xxl },
+    header: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingTop: spacing.md,
+      marginBottom: spacing.lg,
+    },
+    backBtn: { width: 40, height: 40, justifyContent: 'center', alignItems: 'center' },
+    headerTitle: {
+      fontSize: typography.sizes.xxl,
+      fontWeight: typography.weights.bold,
+      color: colors.text,
+    },
+    progressCard: {
+      backgroundColor: colors.white,
+      borderRadius: borderRadius.md,
+      padding: spacing.md,
+      marginBottom: spacing.lg,
+      shadowColor: colors.black,
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.06,
+      shadowRadius: 6,
+      elevation: 2,
+    },
+    progressBar: { height: 10, backgroundColor: colors.border, borderRadius: 5, overflow: 'hidden' },
+    progressFill: { height: '100%', backgroundColor: colors.primary, borderRadius: 5 },
+    progressLabel: {
+      fontSize: typography.sizes.sm,
+      color: colors.subtleText,
+      textAlign: 'center',
+      marginTop: spacing.sm,
+    },
+    xpBadge: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginTop: spacing.sm,
+      gap: 4,
+    },
+    xpText: { fontSize: typography.sizes.sm, fontWeight: typography.weights.bold, color: colors.gold },
+    daySelector: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      marginBottom: spacing.lg,
+    },
+    dayDot: {
+      width: 40,
+      height: 40,
+      borderRadius: 20,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: colors.white,
+      borderWidth: 2,
+      borderColor: colors.border,
+    },
+    dayDotSelected: { borderColor: colors.primary, borderWidth: 2.5 },
+    dayDotCompleted: { backgroundColor: colors.success, borderColor: colors.success },
+    dayDotCurrent: { borderColor: colors.gold, borderWidth: 2.5 },
+    dayDotText: { fontSize: typography.sizes.sm, fontWeight: typography.weights.bold, color: colors.subtleText },
+    dayDotTextSelected: { color: colors.primary },
+    dayCard: {
+      backgroundColor: colors.white,
+      borderRadius: borderRadius.md,
+      padding: spacing.lg,
+      alignItems: 'center',
+      shadowColor: colors.black,
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.06,
+      shadowRadius: 6,
+      elevation: 2,
+    },
+    dayEmoji: { fontSize: 48, marginBottom: spacing.md },
+    dayTitle: {
+      fontSize: typography.sizes.xl,
+      fontWeight: typography.weights.bold,
+      color: colors.text,
+    },
+    daySubtitle: {
+      fontSize: typography.sizes.md,
+      color: colors.subtleText,
+      marginBottom: spacing.lg,
+    },
+    taskList: { width: '100%', marginBottom: spacing.lg },
+    taskItem: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      backgroundColor: colors.background,
+      borderRadius: borderRadius.sm,
+      padding: spacing.md,
+    },
+    taskItemCompleted: { backgroundColor: '#E8F5E9' },
+    checkbox: {
+      width: 28,
+      height: 28,
+      borderRadius: 14,
+      borderWidth: 2,
+      borderColor: colors.border,
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginRight: spacing.md,
+    },
+    checkboxChecked: { backgroundColor: colors.success, borderColor: colors.success },
+    taskInfo: { flex: 1 },
+    taskTitle: { fontSize: typography.sizes.md, fontWeight: typography.weights.semibold, color: colors.text },
+    taskTitleCompleted: { color: colors.success },
+    taskXp: { fontSize: typography.sizes.xs, color: colors.gold, fontWeight: typography.weights.bold, marginTop: 2 },
+    completeBtn: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: colors.primary,
+      borderRadius: borderRadius.md,
+      paddingVertical: spacing.md,
+      paddingHorizontal: spacing.xl,
+      gap: spacing.sm,
+      width: '100%',
+    },
+    completeBtnDisabled: { opacity: 0.5 },
+    completeBtnText: { fontSize: typography.sizes.md, fontWeight: typography.weights.semibold, color: colors.white },
+    lockedDay: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: spacing.md,
+      gap: spacing.sm,
+    },
+    lockedDayText: { fontSize: typography.sizes.sm, color: colors.subtleText },
+    completedCard: {
+      backgroundColor: '#FFF9E6',
+      borderRadius: borderRadius.md,
+      padding: spacing.xl,
+      alignItems: 'center',
+      marginTop: spacing.lg,
+    },
+    completedTitle: {
+      fontSize: typography.sizes.xxl,
+      fontWeight: typography.weights.bold,
+      color: colors.gold,
+      marginTop: spacing.md,
+    },
+    completedSubtitle: {
+      fontSize: typography.sizes.md,
+      color: colors.text,
+      textAlign: 'center',
+      marginTop: spacing.sm,
+    },
+  }), [colors]);
 
   const progressPct = state ? (state.completed_days / state.total_days) * 100 : 0;
 
@@ -244,156 +400,3 @@ export default function OnboardingFlowScreen({ navigation }: any) {
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: colors.background },
-  loadingWrap: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-  emptyText: { fontSize: typography.sizes.md, color: colors.subtleText },
-  scrollContent: { paddingHorizontal: spacing.lg, paddingBottom: spacing.xxl },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingTop: spacing.md,
-    marginBottom: spacing.lg,
-  },
-  backBtn: { width: 40, height: 40, justifyContent: 'center', alignItems: 'center' },
-  headerTitle: {
-    fontSize: typography.sizes.xxl,
-    fontWeight: typography.weights.bold,
-    color: colors.text,
-  },
-  progressCard: {
-    backgroundColor: colors.white,
-    borderRadius: borderRadius.md,
-    padding: spacing.md,
-    marginBottom: spacing.lg,
-    shadowColor: colors.black,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.06,
-    shadowRadius: 6,
-    elevation: 2,
-  },
-  progressBar: { height: 10, backgroundColor: colors.border, borderRadius: 5, overflow: 'hidden' },
-  progressFill: { height: '100%', backgroundColor: colors.primary, borderRadius: 5 },
-  progressLabel: {
-    fontSize: typography.sizes.sm,
-    color: colors.subtleText,
-    textAlign: 'center',
-    marginTop: spacing.sm,
-  },
-  xpBadge: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: spacing.sm,
-    gap: 4,
-  },
-  xpText: { fontSize: typography.sizes.sm, fontWeight: typography.weights.bold, color: colors.gold },
-  daySelector: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: spacing.lg,
-  },
-  dayDot: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: colors.white,
-    borderWidth: 2,
-    borderColor: colors.border,
-  },
-  dayDotSelected: { borderColor: colors.primary, borderWidth: 2.5 },
-  dayDotCompleted: { backgroundColor: colors.success, borderColor: colors.success },
-  dayDotCurrent: { borderColor: colors.gold, borderWidth: 2.5 },
-  dayDotText: { fontSize: typography.sizes.sm, fontWeight: typography.weights.bold, color: colors.subtleText },
-  dayDotTextSelected: { color: colors.primary },
-  dayCard: {
-    backgroundColor: colors.white,
-    borderRadius: borderRadius.md,
-    padding: spacing.lg,
-    alignItems: 'center',
-    shadowColor: colors.black,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.06,
-    shadowRadius: 6,
-    elevation: 2,
-  },
-  dayEmoji: { fontSize: 48, marginBottom: spacing.md },
-  dayTitle: {
-    fontSize: typography.sizes.xl,
-    fontWeight: typography.weights.bold,
-    color: colors.text,
-  },
-  daySubtitle: {
-    fontSize: typography.sizes.md,
-    color: colors.subtleText,
-    marginBottom: spacing.lg,
-  },
-  taskList: { width: '100%', marginBottom: spacing.lg },
-  taskItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: colors.background,
-    borderRadius: borderRadius.sm,
-    padding: spacing.md,
-  },
-  taskItemCompleted: { backgroundColor: '#E8F5E9' },
-  checkbox: {
-    width: 28,
-    height: 28,
-    borderRadius: 14,
-    borderWidth: 2,
-    borderColor: colors.border,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: spacing.md,
-  },
-  checkboxChecked: { backgroundColor: colors.success, borderColor: colors.success },
-  taskInfo: { flex: 1 },
-  taskTitle: { fontSize: typography.sizes.md, fontWeight: typography.weights.semibold, color: colors.text },
-  taskTitleCompleted: { color: colors.success },
-  taskXp: { fontSize: typography.sizes.xs, color: colors.gold, fontWeight: typography.weights.bold, marginTop: 2 },
-  completeBtn: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: colors.primary,
-    borderRadius: borderRadius.md,
-    paddingVertical: spacing.md,
-    paddingHorizontal: spacing.xl,
-    gap: spacing.sm,
-    width: '100%',
-  },
-  completeBtnDisabled: { opacity: 0.5 },
-  completeBtnText: { fontSize: typography.sizes.md, fontWeight: typography.weights.semibold, color: colors.white },
-  lockedDay: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: spacing.md,
-    gap: spacing.sm,
-  },
-  lockedDayText: { fontSize: typography.sizes.sm, color: colors.subtleText },
-  completedCard: {
-    backgroundColor: '#FFF9E6',
-    borderRadius: borderRadius.md,
-    padding: spacing.xl,
-    alignItems: 'center',
-    marginTop: spacing.lg,
-  },
-  completedTitle: {
-    fontSize: typography.sizes.xxl,
-    fontWeight: typography.weights.bold,
-    color: colors.gold,
-    marginTop: spacing.md,
-  },
-  completedSubtitle: {
-    fontSize: typography.sizes.md,
-    color: colors.text,
-    textAlign: 'center',
-    marginTop: spacing.sm,
-  },
-});

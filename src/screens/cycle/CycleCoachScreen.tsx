@@ -9,12 +9,13 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import { colors, typography, spacing, borderRadius } from '../../config/theme';
+import { typography, spacing, borderRadius } from '../../config/theme';
+import { useTheme } from '../../contexts/ThemeContext';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { useAuth } from '../../contexts/AuthContext';
 import { aiCycleCoach, getDailyMood, getCycleLog } from '../../config/api';
 
-function getPhaseColor(phase: string): string {
+function getPhaseColor(phase: string, colors: any): string {
   const key = phase?.toLowerCase() || '';
   if (key.includes('menstru')) return '#C96B7A';
   if (key.includes('follicu')) return '#3BAF7A';
@@ -33,19 +34,28 @@ function getPhaseIcon(phase: string): string {
 }
 
 function EnergyForecastBar({ day, energy, maxEnergy }: { day: string; energy: number; maxEnergy: number }) {
+  const { currentColors } = useTheme();
+  const colors = currentColors;
   const pct = maxEnergy > 0 ? (energy / maxEnergy) * 100 : 0;
   let barColor = colors.primary;
   if (energy <= 2) barColor = '#C96B7A';
   else if (energy <= 3) barColor = '#B8943A';
   else barColor = '#3BAF7A';
+  const localStyles = StyleSheet.create({
+    forecastCol: { alignItems: 'center', flex: 1 },
+    forecastEnergy: { fontSize: typography.sizes.xs, color: colors.subtleText, marginBottom: spacing.xs },
+    forecastBarBg: { width: 24, height: 80, backgroundColor: colors.border, borderRadius: 12, overflow: 'hidden', justifyContent: 'flex-end' },
+    forecastBarFill: { width: '100%', borderRadius: 12 },
+    forecastDay: { fontSize: typography.sizes.xs, color: colors.subtleText, marginTop: spacing.xs },
+  });
 
   return (
-    <View style={styles.forecastCol}>
-      <Text style={styles.forecastEnergy}>{energy}</Text>
-      <View style={styles.forecastBarBg}>
-        <View style={[styles.forecastBarFill, { height: `${pct}%`, backgroundColor: barColor }]} />
+    <View style={localStyles.forecastCol}>
+      <Text style={localStyles.forecastEnergy}>{energy}</Text>
+      <View style={localStyles.forecastBarBg}>
+        <View style={[localStyles.forecastBarFill, { height: `${pct}%`, backgroundColor: barColor }]} />
       </View>
-      <Text style={styles.forecastDay}>{day}</Text>
+      <Text style={localStyles.forecastDay}>{day}</Text>
     </View>
   );
 }
@@ -53,6 +63,8 @@ function EnergyForecastBar({ day, energy, maxEnergy }: { day: string; energy: nu
 export default function CycleCoachScreen({ navigation }: any) {
   const { lang, t } = useLanguage();
   const { user } = useAuth();
+  const { currentColors } = useTheme();
+  const colors = currentColors;
   const [loading, setLoading] = useState(true);
   const [coaching, setCoaching] = useState<string>('');
   const [phase, setPhase] = useState<string>('');
@@ -111,6 +123,159 @@ export default function CycleCoachScreen({ navigation }: any) {
 
   const maxEnergy = Math.max(...energyForecast.map((e) => e.energy), 1);
 
+  const styles = React.useMemo(() => StyleSheet.create({
+    container: { flex: 1, backgroundColor: colors.background },
+    scrollContent: { paddingHorizontal: spacing.lg, paddingBottom: spacing.xxl },
+    header: { paddingTop: spacing.md, marginBottom: spacing.lg },
+    backBtn: { marginBottom: spacing.sm },
+    title: {
+      fontSize: typography.sizes.xxl,
+      fontWeight: typography.weights.bold,
+      color: colors.text,
+    },
+    subtitle: {
+      fontSize: typography.sizes.md,
+      color: colors.subtleText,
+      marginTop: spacing.xs,
+    },
+    phaseCard: {
+      backgroundColor: colors.white,
+      borderRadius: borderRadius.lg,
+      padding: spacing.lg,
+      marginBottom: spacing.lg,
+      borderLeftWidth: 4,
+      shadowColor: colors.black,
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.08,
+      shadowRadius: 4,
+      elevation: 2,
+    },
+    phaseRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    phaseIcon: {
+      fontSize: 36,
+      marginRight: spacing.md,
+    },
+    phaseInfo: {
+      flex: 1,
+    },
+    phaseName: {
+      fontSize: typography.sizes.xl,
+      fontWeight: typography.weights.bold,
+    },
+    phaseDay: {
+      fontSize: typography.sizes.sm,
+      color: colors.subtleText,
+      marginTop: spacing.xs,
+    },
+    coachCard: {
+      backgroundColor: '#F3EEFF',
+      borderRadius: borderRadius.lg,
+      padding: spacing.lg,
+      marginBottom: spacing.lg,
+      borderLeftWidth: 4,
+      borderLeftColor: colors.primary,
+    },
+    coachHeader: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: spacing.sm,
+    },
+    coachTitle: {
+      fontSize: typography.sizes.md,
+      fontWeight: typography.weights.bold,
+      color: colors.primary,
+      marginLeft: spacing.sm,
+    },
+    coachText: {
+      fontSize: typography.sizes.md,
+      color: colors.text,
+      lineHeight: 24,
+    },
+    sectionCard: {
+      backgroundColor: colors.white,
+      borderRadius: borderRadius.lg,
+      padding: spacing.lg,
+      marginBottom: spacing.lg,
+      shadowColor: colors.black,
+      shadowOffset: { width: 0, height: 1 },
+      shadowOpacity: 0.05,
+      shadowRadius: 3,
+      elevation: 1,
+    },
+    sectionTitle: {
+      fontSize: typography.sizes.md,
+      fontWeight: typography.weights.bold,
+      color: colors.text,
+      marginBottom: spacing.md,
+    },
+    forecastRow: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'flex-end',
+      height: 120,
+    },
+    forecastCol: {
+      alignItems: 'center',
+      flex: 1,
+    },
+    forecastEnergy: {
+      fontSize: typography.sizes.xs,
+      color: colors.subtleText,
+      marginBottom: spacing.xs,
+    },
+    forecastBarBg: {
+      width: 24,
+      height: 80,
+      backgroundColor: colors.border,
+      borderRadius: 12,
+      overflow: 'hidden',
+      justifyContent: 'flex-end',
+    },
+    forecastBarFill: {
+      width: '100%',
+      borderRadius: 12,
+    },
+    forecastDay: {
+      fontSize: typography.sizes.xs,
+      color: colors.subtleText,
+      marginTop: spacing.xs,
+    },
+    tipItem: {
+      flexDirection: 'row',
+      alignItems: 'flex-start',
+      marginBottom: spacing.sm,
+    },
+    tipText: {
+      flex: 1,
+      fontSize: typography.sizes.sm,
+      color: colors.text,
+      marginLeft: spacing.sm,
+      lineHeight: 20,
+    },
+    logBtn: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: colors.primary,
+      borderRadius: borderRadius.md,
+      paddingVertical: spacing.md,
+      gap: spacing.sm,
+      shadowColor: colors.primary,
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: 0.3,
+      shadowRadius: 6,
+      elevation: 4,
+    },
+    logBtnText: {
+      color: colors.white,
+      fontSize: typography.sizes.md,
+      fontWeight: typography.weights.semibold,
+    },
+  }), [colors]);
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
@@ -129,11 +294,11 @@ export default function CycleCoachScreen({ navigation }: any) {
           <>
             {/* Current Phase Card */}
             {phase ? (
-              <View style={[styles.phaseCard, { borderLeftColor: getPhaseColor(phase) }]}>
+              <View style={[styles.phaseCard, { borderLeftColor: getPhaseColor(phase, colors) }]}>
                 <View style={styles.phaseRow}>
                   <Text style={styles.phaseIcon}>{getPhaseIcon(phase)}</Text>
                   <View style={styles.phaseInfo}>
-                    <Text style={[styles.phaseName, { color: getPhaseColor(phase) }]}>{phase}</Text>
+                    <Text style={[styles.phaseName, { color: getPhaseColor(phase, colors) }]}>{phase}</Text>
                     {day && <Text style={styles.phaseDay}>Día {day}</Text>}
                   </View>
                 </View>
@@ -213,156 +378,3 @@ export default function CycleCoachScreen({ navigation }: any) {
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: colors.background },
-  scrollContent: { paddingHorizontal: spacing.lg, paddingBottom: spacing.xxl },
-  header: { paddingTop: spacing.md, marginBottom: spacing.lg },
-  backBtn: { marginBottom: spacing.sm },
-  title: {
-    fontSize: typography.sizes.xxl,
-    fontWeight: typography.weights.bold,
-    color: colors.text,
-  },
-  subtitle: {
-    fontSize: typography.sizes.md,
-    color: colors.subtleText,
-    marginTop: spacing.xs,
-  },
-  phaseCard: {
-    backgroundColor: colors.white,
-    borderRadius: borderRadius.lg,
-    padding: spacing.lg,
-    marginBottom: spacing.lg,
-    borderLeftWidth: 4,
-    shadowColor: colors.black,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.08,
-    shadowRadius: 4,
-    elevation: 2,
-  },
-  phaseRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  phaseIcon: {
-    fontSize: 36,
-    marginRight: spacing.md,
-  },
-  phaseInfo: {
-    flex: 1,
-  },
-  phaseName: {
-    fontSize: typography.sizes.xl,
-    fontWeight: typography.weights.bold,
-  },
-  phaseDay: {
-    fontSize: typography.sizes.sm,
-    color: colors.subtleText,
-    marginTop: spacing.xs,
-  },
-  coachCard: {
-    backgroundColor: '#F3EEFF',
-    borderRadius: borderRadius.lg,
-    padding: spacing.lg,
-    marginBottom: spacing.lg,
-    borderLeftWidth: 4,
-    borderLeftColor: colors.primary,
-  },
-  coachHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: spacing.sm,
-  },
-  coachTitle: {
-    fontSize: typography.sizes.md,
-    fontWeight: typography.weights.bold,
-    color: colors.primary,
-    marginLeft: spacing.sm,
-  },
-  coachText: {
-    fontSize: typography.sizes.md,
-    color: colors.text,
-    lineHeight: 24,
-  },
-  sectionCard: {
-    backgroundColor: colors.white,
-    borderRadius: borderRadius.lg,
-    padding: spacing.lg,
-    marginBottom: spacing.lg,
-    shadowColor: colors.black,
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
-    shadowRadius: 3,
-    elevation: 1,
-  },
-  sectionTitle: {
-    fontSize: typography.sizes.md,
-    fontWeight: typography.weights.bold,
-    color: colors.text,
-    marginBottom: spacing.md,
-  },
-  forecastRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-end',
-    height: 120,
-  },
-  forecastCol: {
-    alignItems: 'center',
-    flex: 1,
-  },
-  forecastEnergy: {
-    fontSize: typography.sizes.xs,
-    color: colors.subtleText,
-    marginBottom: spacing.xs,
-  },
-  forecastBarBg: {
-    width: 24,
-    height: 80,
-    backgroundColor: colors.border,
-    borderRadius: 12,
-    overflow: 'hidden',
-    justifyContent: 'flex-end',
-  },
-  forecastBarFill: {
-    width: '100%',
-    borderRadius: 12,
-  },
-  forecastDay: {
-    fontSize: typography.sizes.xs,
-    color: colors.subtleText,
-    marginTop: spacing.xs,
-  },
-  tipItem: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    marginBottom: spacing.sm,
-  },
-  tipText: {
-    flex: 1,
-    fontSize: typography.sizes.sm,
-    color: colors.text,
-    marginLeft: spacing.sm,
-    lineHeight: 20,
-  },
-  logBtn: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: colors.primary,
-    borderRadius: borderRadius.md,
-    paddingVertical: spacing.md,
-    gap: spacing.sm,
-    shadowColor: colors.primary,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 6,
-    elevation: 4,
-  },
-  logBtnText: {
-    color: colors.white,
-    fontSize: typography.sizes.md,
-    fontWeight: typography.weights.semibold,
-  },
-});
