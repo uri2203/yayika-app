@@ -185,7 +185,6 @@ export default function PostDetailScreen({ navigation, route }: PostDetailScreen
         });
       }
     } catch (err) {
-      console.error('Failed to fetch post:', err);
     } finally {
       setLoading(false);
     }
@@ -204,7 +203,6 @@ export default function PostDetailScreen({ navigation, route }: PostDetailScreen
         like_count: prev.like_count + (prev.user_has_liked ? -1 : 1),
       } : prev);
     } catch (err) {
-      console.error('Failed to toggle reaction:', err);
     } finally {
       setTogglingLike(false);
     }
@@ -230,7 +228,6 @@ export default function PostDetailScreen({ navigation, route }: PostDetailScreen
       } : prev);
       setCommentText('');
     } catch (err) {
-      console.error('Failed to add comment:', err);
     } finally {
       setSubmitting(false);
     }
@@ -247,7 +244,6 @@ export default function PostDetailScreen({ navigation, route }: PostDetailScreen
         t('community_post_reported_msg') || 'Gracias por ayudarnos a mantener la comunidad segura.'
       );
     } catch (err) {
-      console.error('Failed to report post:', err);
       Alert.alert(
         t('common_error') || 'Error',
         t('community_report_error') || 'No se pudo enviar el reporte'

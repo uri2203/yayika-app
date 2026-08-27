@@ -110,7 +110,6 @@ export default function BudgetScreen({ navigation }: any) {
       const txs = await getTransactions(user.id);
       setTransactions(txs || []);
     } catch (e) {
-      console.log('Fetch budget error:', e);
     } finally {
       setLoading(false);
     }

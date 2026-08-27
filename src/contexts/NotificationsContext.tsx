@@ -53,7 +53,6 @@ export function NotificationsProvider({ children }: { children: React.ReactNode 
         });
       }
     } catch (err) {
-      console.warn('Smart push failed:', err);
     }
   }, [user, progress, lang]);
 

@@ -68,7 +68,6 @@ export default function CycleIntelligenceScreen({ navigation }: any) {
         setDashboard(result.dashboard);
       }
     } catch (e) {
-      console.log('Cycle intelligence error:', e);
     } finally {
       setLoading(false);
     }

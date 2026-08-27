@@ -48,7 +48,6 @@ export default function NotificationsScreen({ navigation }: any) {
       if (error) throw error;
       setNotifications(data || []);
     } catch (err) {
-      console.warn('Notifications fetch error:', err);
     }
   }, [user]);
 
@@ -72,7 +71,6 @@ export default function NotificationsScreen({ navigation }: any) {
         .update({ read: true })
         .eq('id', id);
     } catch (err) {
-      console.warn('Mark read error:', err);
     }
   };
 
@@ -86,7 +84,6 @@ export default function NotificationsScreen({ navigation }: any) {
         .update({ read: true })
         .in('id', unreadIds);
     } catch (err) {
-      console.warn('Mark all read error:', err);
     }
   };
 

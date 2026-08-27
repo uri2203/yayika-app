@@ -76,7 +76,6 @@ export default function CommunityFeedScreen({ navigation }: any) {
       const data = await getCommunityFeed(categorySlug ?? undefined);
       setPosts(data.posts || []);
     } catch (err) {
-      console.error('Failed to fetch community feed:', err);
     }
   }, []);
 
@@ -85,7 +84,6 @@ export default function CommunityFeedScreen({ navigation }: any) {
       const data = await getCommunityCategories();
       setCategories(data.categories || []);
     } catch (err) {
-      console.error('Failed to fetch categories:', err);
     }
   }, []);
 
@@ -116,7 +114,6 @@ export default function CommunityFeedScreen({ navigation }: any) {
       setModalVisible(false);
       await fetchPosts(selectedCategory ?? undefined);
     } catch (err) {
-      console.error('Failed to create post:', err);
     } finally {
       setSubmitting(false);
     }
@@ -134,7 +131,6 @@ export default function CommunityFeedScreen({ navigation }: any) {
         )
       );
     } catch (err) {
-      console.error('Failed to toggle reaction:', err);
     } finally {
       setTogglingId(null);
     }

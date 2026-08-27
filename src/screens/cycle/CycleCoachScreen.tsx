@@ -113,7 +113,6 @@ export default function CycleCoachScreen({ navigation }: any) {
       setPhase(result.phase || todayLog?.phase || '');
       setDay(result.day || todayLog?.cycle_day || null);
     } catch (e) {
-      console.log('Cycle coach error:', e);
     } finally {
       setLoading(false);
     }

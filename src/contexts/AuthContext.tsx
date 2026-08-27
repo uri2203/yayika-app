@@ -48,7 +48,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setProfile(profileData);
       setProgress(progressData);
     } catch (err) {
-      console.warn('Failed to fetch user extras:', err);
     }
   }, []);
 

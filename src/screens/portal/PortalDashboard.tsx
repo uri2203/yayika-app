@@ -58,18 +58,18 @@ const CYCLE_PHASE_ICONS: Record<string, string> = {
   luteal: 'moon',
 };
 
-function timeAgo(dateStr: string): string {
+function timeAgo(dateStr: string, t: (key: string) => string): string {
   const now = Date.now();
   const then = new Date(dateStr).getTime();
   const diffSec = Math.floor((now - then) / 1000);
-  if (diffSec < 60) return 'ahora';
+  if (diffSec < 60) return t('common_now');
   const diffMin = Math.floor(diffSec / 60);
   if (diffMin < 60) return `${diffMin}m`;
   const diffHr = Math.floor(diffMin / 60);
   if (diffHr < 24) return `${diffHr}h`;
   const diffDay = Math.floor(diffHr / 24);
   if (diffDay < 7) return `${diffDay}d`;
-  return `${Math.floor(diffDay / 7)}sem`;
+  return `${Math.floor(diffDay / 7)}${t('common_weeks_abbrev')}`;
 }
 
 export default function PortalDashboard({ navigation }: any) {
@@ -739,7 +739,7 @@ export default function PortalDashboard({ navigation }: any) {
                   <View style={styles.challengeInfo}>
                     <Text style={styles.challengeTitle} numberOfLines={1}>{challenge.title}</Text>
                     <Text style={styles.challengeSub}>
-                      {challenge.checkins_done}/{challenge.checkins_required} check-ins
+                      {challenge.checkins_done}/{challenge.checkins_required} {t('common_checkins')}
                     </Text>
                   </View>
                   <View style={styles.challengeXpBadge}>
@@ -775,7 +775,7 @@ export default function PortalDashboard({ navigation }: any) {
                   </View>
                   <View style={styles.postMeta}>
                     <Text style={styles.postAuthor} numberOfLines={1}>{post.user_name}</Text>
-                    <Text style={styles.postTime}>{timeAgo(post.created_at)}</Text>
+                    <Text style={styles.postTime}>{timeAgo(post.created_at, t)}</Text>
                   </View>
                 </View>
                 <Text style={styles.postContent} numberOfLines={3}>{post.content}</Text>

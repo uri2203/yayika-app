@@ -53,7 +53,6 @@ export default function ProfileScreen({ navigation }: any) {
         if (badgeRes.count != null) setBadgeCount(badgeRes.count);
         if (progressRes.data?.modules_completed != null) setModuleCount(progressRes.data.modules_completed);
       } catch (err) {
-        console.warn('Profile stats error:', err);
       }
     })();
   }, [user]);

@@ -156,7 +156,6 @@ export default function TransactionsScreen({ navigation, route }: TransactionsSc
       const txs = await getTransactions(user.id, 100);
       setTransactions(txs || []);
     } catch (e) {
-      console.log('Fetch transactions error:', e);
     } finally {
       setLoading(false);
     }

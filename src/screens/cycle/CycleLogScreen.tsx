@@ -86,7 +86,6 @@ export default function CycleLogScreen({ navigation }: any) {
       const mood = await getDailyMood(user.id);
       if (mood?.mood) setSelectedMood(mood.mood);
     } catch (e) {
-      console.log('Cycle log fetch error:', e);
     } finally {
       setLoading(false);
     }
@@ -120,7 +119,6 @@ export default function CycleLogScreen({ navigation }: any) {
       );
       fetchData();
     } catch (e) {
-      console.log('Save error:', e);
       Alert.alert(t('common_error') || 'Error', t('cycle_save_error') || 'No se pudo guardar');
     } finally {
       setSaving(false);

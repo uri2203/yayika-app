@@ -251,7 +251,6 @@ export default function BadgesScreen({ navigation }: any) {
         setCheckinCount(checkins?.length ?? 0);
         setEarnedDates(dates);
       } catch (err) {
-        console.error('Failed to load badges data:', err);
       } finally {
         setLoading(false);
       }

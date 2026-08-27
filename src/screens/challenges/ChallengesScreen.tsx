@@ -38,7 +38,6 @@ export default function ChallengesScreen({ navigation }: any) {
       setCompleted(data.completed || []);
       setStats(data.stats);
     } catch (err) {
-      console.error('Failed to fetch challenges:', err);
     } finally {
       setLoading(false);
     }

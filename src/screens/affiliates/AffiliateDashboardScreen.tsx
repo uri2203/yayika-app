@@ -36,7 +36,6 @@ export default function AffiliateDashboardScreen({ navigation }: any) {
       const result = await aiGanaConYayika({ lang });
       setData(result);
     } catch (err) {
-      console.error('Failed to load affiliate data:', err);
     } finally {
       setLoading(false);
       setRefreshing(false);

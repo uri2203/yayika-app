@@ -160,7 +160,6 @@ export default function RankingsScreen({ navigation }: any) {
       const myRank = data.rankings.find((r) => r.user_id === user?.id) ?? null;
       setCurrentUserRank(myRank);
     } catch (err) {
-      console.error('Failed to load rankings:', err);
     } finally {
       setLoading(false);
       setRefreshing(false);

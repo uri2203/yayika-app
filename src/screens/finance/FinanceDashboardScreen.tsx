@@ -137,7 +137,6 @@ export default function FinanceDashboardScreen({ navigation }: any) {
       const txs = await getTransactions(user.id);
       setTransactions(txs || []);
     } catch (e) {
-      console.log('Fetch transactions error:', e);
     } finally {
       setLoading(false);
     }

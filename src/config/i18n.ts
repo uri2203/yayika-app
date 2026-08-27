@@ -124,6 +124,8 @@ const translations: Record<Language, Record<string, string>> = {
     courses_xp_awarded: '+{xp} XP ganados',
     courses_congrats: '¡Lección completada!',
     courses_no_content: 'Contenido no disponible',
+    courses_lesson_placeholder: '{title}. \n\nEn esta lección aprenderás los fundamentos y estrategias prácticas que te ayudarán a avanzar en tu camino hacia el empoderamiento financiero y productivo. \n\nContinúa con la siguiente lección para profundizar en el tema.',
+    courses_video_available: 'Video disponible',
     course_module_1_title: 'Ciclo Productivo',
     course_module_2_title: 'Dinero sin Pena',
     course_module_3_title: 'La Mujer que Negocia',
@@ -296,6 +298,11 @@ const translations: Record<Language, Record<string, string>> = {
 
     // Common (new)
     common_no_data: 'Sin datos',
+    common_now: 'ahora',
+    common_weeks_abbrev: 'sem',
+    common_checkins: 'check-ins',
+    common_something_went_wrong: 'Algo salió mal',
+    common_try_again: 'Volver a intentar',
 
     // Financial
     finance_title: 'Mis Finanzas',
@@ -681,6 +688,19 @@ const translations: Record<Language, Record<string, string>> = {
     onboard_finish: 'Comenzar',
     onboard_error: 'Hubo un error. Intenta de nuevo.',
 
+    // Onboarding Flow
+    onboard_flow_great: '¡Bien!',
+    onboard_flow_xp_earned: '+{xp} XP ganados',
+    onboard_flow_no_data: 'No hay datos de onboarding disponibles',
+    onboard_flow_progress: '{completed} de {total} días completados',
+    onboard_flow_xp_total: '{xp} XP ganados',
+    onboard_flow_day: 'Día {day}',
+    onboard_flow_tasks: 'Tareas del día',
+    onboard_flow_complete_day: 'Completar día {day}',
+    onboard_flow_locked: 'Completa el día anterior primero',
+    onboard_flow_congrats: '¡Felicidades!',
+    onboard_flow_completion_msg: 'Completaste todo el onboarding. Has ganado {xp} XP',
+
     // Splash
     splash_subtitle: 'Tu plataforma de productos digitales',
 
@@ -901,6 +921,8 @@ const translations: Record<Language, Record<string, string>> = {
     courses_xp_awarded: '+{xp} XP earned',
     courses_congrats: 'Lesson completed!',
     courses_no_content: 'Content not available',
+    courses_lesson_placeholder: '{title}. \n\nIn this lesson you will learn the fundamentals and practical strategies that will help you advance on your path to financial and productive empowerment. \n\nContinue with the next lesson to dive deeper into the topic.',
+    courses_video_available: 'Video available',
     course_module_1_title: 'Cyclical Productivity',
     course_module_2_title: 'Money Without Guilt',
     course_module_3_title: 'The Woman Who Negotiates',
@@ -1073,6 +1095,11 @@ const translations: Record<Language, Record<string, string>> = {
 
     // Common (new)
     common_no_data: 'No data',
+    common_now: 'now',
+    common_weeks_abbrev: 'wk',
+    common_checkins: 'check-ins',
+    common_something_went_wrong: 'Something went wrong',
+    common_try_again: 'Try again',
 
     // Financial
     finance_title: 'My Finances',
@@ -1428,6 +1455,7 @@ const translations: Record<Language, Record<string, string>> = {
     onboarding_next: 'Next',
     onboarding_start: 'Get started!',
     onboarding_skip: 'Skip',
+    onboarding_back: 'Back',
 
     // Multi-step Onboarding
     onboard_step: 'Step',
@@ -1465,6 +1493,19 @@ const translations: Record<Language, Record<string, string>> = {
     onboard_back: 'Back',
     onboard_finish: 'Get started',
     onboard_error: 'Something went wrong. Please try again.',
+
+    // Onboarding Flow
+    onboard_flow_great: 'Great!',
+    onboard_flow_xp_earned: '+{xp} XP earned',
+    onboard_flow_no_data: 'No onboarding data available',
+    onboard_flow_progress: '{completed} of {total} days completed',
+    onboard_flow_xp_total: '{xp} XP earned',
+    onboard_flow_day: 'Day {day}',
+    onboard_flow_tasks: 'Tasks for the day',
+    onboard_flow_complete_day: 'Complete day {day}',
+    onboard_flow_locked: 'Complete the previous day first',
+    onboard_flow_congrats: 'Congratulations!',
+    onboard_flow_completion_msg: 'You completed all onboarding. You earned {xp} XP',
 
     // Splash
     splash_subtitle: 'Your digital products platform',
@@ -1686,6 +1727,8 @@ const translations: Record<Language, Record<string, string>> = {
     courses_xp_awarded: '+{xp} XP ganhos',
     courses_congrats: 'Lição concluída!',
     courses_no_content: 'Conteúdo não disponível',
+    courses_lesson_placeholder: '{title}. \n\nNesta lição você aprenderá os fundamentos e estratégias práticas que o ajudarão a avançar em seu caminho para o empoderamento financeiro e produtivo. \n\nContinue com a próxima lição para se aprofundar no tema.',
+    courses_video_available: 'Vídeo disponível',
     course_module_1_title: 'Produtividade Cíclica',
     course_module_2_title: 'Dinero sem Culpa',
     course_module_3_title: 'A Mulher que Negocia',
@@ -1858,6 +1901,11 @@ const translations: Record<Language, Record<string, string>> = {
 
     // Common (new)
     common_no_data: 'Sem dados',
+    common_now: 'agora',
+    common_weeks_abbrev: 'sem',
+    common_checkins: 'check-ins',
+    common_something_went_wrong: 'Algo deu errado',
+    common_try_again: 'Tentar novamente',
 
     // Financial
     finance_title: 'Minhas Finanças',
@@ -2054,6 +2102,21 @@ const translations: Record<Language, Record<string, string>> = {
     community_empty_title: 'Nenhuma publicação ainda',
     community_empty_subtitle: 'Seja a primeira a compartilhar algo',
 
+    // Moderation
+    community_report: 'Reportar',
+    community_report_post: 'Reportar publicação',
+    community_report_reason: 'Motivo do reporte',
+    community_report_spam: 'Spam',
+    community_report_inappropriate: 'Conteúdo inapropriado',
+    community_report_offensive: 'Linguagem ofensiva',
+    community_report_other: 'Outro',
+    community_report_submit: 'Enviar reporte',
+    community_report_cancel: 'Cancelar',
+    community_post_reported: 'Publicação reportada',
+    community_post_reported_msg: 'Obrigada por ajudar a manter a comunidade segura.',
+    community_report_error: 'Não foi possível enviar o reporte',
+    community_flagged: 'Moderado',
+
     // Onboarding
     onboarding_title: 'Bem-vinda ao Yayika',
     onboarding_step1_title: 'Quais são seus objetivos?',
@@ -2229,6 +2292,7 @@ const translations: Record<Language, Record<string, string>> = {
 
     // Affiliate (missing)
     aff_link_copied: 'Link copiado',
+    aff_share_earnings: 'Ganhos ao compartilhar',
     aff_referrals: 'Referidas',
     aff_copy_link: 'Copiar link',
     aff_no_history: 'Sem histórico ainda',
@@ -2241,12 +2305,113 @@ const translations: Record<Language, Record<string, string>> = {
     onboard_notif_email: 'Resumo por email',
     onboarding_back: 'Voltar',
 
+    // Multi-step Onboarding
+    onboard_goals_title: 'Quais são teus objetivos?',
+    onboard_goals_subtitle: 'Seleciona todos os que se aplicam',
+    onboard_goals_financial: 'Saúde financeira',
+    onboard_goals_cycle: 'Conhecer meu ciclo',
+    onboard_goals_wellness: 'Bem-estar',
+    onboard_goals_growth: 'Crescimento pessoal',
+    onboard_cycle_title: 'Registra teu ciclo',
+    onboard_cycle_subtitle: 'Em que fase estás agora?',
+    onboard_cycle_menstrual: 'Menstrual',
+    onboard_cycle_follicular: 'Folicular',
+    onboard_cycle_ovulation: 'Ovulação',
+    onboard_cycle_luteal: 'Lútea',
+    onboard_finance_title: 'Situação financeira',
+    onboard_finance_subtitle: 'Seleciona teu renda mensal',
+    onboard_finance_range_1: 'Menos de $10.000',
+    onboard_finance_range_2: '$10.000 - $25.000',
+    onboard_finance_range_3: '$25.000 - $50.000',
+    onboard_finance_range_4: 'Mais de $50.000',
+    onboard_finance_goals: 'Objetivos financeiros',
+    onboard_finance_goal_save: 'Poupar mais',
+    onboard_finance_goal_invert: 'Investir',
+    onboard_finance_goal_deuda: 'Sair de dívidas',
+    onboard_finance_goal_negociar: 'Negociar melhor',
+    onboard_notif_subtitle: 'Escolhe como queres receber lembretes',
+    onboard_notif_push_desc: 'Recebe lembretes no teu celular',
+    onboard_notif_email_desc: 'Recebe um resumo semanal',
+    onboard_complete: 'Pronto!',
+    onboard_next: 'Próximo',
+    onboard_back: 'Voltar',
+    onboard_finish: 'Começar',
+
+    // Onboarding Flow
+    onboard_flow_great: 'Ótimo!',
+    onboard_flow_xp_earned: '+{xp} XP ganhos',
+    onboard_flow_no_data: 'Sem dados de onboarding disponíveis',
+    onboard_flow_progress: '{completed} de {total} dias completados',
+    onboard_flow_xp_total: '{xp} XP ganhos',
+    onboard_flow_day: 'Dia {day}',
+    onboard_flow_tasks: 'Tarefas do dia',
+    onboard_flow_complete_day: 'Completar dia {day}',
+    onboard_flow_locked: 'Completa o dia anterior primeiro',
+    onboard_flow_congrats: 'Parabéns!',
+    onboard_flow_completion_msg: 'Completaste todo o onboarding. Ganhou {xp} XP',
+
     // Badges (missing)
     badges_streak: 'Sequência',
     badges_checkin: 'Check-in',
     badges_challenge: 'Desafios',
     badges_course: 'Cursos',
     badges_referral: 'Referidas',
+
+    // Badge names & descriptions - Streak
+    badge_streak3_name: 'Sequência de 3',
+    badge_streak3_desc: '3 dias seguidos ativa',
+    badge_streak14_name: 'Sequência de 14',
+    badge_streak14_desc: '14 dias seguidos ativa',
+    badge_streak30_name: 'Sequência de 30',
+    badge_streak30_desc: '30 dias seguidos ativa',
+
+    // Badge names & descriptions - Check-in
+    badge_checkin1_name: 'Primeira vez',
+    badge_checkin1_desc: 'Teu primeiro check-in',
+    badge_checkin10_name: 'Assídua',
+    badge_checkin10_desc: '10 check-ins realizados',
+    badge_checkin30_name: 'Constância',
+    badge_checkin30_desc: '30 check-ins realizados',
+    badge_checkin100_name: 'Centenária',
+    badge_checkin100_desc: '100 check-ins realizados',
+
+    // Badge names & descriptions - Cycle
+    badge_mood_name: 'Humor registrado',
+    badge_mood_desc: 'Registra teu humor pela primeira vez',
+    badge_cycle7_name: 'Ciclo consciente',
+    badge_cycle7_desc: '7 dias de registro de ciclo',
+
+    // Badge names & descriptions - Challenge
+    badge_challenge_first_name: 'Primeiro desafio',
+    badge_challenge_first_desc: 'Completa teu primeiro desafio',
+    badge_challenge10_name: 'Desafiadora',
+    badge_challenge10_desc: 'Completa 10 desafios',
+
+    // Badge names & descriptions - Financial
+    badge_budget_name: 'Orçamentista',
+    badge_budget_desc: 'Cria teu primeiro orçamento',
+
+    // Badge names & descriptions - Course
+    badge_course_complete_name: 'Graduada',
+    badge_course_complete_desc: 'Completa um curso completo',
+    badge_share_name: 'Compartilhadora',
+    badge_share_desc: 'Compartilha um produto',
+
+    // Badge names & descriptions - Social
+    badge_referral_first_name: 'Primeira referida',
+    badge_referral_first_desc: 'Convida tua primeira amiga',
+    badge_referral5_name: 'Embaixadora',
+    badge_referral5_desc: 'Convida 5 amigas',
+    badge_referral25_name: 'Embaixadora Top',
+    badge_referral25_desc: 'Convida 25 amigas',
+
+    // Badge names & descriptions - Special
+    badge_first_steps_name: 'Primeiros passos',
+    badge_first_steps_desc: 'Ganha 100 XP',
+    badge_rising_name: 'Em ascensão',
+    badge_rising_desc: 'Ganha 500 XP',
+    badge_queen_name: 'Rainha Yayika',
+    badge_queen_desc: 'Desbloqueia todas as conquistas',
   },
 
   fr: {
@@ -2370,6 +2535,8 @@ const translations: Record<Language, Record<string, string>> = {
     courses_xp_awarded: '+{xp} XP gagnés',
     courses_congrats: 'Leçon terminée !',
     courses_no_content: 'Contenu non disponible',
+    courses_lesson_placeholder: '{title}. \n\nDans cette leçon, tu apprendras les fondamentaux et les stratégies pratiques qui t\'aideront à avancer dans ton chemin vers l\'autonomie financière et productive. \n\nContinue avec la leçon suivante pour approfondir le sujet.',
+    courses_video_available: 'Vidéo disponible',
     course_module_1_title: 'Productivité Cyclique',
     course_module_2_title: 'Argent sans Culpabilité',
     course_module_3_title: 'La Femme qui Négocie',
@@ -2542,6 +2709,11 @@ const translations: Record<Language, Record<string, string>> = {
 
     // Common (new)
     common_no_data: 'Pas de données',
+    common_now: 'maintenant',
+    common_weeks_abbrev: 'sem',
+    common_checkins: 'check-ins',
+    common_something_went_wrong: 'Une erreur s\'est produite',
+    common_try_again: 'Réessayer',
 
     // Financial
     finance_title: 'Mes Finances',
@@ -2738,6 +2910,21 @@ const translations: Record<Language, Record<string, string>> = {
     community_empty_title: 'Aucune publication',
     community_empty_subtitle: 'Soyez la première à partager',
 
+    // Moderation
+    community_report: 'Signaler',
+    community_report_post: 'Signaler la publication',
+    community_report_reason: 'Raison du signalement',
+    community_report_spam: 'Spam',
+    community_report_inappropriate: 'Contenu inapproprié',
+    community_report_offensive: 'Langage offensant',
+    community_report_other: 'Autre',
+    community_report_submit: 'Envoyer le signalement',
+    community_report_cancel: 'Annuler',
+    community_post_reported: 'Publication signalée',
+    community_post_reported_msg: 'Merci de nous aider à maintenir la communauté sûre.',
+    community_report_error: 'Impossible d\'envoyer le signalement',
+    community_flagged: 'Modéré',
+
     // Onboarding
     onboarding_title: 'Bienvenue sur Yayika',
     onboarding_step1_title: 'Quels sont vos objectifs?',
@@ -2913,6 +3100,7 @@ const translations: Record<Language, Record<string, string>> = {
 
     // Affiliate (missing)
     aff_link_copied: 'Lien copié',
+    aff_share_earnings: 'Gains de partage',
     aff_referrals: 'Parrainages',
     aff_copy_link: 'Copier le lien',
     aff_no_history: 'Pas encore d\'historique',
@@ -2925,12 +3113,113 @@ const translations: Record<Language, Record<string, string>> = {
     onboard_notif_email: 'Résumé par email',
     onboarding_back: 'Retour',
 
+    // Multi-step Onboarding
+    onboard_goals_title: 'Quels sont tes objectifs ?',
+    onboard_goals_subtitle: 'Sélectionne tous ceux qui s\'appliquent',
+    onboard_goals_financial: 'Santé financière',
+    onboard_goals_cycle: 'Connaître mon cycle',
+    onboard_goals_wellness: 'Bien-être',
+    onboard_goals_growth: 'Développement personnel',
+    onboard_cycle_title: 'Enregistre ton cycle',
+    onboard_cycle_subtitle: 'Dans quelle phase es-tu maintenant ?',
+    onboard_cycle_menstrual: 'Menstruel',
+    onboard_cycle_follicular: 'Folliculaire',
+    onboard_cycle_ovulation: 'Ovulation',
+    onboard_cycle_luteal: 'Lutéale',
+    onboard_finance_title: 'Situation financière',
+    onboard_finance_subtitle: 'Sélectionne tes revenus mensuels',
+    onboard_finance_range_1: 'Moins de 10 000 $',
+    onboard_finance_range_2: '10 000 $ - 25 000 $',
+    onboard_finance_range_3: '25 000 $ - 50 000 $',
+    onboard_finance_range_4: 'Plus de 50 000 $',
+    onboard_finance_goals: 'Objectifs financiers',
+    onboard_finance_goal_save: 'Économiser plus',
+    onboard_finance_goal_invert: 'Investir',
+    onboard_finance_goal_deuda: 'Sortir des dettes',
+    onboard_finance_goal_negociar: 'Négocier mieux',
+    onboard_notif_subtitle: 'Choisis comment tu veux recevoir les rappels',
+    onboard_notif_push_desc: 'Reçois des rappels sur ton téléphone',
+    onboard_notif_email_desc: 'Reçois un résumé hebdomadaire',
+    onboard_complete: 'Terminé !',
+    onboard_next: 'Suivant',
+    onboard_back: 'Retour',
+    onboard_finish: 'Commencer',
+
+    // Onboarding Flow
+    onboard_flow_great: 'Super !',
+    onboard_flow_xp_earned: '+{xp} XP gagnés',
+    onboard_flow_no_data: 'Aucune donnée d\'onboarding disponible',
+    onboard_flow_progress: '{completed} sur {total} jours complétés',
+    onboard_flow_xp_total: '{xp} XP gagnés',
+    onboard_flow_day: 'Jour {day}',
+    onboard_flow_tasks: 'Tâches du jour',
+    onboard_flow_complete_day: 'Compléter le jour {day}',
+    onboard_flow_locked: 'Complète le jour précédent d\'abord',
+    onboard_flow_congrats: 'Félicitations !',
+    onboard_flow_completion_msg: 'Tu as complété tout l\'onboarding. Tu as gagné {xp} XP',
+
     // Badges (missing)
     badges_streak: 'Série',
     badges_checkin: 'Check-in',
     badges_challenge: 'Défis',
     badges_course: 'Cours',
     badges_referral: 'Parrainages',
+
+    // Badge names & descriptions - Streak
+    badge_streak3_name: 'Série de 3',
+    badge_streak3_desc: '3 jours consécutifs actifs',
+    badge_streak14_name: 'Série de 14',
+    badge_streak14_desc: '14 jours consécutifs actifs',
+    badge_streak30_name: 'Série de 30',
+    badge_streak30_desc: '30 jours consécutifs actifs',
+
+    // Badge names & descriptions - Check-in
+    badge_checkin1_name: 'Première fois',
+    badge_checkin1_desc: 'Ton premier check-in',
+    badge_checkin10_name: 'Assidue',
+    badge_checkin10_desc: '10 check-ins effectués',
+    badge_checkin30_name: 'Régulière',
+    badge_checkin30_desc: '30 check-ins effectués',
+    badge_checkin100_name: 'Centenaire',
+    badge_checkin100_desc: '100 check-ins effectués',
+
+    // Badge names & descriptions - Cycle
+    badge_mood_name: 'Humeur enregistrée',
+    badge_mood_desc: 'Enregistre ton humeur pour la première fois',
+    badge_cycle7_name: 'Cycle conscient',
+    badge_cycle7_desc: '7 jours de suivi de cycle',
+
+    // Badge names & descriptions - Challenge
+    badge_challenge_first_name: 'Premier défi',
+    badge_challenge_first_desc: 'Termine ton premier défi',
+    badge_challenge10_name: 'Défiatrice',
+    badge_challenge10_desc: 'Termine 10 défis',
+
+    // Badge names & descriptions - Financial
+    badge_budget_name: 'Budgeteuse',
+    badge_budget_desc: 'Crée ton premier budget',
+
+    // Badge names & descriptions - Course
+    badge_course_complete_name: 'Diplômée',
+    badge_course_complete_desc: 'Termine un cours complet',
+    badge_share_name: 'Partageuse',
+    badge_share_desc: 'Partage un produit',
+
+    // Badge names & descriptions - Social
+    badge_referral_first_name: 'Premier parrainage',
+    badge_referral_first_desc: 'Invite ta première amie',
+    badge_referral5_name: 'Ambassadrice',
+    badge_referral5_desc: 'Invite 5 amies',
+    badge_referral25_name: 'Ambassadrice Top',
+    badge_referral25_desc: 'Invite 25 amies',
+
+    // Badge names & descriptions - Special
+    badge_first_steps_name: 'Premiers pas',
+    badge_first_steps_desc: 'Gagne 100 XP',
+    badge_rising_name: 'Étoile montante',
+    badge_rising_desc: 'Gagne 500 XP',
+    badge_queen_name: 'Reine Yayika',
+    badge_queen_desc: 'Débloque toutes les réalisations',
   },
 
   de: {
@@ -3054,6 +3343,8 @@ const translations: Record<Language, Record<string, string>> = {
     courses_xp_awarded: '+{xp} XP verdient',
     courses_congrats: 'Lektion abgeschlossen!',
     courses_no_content: 'Inhalt nicht verfügbar',
+    courses_lesson_placeholder: '{title}. \n\nIn dieser Lektion lernst du die Grundlagen und praktischen Strategien, die dir helfen, deinen Weg zur finanziellen und produktiven Ermächtigung fortzusetzen. \n\nFahre mit der nächsten Lektion fort, um tiefer in das Thema einzusteigen.',
+    courses_video_available: 'Video verfügbar',
     course_module_1_title: 'Zyklische Produktivität',
     course_module_2_title: 'Geld ohne Schuld',
     course_module_3_title: 'Die Frau, die verhandelt',
@@ -3226,6 +3517,11 @@ const translations: Record<Language, Record<string, string>> = {
 
     // Common (new)
     common_no_data: 'Keine Daten',
+    common_now: 'jetzt',
+    common_weeks_abbrev: 'Wo',
+    common_checkins: 'Check-ins',
+    common_something_went_wrong: 'Etwas ist schiefgelaufen',
+    common_try_again: 'Erneut versuchen',
 
     // Financial
     finance_title: 'Meine Finanzen',
@@ -3422,6 +3718,21 @@ const translations: Record<Language, Record<string, string>> = {
     community_empty_title: 'Noch keine Beiträge',
     community_empty_subtitle: 'Sei der Erste, der etwas teilt',
 
+    // Moderation
+    community_report: 'Melden',
+    community_report_post: 'Beitrag melden',
+    community_report_reason: 'Grund der Meldung',
+    community_report_spam: 'Spam',
+    community_report_inappropriate: 'Unangemessener Inhalt',
+    community_report_offensive: 'Beleidigende Sprache',
+    community_report_other: 'Sonstiges',
+    community_report_submit: 'Meldung absenden',
+    community_report_cancel: 'Abbrechen',
+    community_post_reported: 'Beitrag gemeldet',
+    community_post_reported_msg: 'Danke, dass du hilfst, die Community sicher zu halten.',
+    community_report_error: 'Meldung konnte nicht gesendet werden',
+    community_flagged: 'Moderiert',
+
     // Onboarding
     onboarding_title: 'Willkommen bei Yayika',
     onboarding_step1_title: 'Was sind deine Ziele?',
@@ -3597,6 +3908,7 @@ const translations: Record<Language, Record<string, string>> = {
 
     // Affiliate (missing)
     aff_link_copied: 'Link kopiert',
+    aff_share_earnings: 'Verdienste durch Teilen',
     aff_referrals: 'Weiterempfehlungen',
     aff_copy_link: 'Link kopieren',
     aff_no_history: 'Noch keine Historie',
@@ -3609,12 +3921,113 @@ const translations: Record<Language, Record<string, string>> = {
     onboard_notif_email: 'E-Mail-Zusammenfassung',
     onboarding_back: 'Zurück',
 
+    // Multi-step Onboarding
+    onboard_goals_title: 'Was sind deine Ziele?',
+    onboard_goals_subtitle: 'Wähle alle zutreffenden aus',
+    onboard_goals_financial: 'Finanzielle Gesundheit',
+    onboard_goals_cycle: 'Zyklus verfolgen',
+    onboard_goals_wellness: 'Wohlbefinden',
+    onboard_goals_growth: 'Persönliche Entwicklung',
+    onboard_cycle_title: 'Erfasse deinen Zyklus',
+    onboard_cycle_subtitle: 'In welcher Phase bist du jetzt?',
+    onboard_cycle_menstrual: 'Menstruell',
+    onboard_cycle_follicular: 'Follikulär',
+    onboard_cycle_ovulation: 'Eisprung',
+    onboard_cycle_luteal: 'Luteal',
+    onboard_finance_title: 'Finanzielle Situation',
+    onboard_finance_subtitle: 'Wähle dein monatliches Einkommen',
+    onboard_finance_range_1: 'Unter 10.000 $',
+    onboard_finance_range_2: '10.000 $ - 25.000 $',
+    onboard_finance_range_3: '25.000 $ - 50.000 $',
+    onboard_finance_range_4: 'Über 50.000 $',
+    onboard_finance_goals: 'Finanzielle Ziele',
+    onboard_finance_goal_save: 'Mehr sparen',
+    onboard_finance_goal_invert: 'Investieren',
+    onboard_finance_goal_deuda: 'Schulden loswerden',
+    onboard_finance_goal_negociar: 'Besser verhandeln',
+    onboard_notif_subtitle: 'Wähle, wie du Erinnerungen erhalten möchtest',
+    onboard_notif_push_desc: 'Erinnerungen auf dein Handy erhalten',
+    onboard_notif_email_desc: 'Wöchentliche Zusammenfassung erhalten',
+    onboard_complete: 'Fertig!',
+    onboard_next: 'Weiter',
+    onboard_back: 'Zurück',
+    onboard_finish: 'Loslegen',
+
+    // Onboarding Flow
+    onboard_flow_great: 'Super!',
+    onboard_flow_xp_earned: '+{xp} XP verdient',
+    onboard_flow_no_data: 'Keine Onboarding-Daten verfügbar',
+    onboard_flow_progress: '{completed} von {total} Tagen abgeschlossen',
+    onboard_flow_xp_total: '{xp} XP verdient',
+    onboard_flow_day: 'Tag {day}',
+    onboard_flow_tasks: 'Aufgaben des Tages',
+    onboard_flow_complete_day: 'Tag {day} abschließen',
+    onboard_flow_locked: 'Schließe zuerst den vorherigen Tag ab',
+    onboard_flow_congrats: 'Herzlichen Glückwunsch!',
+    onboard_flow_completion_msg: 'Du hast das gesamte Onboarding abgeschlossen. Du hast {xp} XP verdient',
+
     // Badges (missing)
     badges_streak: 'Serie',
     badges_checkin: 'Check-in',
     badges_challenge: 'Herausforderungen',
     badges_course: 'Kurse',
     badges_referral: 'Weiterempfehlungen',
+
+    // Badge names & descriptions - Streak
+    badge_streak3_name: '3-Tage-Serie',
+    badge_streak3_desc: '3 Tage hintereinander aktiv',
+    badge_streak14_name: '14-Tage-Serie',
+    badge_streak14_desc: '14 Tage hintereinander aktiv',
+    badge_streak30_name: '30-Tage-Serie',
+    badge_streak30_desc: '30 Tage hintereinander aktiv',
+
+    // Badge names & descriptions - Check-in
+    badge_checkin1_name: 'Erstes Mal',
+    badge_checkin1_desc: 'Dein erster Check-in',
+    badge_checkin10_name: 'Fleißig',
+    badge_checkin10_desc: '10 Check-ins absolviert',
+    badge_checkin30_name: 'Konstant',
+    badge_checkin30_desc: '30 Check-ins absolviert',
+    badge_checkin100_name: 'Hundertfache',
+    badge_checkin100_desc: '100 Check-ins absolviert',
+
+    // Badge names & descriptions - Cycle
+    badge_mood_name: 'Stimmung erfasst',
+    badge_mood_desc: 'Erfasse deine Stimmung zum ersten Mal',
+    badge_cycle7_name: 'Bewusster Zyklus',
+    badge_cycle7_desc: '7 Tage Zyklusverfolgung',
+
+    // Badge names & descriptions - Challenge
+    badge_challenge_first_name: 'Erste Herausforderung',
+    badge_challenge_first_desc: 'Schließe deine erste Herausforderung ab',
+    badge_challenge10_name: 'Herausforderin',
+    badge_challenge10_desc: 'Schließe 10 Herausforderungen ab',
+
+    // Badge names & descriptions - Financial
+    badge_budget_name: 'Budgeterin',
+    badge_budget_desc: 'Erstelle dein erstes Budget',
+
+    // Badge names & descriptions - Course
+    badge_course_complete_name: 'Absolventin',
+    badge_course_complete_desc: 'Schließe einen Kurs vollständig ab',
+    badge_share_name: 'Teilerin',
+    badge_share_desc: 'Teile ein Produkt',
+
+    // Badge names & descriptions - Social
+    badge_referral_first_name: 'Erste Weiterempfehlung',
+    badge_referral_first_desc: 'Lade deine erste Freundin ein',
+    badge_referral5_name: 'Botschafterin',
+    badge_referral5_desc: 'Lade 5 Freundinnen ein',
+    badge_referral25_name: 'Top-Botschafterin',
+    badge_referral25_desc: 'Lade 25 Freundinnen ein',
+
+    // Badge names & descriptions - Special
+    badge_first_steps_name: 'Erste Schritte',
+    badge_first_steps_desc: 'Verdiene 100 XP',
+    badge_rising_name: 'Aufsteigender Stern',
+    badge_rising_desc: 'Verdiene 500 XP',
+    badge_queen_name: 'Yayika-Königin',
+    badge_queen_desc: 'Schalte alle Errungenschaften frei',
   },
 };
 

@@ -421,7 +421,7 @@ export default function LessonViewerScreen({ navigation, route }: any) {
           {videoUrl ? (
             <View style={styles.videoPlaceholder}>
               <Ionicons name="play-circle" size={64} color={moduleColor} />
-              <Text style={styles.videoText}>Video disponible</Text>
+              <Text style={styles.videoText}>{t('courses_video_available')}</Text>
             </View>
           ) : (
             <View style={styles.videoPlaceholder}>
@@ -439,11 +439,7 @@ export default function LessonViewerScreen({ navigation, route }: any) {
         ) : (
           <View style={styles.contentCard}>
             <Text style={styles.contentPlaceholder}>
-              {currentLessonTitle}. {'\n\n'}
-              En esta lección aprenderás los fundamentos y estrategias prácticas
-              que te ayudarán a avanzar en tu camino hacia el empoderamiento
-              financiero y productivo. {'\n\n'}
-              Continúa con la siguiente lección para profundizar en el tema.
+              {t('courses_lesson_placeholder', { title: currentLessonTitle })}
             </Text>
           </View>
         )}

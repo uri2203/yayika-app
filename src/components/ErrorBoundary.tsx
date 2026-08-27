@@ -2,9 +2,11 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { typography, spacing } from '../config/theme';
 import { useTheme } from '../contexts/ThemeContext';
+import { useLanguage } from '../contexts/LanguageContext';
 
 interface ErrorBoundaryProps {
   children: React.ReactNode;
+  t?: (key: string, params?: Record<string, string | number>) => string;
 }
 
 interface ErrorBoundaryState {
@@ -26,7 +28,6 @@ class ErrorBoundaryClass extends React.Component<
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    console.warn('ErrorBoundary caught:', error.message, errorInfo.componentStack);
   }
 
   private handleReset = () => {
@@ -34,13 +35,14 @@ class ErrorBoundaryClass extends React.Component<
   };
 
   render() {
+    const t = this.props.t || ((key: string) => key);
     if (this.state.hasError) {
       return (
         <View style={[styles.container, { backgroundColor: this.props.colors.background }]}>
-          <Text style={[styles.title, { color: this.props.colors.text }]}>Algo salió mal</Text>
+          <Text style={[styles.title, { color: this.props.colors.text }]}>{t('common_something_went_wrong')}</Text>
           <Text style={[styles.message, { color: this.props.colors.subtleText }]}>{this.state.message}</Text>
           <TouchableOpacity style={[styles.button, { backgroundColor: this.props.colors.primary }]} onPress={this.handleReset}>
-            <Text style={[styles.buttonText, { color: this.props.colors.white }]}>Volver a intentar</Text>
+            <Text style={[styles.buttonText, { color: this.props.colors.white }]}>{t('common_try_again')}</Text>
           </TouchableOpacity>
         </View>
       );
@@ -51,9 +53,10 @@ class ErrorBoundaryClass extends React.Component<
 
 export default function ErrorBoundary({ children }: ErrorBoundaryProps) {
   const { currentColors } = useTheme();
+  const { t } = useLanguage();
   const colors = currentColors;
 
-  return <ErrorBoundaryClass colors={colors}>{children}</ErrorBoundaryClass>;
+  return <ErrorBoundaryClass colors={colors} t={t}>{children}</ErrorBoundaryClass>;
 }
 
 const styles = StyleSheet.create({

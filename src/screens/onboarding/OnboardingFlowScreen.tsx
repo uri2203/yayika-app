@@ -65,7 +65,6 @@ export default function OnboardingFlowScreen({ navigation }: any) {
         setSelectedDay(data.state.current_day);
       }
     } catch (err) {
-      console.error('Failed to load onboarding state:', err);
     } finally {
       setLoading(false);
     }
@@ -94,7 +93,7 @@ export default function OnboardingFlowScreen({ navigation }: any) {
           current_day: result.next_day,
         };
       });
-      Alert.alert('¡Bien!', `+${TASK_XP} XP ganados`);
+      Alert.alert(t('onboard_flow_great'), t('onboard_flow_xp_earned', { xp: TASK_XP }));
     } catch (err) {
       Alert.alert(t('common_error'), t('onboard_error'));
     } finally {
@@ -271,7 +270,7 @@ export default function OnboardingFlowScreen({ navigation }: any) {
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.loadingWrap}>
-          <Text style={styles.emptyText}>No hay datos de onboarding disponibles</Text>
+          <Text style={styles.emptyText}>{t('onboard_flow_no_data')}</Text>
         </View>
       </SafeAreaView>
     );
@@ -295,11 +294,11 @@ export default function OnboardingFlowScreen({ navigation }: any) {
             <View style={[styles.progressFill, { width: `${progressPct}%` }]} />
           </View>
           <Text style={styles.progressLabel}>
-            {state.completed_days} de {state.total_days} días completados
+            {t('onboard_flow_progress', { completed: state.completed_days, total: state.total_days })}
           </Text>
           <View style={styles.xpBadge}>
             <Ionicons name="star" size={16} color={colors.gold} />
-            <Text style={styles.xpText}>{state.total_xp_earned} XP ganados</Text>
+            <Text style={styles.xpText}>{t('onboard_flow_xp_total', { xp: state.total_xp_earned })}</Text>
           </View>
         </View>
 
@@ -334,8 +333,8 @@ export default function OnboardingFlowScreen({ navigation }: any) {
 
         <View style={styles.dayCard}>
           <Text style={styles.dayEmoji}>{DAY_EMOJIS[selectedDay] || '📋'}</Text>
-          <Text style={styles.dayTitle}>Día {selectedDay}</Text>
-          <Text style={styles.daySubtitle}>Tareas del día</Text>
+          <Text style={styles.dayTitle}>{t('onboard_flow_day', { day: selectedDay })}</Text>
+          <Text style={styles.daySubtitle}>{t('onboard_flow_tasks')}</Text>
 
           {currentDayData && (
             <View style={styles.taskList}>
@@ -373,7 +372,7 @@ export default function OnboardingFlowScreen({ navigation }: any) {
               ) : (
                 <>
                   <Ionicons name="checkmark-circle" size={20} color={colors.white} />
-                  <Text style={styles.completeBtnText}>Completar día {selectedDay}</Text>
+                  <Text style={styles.completeBtnText}>{t('onboard_flow_complete_day', { day: selectedDay })}</Text>
                 </>
               )}
             </TouchableOpacity>
@@ -382,7 +381,7 @@ export default function OnboardingFlowScreen({ navigation }: any) {
           {selectedDay > state.current_day && !currentDayData?.completed && (
             <View style={styles.lockedDay}>
               <Ionicons name="lock-closed" size={20} color={colors.subtleText} />
-              <Text style={styles.lockedDayText}>Completa el día anterior primero</Text>
+              <Text style={styles.lockedDayText}>{t('onboard_flow_locked')}</Text>
             </View>
           )}
         </View>
@@ -390,9 +389,9 @@ export default function OnboardingFlowScreen({ navigation }: any) {
         {state.is_completed && (
           <View style={styles.completedCard}>
             <Ionicons name="trophy" size={48} color={colors.gold} />
-            <Text style={styles.completedTitle}>¡Felicidades!</Text>
+            <Text style={styles.completedTitle}>{t('onboard_flow_congrats')}</Text>
             <Text style={styles.completedSubtitle}>
-              Completaste todo el onboarding. Has ganado {state.total_xp_earned} XP
+              {t('onboard_flow_completion_msg', { xp: state.total_xp_earned })}
             </Text>
           </View>
         )}
