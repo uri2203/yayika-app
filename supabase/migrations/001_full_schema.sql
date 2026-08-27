@@ -38,6 +38,7 @@ CREATE TABLE IF NOT EXISTS public.yayika_profiles (
 CREATE INDEX IF NOT EXISTS idx_yayika_profiles_id ON public.yayika_profiles(id);
 CREATE INDEX IF NOT EXISTS idx_yayika_profiles_country ON public.yayika_profiles(country_code);
 
+DROP TRIGGER IF EXISTS set_yayika_profiles_updated_at ON public.yayika_profiles;
 CREATE TRIGGER set_yayika_profiles_updated_at
   BEFORE UPDATE ON public.yayika_profiles
   FOR EACH ROW
@@ -45,14 +46,17 @@ CREATE TRIGGER set_yayika_profiles_updated_at
 
 ALTER TABLE public.yayika_profiles ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Users can view own profile" ON public.yayika_profiles;
 CREATE POLICY "Users can view own profile"
   ON public.yayika_profiles FOR SELECT
   USING (auth.uid() = id);
 
+DROP POLICY IF EXISTS "Users can update own profile" ON public.yayika_profiles;
 CREATE POLICY "Users can update own profile"
   ON public.yayika_profiles FOR UPDATE
   USING (auth.uid() = id);
 
+DROP POLICY IF EXISTS "Users can insert own profile" ON public.yayika_profiles;
 CREATE POLICY "Users can insert own profile"
   ON public.yayika_profiles FOR INSERT
   WITH CHECK (auth.uid() = id);
@@ -72,6 +76,7 @@ CREATE TABLE IF NOT EXISTS public.yayika_progress (
 CREATE INDEX IF NOT EXISTS idx_yayika_progress_user ON public.yayika_progress(user_id);
 CREATE UNIQUE INDEX IF NOT EXISTS idx_yayika_progress_user_unique ON public.yayika_progress(user_id);
 
+DROP TRIGGER IF EXISTS set_yayika_progress_updated_at ON public.yayika_progress;
 CREATE TRIGGER set_yayika_progress_updated_at
   BEFORE UPDATE ON public.yayika_progress
   FOR EACH ROW
@@ -79,14 +84,17 @@ CREATE TRIGGER set_yayika_progress_updated_at
 
 ALTER TABLE public.yayika_progress ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Users can view own progress" ON public.yayika_progress;
 CREATE POLICY "Users can view own progress"
   ON public.yayika_progress FOR SELECT
   USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can update own progress" ON public.yayika_progress;
 CREATE POLICY "Users can update own progress"
   ON public.yayika_progress FOR UPDATE
   USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can insert own progress" ON public.yayika_progress;
 CREATE POLICY "Users can insert own progress"
   ON public.yayika_progress FOR INSERT
   WITH CHECK (auth.uid() = user_id);
@@ -106,6 +114,7 @@ CREATE TABLE IF NOT EXISTS public.yayika_subscriptions (
 CREATE INDEX IF NOT EXISTS idx_yayika_subscriptions_user ON public.yayika_subscriptions(user_id);
 CREATE INDEX IF NOT EXISTS idx_yayika_subscriptions_stripe ON public.yayika_subscriptions(stripe_subscription_id);
 
+DROP TRIGGER IF EXISTS set_yayika_subscriptions_updated_at ON public.yayika_subscriptions;
 CREATE TRIGGER set_yayika_subscriptions_updated_at
   BEFORE UPDATE ON public.yayika_subscriptions
   FOR EACH ROW
@@ -113,14 +122,17 @@ CREATE TRIGGER set_yayika_subscriptions_updated_at
 
 ALTER TABLE public.yayika_subscriptions ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Users can view own subscription" ON public.yayika_subscriptions;
 CREATE POLICY "Users can view own subscription"
   ON public.yayika_subscriptions FOR SELECT
   USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can update own subscription" ON public.yayika_subscriptions;
 CREATE POLICY "Users can update own subscription"
   ON public.yayika_subscriptions FOR UPDATE
   USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can insert own subscription" ON public.yayika_subscriptions;
 CREATE POLICY "Users can insert own subscription"
   ON public.yayika_subscriptions FOR INSERT
   WITH CHECK (auth.uid() = user_id);
@@ -144,10 +156,12 @@ CREATE INDEX IF NOT EXISTS idx_yayika_xp_events_created ON public.yayika_xp_even
 
 ALTER TABLE public.yayika_xp_events ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Users can view own xp events" ON public.yayika_xp_events;
 CREATE POLICY "Users can view own xp events"
   ON public.yayika_xp_events FOR SELECT
   USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can insert own xp events" ON public.yayika_xp_events;
 CREATE POLICY "Users can insert own xp events"
   ON public.yayika_xp_events FOR INSERT
   WITH CHECK (auth.uid() = user_id);
@@ -173,14 +187,17 @@ CREATE INDEX IF NOT EXISTS idx_yayika_checkins_created ON public.yayika_checkins
 
 ALTER TABLE public.yayika_checkins ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Users can view own checkins" ON public.yayika_checkins;
 CREATE POLICY "Users can view own checkins"
   ON public.yayika_checkins FOR SELECT
   USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can insert own checkins" ON public.yayika_checkins;
 CREATE POLICY "Users can insert own checkins"
   ON public.yayika_checkins FOR INSERT
   WITH CHECK (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can update own checkins" ON public.yayika_checkins;
 CREATE POLICY "Users can update own checkins"
   ON public.yayika_checkins FOR UPDATE
   USING (auth.uid() = user_id);
@@ -208,14 +225,17 @@ CREATE INDEX IF NOT EXISTS idx_yayika_cycle_log_logged ON public.yayika_cycle_lo
 
 ALTER TABLE public.yayika_cycle_log ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Users can view own cycle log" ON public.yayika_cycle_log;
 CREATE POLICY "Users can view own cycle log"
   ON public.yayika_cycle_log FOR SELECT
   USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can insert own cycle log" ON public.yayika_cycle_log;
 CREATE POLICY "Users can insert own cycle log"
   ON public.yayika_cycle_log FOR INSERT
   WITH CHECK (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can update own cycle log" ON public.yayika_cycle_log;
 CREATE POLICY "Users can update own cycle log"
   ON public.yayika_cycle_log FOR UPDATE
   USING (auth.uid() = user_id);
@@ -236,10 +256,12 @@ CREATE INDEX IF NOT EXISTS idx_yayika_cycle_coaching_phase ON public.yayika_cycl
 
 ALTER TABLE public.yayika_cycle_coaching ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Users can view own cycle coaching" ON public.yayika_cycle_coaching;
 CREATE POLICY "Users can view own cycle coaching"
   ON public.yayika_cycle_coaching FOR SELECT
   USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can insert own cycle coaching" ON public.yayika_cycle_coaching;
 CREATE POLICY "Users can insert own cycle coaching"
   ON public.yayika_cycle_coaching FOR INSERT
   WITH CHECK (auth.uid() = user_id);
@@ -261,14 +283,17 @@ CREATE INDEX IF NOT EXISTS idx_yayika_daily_mood_date ON public.yayika_daily_moo
 
 ALTER TABLE public.yayika_daily_mood ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Users can view own daily mood" ON public.yayika_daily_mood;
 CREATE POLICY "Users can view own daily mood"
   ON public.yayika_daily_mood FOR SELECT
   USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can insert own daily mood" ON public.yayika_daily_mood;
 CREATE POLICY "Users can insert own daily mood"
   ON public.yayika_daily_mood FOR INSERT
   WITH CHECK (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can update own daily mood" ON public.yayika_daily_mood;
 CREATE POLICY "Users can update own daily mood"
   ON public.yayika_daily_mood FOR UPDATE
   USING (auth.uid() = user_id);
@@ -288,14 +313,17 @@ CREATE INDEX IF NOT EXISTS idx_yayika_daily_affirmations_phase ON public.yayika_
 
 ALTER TABLE public.yayika_daily_affirmations ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Users can view own affirmations" ON public.yayika_daily_affirmations;
 CREATE POLICY "Users can view own affirmations"
   ON public.yayika_daily_affirmations FOR SELECT
   USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can insert own affirmations" ON public.yayika_daily_affirmations;
 CREATE POLICY "Users can insert own affirmations"
   ON public.yayika_daily_affirmations FOR INSERT
   WITH CHECK (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can update own affirmations" ON public.yayika_daily_affirmations;
 CREATE POLICY "Users can update own affirmations"
   ON public.yayika_daily_affirmations FOR UPDATE
   USING (auth.uid() = user_id);
@@ -323,6 +351,7 @@ CREATE INDEX IF NOT EXISTS idx_yayika_weekly_challenges_week ON public.yayika_we
 
 ALTER TABLE public.yayika_weekly_challenges ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Anyone can view active challenges" ON public.yayika_weekly_challenges;
 CREATE POLICY "Anyone can view active challenges"
   ON public.yayika_weekly_challenges FOR SELECT
   USING (is_active = true);
@@ -344,14 +373,17 @@ CREATE INDEX IF NOT EXISTS idx_yayika_user_challenges_status ON public.yayika_us
 
 ALTER TABLE public.yayika_user_challenges ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Users can view own challenges" ON public.yayika_user_challenges;
 CREATE POLICY "Users can view own challenges"
   ON public.yayika_user_challenges FOR SELECT
   USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can insert own challenges" ON public.yayika_user_challenges;
 CREATE POLICY "Users can insert own challenges"
   ON public.yayika_user_challenges FOR INSERT
   WITH CHECK (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can update own challenges" ON public.yayika_user_challenges;
 CREATE POLICY "Users can update own challenges"
   ON public.yayika_user_challenges FOR UPDATE
   USING (auth.uid() = user_id);
@@ -374,14 +406,17 @@ CREATE INDEX IF NOT EXISTS idx_yayika_growth_challenges_status ON public.yayika_
 
 ALTER TABLE public.yayika_growth_challenges ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Users can view own growth challenges" ON public.yayika_growth_challenges;
 CREATE POLICY "Users can view own growth challenges"
   ON public.yayika_growth_challenges FOR SELECT
   USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can insert own growth challenges" ON public.yayika_growth_challenges;
 CREATE POLICY "Users can insert own growth challenges"
   ON public.yayika_growth_challenges FOR INSERT
   WITH CHECK (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can update own growth challenges" ON public.yayika_growth_challenges;
 CREATE POLICY "Users can update own growth challenges"
   ON public.yayika_growth_challenges FOR UPDATE
   USING (auth.uid() = user_id);
@@ -408,18 +443,22 @@ CREATE INDEX IF NOT EXISTS idx_yayika_transactions_created ON public.yayika_tran
 
 ALTER TABLE public.yayika_transactions ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Users can view own transactions" ON public.yayika_transactions;
 CREATE POLICY "Users can view own transactions"
   ON public.yayika_transactions FOR SELECT
   USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can insert own transactions" ON public.yayika_transactions;
 CREATE POLICY "Users can insert own transactions"
   ON public.yayika_transactions FOR INSERT
   WITH CHECK (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can update own transactions" ON public.yayika_transactions;
 CREATE POLICY "Users can update own transactions"
   ON public.yayika_transactions FOR UPDATE
   USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can delete own transactions" ON public.yayika_transactions;
 CREATE POLICY "Users can delete own transactions"
   ON public.yayika_transactions FOR DELETE
   USING (auth.uid() = user_id);
@@ -444,6 +483,7 @@ CREATE INDEX IF NOT EXISTS idx_yayika_community_categories_sort ON public.yayika
 
 ALTER TABLE public.yayika_community_categories ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Anyone can view community categories" ON public.yayika_community_categories;
 CREATE POLICY "Anyone can view community categories"
   ON public.yayika_community_categories FOR SELECT
   USING (is_active = true);
@@ -469,6 +509,7 @@ CREATE INDEX IF NOT EXISTS idx_yayika_community_posts_category ON public.yayika_
 CREATE INDEX IF NOT EXISTS idx_yayika_community_posts_pinned ON public.yayika_community_posts(is_pinned DESC);
 CREATE INDEX IF NOT EXISTS idx_yayika_community_posts_created ON public.yayika_community_posts(created_at DESC);
 
+DROP TRIGGER IF EXISTS set_yayika_community_posts_updated_at ON public.yayika_community_posts;
 CREATE TRIGGER set_yayika_community_posts_updated_at
   BEFORE UPDATE ON public.yayika_community_posts
   FOR EACH ROW
@@ -476,18 +517,22 @@ CREATE TRIGGER set_yayika_community_posts_updated_at
 
 ALTER TABLE public.yayika_community_posts ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Anyone can view community posts" ON public.yayika_community_posts;
 CREATE POLICY "Anyone can view community posts"
   ON public.yayika_community_posts FOR SELECT
   USING (true);
 
+DROP POLICY IF EXISTS "Users can create own posts" ON public.yayika_community_posts;
 CREATE POLICY "Users can create own posts"
   ON public.yayika_community_posts FOR INSERT
   WITH CHECK (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can update own posts" ON public.yayika_community_posts;
 CREATE POLICY "Users can update own posts"
   ON public.yayika_community_posts FOR UPDATE
   USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can delete own posts" ON public.yayika_community_posts;
 CREATE POLICY "Users can delete own posts"
   ON public.yayika_community_posts FOR DELETE
   USING (auth.uid() = user_id);
@@ -507,14 +552,17 @@ CREATE INDEX IF NOT EXISTS idx_yayika_community_reactions_post ON public.yayika_
 
 ALTER TABLE public.yayika_community_reactions ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Anyone can view reactions" ON public.yayika_community_reactions;
 CREATE POLICY "Anyone can view reactions"
   ON public.yayika_community_reactions FOR SELECT
   USING (true);
 
+DROP POLICY IF EXISTS "Users can insert own reactions" ON public.yayika_community_reactions;
 CREATE POLICY "Users can insert own reactions"
   ON public.yayika_community_reactions FOR INSERT
   WITH CHECK (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can delete own reactions" ON public.yayika_community_reactions;
 CREATE POLICY "Users can delete own reactions"
   ON public.yayika_community_reactions FOR DELETE
   USING (auth.uid() = user_id);
@@ -535,18 +583,22 @@ CREATE INDEX IF NOT EXISTS idx_yayika_community_comments_created ON public.yayik
 
 ALTER TABLE public.yayika_community_comments ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Anyone can view comments" ON public.yayika_community_comments;
 CREATE POLICY "Anyone can view comments"
   ON public.yayika_community_comments FOR SELECT
   USING (true);
 
+DROP POLICY IF EXISTS "Users can create own comments" ON public.yayika_community_comments;
 CREATE POLICY "Users can create own comments"
   ON public.yayika_community_comments FOR INSERT
   WITH CHECK (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can update own comments" ON public.yayika_community_comments;
 CREATE POLICY "Users can update own comments"
   ON public.yayika_community_comments FOR UPDATE
   USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can delete own comments" ON public.yayika_community_comments;
 CREATE POLICY "Users can delete own comments"
   ON public.yayika_community_comments FOR DELETE
   USING (auth.uid() = user_id);
@@ -569,18 +621,22 @@ CREATE INDEX IF NOT EXISTS idx_yayika_community_notifications_created ON public.
 
 ALTER TABLE public.yayika_community_notifications ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Users can view own notifications" ON public.yayika_community_notifications;
 CREATE POLICY "Users can view own notifications"
   ON public.yayika_community_notifications FOR SELECT
   USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can insert own notifications" ON public.yayika_community_notifications;
 CREATE POLICY "Users can insert own notifications"
   ON public.yayika_community_notifications FOR INSERT
   WITH CHECK (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can update own notifications" ON public.yayika_community_notifications;
 CREATE POLICY "Users can update own notifications"
   ON public.yayika_community_notifications FOR UPDATE
   USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can delete own notifications" ON public.yayika_community_notifications;
 CREATE POLICY "Users can delete own notifications"
   ON public.yayika_community_notifications FOR DELETE
   USING (auth.uid() = user_id);
@@ -598,6 +654,7 @@ CREATE TABLE IF NOT EXISTS public.yayika_community_user_stats (
 
 CREATE INDEX IF NOT EXISTS idx_yayika_community_user_stats_user ON public.yayika_community_user_stats(user_id);
 
+DROP TRIGGER IF EXISTS set_yayika_community_user_stats_updated_at ON public.yayika_community_user_stats;
 CREATE TRIGGER set_yayika_community_user_stats_updated_at
   BEFORE UPDATE ON public.yayika_community_user_stats
   FOR EACH ROW
@@ -605,14 +662,17 @@ CREATE TRIGGER set_yayika_community_user_stats_updated_at
 
 ALTER TABLE public.yayika_community_user_stats ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Users can view own community stats" ON public.yayika_community_user_stats;
 CREATE POLICY "Users can view own community stats"
   ON public.yayika_community_user_stats FOR SELECT
   USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can insert own community stats" ON public.yayika_community_user_stats;
 CREATE POLICY "Users can insert own community stats"
   ON public.yayika_community_user_stats FOR INSERT
   WITH CHECK (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can update own community stats" ON public.yayika_community_user_stats;
 CREATE POLICY "Users can update own community stats"
   ON public.yayika_community_user_stats FOR UPDATE
   USING (auth.uid() = user_id);
@@ -636,6 +696,7 @@ CREATE TABLE IF NOT EXISTS public.yayika_affiliates (
 CREATE INDEX IF NOT EXISTS idx_yayika_affiliates_user ON public.yayika_affiliates(user_id);
 CREATE INDEX IF NOT EXISTS idx_yayika_affiliates_code ON public.yayika_affiliates(referral_code);
 
+DROP TRIGGER IF EXISTS set_yayika_affiliates_updated_at ON public.yayika_affiliates;
 CREATE TRIGGER set_yayika_affiliates_updated_at
   BEFORE UPDATE ON public.yayika_affiliates
   FOR EACH ROW
@@ -643,14 +704,17 @@ CREATE TRIGGER set_yayika_affiliates_updated_at
 
 ALTER TABLE public.yayika_affiliates ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Users can view own affiliate data" ON public.yayika_affiliates;
 CREATE POLICY "Users can view own affiliate data"
   ON public.yayika_affiliates FOR SELECT
   USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can insert own affiliate data" ON public.yayika_affiliates;
 CREATE POLICY "Users can insert own affiliate data"
   ON public.yayika_affiliates FOR INSERT
   WITH CHECK (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can update own affiliate data" ON public.yayika_affiliates;
 CREATE POLICY "Users can update own affiliate data"
   ON public.yayika_affiliates FOR UPDATE
   USING (auth.uid() = user_id);
@@ -668,6 +732,7 @@ CREATE TABLE IF NOT EXISTS public.yayika_share_stats (
 
 CREATE INDEX IF NOT EXISTS idx_yayika_share_stats_user ON public.yayika_share_stats(user_id);
 
+DROP TRIGGER IF EXISTS set_yayika_share_stats_updated_at ON public.yayika_share_stats;
 CREATE TRIGGER set_yayika_share_stats_updated_at
   BEFORE UPDATE ON public.yayika_share_stats
   FOR EACH ROW
@@ -675,14 +740,17 @@ CREATE TRIGGER set_yayika_share_stats_updated_at
 
 ALTER TABLE public.yayika_share_stats ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Users can view own share stats" ON public.yayika_share_stats;
 CREATE POLICY "Users can view own share stats"
   ON public.yayika_share_stats FOR SELECT
   USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can insert own share stats" ON public.yayika_share_stats;
 CREATE POLICY "Users can insert own share stats"
   ON public.yayika_share_stats FOR INSERT
   WITH CHECK (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can update own share stats" ON public.yayika_share_stats;
 CREATE POLICY "Users can update own share stats"
   ON public.yayika_share_stats FOR UPDATE
   USING (auth.uid() = user_id);
@@ -703,18 +771,22 @@ CREATE INDEX IF NOT EXISTS idx_yayika_share_cards_type ON public.yayika_share_ca
 
 ALTER TABLE public.yayika_share_cards ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Users can view own share cards" ON public.yayika_share_cards;
 CREATE POLICY "Users can view own share cards"
   ON public.yayika_share_cards FOR SELECT
   USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can insert own share cards" ON public.yayika_share_cards;
 CREATE POLICY "Users can insert own share cards"
   ON public.yayika_share_cards FOR INSERT
   WITH CHECK (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can update own share cards" ON public.yayika_share_cards;
 CREATE POLICY "Users can update own share cards"
   ON public.yayika_share_cards FOR UPDATE
   USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can delete own share cards" ON public.yayika_share_cards;
 CREATE POLICY "Users can delete own share cards"
   ON public.yayika_share_cards FOR DELETE
   USING (auth.uid() = user_id);
@@ -732,6 +804,7 @@ CREATE INDEX IF NOT EXISTS idx_yayika_share_templates_active ON public.yayika_sh
 
 ALTER TABLE public.yayika_share_templates ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Anyone can view active share templates" ON public.yayika_share_templates;
 CREATE POLICY "Anyone can view active share templates"
   ON public.yayika_share_templates FOR SELECT
   USING (is_active = true);
@@ -753,6 +826,7 @@ CREATE TABLE IF NOT EXISTS public.yayika_onboarding (
 
 CREATE INDEX IF NOT EXISTS idx_yayika_onboarding_user ON public.yayika_onboarding(user_id);
 
+DROP TRIGGER IF EXISTS set_yayika_onboarding_updated_at ON public.yayika_onboarding;
 CREATE TRIGGER set_yayika_onboarding_updated_at
   BEFORE UPDATE ON public.yayika_onboarding
   FOR EACH ROW
@@ -760,14 +834,17 @@ CREATE TRIGGER set_yayika_onboarding_updated_at
 
 ALTER TABLE public.yayika_onboarding ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Users can view own onboarding" ON public.yayika_onboarding;
 CREATE POLICY "Users can view own onboarding"
   ON public.yayika_onboarding FOR SELECT
   USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can insert own onboarding" ON public.yayika_onboarding;
 CREATE POLICY "Users can insert own onboarding"
   ON public.yayika_onboarding FOR INSERT
   WITH CHECK (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can update own onboarding" ON public.yayika_onboarding;
 CREATE POLICY "Users can update own onboarding"
   ON public.yayika_onboarding FOR UPDATE
   USING (auth.uid() = user_id);
@@ -786,6 +863,7 @@ CREATE INDEX IF NOT EXISTS idx_yayika_onboarding_days_number ON public.yayika_on
 
 ALTER TABLE public.yayika_onboarding_days ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Anyone can view onboarding days" ON public.yayika_onboarding_days;
 CREATE POLICY "Anyone can view onboarding days"
   ON public.yayika_onboarding_days FOR SELECT
   USING (true);
@@ -806,6 +884,7 @@ CREATE INDEX IF NOT EXISTS idx_yayika_onboarding_tasks_day ON public.yayika_onbo
 
 ALTER TABLE public.yayika_onboarding_tasks ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Users can view own onboarding tasks" ON public.yayika_onboarding_tasks;
 CREATE POLICY "Users can view own onboarding tasks"
   ON public.yayika_onboarding_tasks FOR SELECT
   USING (
@@ -816,6 +895,7 @@ CREATE POLICY "Users can view own onboarding tasks"
     )
   );
 
+DROP POLICY IF EXISTS "Users can insert own onboarding tasks" ON public.yayika_onboarding_tasks;
 CREATE POLICY "Users can insert own onboarding tasks"
   ON public.yayika_onboarding_tasks FOR INSERT
   WITH CHECK (
@@ -826,6 +906,7 @@ CREATE POLICY "Users can insert own onboarding tasks"
     )
   );
 
+DROP POLICY IF EXISTS "Users can update own onboarding tasks" ON public.yayika_onboarding_tasks;
 CREATE POLICY "Users can update own onboarding tasks"
   ON public.yayika_onboarding_tasks FOR UPDATE
   USING (
@@ -856,6 +937,7 @@ CREATE TABLE IF NOT EXISTS public.yayika_products (
 CREATE INDEX IF NOT EXISTS idx_yayika_products_active ON public.yayika_products(is_active);
 CREATE INDEX IF NOT EXISTS idx_yayika_products_category ON public.yayika_products(category);
 
+DROP TRIGGER IF EXISTS set_yayika_products_updated_at ON public.yayika_products;
 CREATE TRIGGER set_yayika_products_updated_at
   BEFORE UPDATE ON public.yayika_products
   FOR EACH ROW
@@ -863,6 +945,7 @@ CREATE TRIGGER set_yayika_products_updated_at
 
 ALTER TABLE public.yayika_products ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Anyone can view active products" ON public.yayika_products;
 CREATE POLICY "Anyone can view active products"
   ON public.yayika_products FOR SELECT
   USING (is_active = true);
@@ -883,6 +966,7 @@ CREATE INDEX IF NOT EXISTS idx_yayika_product_lessons_sort ON public.yayika_prod
 
 ALTER TABLE public.yayika_product_lessons ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Anyone can view lessons for active products" ON public.yayika_product_lessons;
 CREATE POLICY "Anyone can view lessons for active products"
   ON public.yayika_product_lessons FOR SELECT
   USING (
@@ -909,10 +993,12 @@ CREATE INDEX IF NOT EXISTS idx_yayika_user_purchases_status ON public.yayika_use
 
 ALTER TABLE public.yayika_user_purchases ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Users can view own purchases" ON public.yayika_user_purchases;
 CREATE POLICY "Users can view own purchases"
   ON public.yayika_user_purchases FOR SELECT
   USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can insert own purchases" ON public.yayika_user_purchases;
 CREATE POLICY "Users can insert own purchases"
   ON public.yayika_user_purchases FOR INSERT
   WITH CHECK (auth.uid() = user_id);
@@ -933,14 +1019,17 @@ CREATE INDEX IF NOT EXISTS idx_yayika_user_lesson_progress_lesson ON public.yayi
 
 ALTER TABLE public.yayika_user_lesson_progress ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Users can view own lesson progress" ON public.yayika_user_lesson_progress;
 CREATE POLICY "Users can view own lesson progress"
   ON public.yayika_user_lesson_progress FOR SELECT
   USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can insert own lesson progress" ON public.yayika_user_lesson_progress;
 CREATE POLICY "Users can insert own lesson progress"
   ON public.yayika_user_lesson_progress FOR INSERT
   WITH CHECK (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can update own lesson progress" ON public.yayika_user_lesson_progress;
 CREATE POLICY "Users can update own lesson progress"
   ON public.yayika_user_lesson_progress FOR UPDATE
   USING (auth.uid() = user_id);
@@ -965,14 +1054,17 @@ CREATE INDEX IF NOT EXISTS idx_yayika_push_notifications_sent ON public.yayika_p
 
 ALTER TABLE public.yayika_push_notifications ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Users can view own push notifications" ON public.yayika_push_notifications;
 CREATE POLICY "Users can view own push notifications"
   ON public.yayika_push_notifications FOR SELECT
   USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can update own push notifications" ON public.yayika_push_notifications;
 CREATE POLICY "Users can update own push notifications"
   ON public.yayika_push_notifications FOR UPDATE
   USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can delete own push notifications" ON public.yayika_push_notifications;
 CREATE POLICY "Users can delete own push notifications"
   ON public.yayika_push_notifications FOR DELETE
   USING (auth.uid() = user_id);
@@ -996,6 +1088,7 @@ CREATE INDEX IF NOT EXISTS idx_yayika_weekly_digests_week ON public.yayika_weekl
 
 ALTER TABLE public.yayika_weekly_digests ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Users can view own weekly digests" ON public.yayika_weekly_digests;
 CREATE POLICY "Users can view own weekly digests"
   ON public.yayika_weekly_digests FOR SELECT
   USING (auth.uid() = user_id);
@@ -1013,6 +1106,7 @@ CREATE TABLE IF NOT EXISTS public.yayika_digest_prefs (
 
 CREATE INDEX IF NOT EXISTS idx_yayika_digest_prefs_user ON public.yayika_digest_prefs(user_id);
 
+DROP TRIGGER IF EXISTS set_yayika_digest_prefs_updated_at ON public.yayika_digest_prefs;
 CREATE TRIGGER set_yayika_digest_prefs_updated_at
   BEFORE UPDATE ON public.yayika_digest_prefs
   FOR EACH ROW
@@ -1020,14 +1114,17 @@ CREATE TRIGGER set_yayika_digest_prefs_updated_at
 
 ALTER TABLE public.yayika_digest_prefs ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Users can view own digest prefs" ON public.yayika_digest_prefs;
 CREATE POLICY "Users can view own digest prefs"
   ON public.yayika_digest_prefs FOR SELECT
   USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can insert own digest prefs" ON public.yayika_digest_prefs;
 CREATE POLICY "Users can insert own digest prefs"
   ON public.yayika_digest_prefs FOR INSERT
   WITH CHECK (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can update own digest prefs" ON public.yayika_digest_prefs;
 CREATE POLICY "Users can update own digest prefs"
   ON public.yayika_digest_prefs FOR UPDATE
   USING (auth.uid() = user_id);
@@ -1045,6 +1142,7 @@ CREATE INDEX IF NOT EXISTS idx_yayika_digest_history_sent ON public.yayika_diges
 
 ALTER TABLE public.yayika_digest_history ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Users can view own digest history" ON public.yayika_digest_history;
 CREATE POLICY "Users can view own digest history"
   ON public.yayika_digest_history FOR SELECT
   USING (auth.uid() = user_id);
@@ -1088,6 +1186,7 @@ CREATE INDEX IF NOT EXISTS idx_yayika_regions_active ON public.yayika_regions(is
 
 ALTER TABLE public.yayika_regions ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Anyone can view active regions" ON public.yayika_regions;
 CREATE POLICY "Anyone can view active regions"
   ON public.yayika_regions FOR SELECT
   USING (is_active = true);
@@ -1097,5 +1196,5 @@ CREATE POLICY "Anyone can view active regions"
 -- Total tables created: 44 (all referenced tables)
 -- Total RLS policies: 70+
 -- Total indexes: 55+
--- Total triggers: 8 (updated_at on profiles, progress, subscriptions, posts, user_stats, affiliates, share_stats, onboarding, digest_prefs, products)
+-- Total triggers: 10 (updated_at on profiles, progress, subscriptions, posts, user_stats, affiliates, share_stats, onboarding, digest_prefs, products)
 -- ============================================================================

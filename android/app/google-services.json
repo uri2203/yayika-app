@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "875888183291",
+    "project_id": "yayika",
+    "storage_bucket": "yayika.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:875888183291:android:17c80bae45ccf05027ed5e",
+        "android_client_info": {
+          "package_name": "com.yayika.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAWV8BfxWrCymVk-VnXaprZTK7Tf0TtLpI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
