@@ -266,9 +266,17 @@ export interface OnboardingPreferences {
 }
 
 export async function aiOnboarding(params: OnboardingPreferences) {
-  return callFunction<{ success: boolean }>(
-    'ai-onboarding', { action: 'savePreferences', ...params }, true
-  );
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) throw new Error('Authentication required');
+
+  const { error } = await supabase
+    .from('yayika_onboarding')
+    .upsert(
+      { user_id: user.id, preferences: params },
+      { onConflict: 'user_id' }
+    );
+  if (error) throw error;
+  return { success: true };
 }
 
 // ──── Onboarding ─────────────────────────────────────
@@ -374,16 +382,36 @@ export async function getCycleLog(userId: string, limit = 28) {
     .from('yayika_cycle_log')
     .select('*')
     .eq('user_id', userId)
-    .order('log_date', { ascending: false })
+    .order('logged_at', { ascending: false })
     .limit(limit);
   if (error) throw error;
   return data;
 }
 
 export async function upsertCycleLog(userId: string, logDate: string, entry: Record<string, any>) {
+  const { data: existing } = await supabase
+    .from('yayika_cycle_log')
+    .select('id')
+    .eq('user_id', userId)
+    .gte('logged_at', `${logDate}T00:00:00`)
+    .lt('logged_at', `${logDate}T23:59:59`)
+    .limit(1)
+    .maybeSingle();
+
+  if (existing) {
+    const { data, error } = await supabase
+      .from('yayika_cycle_log')
+      .update(entry)
+      .eq('id', existing.id)
+      .select()
+      .single();
+    if (error) throw error;
+    return data;
+  }
+
   const { data, error } = await supabase
     .from('yayika_cycle_log')
-    .upsert({ user_id: userId, log_date: logDate, ...entry }, { onConflict: 'user_id,log_date' })
+    .insert({ user_id: userId, ...entry })
     .select()
     .single();
   if (error) throw error;
@@ -395,7 +423,7 @@ export async function getTransactions(userId: string, limit = 50) {
     .from('yayika_transactions')
     .select('*')
     .eq('user_id', userId)
-    .order('date', { ascending: false })
+    .order('created_at', { ascending: false })
     .limit(limit);
   if (error) throw error;
   return data;
@@ -437,16 +465,16 @@ export async function getCheckins(userId: string) {
     .from('yayika_checkins')
     .select('*')
     .eq('user_id', userId)
-    .order('checkin_date', { ascending: false })
+    .order('created_at', { ascending: false })
     .limit(30);
   if (error) throw error;
   return data;
 }
 
-export async function addCheckin(userId: string) {
+export async function addCheckin(userId: string, type = 'daily', mood?: number, energy?: number, notes?: string) {
   const { data, error } = await supabase
     .from('yayika_checkins')
-    .insert({ user_id: userId, checkin_date: new Date().toISOString().split('T')[0] })
+    .insert({ user_id: userId, checkin_type: type, mood, energy, notes })
     .select()
     .single();
   if (error) throw error;
@@ -459,7 +487,7 @@ export async function getDailyMood(userId: string) {
     .from('yayika_daily_mood')
     .select('*')
     .eq('user_id', userId)
-    .eq('check_date', today)
+    .eq('logged_date', today)
     .single();
   if (error && error.code !== 'PGRST116') throw error;
   return data;
@@ -469,7 +497,7 @@ export async function upsertDailyMood(userId: string, mood: Record<string, any>)
   const today = new Date().toISOString().split('T')[0];
   const { data, error } = await supabase
     .from('yayika_daily_mood')
-    .upsert({ user_id: userId, check_date: today, ...mood }, { onConflict: 'user_id,check_date' })
+    .upsert({ user_id: userId, logged_date: today, ...mood }, { onConflict: 'user_id,logged_date' })
     .select()
     .single();
   if (error) throw error;
@@ -535,7 +563,7 @@ export interface GanaConYayikaResponse {
 
 export async function aiGanaConYayika(params: { lang: string }) {
   return callFunction<GanaConYayikaResponse>(
-    'ai-gana-con-yayika', { action: 'getAffiliateData', lang: params.lang }, true
+    'ai-gana-con-yayika', { action: 'getDashboard', lang: params.lang }, true
   );
 }
 
@@ -548,7 +576,7 @@ export interface ShareEarnResponse {
 
 export async function aiShareEarn(params: { lang: string }) {
   return callFunction<ShareEarnResponse>(
-    'ai-share-earn', { action: 'getShareData', lang: params.lang }, true
+    'ai-share-earn', { action: 'getStats', lang: params.lang }, true
   );
 }
 

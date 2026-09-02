@@ -88,11 +88,11 @@ export default function CycleCoachScreen({ navigation }: any) {
       const moodData = await getDailyMood(user.id);
       const today = new Date().toISOString().split('T')[0];
       const logs = await getCycleLog(user.id, 1);
-      const todayLog = logs?.find((l: any) => l.log_date === today);
+      const todayLog = logs?.find((l: any) => l.logged_at?.startsWith(today));
       setHasLoggedToday(!!todayLog || !!moodData);
 
       const recentLogs = (logs || []).map((l: any) => ({
-        log_date: l.log_date,
+        log_date: l.logged_at?.split('T')[0],
         energy: l.energy,
         mood: l.mood,
         symptoms: l.symptoms,

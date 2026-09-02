@@ -15,6 +15,7 @@ import { useLanguage } from '../../contexts/LanguageContext';
 import { useTheme } from '../../contexts/ThemeContext';
 import { typography, spacing, borderRadius } from '../../config/theme';
 import Card from '../../components/Card';
+import { RetentionCheckin, TransformMirror, FutureSelf, SocialProofWidget } from '../../components/retention';
 import {
   getProgress,
   getProfile,
@@ -592,6 +593,33 @@ export default function PortalDashboard({ navigation }: any) {
       iconColor: colors.turquoise,
       onPress: () => navigateInStack('Badges'),
     },
+    {
+      key: 'chat-laura',
+      title: t('chat_title'),
+      subtitle: t('chat_subtitle'),
+      icon: 'chatbubble-ellipses',
+      bgColor: '#E8D5F5',
+      iconColor: colors.primary,
+      onPress: () => navigateInStack('Chat'),
+    },
+    {
+      key: 'growth-coach',
+      title: t('growth_title'),
+      subtitle: t('growth_loading'),
+      icon: 'trending-up',
+      bgColor: '#D1FAE5',
+      iconColor: colors.turquoise,
+      onPress: () => navigateInStack('GrowthCoach'),
+    },
+    {
+      key: 'wellness-planner',
+      title: t('wellness_title'),
+      subtitle: t('home_wellness_sub'),
+      icon: 'leaf',
+      bgColor: '#FEF3C7',
+      iconColor: colors.gold,
+      onPress: () => navigateInStack('WellnessPlanner'),
+    },
   ];
 
   return (
@@ -718,6 +746,13 @@ export default function PortalDashboard({ navigation }: any) {
           ))}
         </View>
 
+        {/* Retention Widgets */}
+        <RetentionCheckin onCheckinComplete={(result) => {
+          if (result.success) {
+            fetchData(); // Refresh dashboard data
+          }
+        }} />
+
         {/* Today's Affirmation */}
         {affirmation ? (
           <Card style={styles.affirmationCard}>
@@ -728,6 +763,15 @@ export default function PortalDashboard({ navigation }: any) {
             <Text style={styles.affirmationText}>{affirmation}</Text>
           </Card>
         ) : null}
+
+        {/* Retention: Transform Mirror */}
+        <TransformMirror />
+
+        {/* Retention: Social Proof */}
+        <SocialProofWidget />
+
+        {/* Retention: Future Self */}
+        <FutureSelf />
 
         {/* Weekly Challenges */}
         {activeChallenges.length > 0 && (

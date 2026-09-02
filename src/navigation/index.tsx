@@ -56,6 +56,9 @@ import LegalScreen from '../screens/profile/LegalScreen';
 // Shared
 import NotificationsScreen from '../screens/shared/NotificationsScreen';
 import SupportScreen from '../screens/shared/SupportScreen';
+import ChatScreen from '../screens/shared/ChatScreen';
+import GrowthCoachScreen from '../screens/shared/GrowthCoachScreen';
+import WellnessPlannerScreen from '../screens/shared/WellnessPlannerScreen';
 
 const AuthStack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -98,6 +101,9 @@ function PortalStackNavigator() {
       <PortalStack.Screen name="Support" component={SupportScreen} />
       <PortalStack.Screen name="Onboarding" component={OnboardingFlowScreen} />
       <PortalStack.Screen name="AffiliateDashboard" component={AffiliateDashboardScreen} />
+      <PortalStack.Screen name="Chat" component={ChatScreen} />
+      <PortalStack.Screen name="GrowthCoach" component={GrowthCoachScreen} />
+      <PortalStack.Screen name="WellnessPlanner" component={WellnessPlannerScreen} />
     </PortalStack.Navigator>
   );
 }

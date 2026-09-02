@@ -22,7 +22,7 @@ import {
 } from '../../config/api';
 
 interface CycleLogEntry {
-  log_date: string;
+  logged_at: string;
   cycle_day?: number;
   phase?: string;
   energy?: number;
@@ -75,7 +75,7 @@ export default function CycleLogScreen({ navigation }: any) {
       setRecentLogs(logs || []);
 
       const today = new Date().toISOString().split('T')[0];
-      const todayLog = logs?.find((l: any) => l.log_date === today);
+      const todayLog = logs?.find((l: any) => l.logged_at?.startsWith(today));
       if (todayLog) {
         setCycleDay(todayLog.cycle_day || 1);
         setSelectedPhase(todayLog.phase || 'menstrual');
@@ -247,7 +247,7 @@ export default function CycleLogScreen({ navigation }: any) {
             <View key={i} style={styles.logRow}>
               <View style={[styles.logDot, { backgroundColor: phaseData?.color || colors.border }]} />
               <View style={styles.logInfo}>
-                <Text style={styles.logDate}>{log.log_date}</Text>
+                <Text style={styles.logDate}>{log.logged_at?.split('T')[0]}</Text>
                 <Text style={styles.logPhase}>
                   {phaseData?.icon} {phaseData?.label || log.phase} · {t('cycle_day') || 'Día'} {log.cycle_day}
                 </Text>

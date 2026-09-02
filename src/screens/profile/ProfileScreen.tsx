@@ -45,7 +45,7 @@ export default function ProfileScreen({ navigation }: any) {
     (async () => {
       try {
         const [subRes, badgeRes, progressRes] = await Promise.all([
-          supabase.from('yayika_subscriptions').select('plan_name,plan').eq('user_id', user.id).order('created_at', { ascending: false }).limit(1).maybeSingle(),
+          supabase.from('yayika_subscriptions').select('plan').eq('user_id', user.id).order('created_at', { ascending: false }).limit(1).maybeSingle(),
           supabase.from('yayika_xp_events').select('id', { count: 'exact', head: true }).eq('user_id', user.id).eq('event_type', 'badge'),
           supabase.from('yayika_progress').select('modules_completed').eq('user_id', user.id).maybeSingle(),
         ]);
