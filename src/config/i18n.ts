@@ -1,4 +1,4 @@
-import * as SecureStore from 'expo-secure-store';
+﻿import * as SecureStore from 'expo-secure-store';
 
 export type Language = 'es' | 'en' | 'pt' | 'fr' | 'de';
 
@@ -2015,7 +2015,7 @@ const translations: Record<Language, Record<string, string>> = {
     mem_guerrera_feature_2: '3 recursos premium por mês',
     mem_guerrera_feature_3: 'Masterclasses mensais',
     mem_guerrera_feature_4: 'Grupo privado no WhatsApp',
-    mem_diamante_feature_1: 'Tudo do Guerreira',
+    mem_diamante_feature_1: 'Tudo da Guerreira',
     mem_diamante_feature_2: 'Acesso ilimitado a cursos',
     mem_diamante_feature_3: 'Sessão grupal mensal',
     mem_diamante_feature_4: 'Conteúdo exclusivo',
@@ -2539,20 +2539,20 @@ const translations: Record<Language, Record<string, string>> = {
     onboarding_back: 'Voltar',
 
     // Multi-step Onboarding
-    onboard_goals_title: 'Quais são teus objetivos?',
-    onboard_goals_subtitle: 'Seleciona todos os que se aplicam',
+    onboard_goals_title: 'Quais s\u00e3o seus objetivos?',
+    onboard_goals_subtitle: 'Selecione todas as que se aplicam',
     onboard_goals_financial: 'Saúde financeira',
     onboard_goals_cycle: 'Conhecer meu ciclo',
     onboard_goals_wellness: 'Bem-estar',
     onboard_goals_growth: 'Crescimento pessoal',
-    onboard_cycle_title: 'Registra teu ciclo',
-    onboard_cycle_subtitle: 'Em que fase estás agora?',
+    onboard_cycle_title: 'Registre seu ciclo',
+    onboard_cycle_subtitle: 'Em que fase voc\u00ea est\u00e1 agora?',
     onboard_cycle_menstrual: 'Menstrual',
     onboard_cycle_follicular: 'Folicular',
     onboard_cycle_ovulation: 'Ovulação',
     onboard_cycle_luteal: 'Lútea',
     onboard_finance_title: 'Situação financeira',
-    onboard_finance_subtitle: 'Seleciona teu renda mensal',
+    onboard_finance_subtitle: 'Selecione sua renda mensal',
     onboard_finance_range_1: 'Menos de $10.000',
     onboard_finance_range_2: '$10.000 - $25.000',
     onboard_finance_range_3: '$25.000 - $50.000',
@@ -2562,9 +2562,9 @@ const translations: Record<Language, Record<string, string>> = {
     onboard_finance_goal_invert: 'Investir',
     onboard_finance_goal_deuda: 'Sair de dívidas',
     onboard_finance_goal_negociar: 'Negociar melhor',
-    onboard_notif_subtitle: 'Escolhe como queres receber lembretes',
-    onboard_notif_push_desc: 'Recebe lembretes no teu celular',
-    onboard_notif_email_desc: 'Recebe um resumo semanal',
+    onboard_notif_subtitle: 'Escolha como deseja receber lembretes',
+    onboard_notif_push_desc: 'Receba lembretes no seu celular',
+    onboard_notif_email_desc: 'Receba um resumo semanal',
     onboard_complete: 'Pronto!',
     onboard_next: 'Próximo',
     onboard_back: 'Voltar',
@@ -2579,9 +2579,9 @@ const translations: Record<Language, Record<string, string>> = {
     onboard_flow_day: 'Dia {day}',
     onboard_flow_tasks: 'Tarefas do dia',
     onboard_flow_complete_day: 'Completar dia {day}',
-    onboard_flow_locked: 'Completa o dia anterior primeiro',
+    onboard_flow_locked: 'Complete o dia anterior primeiro',
     onboard_flow_congrats: 'Parabéns!',
-    onboard_flow_completion_msg: 'Completaste todo o onboarding. Ganhou {xp} XP',
+    onboard_flow_completion_msg: 'Voc\u00ea completou todo o onboarding. Ganhou {xp} XP',
 
     // Badges (missing)
     badges_streak: 'Sequência',
@@ -2600,7 +2600,7 @@ const translations: Record<Language, Record<string, string>> = {
 
     // Badge names & descriptions - Check-in
     badge_checkin1_name: 'Primeira vez',
-    badge_checkin1_desc: 'Teu primeiro check-in',
+    badge_checkin1_desc: 'Seu primeiro check-in',
     badge_checkin10_name: 'Assídua',
     badge_checkin10_desc: '10 check-ins realizados',
     badge_checkin30_name: 'Constância',
@@ -2610,15 +2610,15 @@ const translations: Record<Language, Record<string, string>> = {
 
     // Badge names & descriptions - Cycle
     badge_mood_name: 'Humor registrado',
-    badge_mood_desc: 'Registra teu humor pela primeira vez',
+    badge_mood_desc: 'Registre seu humor pela primeira vez',
     badge_cycle7_name: 'Ciclo consciente',
     badge_cycle7_desc: '7 dias de registro de ciclo',
 
     // Badge names & descriptions - Challenge
     badge_challenge_first_name: 'Primeiro desafio',
-    badge_challenge_first_desc: 'Completa teu primeiro desafio',
+    badge_challenge_first_desc: 'Complete seu primeiro desafio',
     badge_challenge10_name: 'Desafiadora',
-    badge_challenge10_desc: 'Completa 10 desafios',
+    badge_challenge10_desc: 'Complete 10 desafios',
 
     // Badge names & descriptions - Financial
     badge_budget_name: 'Orçamentista',
@@ -2626,25 +2626,25 @@ const translations: Record<Language, Record<string, string>> = {
 
     // Badge names & descriptions - Course
     badge_course_complete_name: 'Graduada',
-    badge_course_complete_desc: 'Completa um curso completo',
+    badge_course_complete_desc: 'Complete um curso completo',
     badge_share_name: 'Compartilhadora',
-    badge_share_desc: 'Compartilha um produto',
+    badge_share_desc: 'Compartilhe um produto',
 
     // Badge names & descriptions - Social
     badge_referral_first_name: 'Primeira referida',
-    badge_referral_first_desc: 'Convida tua primeira amiga',
+    badge_referral_first_desc: 'Convide sua primeira amiga',
     badge_referral5_name: 'Embaixadora',
-    badge_referral5_desc: 'Convida 5 amigas',
+    badge_referral5_desc: 'Convide 5 amigas',
     badge_referral25_name: 'Embaixadora Top',
-    badge_referral25_desc: 'Convida 25 amigas',
+    badge_referral25_desc: 'Convide 25 amigas',
 
     // Badge names & descriptions - Special
     badge_first_steps_name: 'Primeiros passos',
-    badge_first_steps_desc: 'Ganha 100 XP',
+    badge_first_steps_desc: 'Ganhe 100 XP',
     badge_rising_name: 'Em ascensão',
-    badge_rising_desc: 'Ganha 500 XP',
+    badge_rising_desc: 'Ganhe 500 XP',
     badge_queen_name: 'Rainha Yayika',
-    badge_queen_desc: 'Desbloqueia todas as conquistas',
+    badge_queen_desc: 'Desbloqueie todas as conquistas',
 
     // Retention System
     retention_checkin_title: 'Check-in Diário',
@@ -2750,7 +2750,7 @@ const translations: Record<Language, Record<string, string>> = {
     home_xp: 'XP',
     home_level: 'Niveau',
     home_checkin: 'Check-in quotidien',
-    home_checkin_sub: 'Enregistrez votre jour et gagnez +10 XP',
+    home_checkin_sub: 'Enregistre ta journ\u00e9e et gagne +10 XP',
     home_checkin_done: 'Déjà fait aujourd\'hui',
     home_checkin_success_title: 'Check-in terminé!',
     home_checkin_success: '+10 XP gagnés. Continuez!',
@@ -3218,7 +3218,7 @@ const translations: Record<Language, Record<string, string>> = {
 
     // Onboarding
     onboarding_title: 'Bienvenue sur Yayika',
-    onboarding_step1_title: 'Quels sont vos objectifs?',
+    onboarding_step1_title: 'Quels sont tes objectifs ?',
     onboarding_step1_financial: 'Santé financière',
     onboarding_step1_cycle: 'Suivre mon cycle',
     onboarding_step1_wellness: 'Bien-être général',
@@ -3250,7 +3250,7 @@ const translations: Record<Language, Record<string, string>> = {
     common_xp_unit: 'XP',
     common_badges_label: 'Badges',
     common_unknown_error: 'Erreur inconnue',
-    common_default_name: 'Guerriere',
+    common_default_name: 'Guerri\u00e8re',
     common_days_label: 'jours',
 
     // Cycle extras
@@ -3557,19 +3557,19 @@ const translations: Record<Language, Record<string, string>> = {
     retention_wheel_title: 'Tournez la Roue !',
     retention_wheel_spin: 'Tourner',
     retention_wheel_congrats: 'Félicitations !',
-    retention_wheel_try_again: 'Vous aurez une autre chance demain',
+    retention_wheel_try_again: 'Tu auras une autre chance demain',
     retention_wheel_xp: '+{amount} XP',
     retention_wheel_badge: 'Badge secrète débloquée !',
     retention_wheel_special: 'Récompense spéciale !',
-    retention_transform_title: 'Votre Transformation',
+    retention_transform_title: 'Ta Transformation',
     retention_transform_current: 'Ce mois-ci',
     retention_transform_last_month: 'Mois dernier',
     retention_transform_improvement: '+{percent}% d\'amélioration',
     retention_transform_checkins: '{count} check-ins',
     retention_transform_xp: '{xp} XP gagnés',
     retention_transform_streak: 'Meilleure série : {days} jours',
-    retention_future_title: 'Votre Futur Moi',
-    retention_future_projection: 'Dans 30 jours vous serez...',
+    retention_future_title: 'Ton Futur Moi',
+    retention_future_projection: 'Dans 30 jours tu seras...',
     retention_future_level: 'Niveau {level}',
     retention_future_xp: '{xp} XP',
     retention_future_badges: '{count} badges',
@@ -3578,11 +3578,11 @@ const translations: Record<Language, Record<string, string>> = {
     retention_future_keep_going: 'Continuez !',
     retention_social_title: 'Femmes Actives',
     retention_social_active: '{count} femmes actives maintenant',
-    retention_social_rank: 'Votre position : #{rank}',
+    retention_social_rank: 'Ta position : #{rank}',
     retention_social_top: 'Top actives :',
     retention_loss_title: 'On Vous Manque',
-    retention_loss_message: 'On ne vous a pas vue depuis {days} jours',
-    retention_loss_return: 'Revenez ! On vous manque',
+    retention_loss_message: 'On ne t'a pas vue depuis {days} jours',
+    retention_loss_return: 'Reviens ! Tu nous manques',
     retention_loss_keep_going: 'Votre série restera active pendant {days} jours',
     retention_phase_menstrual: 'Phase Menstruelle',
     retention_phase_follicular: 'Phase Folliculaire',
@@ -3750,7 +3750,7 @@ const translations: Record<Language, Record<string, string>> = {
     course_m1_l2: 'Kenne deine Phasen',
     course_m1_l3: 'Energie in der Menstruationsphase',
     course_m1_l4: 'Kreativität in der Follikelphase',
-    course_m1_l5: 'Produktivität during Ovulation',
+    course_m1_l5: 'Produktivität w\u00e4hrend des Eisprungs',
     course_m1_l6: 'Fokus in der Lutealphase',
     course_m1_l7: 'Plane deine Woche nach Phasen',
     course_m1_l8: 'Morgenroutinen nach Phase',
@@ -3820,7 +3820,7 @@ const translations: Record<Language, Record<string, string>> = {
     mem_guerrera_feature_3: 'Monatliche Masterclasses',
     mem_guerrera_feature_4: 'Private WhatsApp-Gruppe',
     mem_diamante_feature_1: 'Alles aus Kriegerin',
-    mem_diamante_feature_2: 'Unbegrenzter Kurzzugriff',
+    mem_diamante_feature_2: 'Unbegrenzter Kurszugriff',
     mem_diamante_feature_3: 'Monatliche Gruppensitzung',
     mem_diamante_feature_4: 'Exklusive Inhalte',
     mem_diamante_feature_5: 'Bevorzugter Support',
@@ -4171,7 +4171,7 @@ const translations: Record<Language, Record<string, string>> = {
     challenges_checkin_error: 'Check-in fehlgeschlagen',
 
     // Onboarding extras
-    onboard_flow_complete_day: 'Tag abschliessen',
+    onboard_flow_complete_day: 'Tag abschlie\u00dfen',
 
     // Support extras
     support_mail_subject: 'Yayika Support',
@@ -4484,7 +4484,7 @@ const translations: Record<Language, Record<string, string>> = {
     retention_social_top: 'Top aktive:',
     retention_loss_title: 'Wir Vermißen Dich',
     retention_loss_message: 'Wir haben dich seit {days} Tagen nicht gesehen',
-    retention_loss_return: 'Komm zurück! Wir vermischen dich',
+    retention_loss_return: 'Komm zurück! Wir vermissen dich',
     retention_loss_keep_going: 'Deine Serie bleibt {days} Tage erhalten',
     retention_phase_menstrual: 'Menstruationsphase',
     retention_phase_follicular: 'Follikelphase',
