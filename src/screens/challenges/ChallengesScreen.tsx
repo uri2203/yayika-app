@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+﻿import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
@@ -51,7 +51,7 @@ export default function ChallengesScreen({ navigation }: any) {
       await enrollChallenge(challengeId);
       await fetchChallenges();
     } catch (err) {
-      Alert.alert(t('common_error') || 'Error', err instanceof Error ? err.message : 'Unknown error');
+      Alert.alert(t('common_error') , err instanceof Error ? err.message : t('common_unknown_error'));
     } finally {
       setEnrollingId(null);
     }
@@ -63,7 +63,7 @@ export default function ChallengesScreen({ navigation }: any) {
       await checkinChallenge(enrollmentId);
       await fetchChallenges();
     } catch (err) {
-      Alert.alert(t('common_error') || 'Error', err instanceof Error ? err.message : 'Check-in failed');
+      Alert.alert(t('common_error') , err instanceof Error ? err.message : t('challenges_checkin_error'));
     } finally {
       setCheckinId(null);
     }
@@ -136,7 +136,7 @@ export default function ChallengesScreen({ navigation }: any) {
           </TouchableOpacity>
           <View style={styles.headerTitle}>
             <Ionicons name="star" size={24} color={colors.gold} />
-            <Text style={styles.title}>{t('challenges_title') || 'Retos semanales'}</Text>
+            <Text style={styles.title}>{t('challenges_title') }</Text>
           </View>
           <View style={{ width: 32 }} />
         </View>
@@ -144,9 +144,9 @@ export default function ChallengesScreen({ navigation }: any) {
         {totalChallenges > 0 && (
           <View style={styles.progressCard}>
             <View style={styles.progressHeader}>
-              <Text style={styles.progressLabel}>{t('challenges_progress_label') || 'Progreso'}</Text>
+              <Text style={styles.progressLabel}>{t('challenges_progress_label') }</Text>
               <Text style={styles.progressCount}>
-                {completedCount}/{totalChallenges} {t('challenges_progress') || 'completados'}
+                {completedCount}/{totalChallenges} {t('challenges_progress') }
               </Text>
             </View>
             <View style={styles.progressBar}>
@@ -157,7 +157,7 @@ export default function ChallengesScreen({ navigation }: any) {
 
         {active.length > 0 && (
           <>
-            <Text style={styles.sectionTitle}>{t('challenges_active') || 'Activos'}</Text>
+            <Text style={styles.sectionTitle}>{t('challenges_active') }</Text>
             {active.map((ch) => (
               <View key={ch.id || ch.enrollment_id} style={styles.challengeCard}>
                 <View style={[styles.challengeIcon, { backgroundColor: '#EDE7F6' }]}>
@@ -186,7 +186,7 @@ export default function ChallengesScreen({ navigation }: any) {
 
         {available.length > 0 && (
           <>
-            <Text style={styles.sectionTitle}>{t('challenges_available') || 'Disponibles'}</Text>
+            <Text style={styles.sectionTitle}>{t('challenges_available') }</Text>
             {available.map((ch) => {
               const cid = ch.id || ch.challenge_id;
               return (
@@ -218,7 +218,7 @@ export default function ChallengesScreen({ navigation }: any) {
 
         {completed.length > 0 && (
           <>
-            <Text style={styles.sectionTitle}>{t('challenges_completed') || 'Completados'}</Text>
+            <Text style={styles.sectionTitle}>{t('challenges_completed') }</Text>
             {completed.map((ch) => (
               <View key={ch.id || ch.enrollment_id} style={styles.challengeCard}>
                 <View style={[styles.challengeIcon, { backgroundColor: '#D1FAE5' }]}>
@@ -237,7 +237,7 @@ export default function ChallengesScreen({ navigation }: any) {
         {totalChallenges === 0 && (
           <View style={styles.emptyState}>
             <Ionicons name="trophy-outline" size={64} color={colors.border} />
-            <Text style={styles.emptyText}>{t('challenges_empty') || 'No hay retos disponibles'}</Text>
+            <Text style={styles.emptyText}>{t('challenges_empty') }</Text>
           </View>
         )}
       </ScrollView>

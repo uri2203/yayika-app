@@ -24,7 +24,7 @@ class ErrorBoundaryClass extends React.Component<
   }
 
   static getDerivedStateFromError(error: Error): ErrorBoundaryState {
-    return { hasError: true, message: error.message || 'Unknown error' };
+    return { hasError: true, message: error.message || '' };
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {

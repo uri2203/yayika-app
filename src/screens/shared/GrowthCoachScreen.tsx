@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+﻿import React, { useState, useEffect, useCallback } from 'react';
 import {
   View,
   Text,
@@ -30,7 +30,7 @@ export default function GrowthCoachScreen({ navigation }: any) {
     try {
       setLoading(true);
       setError(false);
-      const res = await aiGrowthCoach({ user_id: user.id, lang: t('lang_code') || 'es' });
+      const res = await aiGrowthCoach({ user_id: user.id, lang: t('lang_code')  });
       setPlan(res.plan);
     } catch {
       setError(true);
@@ -54,7 +54,7 @@ export default function GrowthCoachScreen({ navigation }: any) {
           <View style={[styles.progressFill, { width: `${pct}%`, backgroundColor: colors.primary }]} />
         </View>
         <Text style={[styles.progressText, { color: colors.subtleText }]}>
-          {g.daysCompleted}/{g.totalDays} dias ({pct}%)
+          {g.daysCompleted}/{g.totalDays} {t('common_days_label')} ({pct}%)
         </Text>
       </View>
     );
@@ -105,7 +105,7 @@ export default function GrowthCoachScreen({ navigation }: any) {
   const renderWeekChart = () => {
     if (!plan?.weekData?.length) return null;
     const max = Math.max(...plan.weekData, 1);
-    const days = ['L', 'M', 'X', 'J', 'V', 'S', 'D'];
+    const days = [t('common_day_mon_short'), t('common_day_tue_short'), t('common_day_wed_short'), t('common_day_thu_short'), t('common_day_fri_short'), t('common_day_sat_short'), t('common_day_sun_short')];
     return (
       <View style={[styles.card, { backgroundColor: colors.white }]}>
         <Text style={[styles.cardTitle, { color: colors.text }]}>{t('growth_weekly_progress')}</Text>

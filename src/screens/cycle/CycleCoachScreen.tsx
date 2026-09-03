@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+﻿import React, { useState, useEffect, useCallback } from 'react';
 import {
   View,
   Text,
@@ -26,11 +26,11 @@ function getPhaseColor(phase: string, colors: any): string {
 
 function getPhaseIcon(phase: string): string {
   const key = phase?.toLowerCase() || '';
-  if (key.includes('menstru')) return '🌙';
-  if (key.includes('follicu')) return '🌸';
-  if (key.includes('ovul')) return '☀️';
-  if (key.includes('lute')) return '🍂';
-  return '🫧';
+  if (key.includes('menstru')) return 'ðŸŒ™';
+  if (key.includes('follicu')) return 'ðŸŒ¸';
+  if (key.includes('ovul')) return 'â˜€ï¸';
+  if (key.includes('lute')) return 'ðŸ‚';
+  return 'ðŸ«§';
 }
 
 function EnergyForecastBar({ day, energy, maxEnergy }: { day: string; energy: number; maxEnergy: number }) {
@@ -71,13 +71,13 @@ export default function CycleCoachScreen({ navigation }: any) {
   const [day, setDay] = useState<number | null>(null);
   const [hasLoggedToday, setHasLoggedToday] = useState(false);
   const [energyForecast] = useState([
-    { day: 'L', energy: 4 },
-    { day: 'M', energy: 4 },
-    { day: 'X', energy: 3 },
-    { day: 'J', energy: 3 },
-    { day: 'V', energy: 2 },
-    { day: 'S', energy: 2 },
-    { day: 'D', energy: 3 },
+    { day: t('common_day_mon_short'), energy: 4 },
+    { day: t('common_day_tue_short'), energy: 4 },
+    { day: t('common_day_wed_short'), energy: 3 },
+    { day: t('common_day_thu_short'), energy: 3 },
+    { day: t('common_day_fri_short'), energy: 2 },
+    { day: t('common_day_sat_short'), energy: 2 },
+    { day: t('common_day_sun_short'), energy: 3 },
   ]);
 
   const fetchData = useCallback(async () => {
@@ -283,8 +283,8 @@ export default function CycleCoachScreen({ navigation }: any) {
           <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
             <Ionicons name="arrow-back" size={24} color={colors.text} />
           </TouchableOpacity>
-          <Text style={styles.title}>{t('cycle_coach_title') || 'Coach de Ciclo'}</Text>
-          <Text style={styles.subtitle}>{t('cycle_coach_subtitle') || 'Coaching personalizado con IA'}</Text>
+          <Text style={styles.title}>{t('cycle_coach_title') }</Text>
+          <Text style={styles.subtitle}>{t('cycle_coach_subtitle') }</Text>
         </View>
 
         {loading ? (
@@ -298,7 +298,7 @@ export default function CycleCoachScreen({ navigation }: any) {
                   <Text style={styles.phaseIcon}>{getPhaseIcon(phase)}</Text>
                   <View style={styles.phaseInfo}>
                     <Text style={[styles.phaseName, { color: getPhaseColor(phase, colors) }]}>{phase}</Text>
-                    {day && <Text style={styles.phaseDay}>Día {day}</Text>}
+                    {day && <Text style={styles.phaseDay}>DÃ­a {day}</Text>}
                   </View>
                 </View>
               </View>
@@ -309,7 +309,7 @@ export default function CycleCoachScreen({ navigation }: any) {
               <View style={styles.coachCard}>
                 <View style={styles.coachHeader}>
                   <Ionicons name="sparkles" size={20} color={colors.primary} />
-                  <Text style={styles.coachTitle}>{t('cycle_coach_today') || 'Coaching de hoy'}</Text>
+                  <Text style={styles.coachTitle}>{t('cycle_coach_today') }</Text>
                 </View>
                 <Text style={styles.coachText}>{coaching}</Text>
               </View>
@@ -317,7 +317,7 @@ export default function CycleCoachScreen({ navigation }: any) {
 
             {/* Energy Forecast */}
             <View style={styles.sectionCard}>
-              <Text style={styles.sectionTitle}>{t('cycle_coach_forecast') || 'Pronóstico de energía (7 días)'}</Text>
+              <Text style={styles.sectionTitle}>{t('cycle_coach_forecast') }</Text>
               <View style={styles.forecastRow}>
                 {energyForecast.map((item) => (
                   <EnergyForecastBar
@@ -333,7 +333,7 @@ export default function CycleCoachScreen({ navigation }: any) {
             {/* Phase Tips */}
             {phase ? (
               <View style={styles.sectionCard}>
-                <Text style={styles.sectionTitle}>{t('cycle_tips') || 'Consejos para tu fase'}</Text>
+                <Text style={styles.sectionTitle}>{t('cycle_tips') }</Text>
                 {phase.toLowerCase().includes('menstru') && (
                   <View style={styles.tipItem}>
                     <Ionicons name="moon" size={16} color="#C96B7A" />
@@ -368,7 +368,7 @@ export default function CycleCoachScreen({ navigation }: any) {
                 onPress={() => navigation.navigate('CycleLog')}
               >
                 <Ionicons name="create-outline" size={22} color={colors.white} />
-                <Text style={styles.logBtnText}>{t('cycle_intel_log') || 'Registrar hoy'}</Text>
+                <Text style={styles.logBtnText}>{t('cycle_intel_log') }</Text>
               </TouchableOpacity>
             )}
           </>

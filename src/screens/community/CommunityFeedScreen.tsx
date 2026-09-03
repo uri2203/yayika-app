@@ -42,16 +42,16 @@ interface Category {
   color: string;
 }
 
-function timeAgo(dateStr: string): string {
+function timeAgo(dateStr: string, t: any): string {
   const diffSec = Math.floor((Date.now() - new Date(dateStr).getTime()) / 1000);
-  if (diffSec < 60) return 'ahora';
+  if (diffSec < 60) return t('common_now');
   const diffMin = Math.floor(diffSec / 60);
   if (diffMin < 60) return `${diffMin}m`;
   const diffHr = Math.floor(diffMin / 60);
   if (diffHr < 24) return `${diffHr}h`;
   const diffDay = Math.floor(diffHr / 24);
   if (diffDay < 7) return `${diffDay}d`;
-  return `${Math.floor(diffDay / 7)}sem`;
+  return `${Math.floor(diffDay / 7)}${t('common_weeks_abbrev')}`;
 }
 
 export default function CommunityFeedScreen({ navigation }: any) {
@@ -235,8 +235,8 @@ export default function CommunityFeedScreen({ navigation }: any) {
           <Ionicons name="person" size={20} color={colors.white} />
         </View>
         <View style={styles.postMeta}>
-          <Text style={styles.postAuthor}>{getLocalized(item.user_name, lang) || t('community_anonymous') || 'Anónimo'}</Text>
-          <Text style={styles.postTime}>{timeAgo(item.created_at)}</Text>
+          <Text style={styles.postAuthor}>{getLocalized(item.user_name, lang) || t('community_anonymous')}</Text>
+          <Text style={styles.postTime}>{timeAgo(item.created_at, t)}</Text>
         </View>
         {item.category ? (
           <View style={styles.categoryBadge}>
@@ -250,7 +250,7 @@ export default function CommunityFeedScreen({ navigation }: any) {
       {item.is_flagged && (
         <View style={styles.flaggedBadge}>
           <Ionicons name="flag" size={12} color="#D97706" />
-          <Text style={styles.flaggedText}>{t('community_flagged') || 'Moderado'}</Text>
+          <Text style={styles.flaggedText}>{t('community_flagged')}</Text>
         </View>
       )}
 
@@ -301,7 +301,7 @@ export default function CommunityFeedScreen({ navigation }: any) {
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
           <Ionicons name="arrow-back" size={24} color={colors.text} />
         </TouchableOpacity>
-        <Text style={styles.title}>{t('community_title') || 'Comunidad'}</Text>
+        <Text style={styles.title}>{t('community_title')}</Text>
         <TouchableOpacity style={styles.newPostBtn} onPress={() => setModalVisible(true)}>
           <Ionicons name="add" size={22} color={colors.white} />
         </TouchableOpacity>
@@ -326,8 +326,8 @@ export default function CommunityFeedScreen({ navigation }: any) {
       {posts.length === 0 ? (
         <View style={styles.centered}>
           <Ionicons name="people-outline" size={64} color={colors.border} />
-          <Text style={styles.emptyTitle}>{t('community_empty_title') || 'Sin publicaciones'}</Text>
-          <Text style={styles.emptySubtitle}>{t('community_empty_subtitle') || 'Sé el primero en compartir'}</Text>
+          <Text style={styles.emptyTitle}>{t('community_empty_title')}</Text>
+          <Text style={styles.emptySubtitle}>{t('community_empty_subtitle')}</Text>
         </View>
       ) : (
         <FlatList
@@ -353,7 +353,7 @@ export default function CommunityFeedScreen({ navigation }: any) {
         >
           <View style={styles.modalContent}>
             <View style={styles.modalHeader}>
-              <Text style={styles.modalTitle}>{t('community_new_post') || 'Nueva publicación'}</Text>
+              <Text style={styles.modalTitle}>{t('community_new_post')}</Text>
               <TouchableOpacity onPress={() => setModalVisible(false)}>
                 <Ionicons name="close" size={24} color={colors.subtleText} />
               </TouchableOpacity>
@@ -377,7 +377,7 @@ export default function CommunityFeedScreen({ navigation }: any) {
 
             <TextInput
               style={styles.postInput}
-              placeholder={t('community_placeholder') || '¿Qué quieres compartir?'}
+              placeholder={t('community_placeholder')}
               placeholderTextColor={colors.subtleText}
               value={newPostContent}
               onChangeText={setNewPostContent}
@@ -396,7 +396,7 @@ export default function CommunityFeedScreen({ navigation }: any) {
               {submitting ? (
                 <ActivityIndicator size="small" color={colors.white} />
               ) : (
-                <Text style={styles.submitButtonText}>{t('community_publish') || 'Publicar'}</Text>
+                <Text style={styles.submitButtonText}>{t('community_publish')}</Text>
               )}
             </TouchableOpacity>
           </View>

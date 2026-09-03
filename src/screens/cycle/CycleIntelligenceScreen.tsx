@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+﻿import React, { useState, useEffect, useCallback } from 'react';
 import {
   View,
   Text,
@@ -267,8 +267,8 @@ export default function CycleIntelligenceScreen({ navigation }: any) {
           <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
             <Ionicons name="arrow-back" size={24} color={colors.text} />
           </TouchableOpacity>
-          <Text style={styles.title}>{t('cycle_intel_title') || 'Inteligencia del Ciclo'}</Text>
-          <Text style={styles.subtitle}>{t('cycle_intel_subtitle') || 'Analytics y predicciones'}</Text>
+          <Text style={styles.title}>{t('cycle_intel_title') }</Text>
+          <Text style={styles.subtitle}>{t('cycle_intel_subtitle') }</Text>
         </View>
 
         {loading ? (
@@ -276,24 +276,24 @@ export default function CycleIntelligenceScreen({ navigation }: any) {
         ) : !dashboard ? (
           <View style={styles.emptyCard}>
             <Ionicons name="analytics-outline" size={48} color={colors.subtleText} />
-            <Text style={styles.emptyText}>{t('cycle_intel_empty') || 'No hay datos suficientes aún'}</Text>
-            <Text style={styles.emptySubtext}>{t('cycle_intel_empty_sub') || 'Registra tu ciclo para obtener insights'}</Text>
+            <Text style={styles.emptyText}>{t('cycle_intel_empty') }</Text>
+            <Text style={styles.emptySubtext}>{t('cycle_intel_empty_sub') }</Text>
           </View>
         ) : (
           <>
             {/* Analytics Cards */}
             <View style={styles.statsRow}>
               <View style={[styles.statCard, { borderLeftColor: '#C96B7A' }]}>
-                <Text style={styles.statValue}>{analytics?.avg_cycle_length ?? '—'}</Text>
-                <Text style={styles.statLabel}>{t('cycle_intel_avg_length') || 'Días promedio'}</Text>
+                <Text style={styles.statValue}>{analytics?.avg_cycle_length ?? 'â€”'}</Text>
+                <Text style={styles.statLabel}>{t('cycle_intel_avg_length') }</Text>
               </View>
               <View style={[styles.statCard, { borderLeftColor: '#3BAF7A' }]}>
-                <Text style={styles.statValue}>{analytics?.total_cycles ?? '—'}</Text>
-                <Text style={styles.statLabel}>{t('cycle_intel_total') || 'Ciclos totales'}</Text>
+                <Text style={styles.statValue}>{analytics?.total_cycles ?? 'â€”'}</Text>
+                <Text style={styles.statLabel}>{t('cycle_intel_total') }</Text>
               </View>
               <View style={[styles.statCard, { borderLeftColor: '#1A9E8F' }]}>
-                <Text style={styles.statValue}>{analytics?.regularity_score != null ? `${analytics.regularity_score}%` : '—'}</Text>
-                <Text style={styles.statLabel}>{t('cycle_intel_regularity') || 'Regularidad'}</Text>
+                <Text style={styles.statValue}>{analytics?.regularity_score != null ? `${analytics.regularity_score}%` : 'â€”'}</Text>
+                <Text style={styles.statLabel}>{t('cycle_intel_regularity') }</Text>
               </View>
             </View>
 
@@ -302,21 +302,21 @@ export default function CycleIntelligenceScreen({ navigation }: any) {
               <View style={styles.phaseCard}>
                 <View style={styles.phaseHeader}>
                   <Ionicons name="moon" size={20} color={colors.primary} />
-                  <Text style={styles.phaseTitle}>{t('cycle_intel_current_phase') || 'Fase actual'}</Text>
+                  <Text style={styles.phaseTitle}>{t('cycle_intel_current_phase') }</Text>
                 </View>
                 <Text style={styles.phaseDays}>
-                  {t('cycle_intel_days_remaining') || 'Días restantes'}: {predictions.days_remaining}
+                  {t('cycle_intel_days_remaining') }: {predictions.days_remaining}
                 </Text>
                 <View style={styles.predictionRow}>
                   <Ionicons name="water" size={16} color="#C96B7A" />
                   <Text style={styles.predictionText}>
-                    {t('cycle_next_period') || 'Próxima regla'}: {predictions.period_start}
+                    {t('cycle_next_period') }: {predictions.period_start}
                   </Text>
                 </View>
                 <View style={styles.predictionRow}>
                   <Ionicons name="sunny" size={16} color="#1A9E8F" />
                   <Text style={styles.predictionText}>
-                    {t('cycle_ovulation') || 'Ovulación'}: {predictions.ovulation}
+                    {t('cycle_ovulation') }: {predictions.ovulation}
                   </Text>
                 </View>
               </View>
@@ -325,7 +325,7 @@ export default function CycleIntelligenceScreen({ navigation }: any) {
             {/* Energy Patterns */}
             {patterns.length > 0 && (
               <View style={styles.sectionCard}>
-                <Text style={styles.sectionTitle}>{t('cycle_intel_energy') || 'Energía por fase'}</Text>
+                <Text style={styles.sectionTitle}>{t('cycle_intel_energy') }</Text>
                 {patterns.map((p) => (
                   <EnergyBar
                     key={p.phase}
@@ -341,7 +341,7 @@ export default function CycleIntelligenceScreen({ navigation }: any) {
             {/* Insights */}
             {insights.length > 0 && (
               <View style={styles.sectionCard}>
-                <Text style={styles.sectionTitle}>{t('cycle_intel_insights') || 'Insights'}</Text>
+                <Text style={styles.sectionTitle}>{t('cycle_intel_insights') }</Text>
                 {insights.map((insight, i) => (
                   <View key={i} style={styles.insightRow}>
                     <Ionicons name="bulb" size={16} color={colors.gold} />
@@ -358,14 +358,14 @@ export default function CycleIntelligenceScreen({ navigation }: any) {
                 onPress={() => navigation.navigate('CycleLog')}
               >
                 <Ionicons name="create-outline" size={22} color={colors.white} />
-                <Text style={styles.actionBtnText}>{t('cycle_intel_log') || 'Registrar hoy'}</Text>
+                <Text style={styles.actionBtnText}>{t('cycle_intel_log') }</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={[styles.actionBtn, { backgroundColor: '#1A9E8F' }]}
                 onPress={() => navigation.navigate('CycleCoach')}
               >
                 <Ionicons name="chatbubble-ellipses-outline" size={22} color={colors.white} />
-                <Text style={styles.actionBtnText}>{t('cycle_intel_coach') || 'Coach IA'}</Text>
+                <Text style={styles.actionBtnText}>{t('cycle_intel_coach') }</Text>
               </TouchableOpacity>
             </View>
           </>

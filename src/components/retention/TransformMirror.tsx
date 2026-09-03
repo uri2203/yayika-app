@@ -59,15 +59,15 @@ export default function TransformMirror() {
         <View style={styles.statsGrid}>
           <View style={styles.statItem}>
             <Text style={[styles.statValue, { color: colors.primary }]}>{snapshot.checkins || 0}</Text>
-            <Text style={[styles.statLabel, { color: colors.subtleText }]}>{t('retention_transform_checkins').split(' ')[1]}</Text>
+            <Text style={[styles.statLabel, { color: colors.subtleText }]}>{t('common_checkins')}</Text>
           </View>
           <View style={styles.statItem}>
             <Text style={[styles.statValue, { color: colors.gold }]}>{snapshot.badges || 0}</Text>
-            <Text style={[styles.statLabel, { color: colors.subtleText }]}>Badges</Text>
+            <Text style={[styles.statLabel, { color: colors.subtleText }]}>{t('common_badges_label')}</Text>
           </View>
           <View style={styles.statItem}>
             <Text style={[styles.statValue, { color: colors.turquoise }]}>{snapshot.xp || 0}</Text>
-            <Text style={[styles.statLabel, { color: colors.subtleText }]}>{t('retention_transform_xp').split(' ')[0]}</Text>
+            <Text style={[styles.statLabel, { color: colors.subtleText }]}>{t('common_xp_unit')}</Text>
           </View>
           <View style={styles.statItem}>
             <Text style={[styles.statValue, { color: colors.rose }]}>{latest.level_at_month || 1}</Text>
@@ -79,7 +79,7 @@ export default function TransformMirror() {
           <View style={[styles.deltaBar, { borderTopColor: colors.border }]}>
             <Ionicons name="trending-up" size={16} color="#10B981" />
             <Text style={styles.deltaText}>
-              +{comparison.xp_delta} XP · +{comparison.badges_delta || 0} badges · +{comparison.level_delta || 0} {t('home_level').toLowerCase()}
+              +{comparison.xp_delta} {t('common_xp_unit')} · +{comparison.badges_delta || 0} {t('common_badges_label').toLowerCase()} · +{comparison.level_delta || 0} {t('home_level').toLowerCase()}
             </Text>
           </View>
         )}
@@ -92,7 +92,7 @@ export default function TransformMirror() {
               <Text style={[styles.historyMonth, { color: colors.subtleText }]}>
                 {new Date(month.month_date).toLocaleDateString(language, { month: 'short', year: 'numeric' })}
               </Text>
-              <Text style={[styles.historyXP, { color: colors.text }]}>{month.data_snapshot?.xp || 0} XP</Text>
+              <Text style={[styles.historyXP, { color: colors.text }]}>{month.data_snapshot?.xp || 0} {t('common_xp_unit')}</Text>
               <Text style={[styles.historyBadges, { color: colors.subtleText }]}>{month.data_snapshot?.badges || 0} {t('home_my_badges').toLowerCase()}</Text>
             </View>
           ))}

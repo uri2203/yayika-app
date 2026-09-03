@@ -856,6 +856,51 @@ const translations: Record<Language, Record<string, string>> = {
     retention_wheel_label_8: 'Contenido',
     retention_wheel_label_9: '20 XP',
     retention_wheel_label_10: 'Sorpresa',
+
+    // Growth Coach
+    growth_title: 'Coach de Crecimiento',
+    growth_loading: 'Cargando tu plan...',
+    growth_monthly_goal: 'Meta mensual',
+    growth_weekly_progress: 'Progreso semanal',
+    growth_milestones: 'Hitos',
+    growth_daily_actions: 'Acciones diarias',
+    growth_quote: 'Frase del día',
+
+    // Common - Days
+    common_day_mon_short: 'L',
+    common_day_tue_short: 'M',
+    common_day_wed_short: 'X',
+    common_day_thu_short: 'J',
+    common_day_fri_short: 'V',
+    common_day_sat_short: 'S',
+    common_day_sun_short: 'D',
+    common_xp_unit: 'XP',
+    common_badges_label: 'Insignias',
+    common_unknown_error: 'Error desconocido',
+    common_default_name: 'Guerrera',
+    common_days_label: 'días',
+
+    // Cycle extras
+    cycle_day_label: 'Día',
+    cycle_phase_label: 'Fase',
+
+    // Finance extras
+    finance_split_title: '50 / 30 / 20',
+    finance_save_error: 'Error al guardar',
+    finance_amount_placeholder: '$0.00',
+    finance_category_placeholder: 'Ej: Comida, Transporte...',
+    finance_description_placeholder: 'Nota opcional',
+    finance_date_placeholder: 'AAAA-MM-DD',
+
+    // Challenges extras
+    challenges_checkin_error: 'Error en el check-in',
+
+    // Onboarding extras
+    onboard_flow_complete_day: 'Completar día',
+
+    // Support extras
+    support_mail_subject: 'Soporte Yayika',
+    support_mail_body: 'Nombre:\nEmail:\nMensaje:\n',
   },
 
   en: {
@@ -1458,6 +1503,42 @@ const translations: Record<Language, Record<string, string>> = {
     growth_milestones: 'Milestones',
     growth_daily_actions: 'Daily actions',
     growth_quote: 'Quote of the day',
+
+    // Common - Days
+    common_day_mon_short: 'M',
+    common_day_tue_short: 'T',
+    common_day_wed_short: 'W',
+    common_day_thu_short: 'T',
+    common_day_fri_short: 'F',
+    common_day_sat_short: 'S',
+    common_day_sun_short: 'S',
+    common_xp_unit: 'XP',
+    common_badges_label: 'Badges',
+    common_unknown_error: 'Unknown error',
+    common_default_name: 'Warrior',
+    common_days_label: 'days',
+
+    // Cycle extras
+    cycle_day_label: 'Day',
+    cycle_phase_label: 'Phase',
+
+    // Finance extras
+    finance_split_title: '50 / 30 / 20',
+    finance_save_error: 'Error saving',
+    finance_amount_placeholder: '$0.00',
+    finance_category_placeholder: 'E.g.: Food, Transport...',
+    finance_description_placeholder: 'Optional note',
+    finance_date_placeholder: 'YYYY-MM-DD',
+
+    // Challenges extras
+    challenges_checkin_error: 'Check-in failed',
+
+    // Onboarding extras
+    onboard_flow_complete_day: 'Complete day',
+
+    // Support extras
+    support_mail_subject: 'Yayika Support',
+    support_mail_body: 'Name:\nEmail:\nMessage:\n',
 
     // Legal
     legal_title: 'Legal',
@@ -2255,6 +2336,42 @@ const translations: Record<Language, Record<string, string>> = {
     growth_milestones: 'Marcos',
     growth_daily_actions: 'Ações diárias',
     growth_quote: 'Frase do dia',
+
+    // Common - Days
+    common_day_mon_short: 'S',
+    common_day_tue_short: 'T',
+    common_day_wed_short: 'Q',
+    common_day_thu_short: 'Q',
+    common_day_fri_short: 'S',
+    common_day_sat_short: 'S',
+    common_day_sun_short: 'D',
+    common_xp_unit: 'XP',
+    common_badges_label: 'Distintivos',
+    common_unknown_error: 'Erro desconhecido',
+    common_default_name: 'Guerreira',
+    common_days_label: 'dias',
+
+    // Cycle extras
+    cycle_day_label: 'Dia',
+    cycle_phase_label: 'Fase',
+
+    // Finance extras
+    finance_split_title: '50 / 30 / 20',
+    finance_save_error: 'Erro ao salvar',
+    finance_amount_placeholder: '$0.00',
+    finance_category_placeholder: 'Ex: Comida, Transporte...',
+    finance_description_placeholder: 'Nota opcional',
+    finance_date_placeholder: 'AAAA-MM-DD',
+
+    // Challenges extras
+    challenges_checkin_error: 'Erro no check-in',
+
+    // Onboarding extras
+    onboard_flow_complete_day: 'Completar dia',
+
+    // Support extras
+    support_mail_subject: 'Suporte Yayika',
+    support_mail_body: 'Nome:\nEmail:\nMensagem:\n',
 
     // Legal
     legal_title: 'Legal',
@@ -3122,6 +3239,42 @@ const translations: Record<Language, Record<string, string>> = {
     growth_daily_actions: 'Actions quotidiennes',
     growth_quote: 'Citation du jour',
 
+    // Common - Days
+    common_day_mon_short: 'L',
+    common_day_tue_short: 'M',
+    common_day_wed_short: 'M',
+    common_day_thu_short: 'J',
+    common_day_fri_short: 'V',
+    common_day_sat_short: 'S',
+    common_day_sun_short: 'D',
+    common_xp_unit: 'XP',
+    common_badges_label: 'Badges',
+    common_unknown_error: 'Erreur inconnue',
+    common_default_name: 'Guerriere',
+    common_days_label: 'jours',
+
+    // Cycle extras
+    cycle_day_label: 'Jour',
+    cycle_phase_label: 'Phase',
+
+    // Finance extras
+    finance_split_title: '50 / 30 / 20',
+    finance_save_error: 'Erreur de sauvegarde',
+    finance_amount_placeholder: '$0.00',
+    finance_category_placeholder: 'Ex: Nourriture, Transport...',
+    finance_description_placeholder: 'Note optionnelle',
+    finance_date_placeholder: 'AAAA-MM-JJ',
+
+    // Challenges extras
+    challenges_checkin_error: 'Echec du check-in',
+
+    // Onboarding extras
+    onboard_flow_complete_day: 'Completer le jour',
+
+    // Support extras
+    support_mail_subject: 'Support Yayika',
+    support_mail_body: 'Nom:\nEmail:\nMessage:\n',
+
     // Legal
     legal_title: 'Juridique',
     legal_terms: 'Conditions Générales',
@@ -3987,6 +4140,42 @@ const translations: Record<Language, Record<string, string>> = {
     growth_milestones: 'Meilensteine',
     growth_daily_actions: 'Tägliche Aktionen',
     growth_quote: 'Zitat des Tages',
+
+    // Common - Days
+    common_day_mon_short: 'M',
+    common_day_tue_short: 'D',
+    common_day_wed_short: 'M',
+    common_day_thu_short: 'D',
+    common_day_fri_short: 'F',
+    common_day_sat_short: 'S',
+    common_day_sun_short: 'S',
+    common_xp_unit: 'XP',
+    common_badges_label: 'Abzeichen',
+    common_unknown_error: 'Unbekannter Fehler',
+    common_default_name: 'Kriegerin',
+    common_days_label: 'Tage',
+
+    // Cycle extras
+    cycle_day_label: 'Tag',
+    cycle_phase_label: 'Phase',
+
+    // Finance extras
+    finance_split_title: '50 / 30 / 20',
+    finance_save_error: 'Fehler beim Speichern',
+    finance_amount_placeholder: '$0.00',
+    finance_category_placeholder: 'Z.B.: Essen, Transport...',
+    finance_description_placeholder: 'Optionale Notiz',
+    finance_date_placeholder: 'JJJJ-MM-TT',
+
+    // Challenges extras
+    challenges_checkin_error: 'Check-in fehlgeschlagen',
+
+    // Onboarding extras
+    onboard_flow_complete_day: 'Tag abschliessen',
+
+    // Support extras
+    support_mail_subject: 'Yayika Support',
+    support_mail_body: 'Name:\nEmail:\nNachricht:\n',
 
     // Legal
     legal_title: 'Rechtliches',

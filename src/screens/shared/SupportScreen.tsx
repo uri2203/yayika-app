@@ -32,9 +32,9 @@ export default function SupportScreen({ navigation }: any) {
       Alert.alert(t('common_error'), t('auth_fill_all_fields'));
       return;
     }
-    const subject = encodeURIComponent(`Soporte Yayika - ${formName.trim()}`);
+    const subject = encodeURIComponent(`${t('support_mail_subject')} - ${formName.trim()}`);
     const body = encodeURIComponent(
-      `Nombre: ${formName.trim()}\nEmail: ${formEmail.trim()}\n\nMensaje:\n${formMessage.trim()}`
+      `${t('support_mail_body')}${formName.trim()}\nEmail: ${formEmail.trim()}\n\nMensaje:\n${formMessage.trim()}`
     );
     Linking.openURL(`mailto:hola@yayika.com?subject=${subject}&body=${body}`).catch(() => {
       Alert.alert(t('common_error'), t('common_open_link_error'));

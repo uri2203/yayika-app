@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+﻿import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput, ActivityIndicator, Alert, Modal, KeyboardAvoidingView, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
@@ -20,8 +20,8 @@ const MONTHS_BY_LANG: Record<string, string[]> = {
   es: ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'],
   en: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
   pt: ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'],
-  fr: ['Jan','Fév','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Déc'],
-  de: ['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'],
+  fr: ['Jan','FÃ©v','Mar','Avr','Mai','Jun','Jul','AoÃ»','Sep','Oct','Nov','DÃ©c'],
+  de: ['Jan','Feb','MÃ¤r','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'],
 };
 
 function formatDate(dateStr: string, lang: Language = 'es') {
@@ -144,7 +144,7 @@ export default function TransactionsScreen({ navigation, route }: TransactionsSc
 
   useEffect(() => {
     if (route?.params?.action === 'add') {
-      setNewType(route.params.type || 'expense');
+      setNewType(route.params.type );
       setAddModalVisible(true);
     }
   }, [route?.params]);
@@ -180,7 +180,7 @@ export default function TransactionsScreen({ navigation, route }: TransactionsSc
       setNewDate(new Date().toISOString().split('T')[0]);
       fetchData();
     } catch (e) {
-      Alert.alert(t('common_error') || 'Error', e instanceof Error ? e.message : (t('finance_save_error') || 'Error al guardar'));
+      Alert.alert(t('common_error') , e instanceof Error ? e.message : (t('finance_save_error') ));
     } finally {
       setSaving(false);
     }
@@ -204,12 +204,12 @@ export default function TransactionsScreen({ navigation, route }: TransactionsSc
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
           <Ionicons name="arrow-back" size={24} color={colors.text} />
         </TouchableOpacity>
-        <Text style={styles.title}>{t('finance_transactions') || 'Transacciones'}</Text>
+        <Text style={styles.title}>{t('finance_transactions') }</Text>
         <View style={{ width: 32 }} />
       </View>
 
       <View style={styles.summaryBar}>
-        <Text style={styles.summaryLabel}>{t('finance_total') || 'Total'}:</Text>
+        <Text style={styles.summaryLabel}>{t('finance_total') }:</Text>
         <Text style={[styles.summaryAmount, totalFiltered >= 0 ? { color: colors.success } : { color: colors.error }]}>
           {totalFiltered >= 0 ? '+' : ''}${totalFiltered.toLocaleString()}
         </Text>
@@ -220,19 +220,19 @@ export default function TransactionsScreen({ navigation, route }: TransactionsSc
           style={[styles.filterBtn, filterType === 'all' && styles.filterBtnActive]}
           onPress={() => setFilterType('all')}
         >
-          <Text style={[styles.filterText, filterType === 'all' && styles.filterTextActive]}>{t('finance_all') || 'Todos'}</Text>
+          <Text style={[styles.filterText, filterType === 'all' && styles.filterTextActive]}>{t('finance_all') }</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={[styles.filterBtn, filterType === 'income' && styles.filterBtnIncome]}
           onPress={() => setFilterType('income')}
         >
-          <Text style={[styles.filterText, filterType === 'income' && styles.filterTextActive]}>{t('finance_income') || 'Ingresos'}</Text>
+          <Text style={[styles.filterText, filterType === 'income' && styles.filterTextActive]}>{t('finance_income') }</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={[styles.filterBtn, filterType === 'expense' && styles.filterBtnExpense]}
           onPress={() => setFilterType('expense')}
         >
-          <Text style={[styles.filterText, filterType === 'expense' && styles.filterTextActive]}>{t('finance_expenses') || 'Gastos'}</Text>
+          <Text style={[styles.filterText, filterType === 'expense' && styles.filterTextActive]}>{t('finance_expenses') }</Text>
         </TouchableOpacity>
       </View>
 
@@ -249,7 +249,7 @@ export default function TransactionsScreen({ navigation, route }: TransactionsSc
               onPress={() => setFilterCategory(filterCategory === item ? null : item)}
             >
               <Text style={[styles.catChipText, filterCategory === item && styles.catChipTextActive]}>
-                {item || (t('finance_all') || 'Todos')}
+                {item || (t('finance_all') )}
               </Text>
             </TouchableOpacity>
           )}
@@ -263,7 +263,7 @@ export default function TransactionsScreen({ navigation, route }: TransactionsSc
       ) : filtered.length === 0 ? (
         <View style={styles.emptyState}>
           <Ionicons name="wallet-outline" size={64} color={colors.border} />
-          <Text style={styles.emptyText}>{t('finance_no_transactions') || 'Sin transacciones'}</Text>
+          <Text style={styles.emptyText}>{t('finance_no_transactions') }</Text>
         </View>
       ) : (
         <FlatList
@@ -278,7 +278,7 @@ export default function TransactionsScreen({ navigation, route }: TransactionsSc
                   <Ionicons name={isIncome ? 'arrow-down' : 'arrow-up'} size={16} color={isIncome ? colors.success : colors.error} />
                 </View>
                 <View style={styles.txInfo}>
-                  <Text style={styles.txDesc}>{getLocalized(tx.category, lang) || (isIncome ? t('finance_income') || 'Ingreso' : t('finance_expenses') || 'Gasto')}</Text>
+                  <Text style={styles.txDesc}>{getLocalized(tx.category, lang) || (isIncome ? t('finance_income')  : t('finance_expenses') )}</Text>
                   <Text style={styles.txDate}>{tx.date ? formatDate(tx.date, lang) : ''}</Text>
                 </View>
                 <Text style={[styles.txAmount, isIncome ? styles.txAmountIncome : styles.txAmountExpense]}>
@@ -298,7 +298,7 @@ export default function TransactionsScreen({ navigation, route }: TransactionsSc
         <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.modalOverlay}>
           <View style={styles.modalContent}>
             <View style={styles.modalHeader}>
-              <Text style={styles.modalTitle}>{t('finance_add_title') || 'Nueva transacción'}</Text>
+              <Text style={styles.modalTitle}>{t('finance_add_title') }</Text>
               <TouchableOpacity onPress={() => setAddModalVisible(false)}>
                 <Ionicons name="close" size={24} color={colors.text} />
               </TouchableOpacity>
@@ -309,26 +309,26 @@ export default function TransactionsScreen({ navigation, route }: TransactionsSc
                 style={[styles.typeBtn, newType === 'income' && styles.typeBtnIncome]}
                 onPress={() => setNewType('income')}
               >
-                <Text style={[styles.typeBtnText, newType === 'income' && styles.typeBtnTextActive]}>{t('finance_income') || 'Ingreso'}</Text>
+                <Text style={[styles.typeBtnText, newType === 'income' && styles.typeBtnTextActive]}>{t('finance_income') }</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={[styles.typeBtn, newType === 'expense' && styles.typeBtnExpense]}
                 onPress={() => setNewType('expense')}
               >
-                <Text style={[styles.typeBtnText, newType === 'expense' && styles.typeBtnTextActive]}>{t('finance_expenses') || 'Gasto'}</Text>
+                <Text style={[styles.typeBtnText, newType === 'expense' && styles.typeBtnTextActive]}>{t('finance_expenses') }</Text>
               </TouchableOpacity>
             </View>
 
-            <Text style={styles.inputLabel}>{t('finance_amount') || 'Monto'}</Text>
+            <Text style={styles.inputLabel}>{t('finance_amount') }</Text>
             <TextInput style={styles.input} placeholder="$0.00" keyboardType="numeric" value={newAmount} onChangeText={setNewAmount} />
 
-            <Text style={styles.inputLabel}>{t('finance_category') || 'Categoría'}</Text>
-            <TextInput style={styles.input} placeholder={t('finance_category_placeholder') || 'Ej: Comida, Transporte...'} value={newCategory} onChangeText={setNewCategory} />
+            <Text style={styles.inputLabel}>{t('finance_category') }</Text>
+            <TextInput style={styles.input} placeholder={t('finance_category_placeholder') } value={newCategory} onChangeText={setNewCategory} />
 
-            <Text style={styles.inputLabel}>{t('finance_description') || 'Descripción'}</Text>
-            <TextInput style={styles.input} placeholder={t('finance_description_placeholder') || 'Nota opcional'} value={newDescription} onChangeText={setNewDescription} />
+            <Text style={styles.inputLabel}>{t('finance_description') }</Text>
+            <TextInput style={styles.input} placeholder={t('finance_description_placeholder') } value={newDescription} onChangeText={setNewDescription} />
 
-            <Text style={styles.inputLabel}>{t('finance_date') || 'Fecha'}</Text>
+            <Text style={styles.inputLabel}>{t('finance_date') }</Text>
             <TextInput style={styles.input} placeholder="YYYY-MM-DD" value={newDate} onChangeText={setNewDate} />
 
             <TouchableOpacity
@@ -339,7 +339,7 @@ export default function TransactionsScreen({ navigation, route }: TransactionsSc
               {saving ? (
                 <ActivityIndicator color={colors.white} />
               ) : (
-                <Text style={styles.saveButtonText}>{t('finance_save') || 'Guardar'}</Text>
+                <Text style={styles.saveButtonText}>{t('finance_save') }</Text>
               )}
             </TouchableOpacity>
           </View>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+﻿import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput, ActivityIndicator, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
@@ -135,7 +135,7 @@ export default function BudgetScreen({ navigation }: any) {
 
   const categorySpending: Record<string, number> = {};
   monthExpenses.forEach((tx) => {
-    const cat = (tx.category || 'other').toLowerCase();
+    const cat = (tx.category ).toLowerCase();
     if (!categorySpending[cat]) categorySpending[cat] = 0;
     categorySpending[cat] += tx.amount;
   });
@@ -161,12 +161,12 @@ export default function BudgetScreen({ navigation }: any) {
           <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
             <Ionicons name="arrow-back" size={24} color={colors.text} />
           </TouchableOpacity>
-          <Text style={styles.title}>{t('finance_budget') || 'Presupuesto'}</Text>
+          <Text style={styles.title}>{t('finance_budget') }</Text>
           <View style={{ width: 32 }} />
         </View>
 
         <View style={styles.incomeSection}>
-          <Text style={styles.incomeLabel}>{t('finance_income') || 'Ingreso mensual'}</Text>
+          <Text style={styles.incomeLabel}>{t('finance_income') }</Text>
           {editingIncome ? (
             <View style={styles.incomeEdit}>
               <TextInput
@@ -194,7 +194,7 @@ export default function BudgetScreen({ navigation }: any) {
             <View style={styles.splitItem}>
               <View style={styles.splitHeader}>
                 <View style={[styles.splitDot, { backgroundColor: colors.turquoise }]} />
-                <Text style={styles.splitLabel}>50% {t('finance_needs') || 'Necesidades'}</Text>
+                <Text style={styles.splitLabel}>50% {t('finance_needs') }</Text>
               </View>
               <Text style={styles.splitAmount}>{formatMoney(needsAmount, lang)}</Text>
               <View style={styles.progressBar}>
@@ -204,7 +204,7 @@ export default function BudgetScreen({ navigation }: any) {
             <View style={styles.splitItem}>
               <View style={styles.splitHeader}>
                 <View style={[styles.splitDot, { backgroundColor: colors.gold }]} />
-                <Text style={styles.splitLabel}>30% {t('finance_wants') || 'Deseos'}</Text>
+                <Text style={styles.splitLabel}>30% {t('finance_wants') }</Text>
               </View>
               <Text style={styles.splitAmount}>{formatMoney(wantsAmount, lang)}</Text>
               <View style={styles.progressBar}>
@@ -214,7 +214,7 @@ export default function BudgetScreen({ navigation }: any) {
             <View style={styles.splitItem}>
               <View style={styles.splitHeader}>
                 <View style={[styles.splitDot, { backgroundColor: colors.rose }]} />
-                <Text style={styles.splitLabel}>20% {t('finance_savings_stat') || 'Ahorro'}</Text>
+                <Text style={styles.splitLabel}>20% {t('finance_savings_stat') }</Text>
               </View>
               <Text style={styles.splitAmount}>{formatMoney(savingsAmount, lang)}</Text>
               <View style={styles.progressBar}>
@@ -224,7 +224,7 @@ export default function BudgetScreen({ navigation }: any) {
           </View>
         </View>
 
-        <Text style={styles.sectionTitle}>{t('finance_categories') || 'Gastos por categoría'}</Text>
+        <Text style={styles.sectionTitle}>{t('finance_categories') }</Text>
         {CATEGORIES.map((cat) => {
           const spent = categorySpending[cat.key] || 0;
           const pct = totalExpenses > 0 ? (spent / totalExpenses) * 100 : 0;

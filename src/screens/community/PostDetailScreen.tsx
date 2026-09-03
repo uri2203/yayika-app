@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+﻿import React, { useState, useEffect, useCallback } from 'react';
 import {
   View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput,
   ActivityIndicator, KeyboardAvoidingView, Platform, Alert,
@@ -40,9 +40,9 @@ interface PostDetail {
   comments: Comment[];
 }
 
-function timeAgo(dateStr: string): string {
+function timeAgo(dateStr: string, t: any): string {
   const diffSec = Math.floor((Date.now() - new Date(dateStr).getTime()) / 1000);
-  if (diffSec < 60) return 'ahora';
+  if (diffSec < 60) return t('common_now');
   const diffMin = Math.floor(diffSec / 60);
   if (diffMin < 60) return `${diffMin}m`;
   const diffHr = Math.floor(diffMin / 60);
@@ -220,7 +220,7 @@ export default function PostDetailScreen({ navigation, route }: PostDetailScreen
           ...prev.comments,
           {
             id: result.comment_id || Date.now().toString(),
-            user_name: t('community_you') || 'Tú',
+            user_name: t('community_you') ,
             content: commentText.trim(),
             created_at: new Date().toISOString(),
           },
@@ -240,13 +240,13 @@ export default function PostDetailScreen({ navigation, route }: PostDetailScreen
       await reportPost(post.id, reason);
       setReportModalVisible(false);
       Alert.alert(
-        t('community_post_reported') || 'Publicación reportada',
-        t('community_post_reported_msg') || 'Gracias por ayudarnos a mantener la comunidad segura.'
+        t('community_post_reported') ,
+        t('community_post_reported_msg') 
       );
     } catch (err) {
       Alert.alert(
-        t('common_error') || 'Error',
-        t('community_report_error') || 'No se pudo enviar el reporte'
+        t('common_error') ,
+        t('community_report_error') 
       );
     } finally {
       setReporting(false);
@@ -268,7 +268,7 @@ export default function PostDetailScreen({ navigation, route }: PostDetailScreen
       <SafeAreaView style={styles.container}>
         <View style={styles.centered}>
           <Ionicons name="alert-circle-outline" size={48} color={colors.border} />
-          <Text style={styles.emptyText}>{t('community_post_not_found') || 'Publicación no encontrada'}</Text>
+          <Text style={styles.emptyText}>{t('community_post_not_found') }</Text>
         </View>
       </SafeAreaView>
     );
@@ -280,7 +280,7 @@ export default function PostDetailScreen({ navigation, route }: PostDetailScreen
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
           <Ionicons name="arrow-back" size={24} color={colors.text} />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>{t('community_post') || 'Publicación'}</Text>
+        <Text style={styles.headerTitle}>{t('community_post') }</Text>
         <View style={{ width: 32 }} />
       </View>
 
@@ -300,8 +300,8 @@ export default function PostDetailScreen({ navigation, route }: PostDetailScreen
                     <Ionicons name="person" size={20} color={colors.white} />
                   </View>
                   <View style={styles.postMeta}>
-                    <Text style={styles.postAuthor}>{getLocalized(post.user_name, lang) || (t('community_anonymous') || 'Anónimo')}</Text>
-                    <Text style={styles.postTime}>{timeAgo(post.created_at)}</Text>
+                    <Text style={styles.postAuthor}>{getLocalized(post.user_name, lang) || (t('community_anonymous') )}</Text>
+                    <Text style={styles.postTime}>{timeAgo(post.created_at, t)}</Text>
                   </View>
                   {post.category ? (
                     <View style={styles.categoryBadge}>
@@ -338,13 +338,13 @@ export default function PostDetailScreen({ navigation, route }: PostDetailScreen
                     onPress={() => setReportModalVisible(true)}
                   >
                     <Ionicons name="flag-outline" size={16} color={colors.subtleText} />
-                    <Text style={styles.reportBtnText}>{t('community_report') || 'Reportar'}</Text>
+                    <Text style={styles.reportBtnText}>{t('community_report') }</Text>
                   </TouchableOpacity>
                 </View>
               </View>
 
               <Text style={styles.commentsTitle}>
-                {post.comments.length > 0 ? `${t('community_comments') || 'Comentarios'} (${post.comments.length})` : (t('community_no_comments') || 'Sin comentarios')}
+                {post.comments.length > 0 ? `${t('community_comments') } (${post.comments.length})` : (t('community_no_comments') )}
               </Text>
             </>
           }
@@ -355,8 +355,8 @@ export default function PostDetailScreen({ navigation, route }: PostDetailScreen
               </View>
               <View style={styles.commentBody}>
                 <View style={styles.commentHeader}>
-                  <Text style={styles.commentAuthor}>{getLocalized(item.user_name, lang) || (t('community_anonymous') || 'Anónimo')}</Text>
-                  <Text style={styles.commentTime}>{timeAgo(item.created_at)}</Text>
+                  <Text style={styles.commentAuthor}>{getLocalized(item.user_name, lang) || (t('community_anonymous') )}</Text>
+                  <Text style={styles.commentTime}>{timeAgo(item.created_at, t)}</Text>
                 </View>
                 <Text style={styles.commentContent}>{getLocalized(item.content, lang)}</Text>
               </View>
@@ -365,7 +365,7 @@ export default function PostDetailScreen({ navigation, route }: PostDetailScreen
           ListEmptyComponent={
             <View style={styles.emptyComments}>
               <Ionicons name="chatbubbles-outline" size={40} color={colors.border} />
-              <Text style={styles.emptyText}>{t('community_first_comment') || 'Sé el primero en comentar'}</Text>
+              <Text style={styles.emptyText}>{t('community_first_comment') || 'SÃ© el primero en comentar'}</Text>
             </View>
           }
           ListFooterComponent={
@@ -376,7 +376,7 @@ export default function PostDetailScreen({ navigation, route }: PostDetailScreen
         <View style={styles.commentInputBar}>
           <TextInput
             style={styles.commentInput}
-            placeholder={t('community_comment_placeholder') || 'Escribe un comentario...'}
+            placeholder={t('community_comment_placeholder') }
             placeholderTextColor={colors.subtleText}
             value={commentText}
             onChangeText={setCommentText}
@@ -400,12 +400,12 @@ export default function PostDetailScreen({ navigation, route }: PostDetailScreen
       {reportModalVisible && (
         <View style={styles.modalOverlay}>
           <View style={styles.reportModalContent}>
-            <Text style={styles.reportModalTitle}>{t('community_report_post') || 'Reportar publicación'}</Text>
+            <Text style={styles.reportModalTitle}>{t('community_report_post') || 'Reportar publicaciÃ³n'}</Text>
             {[
-              { key: 'spam', label: t('community_report_spam') || 'Spam' },
-              { key: 'inappropriate', label: t('community_report_inappropriate') || 'Contenido inapropiado' },
-              { key: 'offensive', label: t('community_report_offensive') || 'Lenguaje ofensivo' },
-              { key: 'other', label: t('community_report_other') || 'Otro' },
+              { key: 'spam', label: t('community_report_spam')  },
+              { key: 'inappropriate', label: t('community_report_inappropriate')  },
+              { key: 'offensive', label: t('community_report_offensive')  },
+              { key: 'other', label: t('community_report_other')  },
             ].map((option) => (
               <TouchableOpacity
                 key={option.key}
@@ -422,7 +422,7 @@ export default function PostDetailScreen({ navigation, route }: PostDetailScreen
               onPress={() => setReportModalVisible(false)}
               disabled={reporting}
             >
-              <Text style={styles.reportCancelBtnText}>{t('community_report_cancel') || 'Cancelar'}</Text>
+              <Text style={styles.reportCancelBtnText}>{t('community_report_cancel') }</Text>
             </TouchableOpacity>
           </View>
         </View>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+﻿import React, { useState, useEffect, useCallback } from 'react';
 import {
   View,
   Text,
@@ -17,7 +17,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { getRankings, RankingEntry } from '../../config/api';
 
 const PODIUM_HEIGHTS: Record<number, number> = { 1: 80, 2: 64, 3: 52 };
-const safeName = (name: any) => (typeof name === 'string' && name.trim()) || 'Guerrera';
+const safeName = (name: any) => (typeof name === 'string' && name.trim()) ;
 const safeNum = (n: any) => (typeof n === 'number' && !isNaN(n)) ? n : 0;
 
 export default function RankingsScreen({ navigation }: any) {
@@ -238,7 +238,7 @@ export default function RankingsScreen({ navigation }: any) {
                     </Text>
                   </View>
                   <Text style={styles.podiumName} numberOfLines={1}>{safeName(entry.full_name)}</Text>
-                  <Text style={styles.podiumXp}>{safeNum(entry.xp_total).toLocaleString()} XP</Text>
+                  <Text style={styles.podiumXp}>{safeNum(entry.xp_total).toLocaleString()} {t('common_xp_unit')}</Text>
                   <View style={[styles.podiumBar, { height: barHeight, backgroundColor: PODIUM_COLORS[entry.rank] }]}>
                     <Text style={styles.podiumRank}>{entry.rank}</Text>
                   </View>
@@ -269,7 +269,7 @@ export default function RankingsScreen({ navigation }: any) {
                     </Text>
                     <Text style={styles.listLevel}>{t('home_level')} {entry.level}</Text>
                   </View>
-                  <Text style={styles.listXp}>{safeNum(entry.xp_total).toLocaleString()} XP</Text>
+                  <Text style={styles.listXp}>{safeNum(entry.xp_total).toLocaleString()} {t('common_xp_unit')}</Text>
                 </View>
               );
             })}
@@ -280,7 +280,7 @@ export default function RankingsScreen({ navigation }: any) {
           <View style={styles.yourPosition}>
             <Ionicons name="person" size={18} color={colors.primary} />
             <Text style={styles.yourPositionText}>
-              {t('rankings_your_position')}: #{currentUserRank.rank} - {safeNum(currentUserRank.xp_total).toLocaleString()} XP
+              {t('rankings_your_position')}: #{currentUserRank.rank} - {safeNum(currentUserRank.xp_total).toLocaleString()} {t('common_xp_unit')}
             </Text>
           </View>
         )}

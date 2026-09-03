@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput, Switch, Alert, ActivityIndicator, Modal } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
@@ -11,10 +11,10 @@ import { supabase } from '../../config/supabase';
 import Card from '../../components/Card';
 
 const LANGUAGES: { key: Language; label: string }[] = [
-  { key: 'es', label: 'Español' },
+  { key: 'es', label: 'EspaÃ±ol' },
   { key: 'en', label: 'English' },
-  { key: 'pt', label: 'Português' },
-  { key: 'fr', label: 'Français' },
+  { key: 'pt', label: 'PortuguÃªs' },
+  { key: 'fr', label: 'FranÃ§ais' },
   { key: 'de', label: 'Deutsch' },
 ];
 
@@ -56,7 +56,7 @@ export default function SettingsScreen({ navigation }: any) {
           currency_code: currency.trim().toUpperCase(),
         }, { onConflict: 'id' });
       if (error) throw error;
-      Alert.alert(t('common_success') || 'Guardado', t('profile_settings') + ' ✓');
+      Alert.alert(t('common_success') , t('profile_settings') + ' âœ“');
     } catch (err: any) {
       Alert.alert(t('common_error'), err.message || t('common_error'));
     } finally {
@@ -103,7 +103,7 @@ export default function SettingsScreen({ navigation }: any) {
             style={[styles.input, { color: colors.text, borderColor: colors.border, backgroundColor: colors.white }]}
             value={city}
             onChangeText={setCity}
-            placeholder="Ciudad de México"
+            placeholder="Ciudad de MÃ©xico"
             placeholderTextColor={colors.subtleText}
           />
 
@@ -128,19 +128,19 @@ export default function SettingsScreen({ navigation }: any) {
               <Text style={[styles.menuText, { color: colors.text }]}>{t('profile_language')}</Text>
             </View>
             <View style={styles.menuRight}>
-              <Text style={[styles.menuValue, { color: colors.subtleText }]}>{LANGUAGES.find(l => l.key === lang)?.label || 'Español'}</Text>
+              <Text style={[styles.menuValue, { color: colors.subtleText }]}>{LANGUAGES.find(l => l.key === lang)?.label }</Text>
               <Ionicons name="chevron-forward" size={20} color={colors.subtleText} />
             </View>
           </TouchableOpacity>
         </Card>
 
         <Card style={styles.sectionCard}>
-          <Text style={[styles.sectionTitle, { color: colors.subtleText }]}>{t('settings_appearance') || 'Apariencia'}</Text>
+          <Text style={[styles.sectionTitle, { color: colors.subtleText }]}>{t('settings_appearance') }</Text>
 
           <View style={[styles.menuItem, { borderBottomWidth: 0 }]}>
             <View style={styles.menuLeft}>
               <Ionicons name={isDark ? 'moon' : 'sunny'} size={22} color={colors.primary} />
-              <Text style={[styles.menuText, { color: colors.text }]}>{t('settings_dark_mode') || 'Modo oscuro'}</Text>
+              <Text style={[styles.menuText, { color: colors.text }]}>{t('settings_dark_mode') }</Text>
             </View>
             <Switch
               value={isDark}

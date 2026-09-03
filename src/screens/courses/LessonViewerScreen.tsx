@@ -140,7 +140,7 @@ export default function LessonViewerScreen({ navigation, route }: any) {
       setCompletedLessons((prev) => new Set(prev).add(currentLessonId));
       Alert.alert(t('courses_congrats'), t('courses_xp_awarded', { xp: XP_PER_LESSON }));
     } catch (err) {
-      Alert.alert(t('common_error'), err instanceof Error ? err.message : 'Unknown error');
+      Alert.alert(t('common_error'), err instanceof Error ? err.message : t('common_unknown_error'));
     } finally {
       setMarkingComplete(false);
     }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+﻿import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
@@ -20,8 +20,8 @@ const MONTHS_BY_LANG: Record<string, string[]> = {
   es: ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'],
   en: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
   pt: ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'],
-  fr: ['Jan','Fév','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Déc'],
-  de: ['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'],
+  fr: ['Jan','FÃ©v','Mar','Avr','Mai','Jun','Jul','AoÃ»','Sep','Oct','Nov','DÃ©c'],
+  de: ['Jan','Feb','MÃ¤r','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'],
 };
 
 function formatMoney(n: any, lang: Language = 'es') {
@@ -185,25 +185,25 @@ export default function FinanceDashboardScreen({ navigation }: any) {
           <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
             <Ionicons name="arrow-back" size={24} color={colors.text} />
           </TouchableOpacity>
-          <Text style={styles.title}>{t('finance_title') || 'Finanzas'}</Text>
+          <Text style={styles.title}>{t('finance_title') }</Text>
           <View style={{ width: 32 }} />
         </View>
 
         <View style={styles.incomeCard}>
-          <Text style={styles.incomeLabel}>{t('finance_income') || 'Ingreso mensual'}</Text>
+          <Text style={styles.incomeLabel}>{t('finance_income') }</Text>
           <Text style={styles.incomeAmount}>{formatMoney(totalIncome, lang)}</Text>
           <View style={styles.balanceRow}>
             <View style={styles.balanceItem}>
               <Ionicons name="trending-down" size={16} color={colors.error} />
               <Text style={styles.balanceVal}>{formatMoney(totalExpenses, lang)}</Text>
-              <Text style={styles.balanceLabel}>{t('finance_expenses') || 'Gastos'}</Text>
+              <Text style={styles.balanceLabel}>{t('finance_expenses') }</Text>
             </View>
             <View style={styles.balanceItem}>
               <Ionicons name="wallet" size={16} color={colors.turquoise} />
               <Text style={[styles.balanceVal, { color: savings >= 0 ? colors.success : colors.error }]}>
                 {formatMoney(savings, lang)}
               </Text>
-              <Text style={styles.balanceLabel}>{t('finance_savings_stat') || 'Ahorro'}</Text>
+              <Text style={styles.balanceLabel}>{t('finance_savings_stat') }</Text>
             </View>
           </View>
         </View>
@@ -213,17 +213,17 @@ export default function FinanceDashboardScreen({ navigation }: any) {
           <View style={styles.splitRow}>
             <View style={styles.splitItem}>
               <View style={[styles.splitDot, { backgroundColor: colors.turquoise }]} />
-              <Text style={styles.splitLabel}>50% {t('finance_needs') || 'Necesidades'}</Text>
+              <Text style={styles.splitLabel}>50% {t('finance_needs') }</Text>
               <Text style={styles.splitAmount}>{formatMoney(totalIncome * 0.5, lang)}</Text>
             </View>
             <View style={styles.splitItem}>
               <View style={[styles.splitDot, { backgroundColor: colors.gold }]} />
-              <Text style={styles.splitLabel}>30% {t('finance_wants') || 'Deseos'}</Text>
+              <Text style={styles.splitLabel}>30% {t('finance_wants') }</Text>
               <Text style={styles.splitAmount}>{formatMoney(totalIncome * 0.3, lang)}</Text>
             </View>
             <View style={styles.splitItem}>
               <View style={[styles.splitDot, { backgroundColor: colors.rose }]} />
-              <Text style={styles.splitLabel}>20% {t('finance_savings_stat') || 'Ahorro'}</Text>
+              <Text style={styles.splitLabel}>20% {t('finance_savings_stat') }</Text>
               <Text style={styles.splitAmount}>{formatMoney(totalIncome * 0.2, lang)}</Text>
             </View>
           </View>
@@ -237,7 +237,7 @@ export default function FinanceDashboardScreen({ navigation }: any) {
             <View style={[styles.actionIcon, { backgroundColor: '#FEE2E2' }]}>
               <Ionicons name="remove" size={20} color={colors.error} />
             </View>
-            <Text style={styles.actionLabel}>{t('finance_add_expense') || 'Gasto'}</Text>
+            <Text style={styles.actionLabel}>{t('finance_add_expense') }</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.actionBtn}
@@ -246,7 +246,7 @@ export default function FinanceDashboardScreen({ navigation }: any) {
             <View style={[styles.actionIcon, { backgroundColor: '#D1FAE5' }]}>
               <Ionicons name="add" size={20} color={colors.success} />
             </View>
-            <Text style={styles.actionLabel}>{t('finance_add_income') || 'Ingreso'}</Text>
+            <Text style={styles.actionLabel}>{t('finance_add_income') }</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.actionBtn}
@@ -255,15 +255,15 @@ export default function FinanceDashboardScreen({ navigation }: any) {
             <View style={[styles.actionIcon, { backgroundColor: colors.primaryLight }]}>
               <Ionicons name="pie-chart" size={20} color={colors.primary} />
             </View>
-            <Text style={styles.actionLabel}>{t('finance_budget') || 'Presupuesto'}</Text>
+            <Text style={styles.actionLabel}>{t('finance_budget') }</Text>
           </TouchableOpacity>
         </View>
 
-        <Text style={styles.sectionTitle}>{t('finance_recent_transactions') || 'Últimas transacciones'}</Text>
+        <Text style={styles.sectionTitle}>{t('finance_recent_transactions') || 'Ãšltimas transacciones'}</Text>
         {recentTransactions.length === 0 ? (
           <View style={styles.emptyState}>
             <Ionicons name="wallet-outline" size={48} color={colors.border} />
-            <Text style={styles.emptyText}>{t('finance_no_transactions') || 'Sin transacciones aún'}</Text>
+            <Text style={styles.emptyText}>{t('finance_no_transactions') }</Text>
           </View>
         ) : (
           recentTransactions.map((tx) => {
@@ -274,7 +274,7 @@ export default function FinanceDashboardScreen({ navigation }: any) {
                   <Ionicons name={isIncome ? 'arrow-down' : 'arrow-up'} size={16} color={isIncome ? colors.success : colors.error} />
                 </View>
                 <View style={styles.txInfo}>
-                  <Text style={styles.txDesc}>{getLocalized(tx.category, lang) || (isIncome ? t('finance_income') || 'Ingreso' : t('finance_expenses') || 'Gasto')}</Text>
+                  <Text style={styles.txDesc}>{getLocalized(tx.category, lang) || (isIncome ? t('finance_income')  : t('finance_expenses') )}</Text>
                   <Text style={styles.txDate}>{tx.date ? formatDate(tx.date, lang) : ''}</Text>
                 </View>
                 <Text style={[styles.txAmount, isIncome ? styles.txAmountIncome : styles.txAmountExpense]}>
@@ -289,7 +289,7 @@ export default function FinanceDashboardScreen({ navigation }: any) {
           style={styles.viewAllBtn}
           onPress={() => navigation.navigate('Transactions')}
         >
-          <Text style={styles.viewAllText}>{t('finance_view_all') || 'Ver todas las transacciones'}</Text>
+          <Text style={styles.viewAllText}>{t('finance_view_all') }</Text>
           <Ionicons name="chevron-forward" size={18} color={colors.primary} />
         </TouchableOpacity>
       </ScrollView>

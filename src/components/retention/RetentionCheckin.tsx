@@ -223,7 +223,7 @@ export default function RetentionCheckin({ onCheckinComplete }: RetentionCheckin
             style={[styles.closeWheel, { backgroundColor: colors.background }]}
             onPress={() => setShowWheel(false)}
           >
-            <Text style={[styles.closeWheelText, { color: colors.text }]}>Cerrar</Text>
+            <Text style={[styles.closeWheelText, { color: colors.text }]}>{t('common_close')}</Text>
           </TouchableOpacity>
         </View>
       )}

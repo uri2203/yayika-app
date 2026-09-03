@@ -350,9 +350,9 @@ export default function OnboardingFlowScreen({ navigation }: any) {
                 </TouchableOpacity>
                 <View style={styles.taskInfo}>
                   <Text style={[styles.taskTitle, currentDayData.completed && styles.taskTitleCompleted]}>
-                    Completar día {selectedDay}
+                    {t('onboard_flow_complete_day')} {selectedDay}
                   </Text>
-                  <Text style={styles.taskXp}>+{TASK_XP} XP</Text>
+                  <Text style={styles.taskXp}>+{TASK_XP} {t('common_xp_unit')}</Text>
                 </View>
                 {currentDayData.completed && (
                   <Ionicons name="trophy" size={18} color={colors.gold} />

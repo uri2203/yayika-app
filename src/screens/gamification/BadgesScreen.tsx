@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+﻿import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
@@ -24,54 +24,54 @@ interface BadgeConfig {
 
 const BADGES: BadgeConfig[] = [
   // Streak
-  { key: 'streak_3', icon: '🔥', nameKey: 'badge_streak3_name', descKey: 'badge_streak3_desc', category: 'streak', tier: 'bronze', requirement: 'streak', requirementValue: 3 },
-  { key: 'streak_7', icon: '🔥', nameKey: 'badge_streak7_name', descKey: 'badge_streak7_desc', category: 'streak', tier: 'silver', requirement: 'streak', requirementValue: 7 },
-  { key: 'streak_14', icon: '🔥', nameKey: 'badge_streak14_name', descKey: 'badge_streak14_desc', category: 'streak', tier: 'gold', requirement: 'streak', requirementValue: 14 },
-  { key: 'streak_30', icon: '🔥', nameKey: 'badge_streak30_name', descKey: 'badge_streak30_desc', category: 'streak', tier: 'diamond', requirement: 'streak', requirementValue: 30 },
+  { key: 'streak_3', icon: 'ðŸ”¥', nameKey: 'badge_streak3_name', descKey: 'badge_streak3_desc', category: 'streak', tier: 'bronze', requirement: 'streak', requirementValue: 3 },
+  { key: 'streak_7', icon: 'ðŸ”¥', nameKey: 'badge_streak7_name', descKey: 'badge_streak7_desc', category: 'streak', tier: 'silver', requirement: 'streak', requirementValue: 7 },
+  { key: 'streak_14', icon: 'ðŸ”¥', nameKey: 'badge_streak14_name', descKey: 'badge_streak14_desc', category: 'streak', tier: 'gold', requirement: 'streak', requirementValue: 14 },
+  { key: 'streak_30', icon: 'ðŸ”¥', nameKey: 'badge_streak30_name', descKey: 'badge_streak30_desc', category: 'streak', tier: 'diamond', requirement: 'streak', requirementValue: 30 },
 
   // Check-in
-  { key: 'checkin_1', icon: '📋', nameKey: 'badge_checkin1_name', descKey: 'badge_checkin1_desc', category: 'checkin', tier: 'bronze', requirement: 'checkin_count', requirementValue: 1 },
-  { key: 'checkin_10', icon: '📋', nameKey: 'badge_checkin10_name', descKey: 'badge_checkin10_desc', category: 'checkin', tier: 'silver', requirement: 'checkin_count', requirementValue: 10 },
-  { key: 'checkin_30', icon: '📋', nameKey: 'badge_checkin30_name', descKey: 'badge_checkin30_desc', category: 'checkin', tier: 'gold', requirement: 'checkin_count', requirementValue: 30 },
-  { key: 'checkin_100', icon: '📋', nameKey: 'badge_checkin100_name', descKey: 'badge_checkin100_desc', category: 'checkin', tier: 'diamond', requirement: 'checkin_count', requirementValue: 100 },
+  { key: 'checkin_1', icon: 'ðŸ“‹', nameKey: 'badge_checkin1_name', descKey: 'badge_checkin1_desc', category: 'checkin', tier: 'bronze', requirement: 'checkin_count', requirementValue: 1 },
+  { key: 'checkin_10', icon: 'ðŸ“‹', nameKey: 'badge_checkin10_name', descKey: 'badge_checkin10_desc', category: 'checkin', tier: 'silver', requirement: 'checkin_count', requirementValue: 10 },
+  { key: 'checkin_30', icon: 'ðŸ“‹', nameKey: 'badge_checkin30_name', descKey: 'badge_checkin30_desc', category: 'checkin', tier: 'gold', requirement: 'checkin_count', requirementValue: 30 },
+  { key: 'checkin_100', icon: 'ðŸ“‹', nameKey: 'badge_checkin100_name', descKey: 'badge_checkin100_desc', category: 'checkin', tier: 'diamond', requirement: 'checkin_count', requirementValue: 100 },
 
   // Cycle
-  { key: 'cycle_first', icon: '🌙', nameKey: 'badge_first_phase_name', descKey: 'badge_first_phase_desc', category: 'cycle', tier: 'bronze', requirement: 'event_type', requirementValue: 0, eventType: 'cycle_log' },
-  { key: 'cycle_7', icon: '🌙', nameKey: 'badge_cycle7_name', descKey: 'badge_cycle7_desc', category: 'cycle', tier: 'silver', requirement: 'event_type', requirementValue: 0, eventType: 'cycle_log_7' },
-  { key: 'cycle_30', icon: '🌙', nameKey: 'badge_conscious_cycle_name', descKey: 'badge_conscious_cycle_desc', category: 'cycle', tier: 'gold', requirement: 'event_type', requirementValue: 0, eventType: 'cycle_log_30' },
-  { key: 'mood_logged', icon: '🌸', nameKey: 'badge_mood_name', descKey: 'badge_mood_desc', category: 'cycle', tier: 'bronze', requirement: 'event_type', requirementValue: 0, eventType: 'mood_logged' },
+  { key: 'cycle_first', icon: 'ðŸŒ™', nameKey: 'badge_first_phase_name', descKey: 'badge_first_phase_desc', category: 'cycle', tier: 'bronze', requirement: 'event_type', requirementValue: 0, eventType: 'cycle_log' },
+  { key: 'cycle_7', icon: 'ðŸŒ™', nameKey: 'badge_cycle7_name', descKey: 'badge_cycle7_desc', category: 'cycle', tier: 'silver', requirement: 'event_type', requirementValue: 0, eventType: 'cycle_log_7' },
+  { key: 'cycle_30', icon: 'ðŸŒ™', nameKey: 'badge_conscious_cycle_name', descKey: 'badge_conscious_cycle_desc', category: 'cycle', tier: 'gold', requirement: 'event_type', requirementValue: 0, eventType: 'cycle_log_30' },
+  { key: 'mood_logged', icon: 'ðŸŒ¸', nameKey: 'badge_mood_name', descKey: 'badge_mood_desc', category: 'cycle', tier: 'bronze', requirement: 'event_type', requirementValue: 0, eventType: 'mood_logged' },
 
   // Challenge
-  { key: 'challenge_first', icon: '🎯', nameKey: 'badge_challenge_first_name', descKey: 'badge_challenge_first_desc', category: 'challenge', tier: 'bronze', requirement: 'event_type', requirementValue: 0, eventType: 'challenge_completed' },
-  { key: 'challenge_5', icon: '🎯', nameKey: 'badge_productive_name', descKey: 'badge_productive_desc', category: 'challenge', tier: 'silver', requirement: 'event_type', requirementValue: 0, eventType: 'challenge_completed_5' },
-  { key: 'challenge_10', icon: '🎯', nameKey: 'badge_challenge10_name', descKey: 'badge_challenge10_desc', category: 'challenge', tier: 'gold', requirement: 'event_type', requirementValue: 0, eventType: 'challenge_completed_10' },
+  { key: 'challenge_first', icon: 'ðŸŽ¯', nameKey: 'badge_challenge_first_name', descKey: 'badge_challenge_first_desc', category: 'challenge', tier: 'bronze', requirement: 'event_type', requirementValue: 0, eventType: 'challenge_completed' },
+  { key: 'challenge_5', icon: 'ðŸŽ¯', nameKey: 'badge_productive_name', descKey: 'badge_productive_desc', category: 'challenge', tier: 'silver', requirement: 'event_type', requirementValue: 0, eventType: 'challenge_completed_5' },
+  { key: 'challenge_10', icon: 'ðŸŽ¯', nameKey: 'badge_challenge10_name', descKey: 'badge_challenge10_desc', category: 'challenge', tier: 'gold', requirement: 'event_type', requirementValue: 0, eventType: 'challenge_completed_10' },
 
   // Financial
-  { key: 'finance_first', icon: '💰', nameKey: 'badge_saver_name', descKey: 'badge_saver_desc', category: 'financial', tier: 'bronze', requirement: 'event_type', requirementValue: 0, eventType: 'transaction_added' },
-  { key: 'finance_goal', icon: '💰', nameKey: 'badge_goal_met_name', descKey: 'badge_goal_met_desc', category: 'financial', tier: 'silver', requirement: 'event_type', requirementValue: 0, eventType: 'financial_goal' },
-  { key: 'finance_budget', icon: '💰', nameKey: 'badge_budget_name', descKey: 'badge_budget_desc', category: 'financial', tier: 'gold', requirement: 'event_type', requirementValue: 0, eventType: 'budget_created' },
+  { key: 'finance_first', icon: 'ðŸ’°', nameKey: 'badge_saver_name', descKey: 'badge_saver_desc', category: 'financial', tier: 'bronze', requirement: 'event_type', requirementValue: 0, eventType: 'transaction_added' },
+  { key: 'finance_goal', icon: 'ðŸ’°', nameKey: 'badge_goal_met_name', descKey: 'badge_goal_met_desc', category: 'financial', tier: 'silver', requirement: 'event_type', requirementValue: 0, eventType: 'financial_goal' },
+  { key: 'finance_budget', icon: 'ðŸ’°', nameKey: 'badge_budget_name', descKey: 'badge_budget_desc', category: 'financial', tier: 'gold', requirement: 'event_type', requirementValue: 0, eventType: 'budget_created' },
 
   // Course
-  { key: 'course_first', icon: '📚', nameKey: 'badge_student_name', descKey: 'badge_student_desc', category: 'course', tier: 'bronze', requirement: 'event_type', requirementValue: 0, eventType: 'product_access' },
-  { key: 'course_complete', icon: '📚', nameKey: 'badge_course_complete_name', descKey: 'badge_course_complete_desc', category: 'course', tier: 'silver', requirement: 'event_type', requirementValue: 0, eventType: 'course_completed' },
-  { key: 'course_5stars', icon: '⭐', nameKey: 'badge_5stars_name', descKey: 'badge_5stars_desc', category: 'course', tier: 'gold', requirement: 'event_type', requirementValue: 0, eventType: 'five_star_review' },
+  { key: 'course_first', icon: 'ðŸ“š', nameKey: 'badge_student_name', descKey: 'badge_student_desc', category: 'course', tier: 'bronze', requirement: 'event_type', requirementValue: 0, eventType: 'product_access' },
+  { key: 'course_complete', icon: 'ðŸ“š', nameKey: 'badge_course_complete_name', descKey: 'badge_course_complete_desc', category: 'course', tier: 'silver', requirement: 'event_type', requirementValue: 0, eventType: 'course_completed' },
+  { key: 'course_5stars', icon: 'â­', nameKey: 'badge_5stars_name', descKey: 'badge_5stars_desc', category: 'course', tier: 'gold', requirement: 'event_type', requirementValue: 0, eventType: 'five_star_review' },
 
   // Social
-  { key: 'social_post', icon: '👥', nameKey: 'badge_influencer_name', descKey: 'badge_influencer_desc', category: 'social', tier: 'bronze', requirement: 'event_type', requirementValue: 0, eventType: 'community_post' },
-  { key: 'social_10_referrals', icon: '👥', nameKey: 'badge_top10_name', descKey: 'badge_top10_desc', category: 'social', tier: 'silver', requirement: 'referrals', requirementValue: 10 },
-  { key: 'social_share', icon: '👥', nameKey: 'badge_share_name', descKey: 'badge_share_desc', category: 'social', tier: 'bronze', requirement: 'event_type', requirementValue: 0, eventType: 'shared_product' },
+  { key: 'social_post', icon: 'ðŸ‘¥', nameKey: 'badge_influencer_name', descKey: 'badge_influencer_desc', category: 'social', tier: 'bronze', requirement: 'event_type', requirementValue: 0, eventType: 'community_post' },
+  { key: 'social_10_referrals', icon: 'ðŸ‘¥', nameKey: 'badge_top10_name', descKey: 'badge_top10_desc', category: 'social', tier: 'silver', requirement: 'referrals', requirementValue: 10 },
+  { key: 'social_share', icon: 'ðŸ‘¥', nameKey: 'badge_share_name', descKey: 'badge_share_desc', category: 'social', tier: 'bronze', requirement: 'event_type', requirementValue: 0, eventType: 'shared_product' },
 
   // Referral
-  { key: 'referral_first', icon: '🤝', nameKey: 'badge_referral_first_name', descKey: 'badge_referral_first_desc', category: 'referral', tier: 'bronze', requirement: 'referrals', requirementValue: 1 },
-  { key: 'referral_5', icon: '🤝', nameKey: 'badge_referral5_name', descKey: 'badge_referral5_desc', category: 'referral', tier: 'silver', requirement: 'referrals', requirementValue: 5 },
-  { key: 'referral_25', icon: '🤝', nameKey: 'badge_referral25_name', descKey: 'badge_referral25_desc', category: 'referral', tier: 'gold', requirement: 'referrals', requirementValue: 25 },
+  { key: 'referral_first', icon: 'ðŸ¤', nameKey: 'badge_referral_first_name', descKey: 'badge_referral_first_desc', category: 'referral', tier: 'bronze', requirement: 'referrals', requirementValue: 1 },
+  { key: 'referral_5', icon: 'ðŸ¤', nameKey: 'badge_referral5_name', descKey: 'badge_referral5_desc', category: 'referral', tier: 'silver', requirement: 'referrals', requirementValue: 5 },
+  { key: 'referral_25', icon: 'ðŸ¤', nameKey: 'badge_referral25_name', descKey: 'badge_referral25_desc', category: 'referral', tier: 'gold', requirement: 'referrals', requirementValue: 25 },
 
   // Special
-  { key: 'onboarding_complete', icon: '🏆', nameKey: 'badge_guerrera_name', descKey: 'badge_guerrera_desc', category: 'special', tier: 'bronze', requirement: 'event_type', requirementValue: 0, eventType: 'onboarding_complete' },
-  { key: 'xp_100', icon: '⭐', nameKey: 'badge_first_steps_name', descKey: 'badge_first_steps_desc', category: 'special', tier: 'bronze', requirement: 'xp', requirementValue: 100 },
-  { key: 'xp_500', icon: '🌟', nameKey: 'badge_rising_name', descKey: 'badge_rising_desc', category: 'special', tier: 'silver', requirement: 'xp', requirementValue: 500 },
-  { key: 'xp_1000', icon: '💫', nameKey: 'badge_legend_name', descKey: 'badge_legend_desc', category: 'special', tier: 'gold', requirement: 'xp', requirementValue: 1000 },
-  { key: 'all_badges', icon: '👑', nameKey: 'badge_queen_name', descKey: 'badge_queen_desc', category: 'special', tier: 'diamond', requirement: 'all_badges', requirementValue: 0 },
+  { key: 'onboarding_complete', icon: 'ðŸ†', nameKey: 'badge_guerrera_name', descKey: 'badge_guerrera_desc', category: 'special', tier: 'bronze', requirement: 'event_type', requirementValue: 0, eventType: 'onboarding_complete' },
+  { key: 'xp_100', icon: 'â­', nameKey: 'badge_first_steps_name', descKey: 'badge_first_steps_desc', category: 'special', tier: 'bronze', requirement: 'xp', requirementValue: 100 },
+  { key: 'xp_500', icon: 'ðŸŒŸ', nameKey: 'badge_rising_name', descKey: 'badge_rising_desc', category: 'special', tier: 'silver', requirement: 'xp', requirementValue: 500 },
+  { key: 'xp_1000', icon: 'ðŸ’«', nameKey: 'badge_legend_name', descKey: 'badge_legend_desc', category: 'special', tier: 'gold', requirement: 'xp', requirementValue: 1000 },
+  { key: 'all_badges', icon: 'ðŸ‘‘', nameKey: 'badge_queen_name', descKey: 'badge_queen_desc', category: 'special', tier: 'diamond', requirement: 'all_badges', requirementValue: 0 },
 ];
 
 const CATEGORIES = [
@@ -214,7 +214,7 @@ export default function BadgesScreen({ navigation }: any) {
     lockedBadge: { marginTop: 4 },
   });
 
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   const { user } = useAuth();
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -281,7 +281,7 @@ export default function BadgesScreen({ navigation }: any) {
   const getEarnDate = (badge: BadgeConfig): string | null => {
     if (badge.requirement === 'event_type' && badge.eventType && earnedDates[badge.eventType]) {
       const d = new Date(earnedDates[badge.eventType]);
-      return d.toLocaleDateString('es-MX', { day: 'numeric', month: 'short', year: 'numeric' });
+      return d.toLocaleDateString(lang === 'es' ? 'es-MX' : lang === 'en' ? 'en-US' : lang === 'pt' ? 'pt-BR' : lang === 'fr' ? 'fr-FR' : 'de-DE', { day: 'numeric', month: 'short', year: 'numeric' });
     }
     return null;
   };
@@ -324,7 +324,7 @@ export default function BadgesScreen({ navigation }: any) {
           </View>
           <View style={styles.xpRow}>
             <Ionicons name="star" size={14} color={colors.gold} />
-            <Text style={styles.xpText}>{totalXp} XP total</Text>
+            <Text style={styles.xpText}>{totalXp} {t('common_xp_unit')}</Text>
           </View>
         </View>
 

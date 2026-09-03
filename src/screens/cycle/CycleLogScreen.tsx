@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+﻿import React, { useState, useEffect, useCallback } from 'react';
 import {
   View,
   Text,
@@ -36,25 +36,25 @@ export default function CycleLogScreen({ navigation }: any) {
   const colors = currentColors;
 
   const PHASES = [
-    { key: 'menstrual', label: t('cycle_phase_menstrual') || 'Menstrual', color: '#C96B7A', icon: '🌙' },
-    { key: 'follicular', label: t('cycle_phase_follicular') || 'Follicular', color: '#3BAF7A', icon: '🌸' },
-    { key: 'ovulatory', label: t('cycle_phase_ovulatory') || 'Ovulatory', color: '#1A9E8F', icon: '☀️' },
-    { key: 'luteal', label: t('cycle_phase_luteal') || 'Luteal', color: '#B8943A', icon: '🍂' },
+    { key: 'menstrual', label: t('cycle_phase_menstrual') , color: '#C96B7A', icon: 'ðŸŒ™' },
+    { key: 'follicular', label: t('cycle_phase_follicular') , color: '#3BAF7A', icon: 'ðŸŒ¸' },
+    { key: 'ovulatory', label: t('cycle_phase_ovulatory') , color: '#1A9E8F', icon: 'â˜€ï¸' },
+    { key: 'luteal', label: t('cycle_phase_luteal') , color: '#B8943A', icon: 'ðŸ‚' },
   ];
 
   const MOODS = [
-    { emoji: '😊', label: t('cycle_mood_happy') || 'Happy' },
-    { emoji: '😐', label: t('cycle_mood_neutral') || 'Neutral' },
-    { emoji: '😔', label: t('cycle_mood_sad') || 'Sad' },
-    { emoji: '😤', label: t('cycle_mood_irritable') || 'Irritable' },
-    { emoji: '😴', label: t('cycle_mood_tired') || 'Tired' },
+    { emoji: 'ðŸ˜Š', label: t('cycle_mood_happy')  },
+    { emoji: 'ðŸ˜', label: t('cycle_mood_neutral')  },
+    { emoji: 'ðŸ˜”', label: t('cycle_mood_sad')  },
+    { emoji: 'ðŸ˜¤', label: t('cycle_mood_irritable')  },
+    { emoji: 'ðŸ˜´', label: t('cycle_mood_tired')  },
   ];
 
   const SYMPTOMS = [
-    t('cycle_symptom_pain') || 'Dolor', t('cycle_symptom_low_energy') || 'Energía baja',
-    t('cycle_symptom_good_mood') || 'Buen ánimo', t('cycle_symptom_insomnia') || 'Insomnio',
-    t('cycle_symptom_bloating') || 'Hinchazón', t('cycle_symptom_anxiety') || 'Ansiedad',
-    t('cycle_symptom_high_focus') || 'Concentración alta', t('cycle_symptom_fatigue') || 'Cansancio',
+    t('cycle_symptom_pain') , t('cycle_symptom_low_energy') ,
+    t('cycle_symptom_good_mood') , t('cycle_symptom_insomnia') ,
+    t('cycle_symptom_bloating') , t('cycle_symptom_anxiety') ,
+    t('cycle_symptom_high_focus') , t('cycle_symptom_fatigue') ,
   ];
 
   const [loading, setLoading] = useState(true);
@@ -78,7 +78,7 @@ export default function CycleLogScreen({ navigation }: any) {
       const todayLog = logs?.find((l: any) => l.logged_at?.startsWith(today));
       if (todayLog) {
         setCycleDay(todayLog.cycle_day || 1);
-        setSelectedPhase(todayLog.phase || 'menstrual');
+        setSelectedPhase(todayLog.phase );
         setEnergy(todayLog.energy || 3);
         setSelectedSymptoms(todayLog.symptoms || []);
       }
@@ -114,12 +114,12 @@ export default function CycleLogScreen({ navigation }: any) {
         await upsertDailyMood(user.id, { mood: selectedMood });
       }
       Alert.alert(
-        t('cycle_saved_title') || 'Guardado',
-        t('cycle_saved_msg') || 'Registro guardado exitosamente'
+        t('cycle_saved_title') ,
+        t('cycle_saved_msg') 
       );
       fetchData();
     } catch (e) {
-      Alert.alert(t('common_error') || 'Error', t('cycle_save_error') || 'No se pudo guardar');
+      Alert.alert(t('common_error') , t('cycle_save_error') );
     } finally {
       setSaving(false);
     }
@@ -127,7 +127,7 @@ export default function CycleLogScreen({ navigation }: any) {
 
   const renderDayPicker = () => (
     <View style={styles.sectionCard}>
-      <Text style={styles.sectionTitle}>{t('cycle_day') || 'Día del ciclo'}</Text>
+      <Text style={styles.sectionTitle}>{t('cycle_day') }</Text>
       <View style={styles.dayPickerRow}>
         <TouchableOpacity
           style={styles.dayPickerBtn}
@@ -137,7 +137,7 @@ export default function CycleLogScreen({ navigation }: any) {
         </TouchableOpacity>
         <View style={styles.dayPickerValue}>
           <Text style={styles.dayPickerNumber}>{cycleDay}</Text>
-          <Text style={styles.dayPickerLabel}>{t('cycle_days_total') || '/ 28'}</Text>
+          <Text style={styles.dayPickerLabel}>{t('cycle_days_total') }</Text>
         </View>
         <TouchableOpacity
           style={styles.dayPickerBtn}
@@ -151,7 +151,7 @@ export default function CycleLogScreen({ navigation }: any) {
 
   const renderPhaseSelector = () => (
     <View style={styles.sectionCard}>
-      <Text style={styles.sectionTitle}>{t('cycle_phase') || 'Fase'}</Text>
+      <Text style={styles.sectionTitle}>{t('cycle_phase') }</Text>
       <View style={styles.phaseGrid}>
         {PHASES.map((p) => {
           const isActive = selectedPhase === p.key;
@@ -174,7 +174,7 @@ export default function CycleLogScreen({ navigation }: any) {
 
   const renderEnergyPicker = () => (
     <View style={styles.sectionCard}>
-      <Text style={styles.sectionTitle}>{t('cycle_energy_level') || 'Nivel de energía'}</Text>
+      <Text style={styles.sectionTitle}>{t('cycle_energy_level') }</Text>
       <View style={styles.energyRow}>
         {[1, 2, 3, 4, 5].map((star) => (
           <TouchableOpacity
@@ -195,7 +195,7 @@ export default function CycleLogScreen({ navigation }: any) {
 
   const renderMoodSelector = () => (
     <View style={styles.sectionCard}>
-      <Text style={styles.sectionTitle}>{t('cycle_how_feeling') || '¿Cómo te sientes?'}</Text>
+      <Text style={styles.sectionTitle}>{t('cycle_how_feeling') || 'Â¿CÃ³mo te sientes?'}</Text>
       <View style={styles.moodRow}>
         {MOODS.map((m) => {
           const isActive = selectedMood === m.emoji;
@@ -215,7 +215,7 @@ export default function CycleLogScreen({ navigation }: any) {
 
   const renderSymptoms = () => (
     <View style={styles.sectionCard}>
-      <Text style={styles.sectionTitle}>{t('cycle_register') || 'Síntomas'}</Text>
+      <Text style={styles.sectionTitle}>{t('cycle_register') }</Text>
       <View style={styles.symptomsGrid}>
         {SYMPTOMS.map((s) => {
           const isActive = selectedSymptoms.includes(s);
@@ -226,7 +226,7 @@ export default function CycleLogScreen({ navigation }: any) {
               onPress={() => toggleSymptom(s)}
             >
               <Text style={[styles.symptomText, isActive && styles.symptomTextSelected]}>
-                {isActive ? '✓ ' : ''}{s}
+                {isActive ? 'âœ“ ' : ''}{s}
               </Text>
             </TouchableOpacity>
           );
@@ -237,9 +237,9 @@ export default function CycleLogScreen({ navigation }: any) {
 
   const renderRecentLogs = () => (
     <View style={styles.sectionCard}>
-      <Text style={styles.sectionTitle}>{t('cycle_recent_logs') || 'Últimos 7 días'}</Text>
+      <Text style={styles.sectionTitle}>{t('cycle_recent_logs') || 'Ãšltimos 7 dÃ­as'}</Text>
       {recentLogs.length === 0 ? (
-        <Text style={styles.noLogsText}>{t('cycle_no_logs') || 'Sin registros recientes'}</Text>
+        <Text style={styles.noLogsText}>{t('cycle_no_logs') }</Text>
       ) : (
         recentLogs.map((log, i) => {
           const phaseData = PHASES.find((p) => p.key === log.phase);
@@ -249,7 +249,7 @@ export default function CycleLogScreen({ navigation }: any) {
               <View style={styles.logInfo}>
                 <Text style={styles.logDate}>{log.logged_at?.split('T')[0]}</Text>
                 <Text style={styles.logPhase}>
-                  {phaseData?.icon} {phaseData?.label || log.phase} · {t('cycle_day') || 'Día'} {log.cycle_day}
+                  {phaseData?.icon} {phaseData?.label || log.phase} Â· {t('cycle_day') } {log.cycle_day}
                 </Text>
               </View>
               <View style={styles.logEnergy}>
@@ -468,8 +468,8 @@ export default function CycleLogScreen({ navigation }: any) {
           <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
             <Ionicons name="arrow-back" size={24} color={colors.text} />
           </TouchableOpacity>
-          <Text style={styles.title}>{t('cycle_log_title') || 'Registrar mi día'}</Text>
-          <Text style={styles.subtitle}>{t('cycle_log_subtitle') || 'How are you feeling today?'}</Text>
+          <Text style={styles.title}>{t('cycle_log_title') }</Text>
+          <Text style={styles.subtitle}>{t('cycle_log_subtitle') }</Text>
         </View>
 
         {loading ? (
@@ -492,7 +492,7 @@ export default function CycleLogScreen({ navigation }: any) {
               ) : (
                 <>
                   <Ionicons name="checkmark-circle" size={22} color={colors.white} />
-                  <Text style={styles.saveBtnText}>{t('cycle_modal_save') || 'Guardar registro'}</Text>
+                  <Text style={styles.saveBtnText}>{t('cycle_modal_save') }</Text>
                 </>
               )}
             </TouchableOpacity>
