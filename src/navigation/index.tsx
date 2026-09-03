@@ -48,6 +48,9 @@ import OnboardingFlowScreen from '../screens/onboarding/OnboardingFlowScreen';
 // Afiliadas (Affiliates)
 import AffiliateDashboardScreen from '../screens/affiliates/AffiliateDashboardScreen';
 
+// Streak Insurance
+import StreakInsuranceScreen from '../screens/portal/StreakInsuranceScreen';
+
 // Profile
 import ProfileScreen from '../screens/profile/ProfileScreen';
 import SettingsScreen from '../screens/profile/SettingsScreen';
@@ -104,6 +107,7 @@ function PortalStackNavigator() {
       <PortalStack.Screen name="Chat" component={ChatScreen} />
       <PortalStack.Screen name="GrowthCoach" component={GrowthCoachScreen} />
       <PortalStack.Screen name="WellnessPlanner" component={WellnessPlannerScreen} />
+      <PortalStack.Screen name="StreakInsurance" component={StreakInsuranceScreen} />
     </PortalStack.Navigator>
   );
 }
