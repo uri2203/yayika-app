@@ -112,12 +112,38 @@ async function dailyCheckin(supabase: any, userId: string, body: any) {
     .maybeSingle();
 
   let newStreak = 1;
+  let freezeUsed = false;
   if (lastCheckin) {
     const lastDate = new Date(lastCheckin.created_at).toISOString().split("T")[0];
     const yesterday = new Date(Date.now() - 86400000).toISOString().split("T")[0];
+    const twoDaysAgo = new Date(Date.now() - 2 * 86400000).toISOString().split("T")[0];
+    
     if (lastDate === yesterday) {
+      // Consecutive day — extend streak
       newStreak = (progress?.streak_days || 0) + 1;
+    } else if (lastDate === twoDaysAgo) {
+      // Missed 1 day — check for streak freeze
+      const { data: freezes } = await supabase
+        .from("yayika_user_items")
+        .select("quantity")
+        .eq("user_id", userId)
+        .eq("item_type", "streak_freeze")
+        .gt("quantity", 0)
+        .maybeSingle();
+      
+      if (freezes && freezes.quantity > 0) {
+        // Use a freeze — keep streak alive
+        newStreak = (progress?.streak_days || 0) + 1;
+        freezeUsed = true;
+        await supabase
+          .from("yayika_user_items")
+          .update({ quantity: freezes.quantity - 1 })
+          .eq("user_id", userId)
+          .eq("item_type", "streak_freeze");
+      }
+      // else: streak resets to 1 (default)
     }
+    // else: missed 2+ days — streak resets to 1
   }
 
   // 4. Add XP (10 base + streak bonus)
@@ -128,7 +154,7 @@ async function dailyCheckin(supabase: any, userId: string, body: any) {
     user_id: userId,
     event_type: "daily_checkin",
     xp_amount: xpEarned,
-    metadata: { streak: newStreak, mood, energy },
+    metadata: { streak: newStreak, mood, energy, freeze_used: freezeUsed },
   });
 
   // 5. Update progress
