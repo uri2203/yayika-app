@@ -16,6 +16,8 @@ import { useTheme } from '../../contexts/ThemeContext';
 import { typography, spacing, borderRadius } from '../../config/theme';
 import Card from '../../components/Card';
 import { RetentionCheckin, TransformMirror, FutureSelf, SocialProofWidget } from '../../components/retention';
+import BadgeShowcase from '../../components/BadgeShowcase';
+import CompletionAnxiety from '../../components/CompletionAnxiety';
 import {
   getProgress,
   getProfile,
@@ -399,6 +401,9 @@ export default function PortalDashboard({ navigation }: any) {
       backgroundColor: '#FFF9E6',
       marginBottom: spacing.lg,
     },
+    badgeShowcaseCard: {
+      marginBottom: spacing.lg,
+    },
     affirmationHeader: {
       flexDirection: 'row',
       alignItems: 'center',
@@ -772,6 +777,18 @@ export default function PortalDashboard({ navigation }: any) {
 
         {/* Retention: Future Self */}
         <FutureSelf />
+
+        {/* Badge Showcase */}
+        <Card style={styles.badgeShowcaseCard}>
+          <BadgeShowcase editable={true} />
+        </Card>
+
+        {/* Completion Anxiety - Tareas pendientes */}
+        <CompletionAnxiety onItemPress={(item) => {
+          if (item.type === 'course') navigateToTab('Cursos');
+          else if (item.type === 'challenge') navigateToTab('Retos');
+          else if (item.type === 'cycle_log') navigateToTab('Ciclo');
+        }} />
 
         {/* Weekly Challenges */}
         {activeChallenges.length > 0 && (
