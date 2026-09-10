@@ -171,6 +171,7 @@ export default function TransactionsScreen({ navigation, route }: TransactionsSc
         type: newType,
         amount: parseFloat(newAmount),
         category: newCategory || undefined,
+        description: newDescription || undefined,
         date: newDate,
       });
       setAddModalVisible(false);

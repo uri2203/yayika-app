@@ -429,7 +429,7 @@ export async function getTransactions(userId: string, limit = 50) {
   return data;
 }
 
-export async function addTransaction(userId: string, tx: { type: string; amount: number; category?: string; date: string }) {
+export async function addTransaction(userId: string, tx: { type: string; amount: number; category?: string; description?: string; date: string }) {
   const { data, error } = await supabase
     .from('yayika_transactions')
     .insert({ user_id: userId, ...tx })
@@ -437,6 +437,38 @@ export async function addTransaction(userId: string, tx: { type: string; amount:
     .single();
   if (error) throw error;
   return data;
+}
+
+export async function getBudget(userId: string) {
+  const { data, error } = await supabase
+    .from('yayika_budget')
+    .select('*')
+    .eq('user_id', userId)
+    .single();
+  if (error && error.code !== 'PGRST116') throw error;
+  return data;
+}
+
+export async function saveBudget(userId: string, monthlyIncome: number) {
+  const { data, error } = await supabase
+    .from('yayika_budget')
+    .upsert(
+      { user_id: userId, monthly_income: monthlyIncome, updated_at: new Date().toISOString() },
+      { onConflict: 'user_id' }
+    )
+    .select()
+    .single();
+  if (error) throw error;
+  return data;
+}
+
+export async function deleteTransaction(userId: string, transactionId: string) {
+  const { error } = await supabase
+    .from('yayika_transactions')
+    .delete()
+    .eq('id', transactionId)
+    .eq('user_id', userId);
+  if (error) throw error;
 }
 
 export async function getXpEvents(userId: string, limit = 50) {

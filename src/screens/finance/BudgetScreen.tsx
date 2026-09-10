@@ -6,7 +6,7 @@ import { typography, spacing, borderRadius } from '../../config/theme';
 import { useTheme } from '../../contexts/ThemeContext';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { useAuth } from '../../contexts/AuthContext';
-import { getTransactions } from '../../config/api';
+import { getTransactions, getBudget, saveBudget } from '../../config/api';
 
 const CATEGORIES = [
   { key: 'food', icon: 'restaurant', color: '#F59E0B' },
@@ -107,8 +107,14 @@ export default function BudgetScreen({ navigation }: any) {
     if (!user) return;
     try {
       setLoading(true);
-      const txs = await getTransactions(user.id);
+      const [txs, budget] = await Promise.all([
+        getTransactions(user.id),
+        getBudget(user.id),
+      ]);
       setTransactions(txs || []);
+      if (budget?.monthly_income) {
+        setIncome(Number(budget.monthly_income));
+      }
     } catch (e) {
     } finally {
       setLoading(false);
@@ -121,6 +127,9 @@ export default function BudgetScreen({ navigation }: any) {
     const val = parseFloat(incomeInput) || 0;
     setIncome(val);
     setEditingIncome(false);
+    if (user?.id) {
+      try { await saveBudget(user.id, val); } catch {}
+    }
   };
 
   const now = new Date();
@@ -194,31 +203,31 @@ export default function BudgetScreen({ navigation }: any) {
             <View style={styles.splitItem}>
               <View style={styles.splitHeader}>
                 <View style={[styles.splitDot, { backgroundColor: colors.turquoise }]} />
-                <Text style={styles.splitLabel}>50% {t('finance_needs') }</Text>
+                <Text style={styles.splitLabel}>50% {t('finance_needs')}</Text>
               </View>
               <Text style={styles.splitAmount}>{formatMoney(needsAmount, lang)}</Text>
               <View style={styles.progressBar}>
-                <View style={[styles.progressFill, { width: `${Math.min((totalExpenses * 0.625 / needsAmount) * 100, 100)}%`, backgroundColor: colors.turquoise }]} />
+                <View style={[styles.progressFill, { width: `${Math.min(needsAmount > 0 ? (totalExpenses / needsAmount) * 100 : 0, 100)}%`, backgroundColor: colors.turquoise }]} />
               </View>
             </View>
             <View style={styles.splitItem}>
               <View style={styles.splitHeader}>
                 <View style={[styles.splitDot, { backgroundColor: colors.gold }]} />
-                <Text style={styles.splitLabel}>30% {t('finance_wants') }</Text>
+                <Text style={styles.splitLabel}>30% {t('finance_wants')}</Text>
               </View>
               <Text style={styles.splitAmount}>{formatMoney(wantsAmount, lang)}</Text>
               <View style={styles.progressBar}>
-                <View style={[styles.progressFill, { width: `${Math.min((totalExpenses * 0.375 / wantsAmount) * 100, 100)}%`, backgroundColor: colors.gold }]} />
+                <View style={[styles.progressFill, { width: `${Math.min(wantsAmount > 0 ? (totalExpenses / wantsAmount) * 100 : 0, 100)}%`, backgroundColor: colors.gold }]} />
               </View>
             </View>
             <View style={styles.splitItem}>
               <View style={styles.splitHeader}>
                 <View style={[styles.splitDot, { backgroundColor: colors.rose }]} />
-                <Text style={styles.splitLabel}>20% {t('finance_savings_stat') }</Text>
+                <Text style={styles.splitLabel}>20% {t('finance_savings_stat')}</Text>
               </View>
               <Text style={styles.splitAmount}>{formatMoney(savingsAmount, lang)}</Text>
               <View style={styles.progressBar}>
-                <View style={[styles.progressFill, { width: `${Math.min((savingsAmount / (income || 1)) * 100, 100)}%`, backgroundColor: colors.rose }]} />
+                <View style={[styles.progressFill, { width: `${Math.min(savingsAmount > 0 ? ((income - totalExpenses) / savingsAmount) * 100 : 0, 100)}%`, backgroundColor: colors.rose }]} />
               </View>
             </View>
           </View>

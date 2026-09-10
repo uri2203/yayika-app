@@ -798,6 +798,14 @@ const translations: Record<Language, Record<string, string>> = {
     finance_date: 'Fecha',
     finance_save: 'Guardar',
     finance_categories: 'Categorías',
+    category_food: 'Comida',
+    category_transport: 'Transporte',
+    category_housing: 'Vivienda',
+    category_entertainment: 'Entretenimiento',
+    category_health: 'Salud',
+    category_education: 'Educación',
+    category_clothing: 'Ropa',
+    category_other: 'Otro',
 
     // Retention System
     retention_checkin_title: 'Check-in Diario',
@@ -1743,6 +1751,14 @@ const translations: Record<Language, Record<string, string>> = {
     finance_date: 'Date',
     finance_save: 'Save',
     finance_categories: 'Categories',
+    category_food: 'Food',
+    category_transport: 'Transport',
+    category_housing: 'Housing',
+    category_entertainment: 'Entertainment',
+    category_health: 'Health',
+    category_education: 'Education',
+    category_clothing: 'Clothing',
+    category_other: 'Other',
 
     // Retention System
     retention_checkin_title: 'Daily Check-in',
@@ -2522,6 +2538,14 @@ const translations: Record<Language, Record<string, string>> = {
     finance_date: 'Data',
     finance_save: 'Salvar',
     finance_categories: 'Categorias',
+    category_food: 'Comida',
+    category_transport: 'Transporte',
+    category_housing: 'Habitação',
+    category_entertainment: 'Entretenimento',
+    category_health: 'Saúde',
+    category_education: 'Educação',
+    category_clothing: 'Roupa',
+    category_other: 'Outro',
 
     // Affiliate (missing)
     aff_link_copied: 'Link copiado',
@@ -3424,6 +3448,14 @@ const translations: Record<Language, Record<string, string>> = {
     finance_date: 'Date',
     finance_save: 'Enregistrer',
     finance_categories: 'Catégories',
+    category_food: 'Nourriture',
+    category_transport: 'Transport',
+    category_housing: 'Logement',
+    category_entertainment: 'Divertissement',
+    category_health: 'Santé',
+    category_education: 'Éducation',
+    category_clothing: 'Vêtements',
+    category_other: 'Autre',
 
     // Affiliate (missing)
     aff_link_copied: 'Lien copié',
@@ -4326,6 +4358,14 @@ const translations: Record<Language, Record<string, string>> = {
     finance_date: 'Datum',
     finance_save: 'Speichern',
     finance_categories: 'Kategorien',
+    category_food: 'Essen',
+    category_transport: 'Transport',
+    category_housing: 'Wohnen',
+    category_entertainment: 'Unterhaltung',
+    category_health: 'Gesundheit',
+    category_education: 'Bildung',
+    category_clothing: 'Kleidung',
+    category_other: 'Sonstiges',
 
     // Affiliate (missing)
     aff_link_copied: 'Link kopiert',
