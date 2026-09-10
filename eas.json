@@ -23,6 +23,7 @@
       }
     },
     "production": {
+      "install": "npm install --legacy-peer-deps",
       "channel": "production",
       "android": {
         "buildType": "app-bundle",
