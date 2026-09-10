@@ -15,7 +15,7 @@ import { typography, spacing, borderRadius } from '../../config/theme';
 import { useTheme } from '../../contexts/ThemeContext';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { useAuth } from '../../contexts/AuthContext';
-import { getProductDetail, addXpEvent } from '../../config/api';
+import { getProductDetail, addXpEvent, markLessonComplete } from '../../config/api';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
@@ -136,6 +136,8 @@ export default function LessonViewerScreen({ navigation, route }: any) {
       setMarkingComplete(true);
       if (user?.id) {
         await addXpEvent(user.id, `lesson_complete_m${moduleId}_l${currentLessonId}`, XP_PER_LESSON);
+        const lessonDbId = `module_${moduleId}_lesson_${currentLessonId}`;
+        await markLessonComplete(user.id, lessonDbId);
       }
       setCompletedLessons((prev) => new Set(prev).add(currentLessonId));
       Alert.alert(t('courses_congrats'), t('courses_xp_awarded', { xp: XP_PER_LESSON }));

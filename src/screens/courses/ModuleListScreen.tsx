@@ -332,9 +332,8 @@ export default function ModuleListScreen({ navigation }: any) {
               style={styles.moduleCard}
               activeOpacity={0.7}
               onPress={() =>
-                navigation.navigate('LessonViewer', {
+                navigation.navigate('LessonList', {
                   moduleId: module.id,
-                  lessonId: '1',
                 })
               }
             >

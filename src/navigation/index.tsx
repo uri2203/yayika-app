@@ -19,6 +19,7 @@ import PortalDashboard from '../screens/portal/PortalDashboard';
 
 // Ciclo Productiva (Course Modules)
 import ModuleListScreen from '../screens/courses/ModuleListScreen';
+import LessonListScreen from '../screens/courses/LessonListScreen';
 import LessonViewerScreen from '../screens/courses/LessonViewerScreen';
 
 // Ciclo Inteligente (Cycle Intelligence)
@@ -116,6 +117,7 @@ function CicloStackNavigator() {
   return (
     <CicloStack.Navigator screenOptions={{ headerShown: false }}>
       <CicloStack.Screen name="ModuleList" component={ModuleListScreen} />
+      <CicloStack.Screen name="LessonList" component={LessonListScreen} />
       <CicloStack.Screen name="LessonViewer" component={LessonViewerScreen} />
       <CicloStack.Screen name="CycleIntelligence" component={CycleIntelligenceScreen} />
       <CicloStack.Screen name="CycleLog" component={CycleLogScreen} />

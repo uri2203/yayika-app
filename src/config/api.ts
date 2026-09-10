@@ -460,6 +460,32 @@ export async function addXpEvent(userId: string, eventType: string, xpAmount: nu
   return data;
 }
 
+export async function markLessonComplete(userId: string, lessonId: string) {
+  const { data, error } = await supabase
+    .from('yayika_user_lesson_progress')
+    .upsert(
+      { user_id: userId, lesson_id: lessonId, completed: true, completed_at: new Date().toISOString() },
+      { onConflict: 'user_id,lesson_id' }
+    )
+    .select()
+    .single();
+  if (error) throw error;
+  return data;
+}
+
+export async function getLessonProgress(userId: string, moduleId?: string) {
+  let query = supabase
+    .from('yayika_user_lesson_progress')
+    .select('lesson_id, completed, completed_at')
+    .eq('user_id', userId);
+  if (moduleId) {
+    query = query.eq('lesson_id', `module_${moduleId}_lesson_`);
+  }
+  const { data, error } = await query;
+  if (error) throw error;
+  return data;
+}
+
 export async function getCheckins(userId: string) {
   const { data, error } = await supabase
     .from('yayika_checkins')
