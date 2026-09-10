@@ -3721,7 +3721,7 @@ const translations: Record<Language, Record<string, string>> = {
     retention_social_rank: 'Ta position : #{rank}',
     retention_social_top: 'Top actives :',
     retention_loss_title: 'On Vous Manque',
-    retention_loss_message: 'On ne t'a pas vue depuis {days} jours',
+    retention_loss_message: "On ne t'a pas vue depuis {days} jours",
     retention_loss_return: 'Reviens ! Tu nous manques',
     retention_loss_keep_going: 'Votre série restera active pendant {days} jours',
     retention_phase_menstrual: 'Phase Menstruelle',
