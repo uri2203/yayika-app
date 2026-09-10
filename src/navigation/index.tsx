@@ -33,6 +33,9 @@ import ChallengesScreen from '../screens/challenges/ChallengesScreen';
 // Comunidad (Community)
 import CommunityFeedScreen from '../screens/community/CommunityFeedScreen';
 import PostDetailScreen from '../screens/community/PostDetailScreen';
+import CirclesListScreen from '../screens/community/CirclesListScreen';
+import CreateCircleScreen from '../screens/community/CreateCircleScreen';
+import CircleChatScreen from '../screens/community/CircleChatScreen';
 
 // Finanzas (Finance)
 import FinanceDashboardScreen from '../screens/finance/FinanceDashboardScreen';
@@ -139,6 +142,9 @@ function ComunidadStackNavigator() {
     <ComunidadStack.Navigator screenOptions={{ headerShown: false }}>
       <ComunidadStack.Screen name="CommunityFeed" component={CommunityFeedScreen} />
       <ComunidadStack.Screen name="PostDetail" component={PostDetailScreen} />
+      <ComunidadStack.Screen name="CirclesList" component={CirclesListScreen} />
+      <ComunidadStack.Screen name="CreateCircle" component={CreateCircleScreen} />
+      <ComunidadStack.Screen name="CircleChat" component={CircleChatScreen} />
     </ComunidadStack.Navigator>
   );
 }

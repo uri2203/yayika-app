@@ -676,3 +676,200 @@ export async function getRankings(limit = 20) {
 
   return { rankings, total: progressRows?.length ?? 0 };
 }
+
+// ──── Community Circles ──────────────────────────────
+
+export interface Circle {
+  id: string;
+  name: string;
+  description: string;
+  emoji: string;
+  category: string;
+  creator_id: string;
+  max_members: number;
+  is_private: boolean;
+  cover_url: string | null;
+  created_at: string;
+  member_count?: number;
+  is_member?: boolean;
+  user_role?: string;
+}
+
+export interface CircleMessage {
+  id: string;
+  circle_id: string;
+  user_id: string;
+  content: string;
+  message_type: string;
+  reply_to: string | null;
+  edited: boolean;
+  created_at: string;
+  sender_name?: string;
+  sender_avatar?: string;
+}
+
+export async function getCircles(category?: string): Promise<Circle[]> {
+  let query = supabase
+    .from('yayika_circles')
+    .select('*')
+    .order('created_at', { ascending: false });
+  if (category && category !== 'all') {
+    query = query.eq('category', category);
+  }
+  const { data, error } = await query;
+  if (error) throw error;
+  return data || [];
+}
+
+export async function getMyCircles(): Promise<Circle[]> {
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return [];
+  const { data: memberships, error: mError } = await supabase
+    .from('yayika_circle_members')
+    .select('circle_id, role')
+    .eq('user_id', user.id)
+    .eq('status', 'active');
+  if (mError) throw mError;
+  if (!memberships?.length) return [];
+  const { data, error } = await supabase
+    .from('yayika_circles')
+    .select('*')
+    .in('id', memberships.map(m => m.circle_id));
+  if (error) throw error;
+  return (data || []).map(c => {
+    const membership = memberships.find(m => m.circle_id === c.id);
+    return { ...c, is_member: true, user_role: membership?.role };
+  });
+}
+
+export async function getCircle(circleId: string): Promise<Circle> {
+  const { data, error } = await supabase
+    .from('yayika_circles')
+    .select('*')
+    .eq('id', circleId)
+    .single();
+  if (error) throw error;
+  return data;
+}
+
+export async function createCircle(circle: { name: string; description?: string; emoji?: string; category?: string; max_members?: number; is_private?: boolean }): Promise<Circle> {
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) throw new Error('Not authenticated');
+  const { data, error } = await supabase
+    .from('yayika_circles')
+    .insert({ ...circle, creator_id: user.id })
+    .select()
+    .single();
+  if (error) throw error;
+  // Auto-join as admin
+  await supabase
+    .from('yayika_circle_members')
+    .insert({ circle_id: data.id, user_id: user.id, role: 'admin', status: 'active' });
+  return data;
+}
+
+export async function joinCircle(circleId: string): Promise<void> {
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) throw new Error('Not authenticated');
+  const { error } = await supabase
+    .from('yayika_circle_members')
+    .insert({ circle_id: circleId, user_id: user.id, role: 'member', status: 'active' });
+  if (error) throw error;
+}
+
+export async function leaveCircle(circleId: string): Promise<void> {
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return;
+  const { error } = await supabase
+    .from('yayika_circle_members')
+    .delete()
+    .eq('circle_id', circleId)
+    .eq('user_id', user.id);
+  if (error) throw error;
+}
+
+export async function getCircleMembers(circleId: string) {
+  const { data, error } = await supabase
+    .from('yayika_circle_members')
+    .select('*, user:auth.users(id, email)')
+    .eq('circle_id', circleId)
+    .eq('status', 'active');
+  if (error) throw error;
+  return data || [];
+}
+
+export async function getCircleMessages(circleId: string, limit = 50): Promise<CircleMessage[]> {
+  const { data, error } = await supabase
+    .from('yayika_circle_messages')
+    .select('*')
+    .eq('circle_id', circleId)
+    .order('created_at', { ascending: false })
+    .limit(limit);
+  if (error) throw error;
+  return (data || []).reverse();
+}
+
+export async function sendCircleMessage(circleId: string, content: string, replyTo?: string): Promise<CircleMessage> {
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) throw new Error('Not authenticated');
+  const { data, error } = await supabase
+    .from('yayika_circle_messages')
+    .insert({
+      circle_id: circleId,
+      user_id: user.id,
+      content,
+      reply_to: replyTo || null,
+    })
+    .select()
+    .single();
+  if (error) throw error;
+  return data;
+}
+
+export async function deleteCircleMessage(messageId: string): Promise<void> {
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return;
+  const { error } = await supabase
+    .from('yayika_circle_messages')
+    .delete()
+    .eq('id', messageId)
+    .eq('user_id', user.id);
+  if (error) throw error;
+}
+
+export async function inviteToCircle(circleId: string, email: string): Promise<void> {
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) throw new Error('Not authenticated');
+  const { error } = await supabase
+    .from('yayika_circle_invites')
+    .insert({
+      circle_id: circleId,
+      invited_by: user.id,
+      email,
+    });
+  if (error) throw error;
+}
+
+export async function getCircleInvites(circleId: string) {
+  const { data, error } = await supabase
+    .from('yayika_circle_invites')
+    .select('*')
+    .eq('circle_id', circleId)
+    .eq('status', 'pending');
+  if (error) throw error;
+  return data || [];
+}
+
+export function subscribeToCircleMessages(circleId: string, callback: (msg: CircleMessage) => void) {
+  return supabase
+    .channel(`circle:${circleId}`)
+    .on('postgres_changes', {
+      event: 'INSERT',
+      schema: 'public',
+      table: 'yayika_circle_messages',
+      filter: `circle_id=eq.${circleId}`,
+    }, (payload) => {
+      callback(payload.new as CircleMessage);
+    })
+    .subscribe();
+}
