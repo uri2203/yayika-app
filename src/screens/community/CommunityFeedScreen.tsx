@@ -302,9 +302,17 @@ export default function CommunityFeedScreen({ navigation }: any) {
           <Ionicons name="arrow-back" size={24} color={colors.text} />
         </TouchableOpacity>
         <Text style={styles.title}>{t('community_title')}</Text>
-        <TouchableOpacity style={styles.newPostBtn} onPress={() => setModalVisible(true)}>
-          <Ionicons name="add" size={22} color={colors.white} />
-        </TouchableOpacity>
+        <View style={{ flexDirection: 'row', gap: 8 }}>
+          <TouchableOpacity
+            style={[styles.newPostBtn, { backgroundColor: colors.primary + '20' }]}
+            onPress={() => navigation.navigate('CirclesList')}
+          >
+            <Ionicons name="people" size={20} color={colors.primary} />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.newPostBtn} onPress={() => setModalVisible(true)}>
+            <Ionicons name="add" size={22} color={colors.white} />
+          </TouchableOpacity>
+        </View>
       </View>
 
       {categories.length > 0 && (
