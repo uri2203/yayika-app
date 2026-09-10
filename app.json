@@ -18,9 +18,6 @@
         "projectId": "2f98a5a3-001c-49e9-bccb-7bf2426d5af7"
       }
     },
-    "splash": {
-      "backgroundColor": "#4E3470"
-    },
     "assetBundlePatterns": [
       "**/*"
     ],
@@ -29,7 +26,6 @@
       "bundleIdentifier": "com.yayika.app"
     },
     "android": {
-      "versionCode": 2,
       "adaptiveIcon": {
         "foregroundImage": "./assets/android-icon-foreground.png",
         "backgroundColor": "#4E3470",
