@@ -237,8 +237,9 @@ function MainNavigator() {
 
 export default function Navigation() {
   const { session, loading } = useAuth();
+  const { flags, loading: flagsLoading } = useFeatureFlags();
 
-  if (loading) {
+  if (loading || flagsLoading) {
     return <LoadingSpinner />;
   }
 
