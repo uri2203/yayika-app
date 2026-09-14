@@ -14,6 +14,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '../../contexts/AuthContext';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { useTheme } from '../../contexts/ThemeContext';
+import { useFeatureFlags } from '../../contexts/FeatureFlagsContext';
 import { typography, spacing, borderRadius } from '../../config/theme';
 import Card from '../../components/Card';
 import { RetentionCheckin, TransformMirror, FutureSelf, SocialProofWidget } from '../../components/retention';
@@ -83,6 +84,7 @@ export default function PortalDashboard({ navigation }: any) {
   const { t } = useLanguage();
   const { currentColors } = useTheme();
   const colors = currentColors;
+  const { isEnabled } = useFeatureFlags();
 
   const [localProgress, setLocalProgress] = useState(progress);
   const [affirmation, setAffirmation] = useState('');
@@ -588,6 +590,7 @@ export default function PortalDashboard({ navigation }: any) {
       bgColor: '#E8D5F5',
       iconColor: colors.primary,
       onPress: () => navigateToTab('Ciclo', 'ModuleList'),
+      flag: 'courses',
     },
     {
       key: 'ciclo-inteligente',
@@ -597,6 +600,7 @@ export default function PortalDashboard({ navigation }: any) {
       bgColor: '#FDE68A',
       iconColor: colors.gold,
       onPress: () => navigateToTab('Ciclo', 'CycleIntelligence'),
+      flag: 'courses',
     },
     {
       key: 'retos',
@@ -606,6 +610,7 @@ export default function PortalDashboard({ navigation }: any) {
       bgColor: '#FEF3C7',
       iconColor: colors.gold,
       onPress: () => navigateToTab('Retos'),
+      flag: 'weekly_challenges',
     },
     {
       key: 'comunidad',
@@ -615,6 +620,7 @@ export default function PortalDashboard({ navigation }: any) {
       bgColor: '#E0E7FF',
       iconColor: colors.primary,
       onPress: () => navigateToTab('Comunidad'),
+      flag: 'community',
     },
     {
       key: 'finanzas',
@@ -642,6 +648,7 @@ export default function PortalDashboard({ navigation }: any) {
       bgColor: '#E8D5F5',
       iconColor: colors.primary,
       onPress: () => navigateInStack('Chat'),
+      flag: 'chat_ia',
     },
     {
       key: 'growth-coach',
@@ -651,6 +658,7 @@ export default function PortalDashboard({ navigation }: any) {
       bgColor: '#D1FAE5',
       iconColor: colors.turquoise,
       onPress: () => navigateInStack('GrowthCoach'),
+      flag: 'growth_coach',
     },
     {
       key: 'wellness-planner',
@@ -660,8 +668,9 @@ export default function PortalDashboard({ navigation }: any) {
       bgColor: '#FEF3C7',
       iconColor: colors.gold,
       onPress: () => navigateInStack('WellnessPlanner'),
+      flag: 'wellness_planner',
     },
-  ];
+  ].filter(action => !action.flag || isEnabled(action.flag));
 
   return (
     <SafeAreaView style={styles.container}>

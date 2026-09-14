@@ -7,6 +7,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { useLanguage } from '../contexts/LanguageContext';
 import { typography } from '../config/theme';
 import { useTheme } from '../contexts/ThemeContext';
+import { useFeatureFlags } from '../contexts/FeatureFlagsContext';
 import LoadingSpinner from '../components/LoadingSpinner';
 
 // Auth
@@ -163,6 +164,7 @@ function MainTabs() {
   const { t } = useLanguage();
   const { currentColors } = useTheme();
   const colors = currentColors;
+  const { isEnabled } = useFeatureFlags();
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -215,9 +217,9 @@ function MainTabs() {
       })}
     >
       <Tab.Screen name="Portal" component={PortalStackNavigator} />
-      <Tab.Screen name="Ciclo" component={CicloStackNavigator} />
-      <Tab.Screen name="Retos" component={RetosStackNavigator} />
-      <Tab.Screen name="Comunidad" component={ComunidadStackNavigator} />
+      {isEnabled('courses') && <Tab.Screen name="Ciclo" component={CicloStackNavigator} />}
+      {isEnabled('weekly_challenges') && <Tab.Screen name="Retos" component={RetosStackNavigator} />}
+      {isEnabled('community') && <Tab.Screen name="Comunidad" component={ComunidadStackNavigator} />}
       <Tab.Screen name="Finanzas" component={FinanzasStackNavigator} />
     </Tab.Navigator>
   );

@@ -6,6 +6,7 @@ import { AuthProvider } from './src/contexts/AuthContext';
 import { ThemeProvider } from './src/contexts/ThemeContext';
 import { LanguageProvider } from './src/contexts/LanguageContext';
 import { NotificationsProvider } from './src/contexts/NotificationsContext';
+import { FeatureFlagsProvider } from './src/contexts/FeatureFlagsContext';
 import Navigation from './src/navigation';
 import LoadingSpinner from './src/components/LoadingSpinner';
 import ErrorBoundary from './src/components/ErrorBoundary';
@@ -54,10 +55,12 @@ export default function App() {
       <LanguageProvider>
         <ThemeProvider>
           <AuthProvider>
-            <NotificationsProvider>
-              <Navigation />
-              <StatusBar style="auto" />
-            </NotificationsProvider>
+            <FeatureFlagsProvider>
+              <NotificationsProvider>
+                <Navigation />
+                <StatusBar style="auto" />
+              </NotificationsProvider>
+            </FeatureFlagsProvider>
           </AuthProvider>
         </ThemeProvider>
       </LanguageProvider>
