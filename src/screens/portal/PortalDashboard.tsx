@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   RefreshControl,
+  Linking,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
@@ -18,12 +19,14 @@ import Card from '../../components/Card';
 import { RetentionCheckin, TransformMirror, FutureSelf, SocialProofWidget } from '../../components/retention';
 import BadgeShowcase from '../../components/BadgeShowcase';
 import CompletionAnxiety from '../../components/CompletionAnxiety';
+import PaywallModal from '../../components/PaywallModal';
 import {
   getProgress,
   getProfile,
   aiAffirmations,
   aiWeeklyChallenges,
   getCommunityFeed,
+  stripeMarketplaceCheckout,
 } from '../../config/api';
 
 interface CommunityPost {
@@ -89,8 +92,11 @@ export default function PortalDashboard({ navigation }: any) {
   const [refreshing, setRefreshing] = useState(false);
   const [cyclePhase, setCyclePhase] = useState<string | null>(null);
   const [energyLevel, setEnergyLevel] = useState<number | null>(null);
+  const [paywallVisible, setPaywallVisible] = useState(false);
+  const [paywallFeature, setPaywallFeature] = useState('');
 
   const userName = profile?.full_name || user?.user_metadata?.name || t('home_guerrera');
+  const isPremium = profile?.is_premium === true || profile?.plan === 'guerrera';
   const xpTotal = localProgress?.xp_total ?? progress?.xp_total ?? 0;
   const streakDays = localProgress?.streak_days ?? progress?.streak_days ?? 0;
   const level = Math.floor(xpTotal / 100) + 1;
@@ -152,6 +158,33 @@ export default function PortalDashboard({ navigation }: any) {
 
   const navigateInStack = (screenName: string) => {
     navigation.navigate(screenName);
+  };
+
+  const PREMIUM_FEATURES = ['chat-laura', 'growth-coach', 'wellness-planner'];
+
+  const handleQuickAction = (action: any) => {
+    if (PREMIUM_FEATURES.includes(action.key) && !isPremium) {
+      setPaywallFeature(action.title);
+      setPaywallVisible(true);
+      return;
+    }
+    action.onPress();
+  };
+
+  const handleUpgrade = async () => {
+    setPaywallVisible(false);
+    try {
+      const result = await stripeMarketplaceCheckout({
+        tier: 'guerrera',
+        success_url: 'yayika://',
+        cancel_url: 'yayika://',
+      });
+      if (result?.url) {
+        Linking.openURL(result.url);
+      }
+    } catch (e) {
+      console.log('Checkout error:', e);
+    }
   };
 
   const styles = StyleSheet.create({
@@ -375,6 +408,9 @@ export default function PortalDashboard({ navigation }: any) {
       shadowOpacity: 0.06,
       shadowRadius: 6,
       elevation: 2,
+    },
+    gridItemLocked: {
+      opacity: 0.6,
     },
     gridIcon: {
       width: 48,
@@ -738,12 +774,15 @@ export default function PortalDashboard({ navigation }: any) {
           {quickActions.map((action) => (
             <TouchableOpacity
               key={action.key}
-              style={styles.gridItem}
-              onPress={action.onPress}
+              style={[styles.gridItem, PREMIUM_FEATURES.includes(action.key) && !isPremium && styles.gridItemLocked]}
+              onPress={() => handleQuickAction(action)}
               activeOpacity={0.7}
             >
               <View style={[styles.gridIcon, { backgroundColor: action.bgColor }]}>
                 <Ionicons name={action.icon as any} size={22} color={action.iconColor} />
+                {PREMIUM_FEATURES.includes(action.key) && !isPremium && (
+                  <Ionicons name="lock-closed" size={10} color={colors.gold} style={{ position: 'absolute', bottom: -2, right: -2 }} />
+                )}
               </View>
               <Text style={styles.gridTitle}>{action.title}</Text>
               <Text style={styles.gridSub}>{action.subtitle}</Text>
@@ -862,6 +901,14 @@ export default function PortalDashboard({ navigation }: any) {
           </>
         )}
       </ScrollView>
+
+      <PaywallModal
+        visible={paywallVisible}
+        onClose={() => setPaywallVisible(false)}
+        onUpgrade={handleUpgrade}
+        featureName={paywallFeature}
+        requiredPlan="Guerrera"
+      />
     </SafeAreaView>
   );
 }
