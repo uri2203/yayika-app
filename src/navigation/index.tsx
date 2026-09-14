@@ -164,9 +164,11 @@ function MainTabs() {
   const { t } = useLanguage();
   const { currentColors } = useTheme();
   const colors = currentColors;
-  const { isEnabled } = useFeatureFlags();
+  const { flags } = useFeatureFlags();
+  const flagKey = `${flags.courses}-${flags.weekly_challenges}-${flags.community}`;
   return (
     <Tab.Navigator
+      key={flagKey}
       screenOptions={({ route }) => ({
         headerShown: false,
         tabBarActiveTintColor: colors.primary,
@@ -217,9 +219,9 @@ function MainTabs() {
       })}
     >
       <Tab.Screen name="Portal" component={PortalStackNavigator} />
-      {isEnabled('courses') && <Tab.Screen name="Ciclo" component={CicloStackNavigator} />}
-      {isEnabled('weekly_challenges') && <Tab.Screen name="Retos" component={RetosStackNavigator} />}
-      {isEnabled('community') && <Tab.Screen name="Comunidad" component={ComunidadStackNavigator} />}
+      {flags.courses && <Tab.Screen name="Ciclo" component={CicloStackNavigator} />}
+      {flags.weekly_challenges && <Tab.Screen name="Retos" component={RetosStackNavigator} />}
+      {flags.community && <Tab.Screen name="Comunidad" component={ComunidadStackNavigator} />}
       <Tab.Screen name="Finanzas" component={FinanzasStackNavigator} />
     </Tab.Navigator>
   );
