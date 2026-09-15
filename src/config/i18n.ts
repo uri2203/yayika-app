@@ -936,6 +936,13 @@ const translations: Record<Language, Record<string, string>> = {
     // Support extras
     support_mail_subject: 'Soporte Yayika',
     support_mail_body: 'Nombre:\nEmail:\nMensaje:\n',
+
+    // Completion Anxiety
+    anxiety_title: 'Tareas pendientes',
+    anxiety_subtitle: 'No dejes a medias...',
+    missing_cycle_log: 'Sin registrar ciclo',
+    incomplete_course: 'Curso incompleto',
+    incomplete_challenge: 'Reto incompleto',
   },
 
   en: {
@@ -1871,6 +1878,13 @@ const translations: Record<Language, Record<string, string>> = {
     retention_wheel_label_8: 'Content',
     retention_wheel_label_9: '20 XP',
     retention_wheel_label_10: 'Surprise',
+
+    // Completion Anxiety
+    anxiety_title: 'Pending tasks',
+    anxiety_subtitle: "Don't leave things unfinished...",
+    missing_cycle_log: 'No cycle logged',
+    incomplete_course: 'Incomplete course',
+    incomplete_challenge: 'Incomplete challenge',
   },
 
   pt: {
@@ -2808,6 +2822,13 @@ const translations: Record<Language, Record<string, string>> = {
     retention_wheel_label_8: 'Conteúdo',
     retention_wheel_label_9: '20 XP',
     retention_wheel_label_10: 'Surpresa',
+
+    // Completion Anxiety
+    anxiety_title: 'Tarefas pendentes',
+    anxiety_subtitle: 'Não deixe coisas pela metade...',
+    missing_cycle_log: 'Ciclo não registrado',
+    incomplete_course: 'Curso incompleto',
+    incomplete_challenge: 'Desafio incompleto',
   },
 
   fr: {
@@ -3745,6 +3766,13 @@ const translations: Record<Language, Record<string, string>> = {
     retention_wheel_label_8: 'Contenu',
     retention_wheel_label_9: '20 XP',
     retention_wheel_label_10: 'Surprise',
+
+    // Completion Anxiety
+    anxiety_title: 'Tâches en attente',
+    anxiety_subtitle: 'Ne laissez pas les choses à moitié...',
+    missing_cycle_log: 'Aucun cycle enregistré',
+    incomplete_course: 'Cours incomplet',
+    incomplete_challenge: 'Défi incomplet',
   },
 
   de: {
@@ -4682,6 +4710,13 @@ const translations: Record<Language, Record<string, string>> = {
     retention_wheel_label_8: 'Inhalt',
     retention_wheel_label_9: '20 XP',
     retention_wheel_label_10: 'Überraschung',
+
+    // Completion Anxiety
+    anxiety_title: 'Offene Aufgaben',
+    anxiety_subtitle: 'Lass nichts halbfertig...',
+    missing_cycle_log: 'Kein Zyklus erfasst',
+    incomplete_course: 'Unvollständiger Kurs',
+    incomplete_challenge: 'Unvollständige Challenge',
   },
 };
 
