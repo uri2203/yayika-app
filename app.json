@@ -2,6 +2,7 @@
   "expo": {
     "name": "Yayika",
     "slug": "yayika",
+    "scheme": "yayika",
     "version": "1.5.0",
     "platforms": ["android", "ios"],
     "orientation": "portrait",

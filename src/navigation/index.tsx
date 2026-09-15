@@ -1,5 +1,6 @@
-import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import React, { useEffect, useRef } from 'react';
+import { Linking } from 'react-native';
+import { NavigationContainer, NavigationContainerRef } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
@@ -8,12 +9,14 @@ import { useLanguage } from '../contexts/LanguageContext';
 import { typography } from '../config/theme';
 import { useTheme } from '../contexts/ThemeContext';
 import { useFeatureFlags } from '../contexts/FeatureFlagsContext';
+import { supabase } from '../config/supabase';
 import LoadingSpinner from '../components/LoadingSpinner';
 
 // Auth
 import LoginScreen from '../screens/auth/LoginScreen';
 import RegisterScreen from '../screens/auth/RegisterScreen';
 import ForgotPasswordScreen from '../screens/auth/ForgotPasswordScreen';
+import ResetPasswordScreen from '../screens/auth/ResetPasswordScreen';
 
 // Portal Dashboard
 import PortalDashboard from '../screens/portal/PortalDashboard';
@@ -92,6 +95,7 @@ function AuthNavigator() {
       <AuthStack.Screen name="Login" component={LoginScreen} />
       <AuthStack.Screen name="Register" component={RegisterScreen} />
       <AuthStack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
+      <AuthStack.Screen name="ResetPassword" component={ResetPasswordScreen} />
     </AuthStack.Navigator>
   );
 }
@@ -238,13 +242,32 @@ function MainNavigator() {
 export default function Navigation() {
   const { session, loading } = useAuth();
   const { flags, loading: flagsLoading } = useFeatureFlags();
+  const navRef = useRef<NavigationContainerRef<any>>(null);
+
+  useEffect(() => {
+    const handleDeepLink = async ({ url }: { url: string }) => {
+      if (url.includes('type=recovery')) {
+        const match = url.match(/code=([^&]+)/);
+        if (match) {
+          await supabase.auth.exchangeCodeForSession(match[1]);
+          navRef.current?.resetRoot({ index: 0, routes: [{ name: 'Auth' }] });
+          setTimeout(() => {
+            navRef.current?.navigate('ResetPassword');
+          }, 500);
+        }
+      }
+    };
+    Linking.getInitialURL().then((url) => { if (url) handleDeepLink({ url }); });
+    const sub = Linking.addEventListener('url', handleDeepLink);
+    return () => sub.remove();
+  }, []);
 
   if (loading || flagsLoading) {
     return <LoadingSpinner />;
   }
 
   return (
-    <NavigationContainer>
+    <NavigationContainer ref={navRef}>
       {session ? <MainNavigator /> : <AuthNavigator />}
     </NavigationContainer>
   );

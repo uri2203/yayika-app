@@ -132,8 +132,12 @@ export default function LoginScreen({ navigation }: any) {
       Alert.alert(t('common_error'), t('auth_fill_email_password'));
       return;
     }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      Alert.alert(t('common_error'), t('auth_invalid_email'));
+      return;
+    }
     setLoading(true);
-    const { error } = await signIn(email, password);
+    const { error } = await signIn(email.trim().toLowerCase(), password);
     setLoading(false);
     if (error) Alert.alert(t('common_error'), String(error));
   };
