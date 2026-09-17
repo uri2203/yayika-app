@@ -124,7 +124,7 @@ export default function PortalDashboard({ navigation }: any) {
         setCommunityPosts((communityData.value.posts || []).slice(0, 3));
       }
 
-      aiAffirmations({ user_id: user.id, lang: 'es' })
+      aiAffirmations({ user_id: user.id, lang: t('lang_code') })
         .then((res) => setAffirmation(res.affirmation))
         .catch(() => {});
     } catch {

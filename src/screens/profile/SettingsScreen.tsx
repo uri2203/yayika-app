@@ -103,7 +103,7 @@ export default function SettingsScreen({ navigation }: any) {
             style={[styles.input, { color: colors.text, borderColor: colors.border, backgroundColor: colors.white }]}
             value={city}
             onChangeText={setCity}
-            placeholder="Ciudad de MÃ©xico"
+            placeholder={t('settings_city_placeholder') || 'Ciudad de México'}
             placeholderTextColor={colors.subtleText}
           />
 

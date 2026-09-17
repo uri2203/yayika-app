@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -26,15 +26,6 @@ export default function ResetPasswordScreen({ navigation }: any) {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [ready, setReady] = useState(false);
-
-  useEffect(() => {
-    supabase.auth.onAuthStateChange((event, session) => {
-      if (event === 'PASSWORD_RECOVERY' && session) {
-        setReady(true);
-      }
-    });
-  }, []);
 
   const handleUpdatePassword = async () => {
     if (newPassword.length < 8) {

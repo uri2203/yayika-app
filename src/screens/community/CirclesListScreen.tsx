@@ -9,11 +9,11 @@ import { useAuth } from '../../contexts/AuthContext';
 import { getCircles, getMyCircles, joinCircle, leaveCircle, Circle } from '../../config/api';
 
 const CATEGORIES = [
-  { key: 'all', icon: 'grid', label: 'Todos' },
-  { key: 'emprendimiento', icon: 'rocket', label: 'Emprendimiento' },
-  { key: 'bienestar', icon: 'heart', label: 'Bienestar' },
-  { key: 'finanzas', icon: 'wallet', label: 'Finanzas' },
-  { key: 'general', icon: 'people', label: 'General' },
+  { key: 'all', icon: 'grid', labelKey: 'circles_cat_all' },
+  { key: 'emprendimiento', icon: 'rocket', labelKey: 'circles_cat_emprendimiento' },
+  { key: 'bienestar', icon: 'heart', labelKey: 'circles_cat_bienestar' },
+  { key: 'finanzas', icon: 'wallet', labelKey: 'circles_cat_finanzas' },
+  { key: 'general', icon: 'people', labelKey: 'circles_cat_general' },
 ];
 
 export default function CirclesListScreen({ navigation }: any) {
@@ -195,7 +195,7 @@ export default function CirclesListScreen({ navigation }: any) {
             >
               <Ionicons name={cat.icon as any} size={12} color={selectedCategory === cat.key ? colors.white : colors.subtleText} />
               <Text style={[styles.categoryText, selectedCategory === cat.key && styles.categoryTextActive]}>
-                {cat.key === 'all' ? (t('circles_all') || cat.label) : cat.label}
+                {t(cat.labelKey)}
               </Text>
             </TouchableOpacity>
           )}

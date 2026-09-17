@@ -27,11 +27,11 @@ const getPasswordStrength = (pw: string): { label: string; color: string; width:
   if (/[A-Z]/.test(pw)) score++;
   if (/[0-9]/.test(pw)) score++;
   if (/[^A-Za-z0-9]/.test(pw)) score++;
-  if (score <= 1) return { label: 'Débil', color: '#EF4444', width: '20%' };
-  if (score <= 2) return { label: 'Regular', color: '#F59E0B', width: '40%' };
-  if (score <= 3) return { label: 'Buena', color: '#3B82F6', width: '60%' };
-  if (score <= 4) return { label: 'Fuerte', color: '#10B981', width: '80%' };
-  return { label: 'Muy fuerte', color: '#059669', width: '100%' };
+  if (score <= 1) return { label: t('auth_strength_weak'), color: '#EF4444', width: '20%' };
+  if (score <= 2) return { label: t('auth_strength_fair'), color: '#F59E0B', width: '40%' };
+  if (score <= 3) return { label: t('auth_strength_good'), color: '#3B82F6', width: '60%' };
+  if (score <= 4) return { label: t('auth_strength_strong'), color: '#10B981', width: '80%' };
+  return { label: t('auth_strength_very_strong'), color: '#059669', width: '100%' };
 };
 
 export default function RegisterScreen({ navigation }: any) {

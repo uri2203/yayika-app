@@ -951,6 +951,41 @@ const translations: Record<Language, Record<string, string>> = {
     missing_cycle_log: 'Sin registrar ciclo',
     incomplete_course: 'Curso incompleto',
     incomplete_challenge: 'Reto incompleto',
+
+    // Auth
+    auth_password_min_8: 'La contraseña debe tener al menos 8 caracteres',
+    auth_strength_weak: 'Débil',
+    auth_strength_fair: 'Regular',
+    auth_strength_good: 'Buena',
+    auth_strength_strong: 'Fuerte',
+    auth_strength_very_strong: 'Muy fuerte',
+
+    // Lang code for AI
+    lang_code: 'es',
+
+    // Streak Insurance
+    insurance_title: 'Seguro de Racha',
+    insurance_inventory: 'Inventario',
+    insurance_freeze: 'Congelamiento',
+    insurance_shields: 'Escudos',
+    insurance_plans: 'Planes',
+    insurance_shield_desc: 'Protege tu racha de 1 día de fallo',
+    insurance_freeze_desc: 'Congela tu racha por 1 día sin actividad',
+    insurance_info: 'Tu seguro protege tus rachas contra fallos inesperados',
+    insurance_confirm_title: 'Confirmar compra',
+    insurance_success_title: '¡Compra exitosa!',
+    insurance_error_title: 'Error en la compra',
+    common_buy: 'Comprar',
+
+    // Circles categories
+    circles_cat_all: 'Todos',
+    circles_cat_emprendimiento: 'Emprendimiento',
+    circles_cat_bienestar: 'Bienestar',
+    circles_cat_finanzas: 'Finanzas',
+    circles_cat_general: 'General',
+
+    // Settings
+    settings_city_placeholder: 'Ciudad de México',
   },
 
   en: {
@@ -1901,6 +1936,41 @@ const translations: Record<Language, Record<string, string>> = {
     missing_cycle_log: 'No cycle logged',
     incomplete_course: 'Incomplete course',
     incomplete_challenge: 'Incomplete challenge',
+
+    // Auth
+    auth_password_min_8: 'Password must be at least 8 characters',
+    auth_strength_weak: 'Weak',
+    auth_strength_fair: 'Fair',
+    auth_strength_good: 'Good',
+    auth_strength_strong: 'Strong',
+    auth_strength_very_strong: 'Very strong',
+
+    // Lang code for AI
+    lang_code: 'en',
+
+    // Streak Insurance
+    insurance_title: 'Streak Insurance',
+    insurance_inventory: 'Inventory',
+    insurance_freeze: 'Freeze',
+    insurance_shields: 'Shields',
+    insurance_plans: 'Plans',
+    insurance_shield_desc: 'Protect your streak from 1 day of failure',
+    insurance_freeze_desc: 'Freeze your streak for 1 day without activity',
+    insurance_info: 'Your insurance protects your streaks against unexpected failures',
+    insurance_confirm_title: 'Confirm purchase',
+    insurance_success_title: 'Purchase successful!',
+    insurance_error_title: 'Purchase error',
+    common_buy: 'Buy',
+
+    // Circles categories
+    circles_cat_all: 'All',
+    circles_cat_emprendimiento: 'Entrepreneurship',
+    circles_cat_bienestar: 'Wellness',
+    circles_cat_finanzas: 'Finance',
+    circles_cat_general: 'General',
+
+    // Settings
+    settings_city_placeholder: 'Mexico City',
   },
 
   pt: {
@@ -2853,6 +2923,41 @@ const translations: Record<Language, Record<string, string>> = {
     missing_cycle_log: 'Ciclo não registrado',
     incomplete_course: 'Curso incompleto',
     incomplete_challenge: 'Desafio incompleto',
+
+    // Auth
+    auth_password_min_8: 'A senha deve ter pelo menos 8 caracteres',
+    auth_strength_weak: 'Fraca',
+    auth_strength_fair: 'Regular',
+    auth_strength_good: 'Boa',
+    auth_strength_strong: 'Forte',
+    auth_strength_very_strong: 'Muito forte',
+
+    // Lang code for AI
+    lang_code: 'pt',
+
+    // Streak Insurance
+    insurance_title: 'Seguro de Sequencia',
+    insurance_inventory: 'Inventario',
+    insurance_freeze: 'Congelamento',
+    insurance_shields: 'Escudos',
+    insurance_plans: 'Planos',
+    insurance_shield_desc: 'Protege sua sequencia de 1 dia de falha',
+    insurance_freeze_desc: 'Congele sua sequencia por 1 dia sem atividade',
+    insurance_info: 'Seu seguro protege suas sequencias contra falhas inesperadas',
+    insurance_confirm_title: 'Confirmar compra',
+    insurance_success_title: 'Compra bem-sucedida!',
+    insurance_error_title: 'Erro na compra',
+    common_buy: 'Comprar',
+
+    // Circles categories
+    circles_cat_all: 'Todos',
+    circles_cat_emprendimiento: 'Empreendedorismo',
+    circles_cat_bienestar: 'Bem-estar',
+    circles_cat_finanzas: 'Finanças',
+    circles_cat_general: 'Geral',
+
+    // Settings
+    settings_city_placeholder: 'Cidade do México',
   },
 
   fr: {
@@ -3805,6 +3910,41 @@ const translations: Record<Language, Record<string, string>> = {
     missing_cycle_log: 'Aucun cycle enregistré',
     incomplete_course: 'Cours incomplet',
     incomplete_challenge: 'Défi incomplet',
+
+    // Auth
+    auth_password_min_8: 'Le mot de passe doit contenir au moins 8 caractères',
+    auth_strength_weak: 'Faible',
+    auth_strength_fair: 'Passable',
+    auth_strength_good: 'Bon',
+    auth_strength_strong: 'Fort',
+    auth_strength_very_strong: 'Très fort',
+
+    // Lang code for AI
+    lang_code: 'fr',
+
+    // Streak Insurance
+    insurance_title: 'Assurance Série',
+    insurance_inventory: 'Inventaire',
+    insurance_freeze: 'Geler',
+    insurance_shields: 'Boucliers',
+    insurance_plans: 'Forfaits',
+    insurance_shield_desc: 'Protège ta série contre 1 jour d\'échec',
+    insurance_freeze_desc: 'Gèle ta série pour 1 jour sans activité',
+    insurance_info: 'Ton assurance protège tes séries contre les échecs inattendus',
+    insurance_confirm_title: 'Confirmer l\'achat',
+    insurance_success_title: 'Achat réussi!',
+    insurance_error_title: 'Erreur d\'achat',
+    common_buy: 'Acheter',
+
+    // Circles categories
+    circles_cat_all: 'Tous',
+    circles_cat_emprendimiento: 'Entrepreneuriat',
+    circles_cat_bienestar: 'Bien-être',
+    circles_cat_finanzas: 'Finance',
+    circles_cat_general: 'Général',
+
+    // Settings
+    settings_city_placeholder: 'Mexico',
   },
 
   de: {
@@ -4757,6 +4897,41 @@ const translations: Record<Language, Record<string, string>> = {
     missing_cycle_log: 'Kein Zyklus erfasst',
     incomplete_course: 'Unvollständiger Kurs',
     incomplete_challenge: 'Unvollständige Challenge',
+
+    // Auth
+    auth_password_min_8: 'Passwort muss mindestens 8 Zeichen lang sein',
+    auth_strength_weak: 'Schwach',
+    auth_strength_fair: 'Mäßig',
+    auth_strength_good: 'Gut',
+    auth_strength_strong: 'Stark',
+    auth_strength_very_strong: 'Sehr stark',
+
+    // Lang code for AI
+    lang_code: 'de',
+
+    // Streak Insurance
+    insurance_title: 'Serien-Versicherung',
+    insurance_inventory: 'Inventar',
+    insurance_freeze: 'Einfrieren',
+    insurance_shields: 'Schilde',
+    insurance_plans: 'Pläne',
+    insurance_shield_desc: 'Schützt deine Serie vor 1 Tag Versagen',
+    insurance_freeze_desc: 'Friere deine Serie für 1 Tag ohne Aktivität ein',
+    insurance_info: 'Deine Versicherung schützt deine Serien vor unerwarteten Ausfällen',
+    insurance_confirm_title: 'Kauf bestätigen',
+    insurance_success_title: 'Kauf erfolgreich!',
+    insurance_error_title: 'Kauffehler',
+    common_buy: 'Kaufen',
+
+    // Circles categories
+    circles_cat_all: 'Alle',
+    circles_cat_emprendimiento: 'Unternehmertum',
+    circles_cat_bienestar: 'Wellness',
+    circles_cat_finanzas: 'Finanzen',
+    circles_cat_general: 'Allgemein',
+
+    // Settings
+    settings_city_placeholder: 'Mexiko-Stadt',
   },
 };
 

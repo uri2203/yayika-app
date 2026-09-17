@@ -136,6 +136,10 @@ export default function LoginScreen({ navigation }: any) {
       Alert.alert(t('common_error'), t('auth_invalid_email'));
       return;
     }
+    if (password.length < 8) {
+      Alert.alert(t('common_error'), t('auth_password_min_8'));
+      return;
+    }
     setLoading(true);
     const { error } = await signIn(email.trim().toLowerCase(), password);
     setLoading(false);
