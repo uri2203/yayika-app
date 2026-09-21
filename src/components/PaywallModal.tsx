@@ -19,7 +19,7 @@ export default function PaywallModal({ visible, onClose, onUpgrade, featureName,
 
   return (
     <Modal visible={visible} transparent animationType="fade">
-      <View style={styles.overlay}>
+      <View style={[styles.overlay, { backgroundColor: colors.overlay }]}>
         <View style={[styles.card, { backgroundColor: colors.card, borderColor: colors.border }]}>
           <TouchableOpacity style={styles.closeBtn} onPress={onClose}>
             <Ionicons name="close" size={20} color={colors.textSecondary} />
@@ -46,7 +46,7 @@ export default function PaywallModal({ visible, onClose, onUpgrade, featureName,
           </View>
 
           <TouchableOpacity style={[styles.upgradeBtn, { backgroundColor: colors.rose }]} onPress={onUpgrade}>
-            <Text style={styles.upgradeBtnText}>
+            <Text style={[styles.upgradeBtnText, { color: colors.white }]}>
               {t('paywall_upgrade') || `Upgrade a ${requiredPlan}`}
             </Text>
           </TouchableOpacity>
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
   featureRow: { flexDirection: 'row', alignItems: 'center', gap: 10, marginBottom: 10 },
   featureText: { fontSize: 14, flex: 1 },
   upgradeBtn: { borderRadius: 12, padding: 16, alignItems: 'center', marginBottom: 12 },
-  upgradeBtnText: { color: 'white', fontSize: 16, fontWeight: '600' },
+  upgradeBtnText: { fontSize: 16, fontWeight: '600' },
   laterBtn: { alignItems: 'center', padding: 8 },
   laterBtnText: { fontSize: 14 },
 });

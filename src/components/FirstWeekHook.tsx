@@ -90,7 +90,7 @@ export function FirstWeekBanner({ onDismiss }: FirstWeekBannerProps) {
     <View style={[styles.banner, { backgroundColor: colors.card, borderColor: colors.border }]}>
       <View style={styles.bannerHeader}>
         <View style={[styles.dayBadge, { backgroundColor: colors.rose }]}>
-          <Text style={styles.dayBadgeText}>{dayNumber}/7</Text>
+          <Text style={[styles.dayBadgeText, { color: colors.white }]}>{dayNumber}/7</Text>
         </View>
         <View style={styles.bannerTexts}>
           <Text style={[styles.bannerTitle, { color: colors.text }]}>
@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
   banner: { borderRadius: 16, padding: 16, marginBottom: 16, borderWidth: 1 },
   bannerHeader: { flexDirection: 'row', alignItems: 'center', gap: 12, marginBottom: 12 },
   dayBadge: { width: 40, height: 40, borderRadius: 20, justifyContent: 'center', alignItems: 'center' },
-  dayBadgeText: { color: 'white', fontSize: 13, fontWeight: '700' },
+  dayBadgeText: { fontSize: 13, fontWeight: '700' },
   bannerTexts: { flex: 1 },
   bannerTitle: { fontSize: 15, fontWeight: '600' },
   bannerSubtitle: { fontSize: 12, marginTop: 2 },
@@ -162,8 +162,8 @@ const styles = StyleSheet.create({
   progressFill: { height: '100%', borderRadius: 3 },
   milestones: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 8 },
   milestone: { alignItems: 'center', gap: 4 },
-  milestoneDot: { width: 28, height: 28, borderRadius: 14, backgroundColor: '#E5E7EB', justifyContent: 'center', alignItems: 'center' },
-  milestoneIcon: { fontSize: 12, color: '#666' },
+  milestoneDot: { width: 28, height: 28, borderRadius: 14, justifyContent: 'center', alignItems: 'center' },
+  milestoneIcon: { fontSize: 12 },
   milestoneDay: { fontSize: 10, fontWeight: '600' },
   todayDone: { flexDirection: 'row', alignItems: 'center', gap: 6, padding: 10, borderRadius: 8, marginTop: 4 },
   todayDoneText: { fontSize: 13, fontWeight: '500' },

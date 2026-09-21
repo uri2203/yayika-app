@@ -732,7 +732,7 @@ export default function PortalDashboard({ navigation }: any) {
             <Text style={styles.statLabel}>{t('home_xp_total')}</Text>
           </View>
           <View style={styles.statCard}>
-            <Ionicons name="flame" size={20} color="#EF4444" />
+            <Ionicons name="flame" size={20} color={colors.error} />
             <Text style={styles.statValue}>{streakDays}</Text>
             <Text style={styles.statLabel}>{t('home_streak')}</Text>
           </View>

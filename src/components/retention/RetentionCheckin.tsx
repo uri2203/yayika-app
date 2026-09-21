@@ -157,7 +157,7 @@ export default function RetentionCheckin({ onCheckinComplete }: RetentionCheckin
               <Text style={styles.checkinEmoji}>🔥</Text>
               <View style={styles.checkinInfo}>
                 <Text style={[styles.checkinTitle, { color: colors.white }]}>{t('retention_checkin_title')}</Text>
-                <Text style={styles.checkinSubtitle}>+10 XP + {t('retention_wheel_title').toLowerCase()}</Text>
+                <Text style={[styles.checkinSubtitle, { color: colors.white }]}>+10 XP + {t('retention_wheel_title').toLowerCase()}</Text>
               </View>
               <Ionicons name="chevron-forward" size={20} color={colors.white} />
             </>
@@ -253,11 +253,10 @@ const styles = StyleSheet.create({
   checkinTitle: {
     fontSize: typography.sizes.md,
     fontWeight: typography.weights.bold,
-    color: '#FFF',
   },
   checkinSubtitle: {
     fontSize: typography.sizes.sm,
-    color: 'rgba(255,255,255,0.8)',
+    opacity: 0.8,
     marginTop: 2,
   },
   checkinText: {

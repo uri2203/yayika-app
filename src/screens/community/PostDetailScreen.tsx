@@ -398,7 +398,7 @@ export default function PostDetailScreen({ navigation, route }: PostDetailScreen
       </KeyboardAvoidingView>
 
       {reportModalVisible && (
-        <View style={styles.modalOverlay}>
+        <View style={[styles.modalOverlay, { backgroundColor: colors.overlay }]}>
           <View style={styles.reportModalContent}>
             <Text style={styles.reportModalTitle}>{t('community_report_post') || 'Reportar publicaciÃ³n'}</Text>
             {[

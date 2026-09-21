@@ -167,7 +167,7 @@ export default function CompletionAnxiety({ onItemPress }: CompletionAnxietyProp
               </Text>
             </View>
             
-            <View style={styles.progressBar}>
+            <View style={[styles.progressBar, { backgroundColor: colors.border }]}>
               <View
                 style={[
                   styles.progressFill,

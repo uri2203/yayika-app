@@ -167,7 +167,7 @@ export default function StreakInsuranceScreen({ navigation }: any) {
                 disabled={purchasing === plan.id}
               >
                 {purchasing === plan.id ? (
-                  <ActivityIndicator size="small" color="#FFF" />
+                  <ActivityIndicator size="small" color={colors.white} />
                 ) : (
                   <Text style={styles.buyButtonText}>
                     {t('common_buy') || 'Comprar'}

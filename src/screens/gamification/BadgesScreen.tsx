@@ -94,11 +94,11 @@ const TIER_COLORS: Record<BadgeTier, string> = {
   diamond: '#2DD4BF',
 };
 
-const TIER_BG: Record<BadgeTier, string> = {
-  bronze: '#FFF3E0',
-  silver: '#F5F5F5',
-  gold: '#FFF9E6',
-  diamond: '#E0F7FA',
+const TIER_BG: Record<BadgeTier, (colors: any) => string> = {
+  bronze: (c) => c.gold + '20',
+  silver: (c) => c.subtleText + '20',
+  gold: (c) => c.gold + '25',
+  diamond: (c) => c.turquoise + '20',
 };
 
 export default function BadgesScreen({ navigation }: any) {
@@ -358,7 +358,7 @@ export default function BadgesScreen({ navigation }: any) {
                 key={badge.key}
                 style={[styles.badgeCard, earned && { borderColor: TIER_COLORS[badge.tier] + '60' }]}
               >
-                <View style={[styles.badgeCircle, { backgroundColor: earned ? TIER_BG[badge.tier] : colors.border }]}>
+                <View style={[styles.badgeCircle, { backgroundColor: earned ? TIER_BG[badge.tier](colors) : colors.border }]}>
                   <Text style={[styles.badgeIcon, !earned && styles.badgeIconLocked]}>{badge.icon}</Text>
                   {earned && (
                     <View style={[styles.tierDot, { backgroundColor: TIER_COLORS[badge.tier] }]}>

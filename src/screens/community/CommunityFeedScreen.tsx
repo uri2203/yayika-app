@@ -357,7 +357,7 @@ export default function CommunityFeedScreen({ navigation }: any) {
       <Modal visible={modalVisible} animationType="slide" transparent>
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          style={styles.modalOverlay}
+          style={[styles.modalOverlay, { backgroundColor: colors.overlay }]}
         >
           <View style={styles.modalContent}>
             <View style={styles.modalHeader}>

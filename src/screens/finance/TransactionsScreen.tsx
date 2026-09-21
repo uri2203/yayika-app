@@ -296,7 +296,7 @@ export default function TransactionsScreen({ navigation, route }: TransactionsSc
       </TouchableOpacity>
 
       <Modal visible={addModalVisible} transparent animationType="slide">
-        <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.modalOverlay}>
+        <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={[styles.modalOverlay, { backgroundColor: colors.overlay }]}>
           <View style={styles.modalContent}>
             <View style={styles.modalHeader}>
               <Text style={styles.modalTitle}>{t('finance_add_title') }</Text>

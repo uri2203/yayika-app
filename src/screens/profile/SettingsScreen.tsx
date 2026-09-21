@@ -202,7 +202,7 @@ export default function SettingsScreen({ navigation }: any) {
           animationType="fade"
           onRequestClose={() => setShowLanguageModal(false)}
         >
-          <View style={styles.languageOverlay}>
+          <View style={[styles.languageOverlay, { backgroundColor: colors.overlay }]}>
             <View style={[styles.languageModal, { backgroundColor: colors.background }]}>
               <Text style={[styles.languageModalTitle, { color: colors.text }]}>{t('profile_language')}</Text>
               {LANGUAGES.map((language) => (
