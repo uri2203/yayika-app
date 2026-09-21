@@ -51,12 +51,14 @@ interface ActiveChallenge {
   checkins_required: number;
 }
 
-const CYCLE_PHASE_COLORS: Record<string, string> = {
-  menstrual: '#EF4444',
-  follicular: '#F472B6',
-  ovulatory: '#D4A843',
-  luteal: '#4E3470',
-};
+function getCyclePhaseColors(colors: any): Record<string, string> {
+  return {
+    menstrual: colors.phaseMenstrual,
+    follicular: colors.phaseFollicular,
+    ovulatory: colors.phaseOvulatory,
+    luteal: colors.phaseLuteal,
+  };
+}
 
 const CYCLE_PHASE_ICONS: Record<string, string> = {
   menstrual: 'water',
@@ -684,7 +686,7 @@ export default function PortalDashboard({ navigation }: any) {
             <Text style={styles.greeting}>{t('home_greeting')} {userName}</Text>
             <View style={styles.phaseRow}>
               {cyclePhase ? (
-                <View style={[styles.phaseBadge, { backgroundColor: CYCLE_PHASE_COLORS[cyclePhase] || colors.primary }]}>
+                <View style={[styles.phaseBadge, { backgroundColor: getCyclePhaseColors(colors)[cyclePhase] || colors.primary }]}>
                   <Ionicons
                     name={(CYCLE_PHASE_ICONS[cyclePhase] as any) || 'ellipse'}
                     size={12}

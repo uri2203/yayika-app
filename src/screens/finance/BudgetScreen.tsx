@@ -8,17 +8,6 @@ import { useLanguage } from '../../contexts/LanguageContext';
 import { useAuth } from '../../contexts/AuthContext';
 import { getTransactions, getBudget, saveBudget } from '../../config/api';
 
-const CATEGORIES = [
-  { key: 'food', icon: 'restaurant', color: '#F59E0B' },
-  { key: 'transport', icon: 'car', color: '#3B82F6' },
-  { key: 'housing', icon: 'home', color: '#8B5CF6' },
-  { key: 'entertainment', icon: 'film', color: '#EC4899' },
-  { key: 'health', icon: 'medical', color: '#10B981' },
-  { key: 'education', icon: 'school', color: '#06B6D4' },
-  { key: 'clothing', icon: 'shirt', color: '#F97316' },
-  { key: 'other', icon: 'ellipsis-horizontal', color: '#6B7280' },
-];
-
 interface BudgetData {
   income: number;
 }
@@ -31,6 +20,17 @@ function formatMoney(n: number, lang: string = 'es') {
 export default function BudgetScreen({ navigation }: any) {
   const { currentColors } = useTheme();
   const colors = currentColors;
+
+  const CATEGORIES = [
+    { key: 'food', icon: 'restaurant', color: colors.gold },
+    { key: 'transport', icon: 'car', color: colors.primary },
+    { key: 'housing', icon: 'home', color: colors.rose },
+    { key: 'entertainment', icon: 'film', color: colors.rose },
+    { key: 'health', icon: 'medical', color: colors.success },
+    { key: 'education', icon: 'school', color: colors.turquoise },
+    { key: 'clothing', icon: 'shirt', color: colors.gold },
+    { key: 'other', icon: 'ellipsis-horizontal', color: colors.subtleText },
+  ];
 
   const styles = StyleSheet.create({
     container: { flex: 1, backgroundColor: colors.background },

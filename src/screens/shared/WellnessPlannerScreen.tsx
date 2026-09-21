@@ -117,6 +117,58 @@ export default function WellnessPlannerScreen({ navigation }: any) {
     );
   };
 
+  const styles = StyleSheet.create({
+    container: { flex: 1 },
+    header: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingHorizontal: spacing.md,
+      paddingVertical: spacing.sm,
+      borderBottomWidth: 1,
+    },
+    backBtn: { width: 40, height: 40, justifyContent: 'center', alignItems: 'center' },
+    headerTitle: { fontSize: typography.sizes.xl, fontWeight: typography.weights.bold },
+    scrollContent: { padding: spacing.md, paddingBottom: spacing.xxl },
+    center: { flex: 1, justifyContent: 'center', alignItems: 'center', gap: spacing.md },
+    loadingText: { fontSize: typography.sizes.md },
+    errorText: { fontSize: typography.sizes.md },
+    retryBtn: { paddingHorizontal: spacing.lg, paddingVertical: spacing.sm, borderRadius: borderRadius.md },
+    retryText: { color: colors.white, fontWeight: typography.weights.semibold },
+    card: { borderRadius: borderRadius.lg, padding: spacing.lg, marginBottom: spacing.md },
+    cardHeader: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm, marginBottom: spacing.md },
+    cardTitle: { fontSize: typography.sizes.md, fontWeight: typography.weights.bold },
+    itemRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingVertical: spacing.sm,
+      borderBottomWidth: 1,
+      gap: spacing.md,
+    },
+    itemIcon: { fontSize: 24 },
+    itemContent: { flex: 1 },
+    itemTitle: { fontSize: typography.sizes.md, fontWeight: typography.weights.semibold },
+    itemDesc: { fontSize: typography.sizes.sm, marginTop: 2 },
+    exerciseBadge: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingHorizontal: spacing.sm,
+      paddingVertical: spacing.xs,
+      borderRadius: borderRadius.full,
+      gap: 4,
+    },
+    exerciseDuration: { fontSize: typography.sizes.xs, fontWeight: typography.weights.semibold },
+    tipCard: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      borderRadius: borderRadius.lg,
+      padding: spacing.md,
+      marginBottom: spacing.md,
+      gap: spacing.sm,
+    },
+    tipText: { fontSize: typography.sizes.sm, flex: 1, lineHeight: 20 },
+  });
+
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
       <View style={[styles.header, { borderBottomColor: colors.border }]}>
@@ -150,55 +202,3 @@ export default function WellnessPlannerScreen({ navigation }: any) {
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1 },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.sm,
-    borderBottomWidth: 1,
-  },
-  backBtn: { width: 40, height: 40, justifyContent: 'center', alignItems: 'center' },
-  headerTitle: { fontSize: typography.sizes.xl, fontWeight: typography.weights.bold },
-  scrollContent: { padding: spacing.md, paddingBottom: spacing.xxl },
-  center: { flex: 1, justifyContent: 'center', alignItems: 'center', gap: spacing.md },
-  loadingText: { fontSize: typography.sizes.md },
-  errorText: { fontSize: typography.sizes.md },
-  retryBtn: { paddingHorizontal: spacing.lg, paddingVertical: spacing.sm, borderRadius: borderRadius.md },
-  retryText: { color: colors.white, fontWeight: typography.weights.semibold },
-  card: { borderRadius: borderRadius.lg, padding: spacing.lg, marginBottom: spacing.md },
-  cardHeader: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm, marginBottom: spacing.md },
-  cardTitle: { fontSize: typography.sizes.md, fontWeight: typography.weights.bold },
-  itemRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: spacing.sm,
-    borderBottomWidth: 1,
-    gap: spacing.md,
-  },
-  itemIcon: { fontSize: 24 },
-  itemContent: { flex: 1 },
-  itemTitle: { fontSize: typography.sizes.md, fontWeight: typography.weights.semibold },
-  itemDesc: { fontSize: typography.sizes.sm, marginTop: 2 },
-  exerciseBadge: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: spacing.sm,
-    paddingVertical: spacing.xs,
-    borderRadius: borderRadius.full,
-    gap: 4,
-  },
-  exerciseDuration: { fontSize: typography.sizes.xs, fontWeight: typography.weights.semibold },
-  tipCard: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderRadius: borderRadius.lg,
-    padding: spacing.md,
-    marginBottom: spacing.md,
-    gap: spacing.sm,
-  },
-  tipText: { fontSize: typography.sizes.sm, flex: 1, lineHeight: 20 },
-});

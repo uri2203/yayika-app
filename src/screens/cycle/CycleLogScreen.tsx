@@ -36,10 +36,10 @@ export default function CycleLogScreen({ navigation }: any) {
   const colors = currentColors;
 
   const PHASES = [
-    { key: 'menstrual', label: t('cycle_phase_menstrual') , color: '#C96B7A', icon: 'ðŸŒ™' },
-    { key: 'follicular', label: t('cycle_phase_follicular') , color: '#3BAF7A', icon: 'ðŸŒ¸' },
-    { key: 'ovulatory', label: t('cycle_phase_ovulatory') , color: '#1A9E8F', icon: 'â˜€ï¸' },
-    { key: 'luteal', label: t('cycle_phase_luteal') , color: '#B8943A', icon: 'ðŸ‚' },
+    { key: 'menstrual', label: t('cycle_phase_menstrual'), color: colors.phaseMenstrual, icon: '🌙' },
+    { key: 'follicular', label: t('cycle_phase_follicular'), color: colors.phaseFollicular, icon: '🌸' },
+    { key: 'ovulatory', label: t('cycle_phase_ovulatory'), color: colors.phaseOvulatory, icon: '☀️' },
+    { key: 'luteal', label: t('cycle_phase_luteal'), color: colors.phaseLuteal, icon: '🍂' },
   ];
 
   const MOODS = [

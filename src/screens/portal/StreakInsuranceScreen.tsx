@@ -95,6 +95,37 @@ export default function StreakInsuranceScreen({ navigation }: any) {
     );
   };
 
+  const styles = StyleSheet.create({
+    container: { flex: 1 },
+    header: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingHorizontal: 16,
+      paddingVertical: 12,
+    },
+    headerTitle: { fontSize: 18, fontWeight: '600' },
+    inventoryCard: { marginHorizontal: 16, marginBottom: 16 },
+    inventoryTitle: { fontSize: 14, fontWeight: '600', marginBottom: 12, textTransform: 'uppercase', letterSpacing: 0.5 },
+    inventoryRow: { flexDirection: 'row', justifyContent: 'space-around' },
+    inventoryItem: { alignItems: 'center', gap: 4 },
+    inventoryIcon: { fontSize: 28 },
+    inventoryCount: { fontSize: 24, fontWeight: '700' },
+    inventoryLabel: { fontSize: 12 },
+    sectionTitle: { fontSize: 14, fontWeight: '600', marginHorizontal: 16, marginBottom: 12, textTransform: 'uppercase', letterSpacing: 0.5 },
+    planCard: { marginHorizontal: 16, marginBottom: 12 },
+    planContent: { flexDirection: 'row', alignItems: 'center' },
+    planInfo: { flex: 1 },
+    planTitle: { fontSize: 15, fontWeight: '600', marginBottom: 4 },
+    planDesc: { fontSize: 12 },
+    planRight: { alignItems: 'flex-end', gap: 8 },
+    planPrice: { fontSize: 18, fontWeight: '700' },
+    buyButton: { paddingHorizontal: 16, paddingVertical: 8, borderRadius: 8 },
+    buyButtonText: { color: colors.white, fontSize: 13, fontWeight: '600' },
+    infoCard: { flexDirection: 'row', alignItems: 'flex-start', marginHorizontal: 16, marginTop: 8, gap: 8 },
+    infoText: { flex: 1, fontSize: 12, lineHeight: 18 },
+  });
+
   if (loading) {
     return (
       <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
@@ -190,33 +221,4 @@ export default function StreakInsuranceScreen({ navigation }: any) {
   );
 }
 
-const styles = StyleSheet.create({
-  container: { flex: 1 },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-  },
-  headerTitle: { fontSize: 18, fontWeight: '600' },
-  inventoryCard: { marginHorizontal: 16, marginBottom: 16 },
-  inventoryTitle: { fontSize: 14, fontWeight: '600', marginBottom: 12, textTransform: 'uppercase', letterSpacing: 0.5 },
-  inventoryRow: { flexDirection: 'row', justifyContent: 'space-around' },
-  inventoryItem: { alignItems: 'center', gap: 4 },
-  inventoryIcon: { fontSize: 28 },
-  inventoryCount: { fontSize: 24, fontWeight: '700' },
-  inventoryLabel: { fontSize: 12 },
-  sectionTitle: { fontSize: 14, fontWeight: '600', marginHorizontal: 16, marginBottom: 12, textTransform: 'uppercase', letterSpacing: 0.5 },
-  planCard: { marginHorizontal: 16, marginBottom: 12 },
-  planContent: { flexDirection: 'row', alignItems: 'center' },
-  planInfo: { flex: 1 },
-  planTitle: { fontSize: 15, fontWeight: '600', marginBottom: 4 },
-  planDesc: { fontSize: 12 },
-  planRight: { alignItems: 'flex-end', gap: 8 },
-  planPrice: { fontSize: 18, fontWeight: '700' },
-  buyButton: { paddingHorizontal: 16, paddingVertical: 8, borderRadius: 8 },
-  buyButtonText: { color: colors.white, fontSize: 13, fontWeight: '600' },
-  infoCard: { flexDirection: 'row', alignItems: 'flex-start', marginHorizontal: 16, marginTop: 8, gap: 8 },
-  infoText: { flex: 1, fontSize: 12, lineHeight: 18 },
-});
+

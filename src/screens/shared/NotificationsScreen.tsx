@@ -135,6 +135,51 @@ export default function NotificationsScreen({ navigation }: any) {
     </TouchableOpacity>
   );
 
+  const styles = StyleSheet.create({
+    container: { flex: 1 },
+    header: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingHorizontal: spacing.lg,
+      paddingVertical: spacing.md,
+    },
+    backButton: { width: 40, height: 40, justifyContent: 'center', alignItems: 'center' },
+    headerTitle: { fontSize: typography.sizes.xl, fontWeight: typography.weights.bold },
+    headerRight: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm },
+    unreadBadge: {
+      minWidth: 22,
+      height: 22,
+      borderRadius: 11,
+      justifyContent: 'center',
+      alignItems: 'center',
+      paddingHorizontal: spacing.xs,
+    },
+    unreadBadgeText: { fontSize: typography.sizes.xs, fontWeight: typography.weights.bold, color: colors.white },
+    markAllButton: { width: 40, height: 40, justifyContent: 'center', alignItems: 'center' },
+    listContent: { paddingHorizontal: spacing.lg, paddingBottom: spacing.xxl },
+    notificationItem: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      padding: spacing.md,
+      borderRadius: borderRadius.md,
+      marginBottom: spacing.sm,
+    },
+    iconContainer: {
+      width: 44,
+      height: 44,
+      borderRadius: 22,
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginRight: spacing.md,
+    },
+    notificationContent: { flex: 1 },
+    notificationTitle: { fontSize: typography.sizes.md, fontWeight: typography.weights.semibold, marginBottom: 2 },
+    notificationBody: { fontSize: typography.sizes.sm, lineHeight: 18 },
+    notificationTime: { fontSize: typography.sizes.xs, marginTop: spacing.xs },
+    unreadDot: { width: 10, height: 10, borderRadius: 5, marginLeft: spacing.sm },
+  });
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -175,47 +220,3 @@ export default function NotificationsScreen({ navigation }: any) {
   );
 }
 
-const styles = StyleSheet.create({
-  container: { flex: 1 },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: spacing.lg,
-    paddingVertical: spacing.md,
-  },
-  backButton: { width: 40, height: 40, justifyContent: 'center', alignItems: 'center' },
-  headerTitle: { fontSize: typography.sizes.xl, fontWeight: typography.weights.bold },
-  headerRight: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm },
-  unreadBadge: {
-    minWidth: 22,
-    height: 22,
-    borderRadius: 11,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: spacing.xs,
-  },
-  unreadBadgeText: { fontSize: typography.sizes.xs, fontWeight: typography.weights.bold, color: colors.white },
-  markAllButton: { width: 40, height: 40, justifyContent: 'center', alignItems: 'center' },
-  listContent: { paddingHorizontal: spacing.lg, paddingBottom: spacing.xxl },
-  notificationItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: spacing.md,
-    borderRadius: borderRadius.md,
-    marginBottom: spacing.sm,
-  },
-  iconContainer: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: spacing.md,
-  },
-  notificationContent: { flex: 1 },
-  notificationTitle: { fontSize: typography.sizes.md, fontWeight: typography.weights.semibold, marginBottom: 2 },
-  notificationBody: { fontSize: typography.sizes.sm, lineHeight: 18 },
-  notificationTime: { fontSize: typography.sizes.xs, marginTop: spacing.xs },
-  unreadDot: { width: 10, height: 10, borderRadius: 5, marginLeft: spacing.sm },
-});

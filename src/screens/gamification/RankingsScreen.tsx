@@ -23,7 +23,7 @@ const safeNum = (n: any) => (typeof n === 'number' && !isNaN(n)) ? n : 0;
 export default function RankingsScreen({ navigation }: any) {
   const { currentColors } = useTheme();
   const colors = currentColors;
-  const PODIUM_COLORS: Record<number, string> = { 1: colors.gold, 2: '#C0C0C0', 3: '#CD7F32' };
+  const PODIUM_COLORS: Record<number, string> = { 1: colors.gold, 2: colors.subtleText, 3: colors.gold };
 
   const styles = StyleSheet.create({
     container: { flex: 1, backgroundColor: colors.background },

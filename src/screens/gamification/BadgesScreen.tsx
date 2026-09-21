@@ -87,11 +87,13 @@ const CATEGORIES = [
   { key: 'special', labelKey: 'badges_special', icon: 'star' },
 ] as const;
 
-const TIER_COLORS: Record<BadgeTier, string> = {
-  bronze: '#CD7F32',
-  silver: '#A8A8A8',
-  gold: '#D4A843',
-  diamond: '#2DD4BF',
+const getTierColor = (tier: BadgeTier, colors: any): string => {
+  switch (tier) {
+    case 'bronze': return colors.gold;
+    case 'silver': return colors.subtleText;
+    case 'gold': return colors.gold;
+    case 'diamond': return colors.turquoise;
+  }
 };
 
 const TIER_BG: Record<BadgeTier, (colors: any) => string> = {
@@ -356,12 +358,12 @@ export default function BadgesScreen({ navigation }: any) {
             return (
               <View
                 key={badge.key}
-                style={[styles.badgeCard, earned && { borderColor: TIER_COLORS[badge.tier] + '60' }]}
+                style={[styles.badgeCard, earned && { borderColor: getTierColor(badge.tier, colors) + '60' }]}
               >
                 <View style={[styles.badgeCircle, { backgroundColor: earned ? TIER_BG[badge.tier](colors) : colors.border }]}>
                   <Text style={[styles.badgeIcon, !earned && styles.badgeIconLocked]}>{badge.icon}</Text>
                   {earned && (
-                    <View style={[styles.tierDot, { backgroundColor: TIER_COLORS[badge.tier] }]}>
+                    <View style={[styles.tierDot, { backgroundColor: getTierColor(badge.tier, colors) }]}>
                       <Text style={styles.tierDotText}>{badge.tier.charAt(0).toUpperCase()}</Text>
                     </View>
                   )}

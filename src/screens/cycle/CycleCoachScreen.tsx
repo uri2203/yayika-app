@@ -17,10 +17,10 @@ import { aiCycleCoach, getDailyMood, getCycleLog } from '../../config/api';
 
 function getPhaseColor(phase: string, colors: any): string {
   const key = phase?.toLowerCase() || '';
-  if (key.includes('menstru')) return '#C96B7A';
-  if (key.includes('follicu')) return '#3BAF7A';
-  if (key.includes('ovul')) return '#1A9E8F';
-  if (key.includes('lute')) return '#B8943A';
+  if (key.includes('menstru')) return colors.phaseMenstrual;
+  if (key.includes('follicu')) return colors.phaseFollicular;
+  if (key.includes('ovul')) return colors.phaseOvulatory;
+  if (key.includes('lute')) return colors.phaseLuteal;
   return colors.primary;
 }
 
@@ -38,9 +38,9 @@ function EnergyForecastBar({ day, energy, maxEnergy }: { day: string; energy: nu
   const colors = currentColors;
   const pct = maxEnergy > 0 ? (energy / maxEnergy) * 100 : 0;
   let barColor = colors.primary;
-  if (energy <= 2) barColor = '#C96B7A';
-  else if (energy <= 3) barColor = '#B8943A';
-  else barColor = '#3BAF7A';
+  if (energy <= 2) barColor = colors.phaseMenstrual;
+  else if (energy <= 3) barColor = colors.phaseLuteal;
+  else barColor = colors.phaseFollicular;
   const localStyles = StyleSheet.create({
     forecastCol: { alignItems: 'center', flex: 1 },
     forecastEnergy: { fontSize: typography.sizes.xs, color: colors.subtleText, marginBottom: spacing.xs },
@@ -336,25 +336,25 @@ export default function CycleCoachScreen({ navigation }: any) {
                 <Text style={styles.sectionTitle}>{t('cycle_tips') }</Text>
                 {phase.toLowerCase().includes('menstru') && (
                   <View style={styles.tipItem}>
-                    <Ionicons name="moon" size={16} color="#C96B7A" />
+                    <Ionicons name="moon" size={16} color={colors.phaseMenstrual} />
                     <Text style={styles.tipText}>{t('cycle_menstrual_tip')}</Text>
                   </View>
                 )}
                 {phase.toLowerCase().includes('follicu') && (
                   <View style={styles.tipItem}>
-                    <Ionicons name="flower" size={16} color="#3BAF7A" />
+                    <Ionicons name="flower" size={16} color={colors.phaseFollicular} />
                     <Text style={styles.tipText}>{t('cycle_follicular_tip')}</Text>
                   </View>
                 )}
                 {phase.toLowerCase().includes('ovul') && (
                   <View style={styles.tipItem}>
-                    <Ionicons name="sunny" size={16} color="#1A9E8F" />
+                    <Ionicons name="sunny" size={16} color={colors.phaseOvulatory} />
                     <Text style={styles.tipText}>{t('cycle_ovulatory_tip')}</Text>
                   </View>
                 )}
                 {phase.toLowerCase().includes('lute') && (
                   <View style={styles.tipItem}>
-                    <Ionicons name="leaf" size={16} color="#B8943A" />
+                    <Ionicons name="leaf" size={16} color={colors.phaseLuteal} />
                     <Text style={styles.tipText}>{t('cycle_luteal_tip')}</Text>
                   </View>
                 )}

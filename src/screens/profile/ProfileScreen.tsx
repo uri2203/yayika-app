@@ -11,16 +11,6 @@ import { useLanguage } from '../../contexts/LanguageContext';
 import { typography, spacing, borderRadius } from '../../config/theme';
 import { supabase } from '../../config/supabase';
 
-const AVATAR_COLORS = ['#4E3470', '#2DD4BF', '#F472B6', '#D4A843', '#10B981', '#EF4444'];
-
-function getAvatarColor(name: string): string {
-  let hash = 0;
-  for (let i = 0; i < name.length; i++) {
-    hash = name.charCodeAt(i) + ((hash << 5) - hash);
-  }
-  return AVATAR_COLORS[Math.abs(hash) % AVATAR_COLORS.length];
-}
-
 function getInitials(name: string): string {
   const parts = name.trim().split(/\s+/);
   if (parts.length >= 2) return (parts[0][0] + parts[1][0]).toUpperCase();
@@ -35,6 +25,16 @@ export default function ProfileScreen({ navigation }: any) {
   const [badgeCount, setBadgeCount] = useState(0);
   const [moduleCount, setModuleCount] = useState(0);
   const colors = currentColors;
+
+  const AVATAR_COLORS = [colors.primary, colors.turquoise, colors.rose, colors.gold, colors.success, colors.error];
+
+  const getAvatarColor = (name: string): string => {
+    let hash = 0;
+    for (let i = 0; i < name.length; i++) {
+      hash = name.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    return AVATAR_COLORS[Math.abs(hash) % AVATAR_COLORS.length];
+  };
 
   const userName = profile?.full_name || user?.user_metadata?.name || t('profile_default_name');
   const userEmail = profile?.email || user?.email || '';

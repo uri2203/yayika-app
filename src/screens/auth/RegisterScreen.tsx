@@ -20,25 +20,25 @@ import Button from '../../components/Button';
 
 const validateEmail = (e: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
 
-const getPasswordStrength = (pw: string): { label: string; color: string; width: string } => {
-  let score = 0;
-  if (pw.length >= 8) score++;
-  if (pw.length >= 12) score++;
-  if (/[A-Z]/.test(pw)) score++;
-  if (/[0-9]/.test(pw)) score++;
-  if (/[^A-Za-z0-9]/.test(pw)) score++;
-  if (score <= 1) return { label: t('auth_strength_weak'), color: '#EF4444', width: '20%' };
-  if (score <= 2) return { label: t('auth_strength_fair'), color: '#F59E0B', width: '40%' };
-  if (score <= 3) return { label: t('auth_strength_good'), color: '#3B82F6', width: '60%' };
-  if (score <= 4) return { label: t('auth_strength_strong'), color: '#10B981', width: '80%' };
-  return { label: t('auth_strength_very_strong'), color: '#059669', width: '100%' };
-};
-
 export default function RegisterScreen({ navigation }: any) {
   const { signUp } = useAuth();
   const { t } = useLanguage();
   const { currentColors } = useTheme();
   const colors = currentColors;
+
+  const getPasswordStrength = (pw: string): { label: string; color: string; width: string } => {
+    let score = 0;
+    if (pw.length >= 8) score++;
+    if (pw.length >= 12) score++;
+    if (/[A-Z]/.test(pw)) score++;
+    if (/[0-9]/.test(pw)) score++;
+    if (/[^A-Za-z0-9]/.test(pw)) score++;
+    if (score <= 1) return { label: t('auth_strength_weak'), color: colors.error, width: '20%' };
+    if (score <= 2) return { label: t('auth_strength_fair'), color: colors.warning, width: '40%' };
+    if (score <= 3) return { label: t('auth_strength_good'), color: colors.primary, width: '60%' };
+    if (score <= 4) return { label: t('auth_strength_strong'), color: colors.success, width: '80%' };
+    return { label: t('auth_strength_very_strong'), color: colors.success, width: '100%' };
+  };
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

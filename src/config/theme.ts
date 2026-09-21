@@ -21,6 +21,11 @@ export const colors = {
   warning: '#D97706',
   overlay: 'rgba(0,0,0,0.5)',
   assistantBubble: '#F3F0F7',
+  // Cycle phase colors
+  phaseMenstrual: '#C96B7A',
+  phaseFollicular: '#3BAF7A',
+  phaseOvulatory: '#1A9E8F',
+  phaseLuteal: '#B8943A',
 };
 
 export const typography = {
@@ -81,4 +86,9 @@ export const darkColors = {
   warning: '#FBBF24',
   overlay: 'rgba(0,0,0,0.7)',
   assistantBubble: '#3A2555',
+  // Cycle phase colors - slightly brighter for dark mode contrast
+  phaseMenstrual: '#E08898',
+  phaseFollicular: '#5CCF9A',
+  phaseOvulatory: '#3CC0B0',
+  phaseLuteal: '#D4B05A',
 };

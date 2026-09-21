@@ -14,13 +14,6 @@ import { useTheme } from '../../contexts/ThemeContext';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { aiCycleIntelligence, type CycleDashboard } from '../../config/api';
 
-const PHASE_COLORS: Record<string, string> = {
-  Menstrual: '#C96B7A',
-  Follicular: '#3BAF7A',
-  Ovulatory: '#1A9E8F',
-  Luteal: '#B8943A',
-};
-
 function EnergyBar({ label, value, maxVal, color }: { label: string; value: number; maxVal: number; color: string }) {
   const { currentColors } = useTheme();
   const colors = currentColors;
@@ -50,10 +43,10 @@ export default function CycleIntelligenceScreen({ navigation }: any) {
 
   const getPhaseColor = (phase: string): string => {
     const key = phase?.toLowerCase() || '';
-    if (key.includes('menstru')) return '#C96B7A';
-    if (key.includes('follicu')) return '#3BAF7A';
-    if (key.includes('ovul')) return '#1A9E8F';
-    if (key.includes('lute')) return '#B8943A';
+    if (key.includes('menstru')) return colors.phaseMenstrual;
+    if (key.includes('follicu')) return colors.phaseFollicular;
+    if (key.includes('ovul')) return colors.phaseOvulatory;
+    if (key.includes('lute')) return colors.phaseLuteal;
     return colors.primary;
   };
 
@@ -283,15 +276,15 @@ export default function CycleIntelligenceScreen({ navigation }: any) {
           <>
             {/* Analytics Cards */}
             <View style={styles.statsRow}>
-              <View style={[styles.statCard, { borderLeftColor: '#C96B7A' }]}>
+              <View style={[styles.statCard, { borderLeftColor: colors.phaseMenstrual }]}>
                 <Text style={styles.statValue}>{analytics?.avg_cycle_length ?? 'â€”'}</Text>
                 <Text style={styles.statLabel}>{t('cycle_intel_avg_length') }</Text>
               </View>
-              <View style={[styles.statCard, { borderLeftColor: '#3BAF7A' }]}>
+              <View style={[styles.statCard, { borderLeftColor: colors.phaseFollicular }]}>
                 <Text style={styles.statValue}>{analytics?.total_cycles ?? 'â€”'}</Text>
                 <Text style={styles.statLabel}>{t('cycle_intel_total') }</Text>
               </View>
-              <View style={[styles.statCard, { borderLeftColor: '#1A9E8F' }]}>
+              <View style={[styles.statCard, { borderLeftColor: colors.phaseOvulatory }]}>
                 <Text style={styles.statValue}>{analytics?.regularity_score != null ? `${analytics.regularity_score}%` : 'â€”'}</Text>
                 <Text style={styles.statLabel}>{t('cycle_intel_regularity') }</Text>
               </View>
@@ -308,13 +301,13 @@ export default function CycleIntelligenceScreen({ navigation }: any) {
                   {t('cycle_intel_days_remaining') }: {predictions.days_remaining}
                 </Text>
                 <View style={styles.predictionRow}>
-                  <Ionicons name="water" size={16} color="#C96B7A" />
+                  <Ionicons name="water" size={16} color={colors.phaseMenstrual} />
                   <Text style={styles.predictionText}>
                     {t('cycle_next_period') }: {predictions.period_start}
                   </Text>
                 </View>
                 <View style={styles.predictionRow}>
-                  <Ionicons name="sunny" size={16} color="#1A9E8F" />
+                  <Ionicons name="sunny" size={16} color={colors.phaseOvulatory} />
                   <Text style={styles.predictionText}>
                     {t('cycle_ovulation') }: {predictions.ovulation}
                   </Text>
