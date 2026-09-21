@@ -202,7 +202,7 @@ export default function CommunityFeedScreen({ navigation }: any) {
       borderRadius: 28, backgroundColor: colors.primary, justifyContent: 'center', alignItems: 'center',
       shadowColor: colors.primary, shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.4, shadowRadius: 8, elevation: 6,
     },
-    modalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.4)', justifyContent: 'flex-end' },
+    modalOverlay: { flex: 1, backgroundColor: colors.overlay, justifyContent: 'flex-end' },
     modalContent: {
       backgroundColor: colors.white, borderTopLeftRadius: borderRadius.xl, borderTopRightRadius: borderRadius.xl,
       padding: spacing.lg, maxHeight: '85%',

@@ -133,7 +133,7 @@ export default function PostDetailScreen({ navigation, route }: PostDetailScreen
       flexDirection: 'row', alignItems: 'center', marginLeft: 'auto',
     },
     reportBtnText: { fontSize: typography.sizes.xs, color: colors.subtleText, marginLeft: spacing.xs },
-    modalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.4)', justifyContent: 'center', alignItems: 'center' },
+    modalOverlay: { flex: 1, backgroundColor: colors.overlay, justifyContent: 'center', alignItems: 'center' },
     reportModalContent: {
       backgroundColor: colors.white, borderRadius: borderRadius.lg, padding: spacing.lg,
       width: '85%', maxWidth: 340,

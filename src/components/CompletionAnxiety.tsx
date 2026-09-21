@@ -131,6 +131,62 @@ export default function CompletionAnxiety({ onItemPress }: CompletionAnxietyProp
     high: 'alert-circle-outline',
   };
 
+  const styles = StyleSheet.create({
+    container: {
+      marginBottom: 16,
+    },
+    title: {
+      fontSize: 14,
+      fontWeight: '600',
+      textTransform: 'uppercase',
+      letterSpacing: 0.5,
+      marginBottom: 4,
+    },
+    subtitle: {
+      fontSize: 12,
+      marginBottom: 12,
+    },
+    itemCard: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      borderRadius: 12,
+      borderWidth: 1,
+      marginBottom: 8,
+      overflow: 'hidden',
+    },
+    itemContent: {
+      flex: 1,
+      padding: 12,
+    },
+    itemHeader: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 8,
+      marginBottom: 8,
+    },
+    itemTitle: {
+      fontSize: 13,
+      fontWeight: '500',
+      flex: 1,
+    },
+    progressBar: {
+      height: 4,
+      backgroundColor: colors.border,
+      borderRadius: 2,
+      marginBottom: 4,
+    },
+    progressFill: {
+      height: '100%',
+      borderRadius: 2,
+    },
+    progressText: {
+      fontSize: 11,
+    },
+    dismissButton: {
+      padding: 12,
+    },
+  });
+
   return (
     <View style={styles.container}>
       <Text style={[styles.title, { color: colors.text }]}>
@@ -195,59 +251,3 @@ export default function CompletionAnxiety({ onItemPress }: CompletionAnxietyProp
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    marginBottom: 16,
-  },
-  title: {
-    fontSize: 14,
-    fontWeight: '600',
-    textTransform: 'uppercase',
-    letterSpacing: 0.5,
-    marginBottom: 4,
-  },
-  subtitle: {
-    fontSize: 12,
-    marginBottom: 12,
-  },
-  itemCard: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderRadius: 12,
-    borderWidth: 1,
-    marginBottom: 8,
-    overflow: 'hidden',
-  },
-  itemContent: {
-    flex: 1,
-    padding: 12,
-  },
-  itemHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-    marginBottom: 8,
-  },
-  itemTitle: {
-    fontSize: 13,
-    fontWeight: '500',
-    flex: 1,
-  },
-  progressBar: {
-    height: 4,
-    backgroundColor: 'rgba(0,0,0,0.1)',
-    borderRadius: 2,
-    marginBottom: 4,
-  },
-  progressFill: {
-    height: '100%',
-    borderRadius: 2,
-  },
-  progressText: {
-    fontSize: 11,
-  },
-  dismissButton: {
-    padding: 12,
-  },
-});

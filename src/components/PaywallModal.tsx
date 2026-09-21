@@ -72,7 +72,7 @@ function FeatureRow({ icon, text, color, textColor }: { icon: string; text: stri
 }
 
 const styles = StyleSheet.create({
-  overlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.6)', justifyContent: 'center', alignItems: 'center', padding: 20 },
+  overlay: { flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20 },
   card: { borderRadius: 20, padding: 24, width: '100%', maxWidth: 360, borderWidth: 1 },
   closeBtn: { position: 'absolute', top: 16, right: 16, zIndex: 1 },
   iconContainer: { width: 64, height: 64, borderRadius: 32, justifyContent: 'center', alignItems: 'center', alignSelf: 'center', marginBottom: 16 },

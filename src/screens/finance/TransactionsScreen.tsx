@@ -98,7 +98,7 @@ export default function TransactionsScreen({ navigation, route }: TransactionsSc
     },
     emptyState: { flex: 1, justifyContent: 'center', alignItems: 'center', paddingHorizontal: spacing.xl },
     emptyText: { fontSize: typography.sizes.sm, color: colors.subtleText, marginTop: spacing.sm },
-    modalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'flex-end' },
+    modalOverlay: { flex: 1, backgroundColor: colors.overlay, justifyContent: 'flex-end' },
     modalContent: {
       backgroundColor: colors.white, borderTopLeftRadius: borderRadius.xl, borderTopRightRadius: borderRadius.xl,
       padding: spacing.lg, paddingBottom: spacing.xxl,

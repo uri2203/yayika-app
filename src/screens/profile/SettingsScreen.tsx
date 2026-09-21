@@ -56,13 +56,100 @@ export default function SettingsScreen({ navigation }: any) {
           currency_code: currency.trim().toUpperCase(),
         }, { onConflict: 'id' });
       if (error) throw error;
-      Alert.alert(t('common_success') , t('profile_settings') + ' âœ“');
+      Alert.alert(t('common_success') , t('profile_settings') + ' âœ"');
     } catch (err: any) {
       Alert.alert(t('common_error'), err.message || t('common_error'));
     } finally {
       setSaving(false);
     }
   };
+
+  const styles = StyleSheet.create({
+    container: { flex: 1 },
+    scrollContent: { paddingHorizontal: spacing.lg, paddingBottom: spacing.xxl },
+    header: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingVertical: spacing.md,
+    },
+    backButton: { width: 40, height: 40, justifyContent: 'center', alignItems: 'center' },
+    headerTitle: { fontSize: typography.sizes.xl, fontWeight: typography.weights.bold },
+    sectionCard: { marginBottom: spacing.md },
+    sectionTitle: {
+      fontSize: typography.sizes.sm,
+      fontWeight: typography.weights.semibold,
+      textTransform: 'uppercase',
+      letterSpacing: 1,
+      marginBottom: spacing.md,
+    },
+    label: {
+      fontSize: typography.sizes.sm,
+      fontWeight: typography.weights.medium,
+      marginBottom: spacing.xs,
+      marginTop: spacing.sm,
+    },
+    input: {
+      borderWidth: 1,
+      borderRadius: borderRadius.md,
+      paddingHorizontal: spacing.md,
+      paddingVertical: spacing.sm + 4,
+      fontSize: typography.sizes.md,
+      marginBottom: spacing.sm,
+    },
+    menuItem: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      paddingVertical: spacing.md,
+      borderBottomWidth: 1,
+    },
+    menuLeft: { flexDirection: 'row', alignItems: 'center' },
+    menuText: { fontSize: typography.sizes.md, marginLeft: spacing.md },
+    menuRight: { flexDirection: 'row', alignItems: 'center' },
+    menuValue: { fontSize: typography.sizes.md, marginRight: spacing.xs },
+    saveButton: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      paddingVertical: spacing.md,
+      borderRadius: borderRadius.md,
+      marginBottom: spacing.md,
+    },
+    saveButtonText: { fontSize: typography.sizes.md, fontWeight: typography.weights.semibold, marginLeft: spacing.sm },
+    languageOverlay: {
+      flex: 1,
+      backgroundColor: colors.overlay,
+      justifyContent: 'center',
+      alignItems: 'center',
+      padding: spacing.lg,
+    },
+    languageModal: { width: '100%', maxWidth: 400, borderRadius: borderRadius.lg, padding: spacing.lg },
+    languageModalTitle: {
+      fontSize: typography.sizes.xl,
+      fontWeight: typography.weights.bold,
+      marginBottom: spacing.lg,
+      textAlign: 'center',
+    },
+    languageOption: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      paddingVertical: spacing.md,
+      paddingHorizontal: spacing.md,
+      borderRadius: borderRadius.md,
+      marginBottom: spacing.sm,
+    },
+    languageOptionText: { fontSize: typography.sizes.md },
+    languageModalClose: {
+      marginTop: spacing.md,
+      paddingVertical: spacing.md,
+      borderRadius: borderRadius.md,
+      borderWidth: 1,
+      alignItems: 'center',
+    },
+    languageModalCloseText: { fontSize: typography.sizes.md, fontWeight: typography.weights.semibold },
+  });
 
   return (
     <SafeAreaView style={styles.container}>
@@ -242,90 +329,3 @@ export default function SettingsScreen({ navigation }: any) {
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1 },
-  scrollContent: { paddingHorizontal: spacing.lg, paddingBottom: spacing.xxl },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingVertical: spacing.md,
-  },
-  backButton: { width: 40, height: 40, justifyContent: 'center', alignItems: 'center' },
-  headerTitle: { fontSize: typography.sizes.xl, fontWeight: typography.weights.bold },
-  sectionCard: { marginBottom: spacing.md },
-  sectionTitle: {
-    fontSize: typography.sizes.sm,
-    fontWeight: typography.weights.semibold,
-    textTransform: 'uppercase',
-    letterSpacing: 1,
-    marginBottom: spacing.md,
-  },
-  label: {
-    fontSize: typography.sizes.sm,
-    fontWeight: typography.weights.medium,
-    marginBottom: spacing.xs,
-    marginTop: spacing.sm,
-  },
-  input: {
-    borderWidth: 1,
-    borderRadius: borderRadius.md,
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.sm + 4,
-    fontSize: typography.sizes.md,
-    marginBottom: spacing.sm,
-  },
-  menuItem: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingVertical: spacing.md,
-    borderBottomWidth: 1,
-  },
-  menuLeft: { flexDirection: 'row', alignItems: 'center' },
-  menuText: { fontSize: typography.sizes.md, marginLeft: spacing.md },
-  menuRight: { flexDirection: 'row', alignItems: 'center' },
-  menuValue: { fontSize: typography.sizes.md, marginRight: spacing.xs },
-  saveButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: spacing.md,
-    borderRadius: borderRadius.md,
-    marginBottom: spacing.md,
-  },
-  saveButtonText: { fontSize: typography.sizes.md, fontWeight: typography.weights.semibold, marginLeft: spacing.sm },
-  languageOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: spacing.lg,
-  },
-  languageModal: { width: '100%', maxWidth: 400, borderRadius: borderRadius.lg, padding: spacing.lg },
-  languageModalTitle: {
-    fontSize: typography.sizes.xl,
-    fontWeight: typography.weights.bold,
-    marginBottom: spacing.lg,
-    textAlign: 'center',
-  },
-  languageOption: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingVertical: spacing.md,
-    paddingHorizontal: spacing.md,
-    borderRadius: borderRadius.md,
-    marginBottom: spacing.sm,
-  },
-  languageOptionText: { fontSize: typography.sizes.md },
-  languageModalClose: {
-    marginTop: spacing.md,
-    paddingVertical: spacing.md,
-    borderRadius: borderRadius.md,
-    borderWidth: 1,
-    alignItems: 'center',
-  },
-  languageModalCloseText: { fontSize: typography.sizes.md, fontWeight: typography.weights.semibold },
-});

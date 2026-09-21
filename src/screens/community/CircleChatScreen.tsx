@@ -169,7 +169,7 @@ export default function CircleChatScreen({ navigation, route }: any) {
                   {msg.content}
                 </Text>
                 <View style={styles.messageMeta}>
-                  <Text style={[styles.messageTime, isSelf && { color: 'rgba(255,255,255,0.7)' }]}>
+                  <Text style={[styles.messageTime, isSelf && { color: colors.white, opacity: 0.7 }]}>
                     {formatTime(msg.created_at)}
                   </Text>
                 </View>

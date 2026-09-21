@@ -136,6 +136,118 @@ export default function RetentionCheckin({ onCheckinComplete }: RetentionCheckin
     outputRange: ['0deg', '360deg'],
   });
 
+  const styles = StyleSheet.create({
+    container: {
+      borderRadius: borderRadius.lg,
+      padding: spacing.lg,
+      marginBottom: spacing.md,
+    },
+    checkinButton: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      padding: spacing.md,
+      borderRadius: borderRadius.md,
+      gap: spacing.sm,
+    },
+    checkinEmoji: {
+      fontSize: 28,
+    },
+    checkinInfo: {
+      flex: 1,
+    },
+    checkinTitle: {
+      fontSize: typography.sizes.md,
+      fontWeight: typography.weights.bold,
+    },
+    checkinSubtitle: {
+      fontSize: typography.sizes.sm,
+      opacity: 0.8,
+      marginTop: 2,
+    },
+    checkinText: {
+      fontSize: typography.sizes.md,
+      fontWeight: typography.weights.semibold,
+      color: colors.white,
+    },
+    wheelContainer: {
+      alignItems: 'center',
+    },
+    wheelTitle: {
+      fontSize: typography.sizes.lg,
+      fontWeight: typography.weights.bold,
+      marginBottom: spacing.md,
+    },
+    wheelWrapper: {
+      width: WHEEL_SIZE,
+      height: WHEEL_SIZE,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    wheel: {
+      width: WHEEL_SIZE,
+      height: WHEEL_SIZE,
+      borderRadius: WHEEL_SIZE / 2,
+      overflow: 'hidden',
+      position: 'absolute',
+    },
+    wheelSegment: {
+      position: 'absolute',
+      width: WHEEL_SIZE,
+      height: WHEEL_SIZE / 2,
+      left: 0,
+      top: 0,
+      transformOrigin: 'bottom center',
+      justifyContent: 'flex-start',
+      alignItems: 'center',
+      paddingTop: 8,
+    },
+    wheelSegmentText: {
+      fontSize: 10,
+      fontWeight: typography.weights.bold,
+      color: colors.white,
+    },
+    wheelCenter: {
+      width: 60,
+      height: 60,
+      borderRadius: 30,
+      justifyContent: 'center',
+      alignItems: 'center',
+      zIndex: 10,
+      shadowColor: colors.black,
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.2,
+      shadowRadius: 4,
+      elevation: 4,
+    },
+    wheelCenterEmoji: {
+      fontSize: 28,
+    },
+    spinResult: {
+      marginTop: spacing.md,
+      paddingHorizontal: spacing.lg,
+      paddingVertical: spacing.sm,
+      borderRadius: borderRadius.full,
+    },
+    spinResultText: {
+      fontSize: typography.sizes.md,
+      fontWeight: typography.weights.bold,
+    },
+    alreadySpun: {
+      marginTop: spacing.sm,
+      fontSize: typography.sizes.sm,
+    },
+    closeWheel: {
+      marginTop: spacing.md,
+      paddingHorizontal: spacing.lg,
+      paddingVertical: spacing.sm,
+      borderRadius: borderRadius.full,
+    },
+    closeWheelText: {
+      fontSize: typography.sizes.sm,
+      fontWeight: typography.weights.medium,
+    },
+  });
+
   return (
     <View style={[styles.container, { backgroundColor: colors.white }]}>
       {/* Check-in Button */}
@@ -230,115 +342,3 @@ export default function RetentionCheckin({ onCheckinComplete }: RetentionCheckin
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    borderRadius: borderRadius.lg,
-    padding: spacing.lg,
-    marginBottom: spacing.md,
-  },
-  checkinButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: spacing.md,
-    borderRadius: borderRadius.md,
-    gap: spacing.sm,
-  },
-  checkinEmoji: {
-    fontSize: 28,
-  },
-  checkinInfo: {
-    flex: 1,
-  },
-  checkinTitle: {
-    fontSize: typography.sizes.md,
-    fontWeight: typography.weights.bold,
-  },
-  checkinSubtitle: {
-    fontSize: typography.sizes.sm,
-    opacity: 0.8,
-    marginTop: 2,
-  },
-  checkinText: {
-    fontSize: typography.sizes.md,
-    fontWeight: typography.weights.semibold,
-    color: '#FFF',
-  },
-  wheelContainer: {
-    alignItems: 'center',
-  },
-  wheelTitle: {
-    fontSize: typography.sizes.lg,
-    fontWeight: typography.weights.bold,
-    marginBottom: spacing.md,
-  },
-  wheelWrapper: {
-    width: WHEEL_SIZE,
-    height: WHEEL_SIZE,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  wheel: {
-    width: WHEEL_SIZE,
-    height: WHEEL_SIZE,
-    borderRadius: WHEEL_SIZE / 2,
-    overflow: 'hidden',
-    position: 'absolute',
-  },
-  wheelSegment: {
-    position: 'absolute',
-    width: WHEEL_SIZE,
-    height: WHEEL_SIZE / 2,
-    left: 0,
-    top: 0,
-    transformOrigin: 'bottom center',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    paddingTop: 8,
-  },
-  wheelSegmentText: {
-    fontSize: 10,
-    fontWeight: typography.weights.bold,
-    color: '#FFF',
-  },
-  wheelCenter: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    justifyContent: 'center',
-    alignItems: 'center',
-    zIndex: 10,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 4,
-  },
-  wheelCenterEmoji: {
-    fontSize: 28,
-  },
-  spinResult: {
-    marginTop: spacing.md,
-    paddingHorizontal: spacing.lg,
-    paddingVertical: spacing.sm,
-    borderRadius: borderRadius.full,
-  },
-  spinResultText: {
-    fontSize: typography.sizes.md,
-    fontWeight: typography.weights.bold,
-  },
-  alreadySpun: {
-    marginTop: spacing.sm,
-    fontSize: typography.sizes.sm,
-  },
-  closeWheel: {
-    marginTop: spacing.md,
-    paddingHorizontal: spacing.lg,
-    paddingVertical: spacing.sm,
-    borderRadius: borderRadius.full,
-  },
-  closeWheelText: {
-    fontSize: typography.sizes.sm,
-    fontWeight: typography.weights.medium,
-  },
-});
