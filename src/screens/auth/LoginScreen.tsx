@@ -48,24 +48,12 @@ export default function LoginScreen({ navigation }: any) {
       marginBottom: spacing.xxl,
     },
     logoImage: {
-      width: 100,
-      height: 100,
-    },
-    logoContainer: {
-      alignItems: 'center',
-      justifyContent: 'center',
       width: 120,
       height: 120,
-      borderRadius: 60,
       marginBottom: spacing.md,
     },
-    logoContainerDark: {
-      backgroundColor: 'rgba(255,255,255,0.08)',
-      shadowColor: '#FFFFFF',
-      shadowOffset: { width: 0, height: 0 },
-      shadowOpacity: 0.3,
-      shadowRadius: 12,
-      elevation: 4,
+    logoImageDark: {
+      tintColor: '#E0D0F0',
     },
     logo: {
       fontSize: 40,
@@ -172,9 +160,7 @@ export default function LoginScreen({ navigation }: any) {
           keyboardShouldPersistTaps="handled"
         >
           <View style={styles.header}>
-            <View style={[styles.logoContainer, isDark && styles.logoContainerDark]}>
-              <Image source={logoImg} style={styles.logoImage} resizeMode="contain" />
-            </View>
+            <Image source={logoImg} style={[styles.logoImage, isDark && styles.logoImageDark]} resizeMode="contain" />
             <Text style={styles.logo}>Yayika</Text>
             <Text style={styles.subtitle}>{t('auth_tagline')}</Text>
           </View>
