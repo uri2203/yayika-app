@@ -55,10 +55,10 @@ export default function LoginScreen({ navigation }: any) {
     logoContainer: {
       marginBottom: spacing.md,
       borderRadius: 60,
-      padding: 8,
+      padding: 4,
     },
     logoContainerDark: {
-      backgroundColor: '#FFFFFF',
+      backgroundColor: 'rgba(255,255,255,0.15)',
     },
     logo: {
       fontSize: 40,
