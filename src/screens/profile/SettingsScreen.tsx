@@ -284,6 +284,30 @@ export default function SettingsScreen({ navigation }: any) {
           )}
         </TouchableOpacity>
 
+        <Card style={styles.sectionCard}>
+          <Text style={[styles.sectionTitle, { color: colors.subtleText }]}>App</Text>
+
+          <TouchableOpacity
+            style={[styles.saveButton, { backgroundColor: colors.primary, marginTop: spacing.sm }]}
+            onPress={async () => {
+              try {
+                const update = await Updates.checkForUpdateAsync();
+                if (update.isAvailable) {
+                  await Updates.fetchUpdateAsync();
+                  await Updates.reloadAsync();
+                } else {
+                  Alert.alert('Yayika', 'La app está actualizada. Cierra y abre de nuevo para aplicar cambios.');
+                }
+              } catch (e) {
+                Alert.alert('Yayika', 'Cierra la app completamente (swipe away) y vuelve a abrirla.');
+              }
+            }}
+          >
+            <Ionicons name="refresh" size={20} color={colors.white} />
+            <Text style={[styles.saveButtonText, { color: colors.white }]}>Recargar app</Text>
+          </TouchableOpacity>
+        </Card>
+
         <Modal
           visible={showLanguageModal}
           transparent
