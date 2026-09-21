@@ -170,7 +170,7 @@ export default function CycleCoachScreen({ navigation }: any) {
       marginTop: spacing.xs,
     },
     coachCard: {
-      backgroundColor: '#F3EEFF',
+      backgroundColor: colors.primaryLight,
       borderRadius: borderRadius.lg,
       padding: spacing.lg,
       marginBottom: spacing.lg,

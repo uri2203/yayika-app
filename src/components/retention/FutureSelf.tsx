@@ -56,20 +56,20 @@ export default function FutureSelf() {
         </View>
         
         {/* Futuro */}
-        <View style={[styles.versionCard, styles.futureCard]}>
-          <Text style={[styles.versionLabel, { color: '#065F46' }]}>{t('retention_future_projection')}</Text>
-          <Text style={[styles.versionLevel, { color: '#065F46' }]}>{t('retention_future_level', { level: future_30_days?.level || current.level })}</Text>
-          <Text style={[styles.versionSublabel, { color: '#065F46' }]}>{t('home_level')}</Text>
-          <Text style={[styles.versionBadges, { color: '#059669' }]}>{t('retention_future_badges', { count: future_30_days?.badges || current.badges })}</Text>
+        <View style={[styles.versionCard, styles.futureCard, { backgroundColor: colors.successBg }]}>
+          <Text style={[styles.versionLabel, { color: colors.success }]}>{t('retention_future_projection')}</Text>
+          <Text style={[styles.versionLevel, { color: colors.success }]}>{t('retention_future_level', { level: future_30_days?.level || current.level })}</Text>
+          <Text style={[styles.versionSublabel, { color: colors.success }]}>{t('home_level')}</Text>
+          <Text style={[styles.versionBadges, { color: colors.success }]}>{t('retention_future_badges', { count: future_30_days?.badges || current.badges })}</Text>
         </View>
       </View>
 
       {/* Si cancelas */}
-      <View style={[styles.cancelWarning, { backgroundColor: '#FEF2F2' }]}>
-        <Ionicons name="warning" size={16} color="#DC2626" />
+      <View style={[styles.cancelWarning, { backgroundColor: colors.errorBg }]}>
+        <Ionicons name="warning" size={16} color={colors.error} />
         <View style={styles.cancelInfo}>
-          <Text style={[styles.cancelTitle, { color: '#DC2626' }]}>{t('retention_future_cancel')}</Text>
-          <Text style={[styles.cancelMessage, { color: '#991B1B' }]}>
+          <Text style={[styles.cancelTitle, { color: colors.error }]}>{t('retention_future_cancel')}</Text>
+          <Text style={[styles.cancelMessage, { color: colors.error }]}>
             {if_cancel?.message || t('retention_future_loss', { xp: 0, days: 0 })}
           </Text>
         </View>
@@ -104,9 +104,7 @@ const styles = StyleSheet.create({
     padding: spacing.md,
     alignItems: 'center',
   },
-  futureCard: {
-    backgroundColor: '#D1FAE5',
-  },
+  futureCard: {},
   versionLabel: {
     fontSize: typography.sizes.xs,
     textTransform: 'uppercase',

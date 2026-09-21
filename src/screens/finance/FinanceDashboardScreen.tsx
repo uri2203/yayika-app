@@ -108,8 +108,8 @@ export default function FinanceDashboardScreen({ navigation }: any) {
       shadowColor: colors.black, shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.04, shadowRadius: 2, elevation: 1,
     },
     txIcon: { width: 40, height: 40, borderRadius: 20, justifyContent: 'center', alignItems: 'center', marginRight: spacing.md },
-    txIconIncome: { backgroundColor: '#D1FAE5' },
-    txIconExpense: { backgroundColor: '#FEE2E2' },
+    txIconIncome: { backgroundColor: colors.successBg },
+    txIconExpense: { backgroundColor: colors.errorBg },
     txInfo: { flex: 1 },
     txDesc: { fontSize: typography.sizes.md, fontWeight: typography.weights.medium, color: colors.text },
     txDate: { fontSize: typography.sizes.xs, color: colors.subtleText, marginTop: 2 },
@@ -234,7 +234,7 @@ export default function FinanceDashboardScreen({ navigation }: any) {
             style={styles.actionBtn}
             onPress={() => navigation.navigate('Transactions', { action: 'add', type: 'expense' })}
           >
-            <View style={[styles.actionIcon, { backgroundColor: '#FEE2E2' }]}>
+            <View style={[styles.actionIcon, { backgroundColor: colors.errorBg }]}>
               <Ionicons name="remove" size={20} color={colors.error} />
             </View>
             <Text style={styles.actionLabel}>{t('finance_add_expense') }</Text>
@@ -243,7 +243,7 @@ export default function FinanceDashboardScreen({ navigation }: any) {
             style={styles.actionBtn}
             onPress={() => navigation.navigate('Transactions', { action: 'add', type: 'income' })}
           >
-            <View style={[styles.actionIcon, { backgroundColor: '#D1FAE5' }]}>
+            <View style={[styles.actionIcon, { backgroundColor: colors.successBg }]}>
               <Ionicons name="add" size={20} color={colors.success} />
             </View>
             <Text style={styles.actionLabel}>{t('finance_add_income') }</Text>

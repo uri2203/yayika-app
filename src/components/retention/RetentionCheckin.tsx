@@ -146,20 +146,20 @@ export default function RetentionCheckin({ onCheckinComplete }: RetentionCheckin
           disabled={loading || checkedIn}
         >
           {loading ? (
-            <ActivityIndicator color="#FFF" />
+            <ActivityIndicator color={colors.white} />
           ) : checkedIn ? (
             <>
-              <Ionicons name="checkmark-circle" size={24} color="#FFF" />
-              <Text style={styles.checkinText}>{t('retention_checkin_done')} +{lastXP} XP</Text>
+              <Ionicons name="checkmark-circle" size={24} color={colors.white} />
+              <Text style={[styles.checkinText, { color: colors.white }]}>{t('retention_checkin_done')} +{lastXP} XP</Text>
             </>
           ) : (
             <>
               <Text style={styles.checkinEmoji}>🔥</Text>
               <View style={styles.checkinInfo}>
-                <Text style={styles.checkinTitle}>{t('retention_checkin_title')}</Text>
+                <Text style={[styles.checkinTitle, { color: colors.white }]}>{t('retention_checkin_title')}</Text>
                 <Text style={styles.checkinSubtitle}>+10 XP + {t('retention_wheel_title').toLowerCase()}</Text>
               </View>
-              <Ionicons name="chevron-forward" size={20} color="#FFF" />
+              <Ionicons name="chevron-forward" size={20} color={colors.white} />
             </>
           )}
         </TouchableOpacity>
@@ -192,7 +192,7 @@ export default function RetentionCheckin({ onCheckinComplete }: RetentionCheckin
             </Animated.View>
             
             <TouchableOpacity
-              style={[styles.wheelCenter, { backgroundColor: colors.white }]}
+              style={[styles.wheelCenter, { backgroundColor: colors.white, shadowColor: colors.black }]}
               onPress={handleSpin}
               disabled={spinning}
             >

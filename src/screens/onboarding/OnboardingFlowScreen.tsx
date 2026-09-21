@@ -196,7 +196,7 @@ export default function OnboardingFlowScreen({ navigation }: any) {
       borderRadius: borderRadius.sm,
       padding: spacing.md,
     },
-    taskItemCompleted: { backgroundColor: '#E8F5E9' },
+    taskItemCompleted: { backgroundColor: colors.successBg },
     checkbox: {
       width: 28,
       height: 28,
@@ -234,7 +234,7 @@ export default function OnboardingFlowScreen({ navigation }: any) {
     },
     lockedDayText: { fontSize: typography.sizes.sm, color: colors.subtleText },
     completedCard: {
-      backgroundColor: '#FFF9E6',
+      backgroundColor: colors.warningBg,
       borderRadius: borderRadius.md,
       padding: spacing.xl,
       alignItems: 'center',

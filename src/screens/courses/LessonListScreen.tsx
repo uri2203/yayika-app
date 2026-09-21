@@ -156,9 +156,9 @@ export default function LessonListScreen({ navigation, route }: any) {
                 }
               }}
             >
-              <View style={[styles.lessonIcon, { backgroundColor: isCompleted ? '#10B981' + '20' : isLocked ? colors.border : moduleColor + '20' }]}>
+              <View style={[styles.lessonIcon, { backgroundColor: isCompleted ? colors.success + '20' : isLocked ? colors.border : moduleColor + '20' }]}>
                 {isCompleted ? (
-                  <Ionicons name="checkmark-circle" size={22} color="#10B981" />
+                  <Ionicons name="checkmark-circle" size={22} color={colors.success} />
                 ) : isLocked ? (
                   <Ionicons name="lock-closed" size={18} color={colors.subtleText} />
                 ) : (
@@ -173,7 +173,7 @@ export default function LessonListScreen({ navigation, route }: any) {
               </View>
               <View style={styles.lessonStatus}>
                 {isCompleted ? (
-                  <Ionicons name="checkmark-done" size={18} color="#10B981" />
+                  <Ionicons name="checkmark-done" size={18} color={colors.success} />
                 ) : isLocked ? null : (
                   <Ionicons name="chevron-forward" size={18} color={colors.subtleText} />
                 )}

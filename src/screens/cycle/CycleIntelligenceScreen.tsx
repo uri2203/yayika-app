@@ -361,7 +361,7 @@ export default function CycleIntelligenceScreen({ navigation }: any) {
                 <Text style={styles.actionBtnText}>{t('cycle_intel_log') }</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                style={[styles.actionBtn, { backgroundColor: '#1A9E8F' }]}
+                style={[styles.actionBtn, { backgroundColor: colors.turquoise }]}
                 onPress={() => navigation.navigate('CycleCoach')}
               >
                 <Ionicons name="chatbubble-ellipses-outline" size={22} color={colors.white} />

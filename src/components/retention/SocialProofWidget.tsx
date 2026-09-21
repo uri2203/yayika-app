@@ -39,9 +39,9 @@ export default function SocialProofWidget() {
       <Text style={[styles.title, { color: colors.text }]}>{t('retention_social_title')}</Text>
       
       {/* Active now indicator */}
-      <View style={[styles.activeIndicator, { backgroundColor: '#F0FDF4' }]}>
-        <View style={styles.activeDot} />
-        <Text style={[styles.activeText, { color: '#065F46' }]}>
+      <View style={[styles.activeIndicator, { backgroundColor: colors.successBg }]}>
+        <View style={[styles.activeDot, { backgroundColor: colors.success }]} />
+        <Text style={[styles.activeText, { color: colors.success }]}>
           {t('retention_social_active', { count: proof.active_today })}
         </Text>
       </View>

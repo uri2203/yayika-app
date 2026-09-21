@@ -121,8 +121,8 @@ export default function CompletionAnxiety({ onItemPress }: CompletionAnxietyProp
 
   const urgencyColors = {
     low: colors.textSecondary,
-    medium: '#F59E0B',
-    high: '#EF4444',
+    medium: colors.gold,
+    high: colors.error,
   };
 
   const urgencyIcons = {

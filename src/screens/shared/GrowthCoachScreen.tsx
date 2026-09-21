@@ -70,7 +70,7 @@ export default function GrowthCoachScreen({ navigation }: any) {
             <Ionicons
               name={m.completed ? 'checkmark-circle' : 'ellipse-outline'}
               size={22}
-              color={m.completed ? '#10B981' : colors.subtleText}
+              color={m.completed ? colors.success : colors.subtleText}
             />
             <Text style={[styles.listItemText, { color: m.completed ? colors.subtleText : colors.text }]}>
               {m.title}
@@ -123,6 +123,54 @@ export default function GrowthCoachScreen({ navigation }: any) {
     );
   };
 
+  const styles = StyleSheet.create({
+    container: { flex: 1 },
+    header: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingHorizontal: spacing.md,
+      paddingVertical: spacing.sm,
+      borderBottomWidth: 1,
+    },
+    backBtn: { width: 40, height: 40, justifyContent: 'center', alignItems: 'center' },
+    headerTitle: { fontSize: typography.sizes.xl, fontWeight: typography.weights.bold },
+    scrollContent: { padding: spacing.md, paddingBottom: spacing.xxl },
+    center: { flex: 1, justifyContent: 'center', alignItems: 'center', gap: spacing.md },
+    errorText: { fontSize: typography.sizes.md },
+    retryBtn: { paddingHorizontal: spacing.lg, paddingVertical: spacing.sm, borderRadius: borderRadius.md },
+    retryText: { color: colors.white, fontWeight: typography.weights.semibold },
+    card: { borderRadius: borderRadius.lg, padding: spacing.lg, marginBottom: spacing.md },
+    cardTitle: { fontSize: typography.sizes.md, fontWeight: typography.weights.bold, marginBottom: spacing.md },
+    goalTitle: { fontSize: typography.sizes.lg, fontWeight: typography.weights.bold, marginBottom: spacing.xs },
+    goalDesc: { fontSize: typography.sizes.sm, marginBottom: spacing.md },
+    progressBar: { height: 8, backgroundColor: colors.border, borderRadius: 4, overflow: 'hidden', marginBottom: spacing.xs },
+    progressFill: { height: '100%', borderRadius: 4 },
+    progressText: { fontSize: typography.sizes.xs, textAlign: 'right' },
+    listItem: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingVertical: spacing.sm,
+      borderBottomWidth: 1,
+      gap: spacing.sm,
+    },
+    listItemText: { fontSize: typography.sizes.md, flex: 1 },
+    weekChart: { flexDirection: 'row', justifyContent: 'space-around', alignItems: 'flex-end', height: 120 },
+    chartCol: { alignItems: 'center', flex: 1 },
+    chartBarBg: { width: 20, height: 80, backgroundColor: colors.border, borderRadius: 10, overflow: 'hidden', justifyContent: 'flex-end' },
+    chartBarFill: { width: '100%', borderRadius: 10 },
+    chartDay: { fontSize: typography.sizes.xs, marginTop: spacing.xs },
+    quoteCard: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      borderRadius: borderRadius.lg,
+      padding: spacing.md,
+      marginBottom: spacing.md,
+      gap: spacing.sm,
+    },
+    quoteText: { fontSize: typography.sizes.sm, fontStyle: 'italic', flex: 1 },
+  });
+
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
       <View style={[styles.header, { borderBottomColor: colors.border }]}>
@@ -160,51 +208,3 @@ export default function GrowthCoachScreen({ navigation }: any) {
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1 },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.sm,
-    borderBottomWidth: 1,
-  },
-  backBtn: { width: 40, height: 40, justifyContent: 'center', alignItems: 'center' },
-  headerTitle: { fontSize: typography.sizes.xl, fontWeight: typography.weights.bold },
-  scrollContent: { padding: spacing.md, paddingBottom: spacing.xxl },
-  center: { flex: 1, justifyContent: 'center', alignItems: 'center', gap: spacing.md },
-  errorText: { fontSize: typography.sizes.md },
-  retryBtn: { paddingHorizontal: spacing.lg, paddingVertical: spacing.sm, borderRadius: borderRadius.md },
-  retryText: { color: '#FFF', fontWeight: typography.weights.semibold },
-  card: { borderRadius: borderRadius.lg, padding: spacing.lg, marginBottom: spacing.md },
-  cardTitle: { fontSize: typography.sizes.md, fontWeight: typography.weights.bold, marginBottom: spacing.md },
-  goalTitle: { fontSize: typography.sizes.lg, fontWeight: typography.weights.bold, marginBottom: spacing.xs },
-  goalDesc: { fontSize: typography.sizes.sm, marginBottom: spacing.md },
-  progressBar: { height: 8, backgroundColor: '#E5E7EB', borderRadius: 4, overflow: 'hidden', marginBottom: spacing.xs },
-  progressFill: { height: '100%', borderRadius: 4 },
-  progressText: { fontSize: typography.sizes.xs, textAlign: 'right' },
-  listItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: spacing.sm,
-    borderBottomWidth: 1,
-    gap: spacing.sm,
-  },
-  listItemText: { fontSize: typography.sizes.md, flex: 1 },
-  weekChart: { flexDirection: 'row', justifyContent: 'space-around', alignItems: 'flex-end', height: 120 },
-  chartCol: { alignItems: 'center', flex: 1 },
-  chartBarBg: { width: 20, height: 80, backgroundColor: '#E5E7EB', borderRadius: 10, overflow: 'hidden', justifyContent: 'flex-end' },
-  chartBarFill: { width: '100%', borderRadius: 10 },
-  chartDay: { fontSize: typography.sizes.xs, marginTop: spacing.xs },
-  quoteCard: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderRadius: borderRadius.lg,
-    padding: spacing.md,
-    marginBottom: spacing.md,
-    gap: spacing.sm,
-  },
-  quoteText: { fontSize: typography.sizes.sm, fontStyle: 'italic', flex: 1 },
-});

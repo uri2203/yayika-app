@@ -185,7 +185,7 @@ export default function CycleLogScreen({ navigation }: any) {
             <Ionicons
               name={star <= energy ? 'star' : 'star-outline'}
               size={36}
-              color={star <= energy ? '#D4A843' : colors.border}
+              color={star <= energy ? colors.gold : colors.border}
             />
           </TouchableOpacity>
         ))}
@@ -254,7 +254,7 @@ export default function CycleLogScreen({ navigation }: any) {
               </View>
               <View style={styles.logEnergy}>
                 {Array.from({ length: log.energy || 0 }).map((_, j) => (
-                  <Ionicons key={j} name="star" size={12} color="#D4A843" />
+                  <Ionicons key={j} name="star" size={12} color={colors.gold} />
                 ))}
               </View>
             </View>
@@ -374,7 +374,7 @@ export default function CycleLogScreen({ navigation }: any) {
     },
     moodEmojiSelected: {
       borderColor: colors.primary,
-      backgroundColor: '#EDE7F6',
+      backgroundColor: colors.primaryLight,
     },
     moodEmojiText: {
       fontSize: 24,

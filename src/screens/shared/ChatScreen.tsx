@@ -104,13 +104,84 @@ export default function ChatScreen({ navigation }: any) {
           </View>
         )}
         <View style={[styles.messageContent, isUser ? styles.userContent : styles.assistantContent]}>
-          <Text style={[styles.messageText, isUser ? styles.userText : styles.assistantText, { color: isUser ? '#FFF' : colors.text }]}>
+          <Text style={[styles.messageText, isUser ? styles.userText : styles.assistantText, { color: isUser ? colors.white : colors.text }]}>
             {item.content}
           </Text>
         </View>
       </View>
     );
   };
+
+  const styles = StyleSheet.create({
+    container: { flex: 1 },
+    header: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingHorizontal: spacing.md,
+      paddingVertical: spacing.sm,
+      borderBottomWidth: 1,
+    },
+    backBtn: { width: 40, height: 40, justifyContent: 'center', alignItems: 'center' },
+    headerCenter: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm },
+    headerAvatar: { width: 36, height: 36, borderRadius: 18, justifyContent: 'center', alignItems: 'center' },
+    headerAvatarText: { color: colors.white, fontSize: 16, fontWeight: typography.weights.bold },
+    headerTitle: { fontSize: typography.sizes.md, fontWeight: typography.weights.bold },
+    headerSubtitle: { fontSize: typography.sizes.xs },
+    chatContainer: { flex: 1 },
+    messagesList: { padding: spacing.md, paddingBottom: spacing.xxl },
+    messageBubble: { flexDirection: 'row', marginBottom: spacing.md, maxWidth: '85%' },
+    userBubble: { alignSelf: 'flex-end', flexDirection: 'row-reverse' },
+    assistantBubble: { alignSelf: 'flex-start' },
+    avatar: { width: 32, height: 32, borderRadius: 16, justifyContent: 'center', alignItems: 'center', marginRight: spacing.sm },
+    avatarText: { color: colors.white, fontSize: 14, fontWeight: typography.weights.bold },
+    messageContent: { borderRadius: borderRadius.lg, paddingHorizontal: spacing.md, paddingVertical: spacing.sm },
+    userContent: { backgroundColor: colors.primary },
+    assistantContent: { backgroundColor: colors.assistantBubble },
+    messageText: { fontSize: typography.sizes.md, lineHeight: 20 },
+    userText: { color: colors.white },
+    assistantText: { color: colors.text },
+    typingIndicator: { flexDirection: 'row', alignItems: 'center', paddingLeft: 44, gap: spacing.xs },
+    typingText: { fontSize: typography.sizes.sm },
+    suggestionsContainer: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      paddingHorizontal: spacing.md,
+      gap: spacing.xs,
+      marginBottom: spacing.sm,
+    },
+    suggestionChip: {
+      borderWidth: 1,
+      borderRadius: borderRadius.full,
+      paddingHorizontal: spacing.md,
+      paddingVertical: spacing.xs,
+    },
+    suggestionText: { fontSize: typography.sizes.sm },
+    inputContainer: {
+      flexDirection: 'row',
+      alignItems: 'flex-end',
+      paddingHorizontal: spacing.md,
+      paddingVertical: spacing.sm,
+      borderTopWidth: 1,
+      gap: spacing.sm,
+    },
+    textInput: {
+      flex: 1,
+      borderRadius: borderRadius.lg,
+      paddingHorizontal: spacing.md,
+      paddingVertical: spacing.sm,
+      fontSize: typography.sizes.md,
+      maxHeight: 100,
+    },
+    sendBtn: {
+      width: 44,
+      height: 44,
+      borderRadius: 22,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    sendBtnDisabled: { opacity: 0.5 },
+  });
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
@@ -183,81 +254,10 @@ export default function ChatScreen({ navigation }: any) {
             onPress={() => sendMessage(inputText)}
             disabled={!inputText.trim() || loading}
           >
-            <Ionicons name="send" size={20} color="#FFF" />
+            <Ionicons name="send" size={20} color={colors.white} />
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1 },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.sm,
-    borderBottomWidth: 1,
-  },
-  backBtn: { width: 40, height: 40, justifyContent: 'center', alignItems: 'center' },
-  headerCenter: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm },
-  headerAvatar: { width: 36, height: 36, borderRadius: 18, justifyContent: 'center', alignItems: 'center' },
-  headerAvatarText: { color: '#FFF', fontSize: 16, fontWeight: typography.weights.bold },
-  headerTitle: { fontSize: typography.sizes.md, fontWeight: typography.weights.bold },
-  headerSubtitle: { fontSize: typography.sizes.xs },
-  chatContainer: { flex: 1 },
-  messagesList: { padding: spacing.md, paddingBottom: spacing.xxl },
-  messageBubble: { flexDirection: 'row', marginBottom: spacing.md, maxWidth: '85%' },
-  userBubble: { alignSelf: 'flex-end', flexDirection: 'row-reverse' },
-  assistantBubble: { alignSelf: 'flex-start' },
-  avatar: { width: 32, height: 32, borderRadius: 16, justifyContent: 'center', alignItems: 'center', marginRight: spacing.sm },
-  avatarText: { color: '#FFF', fontSize: 14, fontWeight: typography.weights.bold },
-  messageContent: { borderRadius: borderRadius.lg, paddingHorizontal: spacing.md, paddingVertical: spacing.sm },
-  userContent: { backgroundColor: '#4E3470' },
-  assistantContent: { backgroundColor: '#F3F0F7' },
-  messageText: { fontSize: typography.sizes.md, lineHeight: 20 },
-  userText: { color: '#FFF' },
-  assistantText: { color: '#1A1A2E' },
-  typingIndicator: { flexDirection: 'row', alignItems: 'center', paddingLeft: 44, gap: spacing.xs },
-  typingText: { fontSize: typography.sizes.sm },
-  suggestionsContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    paddingHorizontal: spacing.md,
-    gap: spacing.xs,
-    marginBottom: spacing.sm,
-  },
-  suggestionChip: {
-    borderWidth: 1,
-    borderRadius: borderRadius.full,
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.xs,
-  },
-  suggestionText: { fontSize: typography.sizes.sm },
-  inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.sm,
-    borderTopWidth: 1,
-    gap: spacing.sm,
-  },
-  textInput: {
-    flex: 1,
-    borderRadius: borderRadius.lg,
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.sm,
-    fontSize: typography.sizes.md,
-    maxHeight: 100,
-  },
-  sendBtn: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  sendBtnDisabled: { opacity: 0.5 },
-});

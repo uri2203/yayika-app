@@ -64,8 +64,8 @@ export default function RegisterScreen({ navigation }: any) {
       borderRadius: borderRadius.md, paddingHorizontal: spacing.md, paddingVertical: spacing.md,
       fontSize: typography.sizes.md, color: colors.text, marginBottom: spacing.md,
     },
-    inputError: { borderColor: '#EF4444' },
-    errorText: { color: '#EF4444', fontSize: typography.sizes.xs, marginTop: -spacing.sm, marginBottom: spacing.md },
+    inputError: { borderColor: colors.error },
+    errorText: { color: colors.error, fontSize: typography.sizes.xs, marginTop: -spacing.sm, marginBottom: spacing.md },
     passwordContainer: {
       flexDirection: 'row', alignItems: 'center', backgroundColor: colors.white,
       borderWidth: 1, borderColor: colors.border, borderRadius: borderRadius.md, marginBottom: spacing.sm,
@@ -168,7 +168,7 @@ export default function RegisterScreen({ navigation }: any) {
             )}
 
             <Text style={styles.label}>{t('auth_confirm_password')}</Text>
-            <View style={[styles.passwordContainer, confirmPassword && password !== confirmPassword && { borderColor: '#EF4444' }]}>
+            <View style={[styles.passwordContainer, confirmPassword && password !== confirmPassword && { borderColor: colors.error }]}>
               <TextInput
                 style={styles.passwordInput}
                 placeholder="••••••••"

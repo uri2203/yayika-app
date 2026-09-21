@@ -191,10 +191,10 @@ export default function CommunityFeedScreen({ navigation }: any) {
     actionTextActive: { color: colors.rose, fontWeight: typography.weights.semibold },
     flaggedBadge: {
       flexDirection: 'row', alignItems: 'center',
-      backgroundColor: '#FEF3C7', paddingHorizontal: spacing.sm, paddingVertical: 2,
+      backgroundColor: colors.warningBg, paddingHorizontal: spacing.sm, paddingVertical: 2,
       borderRadius: borderRadius.full, marginTop: spacing.xs,
     },
-    flaggedText: { fontSize: typography.sizes.xs, color: '#D97706', marginLeft: spacing.xs },
+    flaggedText: { fontSize: typography.sizes.xs, color: colors.warning, marginLeft: spacing.xs },
     emptyTitle: { fontSize: typography.sizes.lg, fontWeight: typography.weights.bold, color: colors.text, marginTop: spacing.md },
     emptySubtitle: { fontSize: typography.sizes.sm, color: colors.subtleText, marginTop: spacing.xs, textAlign: 'center' },
     fab: {
@@ -249,7 +249,7 @@ export default function CommunityFeedScreen({ navigation }: any) {
 
       {item.is_flagged && (
         <View style={styles.flaggedBadge}>
-          <Ionicons name="flag" size={12} color="#D97706" />
+          <Ionicons name="flag" size={12} color={colors.warning} />
           <Text style={styles.flaggedText}>{t('community_flagged')}</Text>
         </View>
       )}

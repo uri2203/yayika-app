@@ -195,7 +195,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: spacing.xs,
   },
-  unreadBadgeText: { fontSize: typography.sizes.xs, fontWeight: typography.weights.bold, color: '#FFFFFF' },
+  unreadBadgeText: { fontSize: typography.sizes.xs, fontWeight: typography.weights.bold, color: colors.white },
   markAllButton: { width: 40, height: 40, justifyContent: 'center', alignItems: 'center' },
   listContent: { paddingHorizontal: spacing.lg, paddingBottom: spacing.xxl },
   notificationItem: {

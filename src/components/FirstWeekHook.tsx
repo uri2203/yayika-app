@@ -89,7 +89,7 @@ export function FirstWeekBanner({ onDismiss }: FirstWeekBannerProps) {
   return (
     <View style={[styles.banner, { backgroundColor: colors.card, borderColor: colors.border }]}>
       <View style={styles.bannerHeader}>
-        <View style={[styles.dayBadge, { backgroundColor: colors.rosa }]}>
+        <View style={[styles.dayBadge, { backgroundColor: colors.rose }]}>
           <Text style={styles.dayBadgeText}>{dayNumber}/7</Text>
         </View>
         <View style={styles.bannerTexts}>
@@ -109,7 +109,7 @@ export function FirstWeekBanner({ onDismiss }: FirstWeekBannerProps) {
 
       {/* Progress bar */}
       <View style={[styles.progressBar, { backgroundColor: colors.border }]}>
-        <View style={[styles.progressFill, { width: `${progress * 100}%`, backgroundColor: colors.rosa }]} />
+        <View style={[styles.progressFill, { width: `${progress * 100}%`, backgroundColor: colors.rose }]} />
       </View>
 
       {/* Milestones */}
@@ -121,14 +121,15 @@ export function FirstWeekBanner({ onDismiss }: FirstWeekBannerProps) {
             <View key={m.day} style={styles.milestone}>
               <View style={[
                 styles.milestoneDot,
-                completed && { backgroundColor: colors.rosa },
-                isCurrent && !completed && { borderColor: colors.rosa, borderWidth: 2 },
+                { backgroundColor: colors.border },
+                completed && { backgroundColor: colors.rose },
+                isCurrent && !completed && { borderColor: colors.rose, borderWidth: 2 },
               ]}>
-                <Text style={styles.milestoneIcon}>{completed ? '✓' : m.icon}</Text>
+                <Text style={[styles.milestoneIcon, { color: colors.subtleText }]}>{completed ? '✓' : m.icon}</Text>
               </View>
               <Text style={[
                 styles.milestoneDay,
-                { color: completed ? colors.rosa : colors.textSecondary },
+                { color: completed ? colors.rose : colors.textSecondary },
               ]}>
                 {m.day}
               </Text>
@@ -138,9 +139,9 @@ export function FirstWeekBanner({ onDismiss }: FirstWeekBannerProps) {
       </View>
 
       {todayCompleted && (
-        <View style={[styles.todayDone, { backgroundColor: colors.rosa + '15' }]}>
-          <Ionicons name="checkmark-circle" size={16} color={colors.rosa} />
-          <Text style={[styles.todayDoneText, { color: colors.rosa }]}>
+        <View style={[styles.todayDone, { backgroundColor: colors.rose + '15' }]}>
+          <Ionicons name="checkmark-circle" size={16} color={colors.rose} />
+          <Text style={[styles.todayDoneText, { color: colors.rose }]}>
             {t('first_week_today_done') || '¡Hoy completado! Vuelve mañana.'}
           </Text>
         </View>

@@ -77,8 +77,8 @@ export default function TransformMirror() {
 
         {comparison && comparison.xp_delta > 0 && (
           <View style={[styles.deltaBar, { borderTopColor: colors.border }]}>
-            <Ionicons name="trending-up" size={16} color="#10B981" />
-            <Text style={styles.deltaText}>
+            <Ionicons name="trending-up" size={16} color={colors.success} />
+            <Text style={[styles.deltaText, { color: colors.success }]}>
               +{comparison.xp_delta} {t('common_xp_unit')} · +{comparison.badges_delta || 0} {t('common_badges_label').toLowerCase()} · +{comparison.level_delta || 0} {t('home_level').toLowerCase()}
             </Text>
           </View>
@@ -153,7 +153,6 @@ const styles = StyleSheet.create({
   },
   deltaText: {
     fontSize: typography.sizes.sm,
-    color: '#10B981',
     fontWeight: typography.weights.medium,
   },
   historyScroll: {

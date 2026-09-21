@@ -12,6 +12,15 @@ export const colors = {
   border: '#E5E7EB',
   error: '#EF4444',
   success: '#10B981',
+  // Extended palette
+  card: '#FFFFFF',
+  textSecondary: '#6b7280',
+  successBg: '#D1FAE5',
+  errorBg: '#FEE2E2',
+  warningBg: '#FEF3C7',
+  warning: '#D97706',
+  overlay: 'rgba(0,0,0,0.5)',
+  assistantBubble: '#F3F0F7',
 };
 
 export const typography = {
@@ -63,4 +72,13 @@ export const darkColors = {
   rose: '#F9A8D4',
   error: '#FB7185',
   success: '#6EE7B7',
+  // Extended palette - dark
+  card: '#2A2035',
+  textSecondary: '#B8A5C8',
+  successBg: '#064E3B',
+  errorBg: '#4C1D1D',
+  warningBg: '#453518',
+  warning: '#FBBF24',
+  overlay: 'rgba(0,0,0,0.7)',
+  assistantBubble: '#3A2555',
 };

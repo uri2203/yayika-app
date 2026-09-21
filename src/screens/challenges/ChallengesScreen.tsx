@@ -160,7 +160,7 @@ export default function ChallengesScreen({ navigation }: any) {
             <Text style={styles.sectionTitle}>{t('challenges_active') }</Text>
             {active.map((ch) => (
               <View key={ch.id || ch.enrollment_id} style={styles.challengeCard}>
-                <View style={[styles.challengeIcon, { backgroundColor: '#EDE7F6' }]}>
+                <View style={[styles.challengeIcon, { backgroundColor: colors.primaryLight }]}>
                   <Ionicons name="rocket" size={22} color={colors.primary} />
                 </View>
                 <View style={styles.challengeInfo}>
@@ -197,7 +197,7 @@ export default function ChallengesScreen({ navigation }: any) {
                   disabled={enrollingId === cid}
                   activeOpacity={0.7}
                 >
-                  <View style={[styles.challengeIcon, { backgroundColor: '#D1FAE5' }]}>
+                  <View style={[styles.challengeIcon, { backgroundColor: colors.successBg }]}>
                     <Ionicons name="add-circle" size={22} color={colors.turquoise} />
                   </View>
                   <View style={styles.challengeInfo}>
@@ -221,7 +221,7 @@ export default function ChallengesScreen({ navigation }: any) {
             <Text style={styles.sectionTitle}>{t('challenges_completed') }</Text>
             {completed.map((ch) => (
               <View key={ch.id || ch.enrollment_id} style={styles.challengeCard}>
-                <View style={[styles.challengeIcon, { backgroundColor: '#D1FAE5' }]}>
+                <View style={[styles.challengeIcon, { backgroundColor: colors.successBg }]}>
                   <Ionicons name="checkmark-circle" size={22} color={colors.success} />
                 </View>
                 <View style={styles.challengeInfo}>

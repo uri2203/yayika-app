@@ -25,8 +25,8 @@ export default function PaywallModal({ visible, onClose, onUpgrade, featureName,
             <Ionicons name="close" size={20} color={colors.textSecondary} />
           </TouchableOpacity>
           
-          <View style={[styles.iconContainer, { backgroundColor: colors.rosa + '15' }]}>
-            <Ionicons name="lock-closed" size={32} color={colors.rosa} />
+          <View style={[styles.iconContainer, { backgroundColor: colors.rose + '15' }]}>
+            <Ionicons name="lock-closed" size={32} color={colors.rose} />
           </View>
           
           <Text style={[styles.title, { color: colors.text }]}>
@@ -39,13 +39,13 @@ export default function PaywallModal({ visible, onClose, onUpgrade, featureName,
           </Text>
 
           <View style={styles.features}>
-            <FeatureRow icon="checkmark-circle" text={t('paywall_feature_1') || 'Acceso a todo el contenido'} color={colors.rosa} />
-            <FeatureRow icon="checkmark-circle" text={t('paywall_feature_2') || 'Retos semanales exclusivos'} color={colors.rosa} />
-            <FeatureRow icon="checkmark-circle" text={t('paywall_feature_3') || 'Círculos ilimitados'} color={colors.rosa} />
-            <FeatureRow icon="checkmark-circle" text={t('paywall_feature_4') || 'Coaching con IA avanzado'} color={colors.rosa} />
+            <FeatureRow icon="checkmark-circle" text={t('paywall_feature_1') || 'Acceso a todo el contenido'} color={colors.rose} textColor={colors.text} />
+            <FeatureRow icon="checkmark-circle" text={t('paywall_feature_2') || 'Retos semanales exclusivos'} color={colors.rose} textColor={colors.text} />
+            <FeatureRow icon="checkmark-circle" text={t('paywall_feature_3') || 'Círculos ilimitados'} color={colors.rose} textColor={colors.text} />
+            <FeatureRow icon="checkmark-circle" text={t('paywall_feature_4') || 'Coaching con IA avanzado'} color={colors.rose} textColor={colors.text} />
           </View>
 
-          <TouchableOpacity style={[styles.upgradeBtn, { backgroundColor: colors.rosa }]} onPress={onUpgrade}>
+          <TouchableOpacity style={[styles.upgradeBtn, { backgroundColor: colors.rose }]} onPress={onUpgrade}>
             <Text style={styles.upgradeBtnText}>
               {t('paywall_upgrade') || `Upgrade a ${requiredPlan}`}
             </Text>
@@ -62,11 +62,11 @@ export default function PaywallModal({ visible, onClose, onUpgrade, featureName,
   );
 }
 
-function FeatureRow({ icon, text, color }: { icon: string; text: string; color: string }) {
+function FeatureRow({ icon, text, color, textColor }: { icon: string; text: string; color: string; textColor: string }) {
   return (
     <View style={styles.featureRow}>
       <Ionicons name={icon as any} size={18} color={color} />
-      <Text style={styles.featureText}>{text}</Text>
+      <Text style={[styles.featureText, { color: textColor }]}>{text}</Text>
     </View>
   );
 }
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
   subtitle: { fontSize: 14, textAlign: 'center', lineHeight: 20, marginBottom: 20 },
   features: { marginBottom: 24 },
   featureRow: { flexDirection: 'row', alignItems: 'center', gap: 10, marginBottom: 10 },
-  featureText: { fontSize: 14, color: '#333', flex: 1 },
+  featureText: { fontSize: 14, flex: 1 },
   upgradeBtn: { borderRadius: 12, padding: 16, alignItems: 'center', marginBottom: 12 },
   upgradeBtnText: { color: 'white', fontSize: 16, fontWeight: '600' },
   laterBtn: { alignItems: 'center', padding: 8 },

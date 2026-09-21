@@ -64,8 +64,8 @@ export default function ResetPasswordScreen({ navigation }: any) {
     },
     passwordInput: { flex: 1, paddingHorizontal: spacing.md, paddingVertical: spacing.md, fontSize: typography.sizes.md, color: colors.text },
     eyeIcon: { paddingHorizontal: spacing.md },
-    inputError: { borderColor: '#EF4444' },
-    errorText: { color: '#EF4444', fontSize: typography.sizes.xs, marginTop: -spacing.sm, marginBottom: spacing.md },
+    inputError: { borderColor: colors.error },
+    errorText: { color: colors.error, fontSize: typography.sizes.xs, marginTop: -spacing.sm, marginBottom: spacing.md },
   });
 
   return (

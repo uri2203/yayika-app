@@ -216,7 +216,7 @@ const styles = StyleSheet.create({
   planRight: { alignItems: 'flex-end', gap: 8 },
   planPrice: { fontSize: 18, fontWeight: '700' },
   buyButton: { paddingHorizontal: 16, paddingVertical: 8, borderRadius: 8 },
-  buyButtonText: { color: '#FFF', fontSize: 13, fontWeight: '600' },
+  buyButtonText: { color: colors.white, fontSize: 13, fontWeight: '600' },
   infoCard: { flexDirection: 'row', alignItems: 'flex-start', marginHorizontal: 16, marginTop: 8, gap: 8 },
   infoText: { flex: 1, fontSize: 12, lineHeight: 18 },
 });

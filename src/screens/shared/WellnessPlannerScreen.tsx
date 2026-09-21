@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
   loadingText: { fontSize: typography.sizes.md },
   errorText: { fontSize: typography.sizes.md },
   retryBtn: { paddingHorizontal: spacing.lg, paddingVertical: spacing.sm, borderRadius: borderRadius.md },
-  retryText: { color: '#FFF', fontWeight: typography.weights.semibold },
+  retryText: { color: colors.white, fontWeight: typography.weights.semibold },
   card: { borderRadius: borderRadius.lg, padding: spacing.lg, marginBottom: spacing.md },
   cardHeader: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm, marginBottom: spacing.md },
   cardTitle: { fontSize: typography.sizes.md, fontWeight: typography.weights.bold },
