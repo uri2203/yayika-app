@@ -51,6 +51,7 @@ export default function LoginScreen({ navigation }: any) {
     logoImage: {
       width: 100,
       height: 100,
+      borderRadius: 50,
       marginBottom: spacing.md,
     },
     logo: {
