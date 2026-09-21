@@ -23,7 +23,7 @@ const logoImg = require('../../../assets/Logo yayika.png');
 export default function LoginScreen({ navigation }: any) {
   const { signIn } = useAuth();
   const { t } = useLanguage();
-  const { isDark, currentColors } = useTheme();
+  const { currentColors } = useTheme();
   const colors = currentColors;
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -48,12 +48,9 @@ export default function LoginScreen({ navigation }: any) {
       marginBottom: spacing.xxl,
     },
     logoImage: {
-      width: 120,
-      height: 120,
+      width: 100,
+      height: 100,
       marginBottom: spacing.md,
-    },
-    logoImageDark: {
-      tintColor: '#E0D0F0',
     },
     logo: {
       fontSize: 40,
@@ -160,7 +157,7 @@ export default function LoginScreen({ navigation }: any) {
           keyboardShouldPersistTaps="handled"
         >
           <View style={styles.header}>
-            <Image source={logoImg} style={[styles.logoImage, isDark && styles.logoImageDark]} resizeMode="contain" />
+            <Image source={logoImg} style={styles.logoImage} resizeMode="contain" />
             <Text style={styles.logo}>Yayika</Text>
             <Text style={styles.subtitle}>{t('auth_tagline')}</Text>
           </View>
