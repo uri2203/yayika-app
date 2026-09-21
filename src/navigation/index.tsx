@@ -101,8 +101,10 @@ function AuthNavigator() {
 }
 
 function PortalStackNavigator() {
+  const { currentColors } = useTheme();
+  const colors = currentColors;
   return (
-    <PortalStack.Navigator screenOptions={{ headerShown: false }}>
+    <PortalStack.Navigator screenOptions={{ headerShown: false, cardStyle: { backgroundColor: colors.background } }}>
       <PortalStack.Screen name="Dashboard" component={PortalDashboard} />
       <PortalStack.Screen name="Badges" component={BadgesScreen} />
       <PortalStack.Screen name="Rankings" component={RankingsScreen} />
@@ -122,8 +124,10 @@ function PortalStackNavigator() {
 }
 
 function CicloStackNavigator() {
+  const { currentColors } = useTheme();
+  const colors = currentColors;
   return (
-    <CicloStack.Navigator screenOptions={{ headerShown: false }}>
+    <CicloStack.Navigator screenOptions={{ headerShown: false, cardStyle: { backgroundColor: colors.background } }}>
       <CicloStack.Screen name="ModuleList" component={ModuleListScreen} />
       <CicloStack.Screen name="LessonList" component={LessonListScreen} />
       <CicloStack.Screen name="LessonViewer" component={LessonViewerScreen} />
@@ -135,16 +139,20 @@ function CicloStackNavigator() {
 }
 
 function RetosStackNavigator() {
+  const { currentColors } = useTheme();
+  const colors = currentColors;
   return (
-    <RetosStack.Navigator screenOptions={{ headerShown: false }}>
+    <RetosStack.Navigator screenOptions={{ headerShown: false, cardStyle: { backgroundColor: colors.background } }}>
       <RetosStack.Screen name="ChallengesMain" component={ChallengesScreen} />
     </RetosStack.Navigator>
   );
 }
 
 function ComunidadStackNavigator() {
+  const { currentColors } = useTheme();
+  const colors = currentColors;
   return (
-    <ComunidadStack.Navigator screenOptions={{ headerShown: false }}>
+    <ComunidadStack.Navigator screenOptions={{ headerShown: false, cardStyle: { backgroundColor: colors.background } }}>
       <ComunidadStack.Screen name="CommunityFeed" component={CommunityFeedScreen} />
       <ComunidadStack.Screen name="PostDetail" component={PostDetailScreen} />
       <ComunidadStack.Screen name="CirclesList" component={CirclesListScreen} />
@@ -155,8 +163,10 @@ function ComunidadStackNavigator() {
 }
 
 function FinanzasStackNavigator() {
+  const { currentColors } = useTheme();
+  const colors = currentColors;
   return (
-    <FinanzasStack.Navigator screenOptions={{ headerShown: false }}>
+    <FinanzasStack.Navigator screenOptions={{ headerShown: false, cardStyle: { backgroundColor: colors.background } }}>
       <FinanzasStack.Screen name="FinanceDashboard" component={FinanceDashboardScreen} />
       <FinanzasStack.Screen name="Budget" component={BudgetScreen} />
       <FinanzasStack.Screen name="Transactions" component={TransactionsScreen} />
@@ -232,8 +242,10 @@ function MainTabs() {
 }
 
 function MainNavigator() {
+  const { currentColors } = useTheme();
+  const colors = currentColors;
   return (
-    <RootStack.Navigator screenOptions={{ headerShown: false }}>
+    <RootStack.Navigator screenOptions={{ headerShown: false, cardStyle: { backgroundColor: colors.background } }}>
       <RootStack.Screen name="MainTabs" component={MainTabs} />
     </RootStack.Navigator>
   );
