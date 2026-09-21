@@ -195,7 +195,7 @@ export default function CycleLogScreen({ navigation }: any) {
 
   const renderMoodSelector = () => (
     <View style={styles.sectionCard}>
-      <Text style={styles.sectionTitle}>{t('cycle_how_feeling') || 'Â¿CÃ³mo te sientes?'}</Text>
+      <Text style={styles.sectionTitle}>{t('cycle_how_feeling') || '¿Cómo te sientes?'}</Text>
       <View style={styles.moodRow}>
         {MOODS.map((m) => {
           const isActive = selectedMood === m.emoji;
@@ -237,7 +237,7 @@ export default function CycleLogScreen({ navigation }: any) {
 
   const renderRecentLogs = () => (
     <View style={styles.sectionCard}>
-      <Text style={styles.sectionTitle}>{t('cycle_recent_logs') || 'Ãšltimos 7 dÃ­as'}</Text>
+      <Text style={styles.sectionTitle}>{t('cycle_recent_logs') || 'Últimos 7 días'}</Text>
       {recentLogs.length === 0 ? (
         <Text style={styles.noLogsText}>{t('cycle_no_logs') }</Text>
       ) : (

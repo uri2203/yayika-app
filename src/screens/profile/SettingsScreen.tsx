@@ -12,10 +12,10 @@ import { supabase } from '../../config/supabase';
 import Card from '../../components/Card';
 
 const LANGUAGES: { key: Language; label: string }[] = [
-  { key: 'es', label: 'EspaÃ±ol' },
+  { key: 'es', label: 'Español' },
   { key: 'en', label: 'English' },
-  { key: 'pt', label: 'PortuguÃªs' },
-  { key: 'fr', label: 'FranÃ§ais' },
+  { key: 'pt', label: 'Português' },
+  { key: 'fr', label: 'Français' },
   { key: 'de', label: 'Deutsch' },
 ];
 
