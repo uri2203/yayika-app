@@ -26,7 +26,7 @@ interface AuthContextType {
   progress: Progress | null;
   loading: boolean;
   signIn: (email: string, password: string) => Promise<{ error?: string }>;
-  signUp: (email: string, password: string, name: string) => Promise<{ error?: string }>;
+  signUp: (email: string, password: string, name: string, legalAcceptedAt?: string) => Promise<{ error?: string }>;
   signOut: () => Promise<void>;
   resetPassword: (email: string) => Promise<{ error?: string }>;
 }
@@ -74,13 +74,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return {};
   }, []);
 
-  const signUp = useCallback(async (email: string, password: string, name: string) => {
-    const { error } = await supabase.auth.signUp({
+  const signUp = useCallback(async (email: string, password: string, name: string, legalAcceptedAt?: string) => {
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: { data: { name } },
     });
     if (error) return { error: error.message };
+    if (data?.user?.id && legalAcceptedAt) {
+      await supabase.from('yayika_profiles').upsert({
+        id: data.user.id,
+        legal_accepted_at: legalAcceptedAt,
+      }, { onConflict: 'id' });
+    }
     return {};
   }, []);
 

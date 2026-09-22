@@ -105,7 +105,7 @@ export default function RegisterScreen({ navigation }: any) {
       return;
     }
     setLoading(true);
-    const { error } = await signUp(email.trim().toLowerCase(), password, name.trim());
+    const { error } = await signUp(email.trim().toLowerCase(), password, name.trim(), new Date().toISOString());
     setLoading(false);
     if (error) {
       Alert.alert(t('common_error'), error || t('common_error'));
