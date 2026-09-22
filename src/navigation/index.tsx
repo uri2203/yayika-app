@@ -73,7 +73,6 @@ import WellnessPlannerScreen from '../screens/shared/WellnessPlannerScreen';
 import EmpatheticChatScreen from '../screens/shared/EmpatheticChatScreen';
 
 // Profile
-import ProfileScreen from '../screens/profile/ProfileScreen';
 import SettingsScreen from '../screens/profile/SettingsScreen';
 import LegalScreen from '../screens/profile/LegalScreen';
 import AutonomySettings from '../screens/profile/AutonomySettings';
