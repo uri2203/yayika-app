@@ -1221,6 +1221,23 @@ const translations: Record<Language, Record<string, string>> = {
     expand_talks: 'Charlas',
     expand_books: 'Libros',
     expand_podcasts: 'Podcasts',
+
+    // Legal system
+    legal_health: 'Aviso de Responsabilidad en Salud',
+    legal_finance: 'Aviso sobre Herramientas Financieras',
+    legal_liability: 'Limitación de Responsabilidad',
+    legal_accept_title: 'Aceptación de Términos',
+    legal_accept_required: 'Debe aceptar los Términos y Condiciones y la Política de Privacidad para usar Yayika.',
+    legal_accept_terms: 'Acepto los Términos y Condiciones',
+    legal_accept_privacy: 'Acepto la Política de Privacidad',
+    legal_accept_health: 'Entiendo que Yayika no sustituye el consejo médico profesional',
+    legal_accept_age: 'Confirmo que tengo 18 años o más',
+    legal_accept_ai: 'Entiendo que Laura es una IA y no una profesional de salud',
+    legal_accept_read_more: 'Leer más',
+    legal_accept_documents: 'Documentos legales',
+    legal_health_info: 'Esta información es solo orientativa, no sustituye consejo médico',
+    legal_ai_info: 'Laura es una IA, no una profesional de salud',
+    legal_finance_info: 'Las herramientas financieras no constituyen asesoría profesional',
   },
 
   en: {
@@ -2442,6 +2459,23 @@ const translations: Record<Language, Record<string, string>> = {
     expand_talks: 'Talks',
     expand_books: 'Books',
     expand_podcasts: 'Podcasts',
+
+    // Legal system
+    legal_health: 'Health Responsibility Notice',
+    legal_finance: 'Financial Tools Notice',
+    legal_liability: 'Limitation of Liability',
+    legal_accept_title: 'Acceptance of Terms',
+    legal_accept_required: 'You must accept the Terms and Privacy Policy to use Yayika.',
+    legal_accept_terms: 'I accept the Terms and Conditions',
+    legal_accept_privacy: 'I accept the Privacy Policy',
+    legal_accept_health: 'I understand Yayika does not replace professional medical advice',
+    legal_accept_age: 'I confirm I am 18 years or older',
+    legal_accept_ai: 'I understand Laura is an AI and not a health professional',
+    legal_accept_read_more: 'Read more',
+    legal_accept_documents: 'Legal documents',
+    legal_health_info: 'This information is for guidance only, not a substitute for medical advice',
+    legal_ai_info: 'Laura is an AI, not a health professional',
+    legal_finance_info: 'Financial tools do not constitute professional advice',
   },
 
   pt: {
@@ -3665,6 +3699,23 @@ const translations: Record<Language, Record<string, string>> = {
     archetype_nurturer: 'A Nutridora',
     archetype_explorer: 'A Exploradora',
     archetype_wise: 'A Sábia',
+
+    // Legal system
+    legal_health: 'Aviso de Responsabilidade em Saúde',
+    legal_finance: 'Aviso sobre Ferramentas Financeiras',
+    legal_liability: 'Limitação de Responsabilidade',
+    legal_accept_title: 'Aceitação dos Termos',
+    legal_accept_required: 'Você deve aceitar os Termos e a Política de Privacidade para usar o Yayika.',
+    legal_accept_terms: 'Aceito os Termos e Condições',
+    legal_accept_privacy: 'Aceito a Política de Privacidade',
+    legal_accept_health: 'Entendo que o Yayika não substitui aconselhamento médico profissional',
+    legal_accept_age: 'Confirmo que tenho 18 anos ou mais',
+    legal_accept_ai: 'Entendo que Laura é uma IA e não profissional de saúde',
+    legal_accept_read_more: 'Ler mais',
+    legal_accept_documents: 'Documentos legais',
+    legal_health_info: 'Esta informação é apenas orientativa, não substitui aconselhamento médico',
+    legal_ai_info: 'Laura é uma IA, não uma profissional de saúde',
+    legal_finance_info: 'As ferramentas financeiras não constituem aconselhamento profissional',
   },
 
   fr: {
@@ -4888,6 +4939,23 @@ const translations: Record<Language, Record<string, string>> = {
     archetype_nurturer: 'La Nourricière',
     archetype_explorer: "L'Exploratrice",
     archetype_wise: 'La Sage',
+
+    // Legal system
+    legal_health: 'Avis de Responsabilité en Santé',
+    legal_finance: 'Avis sur les Outils Financiers',
+    legal_liability: 'Limitation de Responsabilité',
+    legal_accept_title: "Acceptation des Conditions",
+    legal_accept_required: "Vous devez accepter les Conditions et la Politique de Confidentialité pour utiliser Yayika.",
+    legal_accept_terms: "J'accepte les Conditions Générales",
+    legal_accept_privacy: "J'accepte la Politique de Confidentialité",
+    legal_accept_health: "Je comprends que Yayika ne remplace pas les conseils médicaux professionnels",
+    legal_accept_age: "Je confirme que j'ai 18 ans ou plus",
+    legal_accept_ai: "Je comprends que Laura est une IA et non un professionnel de santé",
+    legal_accept_read_more: "En savoir plus",
+    legal_accept_documents: "Documents juridiques",
+    legal_health_info: "Ces informations sont à titre indicatif uniquement, ne remplacent pas un avis médical",
+    legal_ai_info: "Laura est une IA, pas un professionnel de santé",
+    legal_finance_info: "Les outils financiers ne constituent pas un conseil professionnel",
   },
 
   de: {
@@ -6111,6 +6179,23 @@ const translations: Record<Language, Record<string, string>> = {
     archetype_nurturer: 'Die Nährende',
     archetype_explorer: 'Die Entdeckerin',
     archetype_wise: 'Die Weise',
+
+    // Legal system
+    legal_health: 'Gesundheits-Haftungshinweis',
+    legal_finance: 'Hinweis zu Finanzwerkzeugen',
+    legal_liability: 'Haftungsbeschränkung',
+    legal_accept_title: 'Akzeptanz der Bedingungen',
+    legal_accept_required: 'Sie müssen die Bedingungen und Datenschutzrichtlinie akzeptieren, um Yayika zu nutzen.',
+    legal_accept_terms: 'Ich akzeptiere die Allgemeinen Geschäftsbedingungen',
+    legal_accept_privacy: 'Ich akzeptiere die Datenschutzrichtlinie',
+    legal_accept_health: 'Ich verstehe, dass Yayika keine professionelle medizinische Beratung ersetzt',
+    legal_accept_age: 'Ich bestätige, dass ich 18 Jahre oder älter bin',
+    legal_accept_ai: 'Ich verstehe, dass Laura eine KI ist und keine Gesundheitsfachkraft',
+    legal_accept_read_more: 'Mehr erfahren',
+    legal_accept_documents: 'Rechtsdokumente',
+    legal_health_info: 'Diese Informationen dienen nur zur Orientierung und ersetzen keine medizinische Beratung',
+    legal_ai_info: 'Laura ist eine KI, keine Gesundheitsfachkraft',
+    legal_finance_info: 'Finanzwerkzeuge stellen keine professionelle Beratung dar',
   },
 };
 

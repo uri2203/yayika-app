@@ -17,6 +17,7 @@ import { useLanguage } from '../../contexts/LanguageContext';
 import { useTheme } from '../../contexts/ThemeContext';
 import { typography, spacing, borderRadius } from '../../config/theme';
 import Button from '../../components/Button';
+import LegalDisclaimerModal from '../../components/LegalDisclaimerModal';
 
 const validateEmail = (e: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
 
@@ -46,6 +47,8 @@ export default function RegisterScreen({ navigation }: any) {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [showLegalModal, setShowLegalModal] = useState(false);
+  const [legalAccepted, setLegalAccepted] = useState(false);
 
   const strength = getPasswordStrength(password);
 
@@ -97,6 +100,10 @@ export default function RegisterScreen({ navigation }: any) {
       Alert.alert(t('common_error'), t('auth_passwords_dont_match'));
       return;
     }
+    if (!legalAccepted) {
+      setShowLegalModal(true);
+      return;
+    }
     setLoading(true);
     const { error } = await signUp(email.trim().toLowerCase(), password, name.trim());
     setLoading(false);
@@ -105,6 +112,16 @@ export default function RegisterScreen({ navigation }: any) {
     } else {
       Alert.alert(t('auth_welcome'), t('auth_account_created'));
     }
+  };
+
+  const handleLegalAccept = () => {
+    setLegalAccepted(true);
+    setShowLegalModal(false);
+    handleRegister();
+  };
+
+  const handleLegalDecline = () => {
+    setShowLegalModal(false);
   };
 
   return (
@@ -201,6 +218,12 @@ export default function RegisterScreen({ navigation }: any) {
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
+
+      <LegalDisclaimerModal
+        visible={showLegalModal}
+        onAccept={handleLegalAccept}
+        onDecline={handleLegalDecline}
+      />
     </SafeAreaView>
   );
 }
