@@ -13,6 +13,7 @@ import { typography, spacing, borderRadius } from '../../config/theme';
 import { useTheme } from '../../contexts/ThemeContext';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { aiCycleIntelligence, type CycleDashboard } from '../../config/api';
+import CycleEvolutionChart from '../../components/CycleEvolutionChart';
 
 function EnergyBar({ label, value, maxVal, color }: { label: string; value: number; maxVal: number; color: string }) {
   const { currentColors } = useTheme();
@@ -289,6 +290,9 @@ export default function CycleIntelligenceScreen({ navigation }: any) {
                 <Text style={styles.statLabel}>{t('cycle_intel_regularity') }</Text>
               </View>
             </View>
+
+            {/* Evolution Chart */}
+            <CycleEvolutionChart />
 
             {/* Current Phase */}
             {predictions && (

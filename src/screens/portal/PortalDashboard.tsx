@@ -18,6 +18,7 @@ import { useFeatureFlags } from '../../contexts/FeatureFlagsContext';
 import { typography, spacing, borderRadius } from '../../config/theme';
 import Card from '../../components/Card';
 import { RetentionCheckin, TransformMirror, FutureSelf, SocialProofWidget } from '../../components/retention';
+import CircleActivityFeed from '../../components/CircleActivityFeed';
 import BadgeShowcase from '../../components/BadgeShowcase';
 import CompletionAnxiety from '../../components/CompletionAnxiety';
 import StreakBanner from '../../components/StreakBanner';
@@ -573,6 +574,9 @@ export default function PortalDashboard({ navigation }: any) {
       fontWeight: typography.weights.semibold,
       color: colors.primary,
     },
+    socialSection: {
+      marginTop: spacing.sm,
+    },
   });
 
   if (loading) {
@@ -831,7 +835,18 @@ export default function PortalDashboard({ navigation }: any) {
         <TransformMirror />
 
         {/* Retention: Social Proof */}
-        <SocialProofWidget />
+        <SocialProofWidget
+          onPress={() => navigateToTab('Comunidad')}
+        />
+
+        {/* Social Activity Feed */}
+        <View style={styles.socialSection}>
+          <CircleActivityFeed
+            maxItems={5}
+            onSeeAll={() => navigateToTab('Comunidad')}
+            onActivityPress={() => navigateToTab('Comunidad')}
+          />
+        </View>
 
         {/* Retention: Future Self */}
         <FutureSelf />

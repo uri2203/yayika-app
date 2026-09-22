@@ -1129,6 +1129,32 @@ const translations: Record<Language, Record<string, string>> = {
     cycle_achievement_consistent_name: 'Ciclo Consistente',
     cycle_achievement_consistent_desc: 'Misma fase 3 meses seguidos',
     cycle_gamification_achievements: 'Logros de Ciclo',
+
+    // Evolution Chart
+    evolution_title: 'Tu Evolución',
+    evolution_energy: 'Energía',
+    evolution_mood: 'Ánimo',
+    evolution_symptoms: 'Síntomas',
+    evolution_empty: 'Registra tu ciclo para ver tu evolución',
+    evolution_average: 'Promedio',
+    evolution_trend_up: 'subiendo',
+    evolution_trend_down: 'bajando',
+    evolution_trend_stable: 'estable',
+    evolution_period_7: '7 días',
+    evolution_period_30: '30 días',
+    evolution_period_90: '90 días',
+
+    // Social Obligations
+    social_proof_title: 'Comunidad Activa',
+    social_proof_women: '{count} mujeres activas hoy',
+    social_proof_circle_new: '{name} tiene {count} posts nuevos',
+    social_proof_ranking: 'Top {percent}% de círculos',
+    social_activity_posted: '{name} publicó en {circle}',
+    social_activity_reacted: '{name} reaccionó en {circle}',
+    social_activity_joined: '{name} se unió a {circle}',
+    social_activity_time_ago: 'hace {time}',
+    social_view_circle: 'Ver círculo',
+    social_see_all: 'Ver todo',
   },
 
   en: {
@@ -2258,6 +2284,32 @@ const translations: Record<Language, Record<string, string>> = {
     cycle_achievement_consistent_name: 'Consistent Cycle',
     cycle_achievement_consistent_desc: 'Same phase 3 months in a row',
     cycle_gamification_achievements: 'Cycle Achievements',
+
+    // Evolution Chart
+    evolution_title: 'Your Evolution',
+    evolution_energy: 'Energy',
+    evolution_mood: 'Mood',
+    evolution_symptoms: 'Symptoms',
+    evolution_empty: 'Log your cycle to see your evolution',
+    evolution_average: 'Average',
+    evolution_trend_up: 'rising',
+    evolution_trend_down: 'falling',
+    evolution_trend_stable: 'stable',
+    evolution_period_7: '7 days',
+    evolution_period_30: '30 days',
+    evolution_period_90: '90 days',
+
+    // Social Obligations
+    social_proof_title: 'Active Community',
+    social_proof_women: '{count} women active today',
+    social_proof_circle_new: '{name} has {count} new posts',
+    social_proof_ranking: 'Top {percent}% circles',
+    social_activity_posted: '{name} posted in {circle}',
+    social_activity_reacted: '{name} reacted in {circle}',
+    social_activity_joined: '{name} joined {circle}',
+    social_activity_time_ago: '{time} ago',
+    social_view_circle: 'View circle',
+    social_see_all: 'See all',
   },
 
   pt: {
@@ -3389,6 +3441,32 @@ const translations: Record<Language, Record<string, string>> = {
     cycle_achievement_consistent_name: 'Ciclo Consistente',
     cycle_achievement_consistent_desc: 'Mesma fase 3 meses seguidos',
     cycle_gamification_achievements: 'Conquistas de Ciclo',
+
+    // Evolution Chart
+    evolution_title: 'Sua Evolução',
+    evolution_energy: 'Energia',
+    evolution_mood: 'Humor',
+    evolution_symptoms: 'Sintomas',
+    evolution_empty: 'Registre seu ciclo para ver sua evolução',
+    evolution_average: 'Média',
+    evolution_trend_up: 'subindo',
+    evolution_trend_down: 'caindo',
+    evolution_trend_stable: 'estável',
+    evolution_period_7: '7 dias',
+    evolution_period_30: '30 dias',
+    evolution_period_90: '90 dias',
+
+    // Social Obligations
+    social_proof_title: 'Comunidade Ativa',
+    social_proof_women: '{count} mulheres ativas hoje',
+    social_proof_circle_new: '{name} tem {count} posts novos',
+    social_proof_ranking: 'Top {percent}% círculos',
+    social_activity_posted: '{name} publicou em {circle}',
+    social_activity_reacted: '{name} reagiu em {circle}',
+    social_activity_joined: '{name} entrou em {circle}',
+    social_activity_time_ago: 'há {time}',
+    social_view_circle: 'Ver círculo',
+    social_see_all: 'Ver tudo',
   },
 
   fr: {
@@ -4520,6 +4598,32 @@ const translations: Record<Language, Record<string, string>> = {
     cycle_achievement_consistent_name: 'Cycle Constant',
     cycle_achievement_consistent_desc: 'Même phase 3 mois de suite',
     cycle_gamification_achievements: 'Succès de Cycle',
+
+    // Evolution Chart
+    evolution_title: 'Ton Évolution',
+    evolution_energy: 'Énergie',
+    evolution_mood: 'Humeur',
+    evolution_symptoms: 'Symptômes',
+    evolution_empty: 'Enregistre ton cycle pour voir ton évolution',
+    evolution_average: 'Moyenne',
+    evolution_trend_up: 'en hausse',
+    evolution_trend_down: 'en baisse',
+    evolution_trend_stable: 'stable',
+    evolution_period_7: '7 jours',
+    evolution_period_30: '30 jours',
+    evolution_period_90: '90 jours',
+
+    // Social Obligations
+    social_proof_title: 'Communauté Active',
+    social_proof_women: '{count} femmes actives aujourd\'hui',
+    social_proof_circle_new: '{name} a {count} nouveaux posts',
+    social_proof_ranking: 'Top {percent}% cercles',
+    social_activity_posted: '{name} a posté dans {circle}',
+    social_activity_reacted: '{name} a réagi dans {circle}',
+    social_activity_joined: '{name} a rejoint {circle}',
+    social_activity_time_ago: 'il y a {time}',
+    social_view_circle: 'Voir le cercle',
+    social_see_all: 'Voir tout',
   },
 
   de: {
@@ -5651,6 +5755,32 @@ const translations: Record<Language, Record<string, string>> = {
     cycle_achievement_consistent_name: 'Konsistenter Zyklus',
     cycle_achievement_consistent_desc: 'Gleiche Phase 3 Monate in Folge',
     cycle_gamification_achievements: 'Zyklus-Erfolge',
+
+    // Evolution Chart
+    evolution_title: 'Deine Entwicklung',
+    evolution_energy: 'Energie',
+    evolution_mood: 'Stimmung',
+    evolution_symptoms: 'Symptome',
+    evolution_empty: 'Erfasse deinen Zyklus, um deine Entwicklung zu sehen',
+    evolution_average: 'Durchschnitt',
+    evolution_trend_up: 'steigend',
+    evolution_trend_down: 'fallend',
+    evolution_trend_stable: 'stabil',
+    evolution_period_7: '7 Tage',
+    evolution_period_30: '30 Tage',
+    evolution_period_90: '90 Tage',
+
+    // Social Obligations
+    social_proof_title: 'Aktive Gemeinschaft',
+    social_proof_women: '{count} Frauen heute aktiv',
+    social_proof_circle_new: '{name} hat {count} neue Beiträge',
+    social_proof_ranking: 'Top {percent}% Kreise',
+    social_activity_posted: '{name} hat in {circle} gepostet',
+    social_activity_reacted: '{name} hat in {circle} reagiert',
+    social_activity_joined: '{name} ist {circle} beigetreten',
+    social_activity_time_ago: 'vor {time}',
+    social_view_circle: 'Circle ansehen',
+    social_see_all: 'Alle ansehen',
   },
 };
 
