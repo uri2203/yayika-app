@@ -511,7 +511,7 @@ export async function getLessonProgress(userId: string, moduleId?: string) {
     .select('lesson_id, completed, completed_at')
     .eq('user_id', userId);
   if (moduleId) {
-    query = query.eq('lesson_id', `module_${moduleId}_lesson_`);
+    query = query.like('lesson_id', `module_${moduleId}_lesson_%`);
   }
   const { data, error } = await query;
   if (error) throw error;

@@ -285,7 +285,7 @@ export default function SettingsScreen({ navigation }: any) {
         </TouchableOpacity>
 
         <Card style={styles.sectionCard}>
-          <Text style={[styles.sectionTitle, { color: colors.subtleText }]}>App</Text>
+          <Text style={[styles.sectionTitle, { color: colors.subtleText }]}>{t('settings_app') || 'App'}</Text>
 
           <TouchableOpacity
             style={[styles.saveButton, { backgroundColor: colors.primary, marginTop: spacing.sm }]}
@@ -296,15 +296,15 @@ export default function SettingsScreen({ navigation }: any) {
                   await Updates.fetchUpdateAsync();
                   await Updates.reloadAsync();
                 } else {
-                  Alert.alert('Yayika', 'La app está actualizada. Cierra y abre de nuevo para aplicar cambios.');
+                  Alert.alert('Yayika', t('update_none_msg') || 'La app está actualizada.');
                 }
               } catch (e) {
-                Alert.alert('Yayika', 'Cierra la app completamente (swipe away) y vuelve a abrirla.');
+                Alert.alert('Yayika', t('update_error') || 'Cierra la app y vuelve a abrirla.');
               }
             }}
           >
             <Ionicons name="refresh" size={20} color={colors.white} />
-            <Text style={[styles.saveButtonText, { color: colors.white }]}>Recargar app</Text>
+            <Text style={[styles.saveButtonText, { color: colors.white }]}>{t('settings_reload') || 'Recargar app'}</Text>
           </TouchableOpacity>
         </Card>
 

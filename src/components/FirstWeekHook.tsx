@@ -28,9 +28,9 @@ export function useFirstWeek(): FirstWeekState {
     const loadFirstWeek = async () => {
       // Get user creation date
       const { data: profile } = await supabase
-        .from('user_profiles')
+        .from('yayika_profiles')
         .select('created_at')
-        .eq('user_id', user.id)
+        .eq('id', user.id)
         .single();
 
       if (!profile?.created_at) return;

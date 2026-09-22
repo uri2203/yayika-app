@@ -38,28 +38,28 @@ export default function CompletionAnxiety({ onItemPress }: CompletionAnxietyProp
       
       // Check incomplete courses
       const { data: courses } = await supabase
-        .from('course_progress')
-        .select('course_id, total_lessons, completed_lessons')
-        .eq('user_id', user.id)
-        .lt('completed_lessons', 'total_lessons');
+        .from('yayika_user_lesson_progress')
+        .select('lesson_id, completed, completed_at')
+        .eq('user_id', user.id);
       
       if (courses) {
         for (const c of courses) {
-          const progress = c.completed_lessons / c.total_lessons;
-          items.push({
-            id: `course_${c.course_id}`,
-            type: 'course',
-            title: t('incomplete_course') || 'Curso incompleto',
-            progress: c.completed_lessons,
-            total: c.total_lessons,
-            urgency: progress >= 0.7 ? 'high' : progress >= 0.4 ? 'medium' : 'low',
-          });
+          if (!c.completed) {
+            items.push({
+              id: `lesson_${c.lesson_id}`,
+              type: 'course',
+              title: t('incomplete_course') || 'Curso incompleto',
+              progress: 0,
+              total: 1,
+              urgency: 'low',
+            });
+          }
         }
       }
       
       // Check incomplete challenges
       const { data: challenges } = await supabase
-        .from('user_challenges')
+        .from('yayika_user_challenges')
         .select('challenge_id, progress, target')
         .eq('user_id', user.id)
         .lt('progress', 'target');
@@ -81,10 +81,10 @@ export default function CompletionAnxiety({ onItemPress }: CompletionAnxietyProp
       // Check missing cycle logs (last 3 days)
       const threeDaysAgo = new Date(Date.now() - 3 * 86400000).toISOString().split('T')[0];
       const { data: logs } = await supabase
-        .from('cycle_entries')
-        .select('date')
+        .from('yayika_cycle_logs')
+        .select('logged_at')
         .eq('user_id', user.id)
-        .gte('date', threeDaysAgo);
+        .gte('logged_at', threeDaysAgo);
       
       if (!logs?.length) {
         items.push({

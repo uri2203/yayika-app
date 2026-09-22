@@ -48,6 +48,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setProfile(profileData);
       setProgress(progressData);
     } catch (err) {
+      console.warn('[AuthContext] Failed to fetch user extras:', err);
     }
   }, []);
 
@@ -67,13 +68,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return () => subscription.unsubscribe();
   }, [fetchUserExtras]);
 
-  const signIn = async (email: string, password: string) => {
+  const signIn = useCallback(async (email: string, password: string) => {
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) return { error: error.message };
     return {};
-  };
+  }, []);
 
-  const signUp = async (email: string, password: string, name: string) => {
+  const signUp = useCallback(async (email: string, password: string, name: string) => {
     const { error } = await supabase.auth.signUp({
       email,
       password,
@@ -81,21 +82,21 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     });
     if (error) return { error: error.message };
     return {};
-  };
+  }, []);
 
-  const signOut = async () => {
+  const signOut = useCallback(async () => {
     setProfile(null);
     setProgress(null);
     await supabase.auth.signOut();
-  };
+  }, []);
 
-  const resetPassword = async (email: string) => {
+  const resetPassword = useCallback(async (email: string) => {
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
       redirectTo: 'yayika://',
     });
     if (error) return { error: error.message };
     return {};
-  };
+  }, []);
 
   return (
     <AuthContext.Provider

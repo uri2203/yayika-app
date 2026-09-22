@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { Linking } from 'react-native';
 import { NavigationContainer, NavigationContainerRef } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -119,6 +119,7 @@ function PortalStackNavigator() {
       <PortalStack.Screen name="GrowthCoach" component={GrowthCoachScreen} />
       <PortalStack.Screen name="WellnessPlanner" component={WellnessPlannerScreen} />
       <PortalStack.Screen name="StreakInsurance" component={StreakInsuranceScreen} />
+      <PortalStack.Screen name="ResetPassword" component={ResetPasswordScreen} />
     </PortalStack.Navigator>
   );
 }
@@ -255,24 +256,39 @@ export default function Navigation() {
   const { session, loading } = useAuth();
   const { flags, loading: flagsLoading } = useFeatureFlags();
   const navRef = useRef<NavigationContainerRef<any>>(null);
+  const [pendingResetPassword, setPendingResetPassword] = useState(false);
 
-  useEffect(() => {
-    const handleDeepLink = async ({ url }: { url: string }) => {
-      if (url.includes('type=recovery')) {
-        const match = url.match(/code=([^&]+)/);
-        if (match) {
-          await supabase.auth.exchangeCodeForSession(match[1]);
-          navRef.current?.resetRoot({ index: 0, routes: [{ name: 'Auth' }] });
-          setTimeout(() => {
-            navRef.current?.navigate('ResetPassword');
-          }, 500);
+  const handleDeepLink = useCallback(async ({ url }: { url: string }) => {
+    if (url.includes('type=recovery')) {
+      const match = url.match(/code=([^&]+)/);
+      if (match) {
+        const { error } = await supabase.auth.exchangeCodeForSession(match[1]);
+        if (!error) {
+          setPendingResetPassword(true);
         }
       }
-    };
+    }
+  }, []);
+
+  useEffect(() => {
     Linking.getInitialURL().then((url) => { if (url) handleDeepLink({ url }); });
     const sub = Linking.addEventListener('url', handleDeepLink);
     return () => sub.remove();
-  }, []);
+  }, [handleDeepLink]);
+
+  useEffect(() => {
+    if (pendingResetPassword && session && navRef.current) {
+      setPendingResetPassword(false);
+      setTimeout(() => {
+        navRef.current?.navigate('MainTabs', {
+          screen: 'Portal',
+          params: {
+            screen: 'ResetPassword',
+          },
+        });
+      }, 300);
+    }
+  }, [pendingResetPassword, session]);
 
   if (loading || flagsLoading) {
     return <LoadingSpinner />;

@@ -134,7 +134,7 @@ export default function PortalDashboard({ navigation }: any) {
       setLoading(false);
       setRefreshing(false);
     }
-  }, [user?.id]);
+  }, [user?.id, t]);
 
   useEffect(() => {
     if (progress) setLocalProgress(progress);
@@ -835,9 +835,9 @@ export default function PortalDashboard({ navigation }: any) {
 
         {/* Completion Anxiety - Tareas pendientes */}
         <CompletionAnxiety onItemPress={(item) => {
-          if (item.type === 'course') navigateToTab('Cursos');
+          if (item.type === 'course') navigateToTab('Ciclo', 'ModuleList');
           else if (item.type === 'challenge') navigateToTab('Retos');
-          else if (item.type === 'cycle_log') navigateToTab('Ciclo');
+          else if (item.type === 'cycle_log') navigateToTab('Ciclo', 'CycleLog');
         }} />
 
         {/* Weekly Challenges */}

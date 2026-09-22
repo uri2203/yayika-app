@@ -160,11 +160,6 @@ export default function PostDetailScreen({ navigation, route }: PostDetailScreen
   const postId = route?.params?.postId;
   const { t, lang } = useLanguage();
 
-  if (!postId) {
-    navigation.goBack();
-    return null;
-  }
-
   const [post, setPost] = useState<PostDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [commentText, setCommentText] = useState('');
@@ -172,6 +167,12 @@ export default function PostDetailScreen({ navigation, route }: PostDetailScreen
   const [togglingLike, setTogglingLike] = useState(false);
   const [reportModalVisible, setReportModalVisible] = useState(false);
   const [reporting, setReporting] = useState(false);
+
+  useEffect(() => {
+    if (!postId) {
+      navigation.goBack();
+    }
+  }, [postId]);
 
   const fetchPost = useCallback(async () => {
     try {
@@ -231,7 +232,7 @@ export default function PostDetailScreen({ navigation, route }: PostDetailScreen
     } finally {
       setSubmitting(false);
     }
-  }, [post, commentText]);
+  }, [post, commentText, t]);
 
   const handleReport = useCallback(async (reason: string) => {
     if (!post) return;

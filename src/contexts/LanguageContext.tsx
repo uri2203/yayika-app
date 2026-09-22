@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useCallback, useContext, useState, useEffect, ReactNode } from 'react';
 import { Language, t as translate, getSavedLanguage, saveLanguage, getLanguageName } from '../config/i18n';
 
 interface LanguageContextType {
@@ -17,17 +17,26 @@ const LanguageContext = createContext<LanguageContextType>({
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [lang, setLangState] = useState<Language>('es');
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    getSavedLanguage().then((saved) => setLangState(saved));
+    getSavedLanguage()
+      .then((saved) => setLangState(saved))
+      .catch(() => {})
+      .finally(() => setLoaded(true));
   }, []);
 
-  const setLanguage = (newLang: Language) => {
+  const setLanguage = useCallback((newLang: Language) => {
     setLangState(newLang);
-    saveLanguage(newLang);
-  };
+    saveLanguage(newLang).catch(() => {});
+  }, []);
 
-  const t = (key: string, params?: Record<string, string | number>) => translate(lang, key, params);
+  const t = useCallback(
+    (key: string, params?: Record<string, string | number>) => translate(lang, key, params),
+    [lang]
+  );
+
+  if (!loaded) return null;
 
   return (
     <LanguageContext.Provider value={{ lang, setLanguage, t, getLanguageName }}>

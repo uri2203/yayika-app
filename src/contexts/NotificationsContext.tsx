@@ -1,4 +1,4 @@
-import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { Platform } from 'react-native';
 import * as Notifications from 'expo-notifications';
 import Constants from 'expo-constants';
@@ -53,8 +53,12 @@ export function NotificationsProvider({ children }: { children: React.ReactNode 
         });
       }
     } catch (err) {
+      console.warn('[Notifications] sendSmartPush failed:', err);
     }
   }, [user, progress, lang]);
+
+  const userRef = useRef(user);
+  userRef.current = user;
 
   useEffect(() => {
     registerForPushNotificationsAsync().then((token) => {
@@ -64,7 +68,7 @@ export function NotificationsProvider({ children }: { children: React.ReactNode 
         saveTokenToSupabase(token);
         sendSmartPush();
       }
-    });
+    }).catch(() => {});
 
     const notificationListener = Notifications.addNotificationReceivedListener(() => {});
     const responseListener = Notifications.addNotificationResponseReceivedListener(() => {});
@@ -76,11 +80,16 @@ export function NotificationsProvider({ children }: { children: React.ReactNode 
   }, [user, sendSmartPush]);
 
   async function saveTokenToSupabase(token: string) {
-    if (!user) return;
-    await supabase.from('push_tokens').upsert(
-      { user_id: user.id, expo_push_token: token, platform: Platform.OS },
-      { onConflict: 'user_id' }
-    );
+    const currentUser = userRef.current;
+    if (!currentUser) return;
+    try {
+      await supabase.from('push_tokens').upsert(
+        { user_id: currentUser.id, expo_push_token: token, platform: Platform.OS },
+        { onConflict: 'user_id' }
+      );
+    } catch (err) {
+      console.warn('[Notifications] Failed to save push token:', err);
+    }
   }
 
   async function registerForPushNotificationsAsync() {

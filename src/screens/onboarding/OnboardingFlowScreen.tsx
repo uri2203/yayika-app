@@ -29,7 +29,7 @@ interface OnboardingState {
   is_completed: boolean;
   total_xp_earned: number;
   completed_days: number;
-  total_days: 7;
+  total_days: number;
   days_data: DayTask[];
 }
 

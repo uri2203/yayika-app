@@ -38,11 +38,11 @@ export async function registerForPushNotifications(): Promise<string | null> {
     await supabase.from('push_tokens').upsert(
       {
         user_id: user.id,
-        token: token.data,
+        expo_push_token: token.data,
         platform: Platform.OS,
         updated_at: new Date().toISOString(),
       },
-      { onConflict: 'user_id,platform' }
+      { onConflict: 'user_id' }
     );
   }
 

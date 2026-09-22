@@ -52,15 +52,15 @@ export default function BadgeShowcase({ userId, editable = false }: BadgeShowcas
     const loadBadges = async () => {
       // Load all unlocked badges
       const { data: userBadges } = await supabase
-        .from('user_badges')
+        .from('yayika_user_badges')
         .select('badge_id, unlocked_at')
         .eq('user_id', targetUserId);
 
       // Load showcase preference
       const { data: profile } = await supabase
-        .from('user_profiles')
+        .from('yayika_profiles')
         .select('badge_showcase')
-        .eq('user_id', targetUserId)
+        .eq('id', targetUserId)
         .single();
 
       // Badge definitions
@@ -106,9 +106,9 @@ export default function BadgeShowcase({ userId, editable = false }: BadgeShowcas
     
     setShowcase(newShowcase);
     await supabase
-      .from('user_profiles')
+      .from('yayika_profiles')
       .update({ badge_showcase: newShowcase })
-      .eq('user_id', user.id);
+      .eq('id', user.id);
   };
 
   const showcaseBadges = badges.filter((b) => showcase.includes(b.id));

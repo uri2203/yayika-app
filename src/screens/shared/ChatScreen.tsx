@@ -52,7 +52,7 @@ export default function ChatScreen({ navigation }: any) {
       content: t('chat_welcome'),
       timestamp: new Date(),
     }]);
-  }, []);
+  }, [t]);
 
   const sendMessage = useCallback(async (text: string) => {
     if (!text.trim() || loading) return;

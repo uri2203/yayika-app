@@ -298,7 +298,7 @@ export default function CycleCoachScreen({ navigation }: any) {
                   <Text style={styles.phaseIcon}>{getPhaseIcon(phase)}</Text>
                   <View style={styles.phaseInfo}>
                     <Text style={[styles.phaseName, { color: getPhaseColor(phase, colors) }]}>{phase}</Text>
-                    {day && <Text style={styles.phaseDay}>Día {day}</Text>}
+                    {day && <Text style={styles.phaseDay}>{t('cycle_day')} {day}</Text>}
                   </View>
                 </View>
               </View>
