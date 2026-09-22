@@ -19,11 +19,12 @@ import { useTheme } from '../../contexts/ThemeContext';
 import { typography, spacing, borderRadius } from '../../config/theme';
 import Button from '../../components/Button';
 const logoImg = require('../../../assets/Logo yayika.png');
+const logoDarkImg = require('../../../assets/logo-dark.png');
 
 export default function LoginScreen({ navigation }: any) {
   const { signIn } = useAuth();
   const { t } = useLanguage();
-  const { currentColors } = useTheme();
+  const { isDark, currentColors } = useTheme();
   const colors = currentColors;
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -158,7 +159,7 @@ export default function LoginScreen({ navigation }: any) {
           keyboardShouldPersistTaps="handled"
         >
           <View style={styles.header}>
-            <Image source={logoImg} style={styles.logoImage} resizeMode="contain" />
+            <Image source={isDark ? logoDarkImg : logoImg} style={styles.logoImage} resizeMode="contain" />
             <Text style={styles.logo}>Yayika</Text>
             <Text style={styles.subtitle}>{t('auth_tagline')}</Text>
           </View>
