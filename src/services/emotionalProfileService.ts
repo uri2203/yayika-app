@@ -238,7 +238,7 @@ function calculateCycleIQ(logs: CycleLog[]): number {
   return Math.round(Math.min(100, score));
 }
 
-function getPowerDays(logs: CycleLog[]): number {
+function countPowerDays(logs: CycleLog[]): number {
   return logs.filter((l) => {
     const moodScore = l.mood ? (MOOD_SCORES[l.mood] || 0) : 0;
     const energyHigh = l.energy_level != null && l.energy_level >= 7;
@@ -285,7 +285,7 @@ export async function calculateEmotionalProfile(userId: string): Promise<Emotion
   const symptomPatterns = getTopSymptoms(logs);
   const archetype = determineArchetype(dominantMood, moodStability, energyPattern, symptomPatterns);
   const cycleIQ = calculateCycleIQ(logs);
-  const powerDays = getPowerDays(logs);
+  const powerDays = countPowerDays(logs);
   const moodDistribution = getMoodDistribution(logs);
   const weeklySummary = getWeeklySummary(logs);
 
