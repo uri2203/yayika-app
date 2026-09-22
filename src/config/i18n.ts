@@ -984,6 +984,19 @@ const translations: Record<Language, Record<string, string>> = {
     auth_strength_strong: 'Fuerte',
     auth_strength_very_strong: 'Muy fuerte',
 
+    // Empathetic Chat
+    empathetic_chat_title: 'Habla con Laura',
+    empathetic_mood_check: '¿Cómo te sientes?',
+    empathetic_mood_happy: 'Estoy feliz',
+    empathetic_mood_sad: 'Me siento triste',
+    empathetic_mood_stressed: 'Estoy estresada',
+    empathetic_mood_tired: 'Estoy cansada',
+    empathetic_mood_loved: 'Me siento amada',
+    empathetic_quick_stress: 'Necesito hablar',
+    empathetic_validating: 'Gracias por compartir eso conmigo',
+    empathetic_delete: 'Borrar chat',
+    empathetic_delete_confirm: '¿Eliminar todo el historial?',
+
     // Lang code for AI
     lang_code: 'es',
 
@@ -1155,6 +1168,59 @@ const translations: Record<Language, Record<string, string>> = {
     social_activity_time_ago: 'hace {time}',
     social_view_circle: 'Ver círculo',
     social_see_all: 'Ver todo',
+
+    // Emotional Profile
+    profile_archetype: 'Tu Arquetipo',
+    profile_cycle_iq: 'Conocimiento Ciclo',
+    profile_power_days: 'Días de Poder',
+    profile_mood_dist: 'Tu Mood',
+    surprise_title: 'Descubrimiento del Día',
+    surprise_open: 'Toca para abrir',
+    surprise_more: '¿Quieres saber más?',
+    insight_title: 'Insight Sorpresa',
+    archetype_dreamer: 'La Soñadora',
+    archetype_warrior: 'La Guerrera',
+    archetype_nurturer: 'La Nutridora',
+    archetype_explorer: 'La Exploradora',
+    archetype_wise: 'La Sabia',
+
+    // Desire Content
+    desire_title: 'Contenido para Ti',
+    desire_sensual_tip: 'Consejo Sensual',
+    desire_empowerment: 'Frase del Día',
+    desire_body_love: 'Amor Corporal',
+
+    // Celebrations
+    celebration_congrats: '¡Felicidades!',
+    celebration_great: '¡Genial!',
+    celebration_amazing: '¡Increíble!',
+    celebration_keep: '¡Sigue así!',
+
+    // Autonomy
+    autonomy_title: 'Mi Control',
+    autonomy_data: 'Mis Datos',
+    autonomy_delete: 'Borrar Todo',
+    autonomy_export: 'Exportar',
+    autonomy_invisible: 'Modo Invisible',
+    autonomy_ai_personality: 'Personalidad de IA',
+
+    // Deep Connection - Wisdom
+    wisdom_title: 'Sabiduría',
+    wisdom_share: 'Comparte tu sabiduría',
+    wisdom_anonymous: 'Una mujer anónima',
+
+    // Deep Connection - Growth
+    growth_this_month: 'Este mes',
+    growth_stat_days: 'días registrando',
+    growth_stat_actions: 'acciones completadas',
+    growth_stat_women: 'mujeres conectadas',
+    growth_improved: 'creciste',
+
+    // Life Expanders
+    expand_title: 'Expande tu Vida',
+    expand_talks: 'Charlas',
+    expand_books: 'Libros',
+    expand_podcasts: 'Podcasts',
   },
 
   en: {
@@ -2139,6 +2205,19 @@ const translations: Record<Language, Record<string, string>> = {
     auth_strength_strong: 'Strong',
     auth_strength_very_strong: 'Very strong',
 
+    // Empathetic Chat
+    empathetic_chat_title: 'Talk to Laura',
+    empathetic_mood_check: 'How are you feeling?',
+    empathetic_mood_happy: "I'm happy",
+    empathetic_mood_sad: "I'm sad",
+    empathetic_mood_stressed: "I'm stressed",
+    empathetic_mood_tired: "I'm tired",
+    empathetic_mood_loved: 'I feel loved',
+    empathetic_quick_stress: 'I need to talk',
+    empathetic_validating: 'Thank you for sharing',
+    empathetic_delete: 'Delete chat',
+    empathetic_delete_confirm: 'Delete all history?',
+
     // Lang code for AI
     lang_code: 'en',
 
@@ -2310,6 +2389,59 @@ const translations: Record<Language, Record<string, string>> = {
     social_activity_time_ago: '{time} ago',
     social_view_circle: 'View circle',
     social_see_all: 'See all',
+
+    // Emotional Profile
+    profile_archetype: 'Your Archetype',
+    profile_cycle_iq: 'Cycle Knowledge',
+    profile_power_days: 'Power Days',
+    profile_mood_dist: 'Your Mood',
+    surprise_title: 'Daily Discovery',
+    surprise_open: 'Tap to open',
+    surprise_more: 'Want to know more?',
+    insight_title: 'Surprise Insight',
+    archetype_dreamer: 'The Dreamer',
+    archetype_warrior: 'The Warrior',
+    archetype_nurturer: 'The Nurturer',
+    archetype_explorer: 'The Explorer',
+    archetype_wise: 'The Wise One',
+
+    // Desire Content
+    desire_title: 'For You',
+    desire_sensual_tip: 'Sensual Tip',
+    desire_empowerment: 'Daily Quote',
+    desire_body_love: 'Body Love',
+
+    // Celebrations
+    celebration_congrats: 'Congratulations!',
+    celebration_great: 'Great!',
+    celebration_amazing: 'Amazing!',
+    celebration_keep: 'Keep going!',
+
+    // Autonomy
+    autonomy_title: 'My Control',
+    autonomy_data: 'My Data',
+    autonomy_delete: 'Delete All',
+    autonomy_export: 'Export',
+    autonomy_invisible: 'Invisible Mode',
+    autonomy_ai_personality: 'AI Personality',
+
+    // Deep Connection - Wisdom
+    wisdom_title: 'Wisdom',
+    wisdom_share: 'Share your wisdom',
+    wisdom_anonymous: 'An anonymous woman',
+
+    // Deep Connection - Growth
+    growth_this_month: 'This month',
+    growth_stat_days: 'days logging',
+    growth_stat_actions: 'actions completed',
+    growth_stat_women: 'women connected',
+    growth_improved: 'you grew',
+
+    // Life Expanders
+    expand_title: 'Expand Your Life',
+    expand_talks: 'Talks',
+    expand_books: 'Books',
+    expand_podcasts: 'Podcasts',
   },
 
   pt: {
@@ -3296,6 +3428,19 @@ const translations: Record<Language, Record<string, string>> = {
     auth_strength_strong: 'Forte',
     auth_strength_very_strong: 'Muito forte',
 
+    // Empathetic Chat
+    empathetic_chat_title: 'Fale com Laura',
+    empathetic_mood_check: 'Como você se sente?',
+    empathetic_mood_happy: 'Estou feliz',
+    empathetic_mood_sad: 'Estou triste',
+    empathetic_mood_stressed: 'Estou estressada',
+    empathetic_mood_tired: 'Estou cansada',
+    empathetic_mood_loved: 'Me sinto amada',
+    empathetic_quick_stress: 'Preciso falar',
+    empathetic_validating: 'Obrigada por compartilhar',
+    empathetic_delete: 'Apagar chat',
+    empathetic_delete_confirm: 'Apagar todo o histórico?',
+
     // Lang code for AI
     lang_code: 'pt',
 
@@ -3467,6 +3612,59 @@ const translations: Record<Language, Record<string, string>> = {
     social_activity_time_ago: 'há {time}',
     social_view_circle: 'Ver círculo',
     social_see_all: 'Ver tudo',
+
+    // Desire Content
+    desire_title: 'Para Você',
+    desire_sensual_tip: 'Conselho Sensual',
+    desire_empowerment: 'Frase do Dia',
+    desire_body_love: 'Amor Corporal',
+
+    // Celebrations
+    celebration_congrats: 'Parabéns!',
+    celebration_great: 'Ótimo!',
+    celebration_amazing: 'Incrível!',
+    celebration_keep: 'Continue assim!',
+
+    // Autonomy
+    autonomy_title: 'Meu Controle',
+    autonomy_data: 'Meus Dados',
+    autonomy_delete: 'Apagar Tudo',
+    autonomy_export: 'Exportar',
+    autonomy_invisible: 'Modo Invisível',
+    autonomy_ai_personality: 'Personalidade de IA',
+
+    // Deep Connection - Wisdom
+    wisdom_title: 'Sabedoria',
+    wisdom_share: 'Compartilhe sua sabedoria',
+    wisdom_anonymous: 'Uma mulher anônima',
+
+    // Deep Connection - Growth
+    growth_this_month: 'Este mês',
+    growth_stat_days: 'dias registrando',
+    growth_stat_actions: 'ações concluídas',
+    growth_stat_women: 'mulheres conectadas',
+    growth_improved: 'cresceste',
+
+    // Life Expanders
+    expand_title: 'Expanda Sua Vida',
+    expand_talks: 'Palestras',
+    expand_books: 'Livros',
+    expand_podcasts: 'Podcasts',
+
+    // Emotional Profile
+    profile_archetype: 'Seu Arquétipo',
+    profile_cycle_iq: 'Conhecimento do Ciclo',
+    profile_power_days: 'Dias de Poder',
+    profile_mood_dist: 'Seu Humor',
+    surprise_title: 'Descoberta do Dia',
+    surprise_open: 'Toque para abrir',
+    surprise_more: 'Quer saber mais?',
+    insight_title: 'Insight Surpresa',
+    archetype_dreamer: 'A Sonhadora',
+    archetype_warrior: 'A Guerreira',
+    archetype_nurturer: 'A Nutridora',
+    archetype_explorer: 'A Exploradora',
+    archetype_wise: 'A Sábia',
   },
 
   fr: {
@@ -4453,6 +4651,19 @@ const translations: Record<Language, Record<string, string>> = {
     auth_strength_strong: 'Fort',
     auth_strength_very_strong: 'Très fort',
 
+    // Empathetic Chat
+    empathetic_chat_title: 'Parle avec Laura',
+    empathetic_mood_check: 'Comment te sens-tu?',
+    empathetic_mood_happy: 'Je suis heureuse',
+    empathetic_mood_sad: 'Je suis triste',
+    empathetic_mood_stressed: 'Je suis stressée',
+    empathetic_mood_tired: 'Je suis fatiguée',
+    empathetic_mood_loved: 'Je me sens aimée',
+    empathetic_quick_stress: "J'ai besoin de parler",
+    empathetic_validating: 'Merci de partager',
+    empathetic_delete: 'Supprimer la conversation',
+    empathetic_delete_confirm: 'Supprimer tout l\'historique?',
+
     // Lang code for AI
     lang_code: 'fr',
 
@@ -4624,6 +4835,59 @@ const translations: Record<Language, Record<string, string>> = {
     social_activity_time_ago: 'il y a {time}',
     social_view_circle: 'Voir le cercle',
     social_see_all: 'Voir tout',
+
+    // Desire Content
+    desire_title: 'Pour Toi',
+    desire_sensual_tip: 'Conseil Sensuel',
+    desire_empowerment: 'Citation du Jour',
+    desire_body_love: 'Amour Corporal',
+
+    // Celebrations
+    celebration_congrats: 'Félicitations!',
+    celebration_great: 'Génial!',
+    celebration_amazing: 'Incroyable!',
+    celebration_keep: 'Continue comme ça!',
+
+    // Autonomy
+    autonomy_title: 'Mon Contrôle',
+    autonomy_data: 'Mes Données',
+    autonomy_delete: 'Tout Supprimer',
+    autonomy_export: 'Exporter',
+    autonomy_invisible: 'Mode Invisible',
+    autonomy_ai_personality: 'Personnalité IA',
+
+    // Deep Connection - Wisdom
+    wisdom_title: 'Sagesse',
+    wisdom_share: 'Partagez votre sagesse',
+    wisdom_anonymous: 'Une femme anonyme',
+
+    // Deep Connection - Growth
+    growth_this_month: 'Ce mois-ci',
+    growth_stat_days: 'jours à journaliser',
+    growth_stat_actions: 'actions terminées',
+    growth_stat_women: 'femmes connectées',
+    growth_improved: 'tu as grandi',
+
+    // Life Expanders
+    expand_title: 'Élargis Ta Vie',
+    expand_talks: 'Conférences',
+    expand_books: 'Livres',
+    expand_podcasts: 'Podcasts',
+
+    // Emotional Profile
+    profile_archetype: 'Ton Archétyp',
+    profile_cycle_iq: 'Connaissance du Cycle',
+    profile_power_days: 'Jours de Puissance',
+    profile_mood_dist: 'Ton Humeur',
+    surprise_title: 'Découverte du Jour',
+    surprise_open: 'Touche pour ouvrir',
+    surprise_more: 'En savoir plus?',
+    insight_title: 'Insight Surpresa',
+    archetype_dreamer: 'La Rêveuse',
+    archetype_warrior: 'La Guerrière',
+    archetype_nurturer: 'La Nourricière',
+    archetype_explorer: "L'Exploratrice",
+    archetype_wise: 'La Sage',
   },
 
   de: {
@@ -5610,6 +5874,19 @@ const translations: Record<Language, Record<string, string>> = {
     auth_strength_strong: 'Stark',
     auth_strength_very_strong: 'Sehr stark',
 
+    // Empathetic Chat
+    empathetic_chat_title: 'Sprich mit Laura',
+    empathetic_mood_check: 'Wie fühlst du dich?',
+    empathetic_mood_happy: 'Ich bin glücklich',
+    empathetic_mood_sad: 'Ich bin traurig',
+    empathetic_mood_stressed: 'Ich bin gestresst',
+    empathetic_mood_tired: 'Ich bin müde',
+    empathetic_mood_loved: 'Ich fühle mich geliebt',
+    empathetic_quick_stress: 'Ich muss reden',
+    empathetic_validating: 'Danke fürs Teilen',
+    empathetic_delete: 'Chat löschen',
+    empathetic_delete_confirm: 'Gesamten Verlauf löschen?',
+
     // Lang code for AI
     lang_code: 'de',
 
@@ -5781,6 +6058,59 @@ const translations: Record<Language, Record<string, string>> = {
     social_activity_time_ago: 'vor {time}',
     social_view_circle: 'Circle ansehen',
     social_see_all: 'Alle ansehen',
+
+    // Desire Content
+    desire_title: 'Für Dich',
+    desire_sensual_tip: 'Sinnlicher Tipp',
+    desire_empowerment: 'Zitat des Tages',
+    desire_body_love: 'Körperliebe',
+
+    // Celebrations
+    celebration_congrats: 'Herzlichen Glückwunsch!',
+    celebration_great: 'Großartig!',
+    celebration_amazing: 'Erstaunlich!',
+    celebration_keep: 'Mach weiter so!',
+
+    // Autonomy
+    autonomy_title: 'Meine Kontrolle',
+    autonomy_data: 'Meine Daten',
+    autonomy_delete: 'Alles Löschen',
+    autonomy_export: 'Exportieren',
+    autonomy_invisible: 'Unsichtbar-Modus',
+    autonomy_ai_personality: 'KI-Persönlichkeit',
+
+    // Deep Connection - Wisdom
+    wisdom_title: 'Weisheit',
+    wisdom_share: 'Teile deine Weisheit',
+    wisdom_anonymous: 'Eine anonyme Frau',
+
+    // Deep Connection - Growth
+    growth_this_month: 'Diesen Monat',
+    growth_stat_days: 'Tage protokolliert',
+    growth_stat_actions: 'Aktionen abgeschlossen',
+    growth_stat_women: 'Frauen verbunden',
+    growth_improved: 'du bist gewachsen',
+
+    // Life Expanders
+    expand_title: 'Erweitere Dein Leben',
+    expand_talks: 'Vorträge',
+    expand_books: 'Bücher',
+    expand_podcasts: 'Podcasts',
+
+    // Emotional Profile
+    profile_archetype: 'Dein Archetyp',
+    profile_cycle_iq: 'Zykluswissen',
+    profile_power_days: 'Krafttage',
+    profile_mood_dist: 'Deine Stimmung',
+    surprise_title: 'Tagesentdeckung',
+    surprise_open: 'Tippen zum Öffnen',
+    surprise_more: 'Mehr erfahren?',
+    insight_title: 'Überraschungs-Insight',
+    archetype_dreamer: 'Die Träumerin',
+    archetype_warrior: 'Die Kriegerin',
+    archetype_nurturer: 'Die Nährende',
+    archetype_explorer: 'Die Entdeckerin',
+    archetype_wise: 'Die Weise',
   },
 };
 

@@ -23,7 +23,11 @@ import BadgeShowcase from '../../components/BadgeShowcase';
 import CompletionAnxiety from '../../components/CompletionAnxiety';
 import StreakBanner from '../../components/StreakBanner';
 import DailyActionCard from '../../components/DailyActionCard';
+import EmotionalProfileCard from '../../components/EmotionalProfileCard';
+import DailySurprise from '../../components/DailySurprise';
 import PaywallModal from '../../components/PaywallModal';
+import WisdomExchangeCard from '../../components/WisdomExchangeCard';
+import GrowthReflectionCard from '../../components/GrowthReflectionCard';
 import {
   getProgress,
   getProfile,
@@ -577,6 +581,26 @@ export default function PortalDashboard({ navigation }: any) {
     socialSection: {
       marginTop: spacing.sm,
     },
+    desireCard: {
+      marginBottom: spacing.lg,
+      backgroundColor: colors.white,
+    },
+    desireHeader: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: spacing.sm,
+      gap: spacing.sm,
+    },
+    desireTitle: {
+      fontSize: typography.sizes.sm,
+      fontWeight: typography.weights.semibold,
+      flex: 1,
+    },
+    desireText: {
+      fontSize: typography.sizes.md,
+      lineHeight: 22,
+      fontStyle: 'italic',
+    },
   });
 
   if (loading) {
@@ -717,11 +741,36 @@ export default function PortalDashboard({ navigation }: any) {
           </TouchableOpacity>
         </View>
 
+        {/* Emotional Profile */}
+        <EmotionalProfileCard />
+
         {/* Streak Banner */}
         <StreakBanner />
 
         {/* Daily Action */}
         <DailyActionCard cyclePhase={(cyclePhase as any) || 'unknown'} />
+
+        {/* Daily Surprise */}
+        <DailySurprise />
+
+        {/* Daily Desire Card - Empowering Content */}
+        {affirmation ? (
+          <Card style={styles.desireCard}>
+            <View style={styles.desireHeader}>
+              <Ionicons name="heart" size={20} color={colors.rose} />
+              <Text style={[styles.desireTitle, { color: colors.text }]}>
+                {t('home_affirmation')}
+              </Text>
+            </View>
+            <Text style={[styles.desireText, { color: colors.text }]}>{affirmation}</Text>
+          </Card>
+        ) : null}
+
+        {/* Growth Reflection */}
+        <GrowthReflectionCard />
+
+        {/* Wisdom Exchange */}
+        <WisdomExchangeCard cyclePhase={(cyclePhase as any) || 'unknown'} />
 
         {/* XP Progress Bar */}
         <Card style={styles.xpCard}>
@@ -812,27 +861,6 @@ export default function PortalDashboard({ navigation }: any) {
             </TouchableOpacity>
           ))}
         </View>
-
-        {/* Retention Widgets */}
-        <RetentionCheckin onCheckinComplete={(result) => {
-          if (result.success) {
-            fetchData(); // Refresh dashboard data
-          }
-        }} />
-
-        {/* Today's Affirmation */}
-        {affirmation ? (
-          <Card style={styles.affirmationCard}>
-            <View style={styles.affirmationHeader}>
-              <Ionicons name="sparkles" size={20} color={colors.gold} />
-              <Text style={styles.affirmationTitle}>{t('home_affirmation')}</Text>
-            </View>
-            <Text style={styles.affirmationText}>{affirmation}</Text>
-          </Card>
-        ) : null}
-
-        {/* Retention: Transform Mirror */}
-        <TransformMirror />
 
         {/* Retention: Social Proof */}
         <SocialProofWidget

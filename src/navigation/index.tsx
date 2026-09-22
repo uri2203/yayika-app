@@ -70,6 +70,13 @@ import SupportScreen from '../screens/shared/SupportScreen';
 import ChatScreen from '../screens/shared/ChatScreen';
 import GrowthCoachScreen from '../screens/shared/GrowthCoachScreen';
 import WellnessPlannerScreen from '../screens/shared/WellnessPlannerScreen';
+import EmpatheticChatScreen from '../screens/shared/EmpatheticChatScreen';
+
+// Profile
+import ProfileScreen from '../screens/profile/ProfileScreen';
+import SettingsScreen from '../screens/profile/SettingsScreen';
+import LegalScreen from '../screens/profile/LegalScreen';
+import AutonomySettings from '../screens/profile/AutonomySettings';
 
 const AuthStack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -120,6 +127,8 @@ function PortalStackNavigator() {
       <PortalStack.Screen name="WellnessPlanner" component={WellnessPlannerScreen} />
       <PortalStack.Screen name="StreakInsurance" component={StreakInsuranceScreen} />
       <PortalStack.Screen name="ResetPassword" component={ResetPasswordScreen} />
+      <PortalStack.Screen name="EmpatheticChat" component={EmpatheticChatScreen} />
+      <PortalStack.Screen name="AutonomySettings" component={AutonomySettings} />
     </PortalStack.Navigator>
   );
 }
