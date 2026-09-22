@@ -6,6 +6,7 @@ import { supabase } from '../config/supabase';
 import { useAuth } from './AuthContext';
 import { useLanguage } from './LanguageContext';
 import { aiSmartPush } from '../config/api';
+import { initSmartNotifications } from '../services/smartNotifications';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -67,6 +68,9 @@ export function NotificationsProvider({ children }: { children: React.ReactNode 
         setHasPermission(true);
         saveTokenToSupabase(token);
         sendSmartPush();
+        if (user) {
+          initSmartNotifications(user.id, lang).catch(() => {});
+        }
       }
     }).catch(() => {});
 
@@ -77,7 +81,7 @@ export function NotificationsProvider({ children }: { children: React.ReactNode 
       notificationListener.remove();
       responseListener.remove();
     };
-  }, [user, sendSmartPush]);
+  }, [user, sendSmartPush, lang]);
 
   async function saveTokenToSupabase(token: string) {
     const currentUser = userRef.current;

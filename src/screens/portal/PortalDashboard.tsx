@@ -20,6 +20,8 @@ import Card from '../../components/Card';
 import { RetentionCheckin, TransformMirror, FutureSelf, SocialProofWidget } from '../../components/retention';
 import BadgeShowcase from '../../components/BadgeShowcase';
 import CompletionAnxiety from '../../components/CompletionAnxiety';
+import StreakBanner from '../../components/StreakBanner';
+import DailyActionCard from '../../components/DailyActionCard';
 import PaywallModal from '../../components/PaywallModal';
 import {
   getProgress,
@@ -710,6 +712,12 @@ export default function PortalDashboard({ navigation }: any) {
             <Text style={styles.streakText}>{streakDays}</Text>
           </TouchableOpacity>
         </View>
+
+        {/* Streak Banner */}
+        <StreakBanner />
+
+        {/* Daily Action */}
+        <DailyActionCard cyclePhase={(cyclePhase as any) || 'unknown'} />
 
         {/* XP Progress Bar */}
         <Card style={styles.xpCard}>
