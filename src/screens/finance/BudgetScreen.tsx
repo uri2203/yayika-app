@@ -198,7 +198,7 @@ export default function BudgetScreen({ navigation }: any) {
         </View>
 
         <View style={styles.splitSection}>
-          <Text style={styles.sectionTitle}>50 / 30 / 20</Text>
+          <Text style={styles.sectionTitle}>{t('finance_split_title')}</Text>
           <View style={styles.splitCard}>
             <View style={styles.splitItem}>
               <View style={styles.splitHeader}>

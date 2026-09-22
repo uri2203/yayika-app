@@ -209,7 +209,7 @@ export default function FinanceDashboardScreen({ navigation }: any) {
         </View>
 
         <View style={styles.splitCard}>
-          <Text style={styles.splitTitle}>50 / 30 / 20</Text>
+          <Text style={styles.splitTitle}>{t('finance_split_title')}</Text>
           <View style={styles.splitRow}>
             <View style={styles.splitItem}>
               <View style={[styles.splitDot, { backgroundColor: colors.turquoise }]} />

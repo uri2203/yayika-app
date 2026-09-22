@@ -43,11 +43,11 @@ export default function CycleLogScreen({ navigation }: any) {
   ];
 
   const MOODS = [
-    { emoji: 'ðŸ˜Š', label: t('cycle_mood_happy')  },
-    { emoji: 'ðŸ˜', label: t('cycle_mood_neutral')  },
-    { emoji: 'ðŸ˜”', label: t('cycle_mood_sad')  },
-    { emoji: 'ðŸ˜¤', label: t('cycle_mood_irritable')  },
-    { emoji: 'ðŸ˜´', label: t('cycle_mood_tired')  },
+    { emoji: '😊', label: t('cycle_mood_happy')  },
+    { emoji: '😐', label: t('cycle_mood_neutral')  },
+    { emoji: '😢', label: t('cycle_mood_sad')  },
+    { emoji: '😤', label: t('cycle_mood_irritable')  },
+    { emoji: '😴', label: t('cycle_mood_tired')  },
   ];
 
   const SYMPTOMS = [

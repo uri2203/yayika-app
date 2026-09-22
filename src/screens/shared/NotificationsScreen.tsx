@@ -186,7 +186,7 @@ export default function NotificationsScreen({ navigation }: any) {
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
           <Ionicons name="arrow-back" size={24} color={colors.text} />
         </TouchableOpacity>
-        <Text style={[styles.headerTitle, { color: colors.text }]}>{t('onboard_notif_title')}</Text>
+        <Text style={[styles.headerTitle, { color: colors.text }]}>{t('notifications_title')}</Text>
         <View style={styles.headerRight}>
           {unreadCount > 0 && (
             <View style={[styles.unreadBadge, { backgroundColor: colors.primary }]}>
@@ -212,7 +212,7 @@ export default function NotificationsScreen({ navigation }: any) {
         ListEmptyComponent={
           <EmptyState
             icon="notifications-off-outline"
-            message={t('onboard_notif_title')}
+            message={t('notifications_empty')}
           />
         }
       />

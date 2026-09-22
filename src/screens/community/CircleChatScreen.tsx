@@ -65,12 +65,12 @@ export default function CircleChatScreen({ navigation, route }: any) {
   const handleDelete = (msg: CircleMessage) => {
     if (msg.user_id !== user?.id) return;
     Alert.alert(
-      t('circles_delete_msg') || 'Eliminar mensaje',
-      t('circles_delete_msg_confirm') || '¿Eliminar este mensaje?',
+      t('circles_delete_msg'),
+      t('circles_delete_msg_confirm'),
       [
-        { text: t('common_cancel') || 'Cancelar', style: 'cancel' },
+        { text: t('common_cancel'), style: 'cancel' },
         {
-          text: t('common_delete') || 'Eliminar',
+          text: t('common_delete'),
           style: 'destructive',
           onPress: async () => {
             try {
@@ -144,7 +144,7 @@ export default function CircleChatScreen({ navigation, route }: any) {
           <Text style={styles.headerTitle}>{circle?.emoji} {circleName}</Text>
           {circle && (
             <Text style={styles.headerSubtitle}>
-              {circle.description ? circle.description.substring(0, 60) : t('circles_chat') || 'Chat del círculo'}
+              {circle.description ? circle.description.substring(0, 60) : t('circles_chat')}
             </Text>
           )}
         </View>
@@ -179,7 +179,7 @@ export default function CircleChatScreen({ navigation, route }: any) {
         }}
         ListEmptyComponent={
           <View style={styles.emptyState}>
-            <Text style={styles.emptyText}>{t('circles_no_messages') || 'Envía el primer mensaje 💬'}</Text>
+            <Text style={styles.emptyText}>{t('circles_no_messages')}</Text>
           </View>
         }
       />
@@ -193,7 +193,7 @@ export default function CircleChatScreen({ navigation, route }: any) {
             style={styles.textInput}
             value={input}
             onChangeText={setInput}
-            placeholder={t('circles_message_placeholder') || 'Escribe un mensaje...'}
+            placeholder={t('circles_message_placeholder')}
             placeholderTextColor={colors.subtleText}
             multiline
             maxLength={1000}

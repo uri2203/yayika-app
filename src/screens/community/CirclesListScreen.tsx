@@ -154,7 +154,7 @@ export default function CirclesListScreen({ navigation }: any) {
             disabled={isJoining}
           >
             <Text style={[styles.joinBtnText, isMember && styles.joinBtnTextActive]}>
-              {isJoining ? '...' : isMember ? t('circles_joined') || 'Unido' : t('circles_join') || 'Unirse'}
+              {isJoining ? '...' : isMember ? t('circles_joined') : t('circles_join')}
             </Text>
           </TouchableOpacity>
         </View>
@@ -175,7 +175,7 @@ export default function CirclesListScreen({ navigation }: any) {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.title}>{t('circles_title') || 'Círculos'}</Text>
+        <Text style={styles.title}>{t('circles_title')}</Text>
         <TouchableOpacity style={styles.createBtn} onPress={() => navigation.navigate('CreateCircle')}>
           <Ionicons name="add" size={24} color={colors.white} />
         </TouchableOpacity>
@@ -212,7 +212,7 @@ export default function CirclesListScreen({ navigation }: any) {
         ListEmptyComponent={
           <View style={styles.emptyState}>
             <Text style={styles.emptyIcon}>💜</Text>
-            <Text style={styles.emptyText}>{t('circles_empty') || 'No hay círculos aún. ¡Crea uno!'}</Text>
+            <Text style={styles.emptyText}>{t('circles_empty')}</Text>
           </View>
         }
       />

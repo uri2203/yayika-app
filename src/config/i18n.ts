@@ -686,6 +686,10 @@ const translations: Record<Language, Record<string, string>> = {
     onboarding_start: '¡Empezar!',
     onboarding_skip: 'Saltar',
 
+    // Notifications
+    notifications_title: 'Notificaciones',
+    notifications_empty: 'No tienes notificaciones',
+
     // Multi-step Onboarding
     onboard_step: 'Paso',
     onboard_goals_title: '¿Cuáles son tus metas?',
@@ -939,11 +943,30 @@ const translations: Record<Language, Record<string, string>> = {
     challenges_checkin_error: 'Error en el check-in',
 
     // Onboarding extras
-    onboard_flow_complete_day: 'Completar día',
+    onboard_flow_complete_day: 'Completar día {day}',
 
+    // Paywall
+    paywall_title: 'Contenido Premium',
+    paywall_subtitle: '"{feature}" requiere un plan {plan}.',
+    paywall_feature_1: 'Acceso a todo el contenido',
+    paywall_feature_2: 'Retos semanales exclusivos',
+    paywall_feature_3: 'Círculos ilimitados',
+    paywall_feature_4: 'Coaching con IA avanzado',
+    paywall_upgrade: 'Actualizar a {plan}',
+    paywall_later: 'Quizás después',
+
+    // Settings (new)
+    settings_app: 'Aplicación',
+    settings_reload: 'Recargar app',
+
+    // First Week
+    first_week_title: '¡Tu primera semana!',
+    first_week_subtitle: '2x XP en todo. ¡Aprovecha!',
+    first_week_today_done: '¡Hoy completado! Vuelve mañana.',
     // Support extras
     support_mail_subject: 'Soporte Yayika',
     support_mail_body: 'Nombre:\nEmail:\nMensaje:\n',
+    support_message_label: 'Mensaje',
 
     // Completion Anxiety
     anxiety_title: 'Tareas pendientes',
@@ -953,6 +976,7 @@ const translations: Record<Language, Record<string, string>> = {
     incomplete_challenge: 'Reto incompleto',
 
     // Auth
+    auth_save_new_password: 'Guardar contraseña',
     auth_password_min_8: 'La contraseña debe tener al menos 8 caracteres',
     auth_strength_weak: 'Débil',
     auth_strength_fair: 'Regular',
@@ -1646,11 +1670,12 @@ const translations: Record<Language, Record<string, string>> = {
     challenges_checkin_error: 'Check-in failed',
 
     // Onboarding extras
-    onboard_flow_complete_day: 'Complete day',
+    onboard_flow_complete_day: 'Complete day {day}',
 
     // Support extras
     support_mail_subject: 'Yayika Support',
     support_mail_body: 'Name:\nEmail:\nMessage:\n',
+    support_message_label: 'Message',
 
     // Legal
     legal_title: 'Legal',
@@ -1715,6 +1740,10 @@ const translations: Record<Language, Record<string, string>> = {
     onboarding_start: 'Get started!',
     onboarding_skip: 'Skip',
     onboarding_back: 'Back',
+
+    // Notifications
+    notifications_title: 'Notifications',
+    notifications_empty: 'You have no notifications',
 
     // Multi-step Onboarding
     onboard_step: 'Step',
@@ -1788,6 +1817,25 @@ const translations: Record<Language, Record<string, string>> = {
     // Settings
     settings_country_code: 'Country code',
     settings_city: 'City',
+
+    // Paywall
+    paywall_title: 'Premium Content',
+    paywall_subtitle: '"{feature}" requires a {plan} plan.',
+    paywall_feature_1: 'Access to all content',
+    paywall_feature_2: 'Exclusive weekly challenges',
+    paywall_feature_3: 'Unlimited circles',
+    paywall_feature_4: 'Advanced AI coaching',
+    paywall_upgrade: 'Upgrade to {plan}',
+    paywall_later: 'Maybe later',
+
+    // Settings (new)
+    settings_app: 'App',
+    settings_reload: 'Reload app',
+
+    // First Week
+    first_week_title: 'Your first week!',
+    first_week_subtitle: '2x XP on everything. Take advantage!',
+    first_week_today_done: 'Done today! Come back tomorrow.',
 
     // Affiliate
     aff_title: 'Affiliate Program',
@@ -1938,6 +1986,7 @@ const translations: Record<Language, Record<string, string>> = {
     incomplete_challenge: 'Incomplete challenge',
 
     // Auth
+    auth_save_new_password: 'Save password',
     auth_password_min_8: 'Password must be at least 8 characters',
     auth_strength_weak: 'Weak',
     auth_strength_fair: 'Fair',
@@ -2564,11 +2613,12 @@ const translations: Record<Language, Record<string, string>> = {
     challenges_checkin_error: 'Erro no check-in',
 
     // Onboarding extras
-    onboard_flow_complete_day: 'Completar dia',
+    onboard_flow_complete_day: 'Completar dia {day}',
 
     // Support extras
     support_mail_subject: 'Suporte Yayika',
     support_mail_body: 'Nome:\nEmail:\nMensagem:\n',
+    support_message_label: 'Mensagem',
 
     // Legal
     legal_title: 'Legal',
@@ -2633,6 +2683,10 @@ const translations: Record<Language, Record<string, string>> = {
     onboarding_start: 'Começar!',
     onboarding_skip: 'Pular',
 
+    // Notifications
+    notifications_title: 'Notificações',
+    notifications_empty: 'Você não tem notificações',
+
     // Splash
     splash_subtitle: 'Sua plataforma de produtos digitais',
 
@@ -2655,6 +2709,25 @@ const translations: Record<Language, Record<string, string>> = {
     // Settings
     settings_country_code: 'Código do país',
     settings_city: 'Cidade',
+
+    // Paywall
+    paywall_title: 'Conteúdo Premium',
+    paywall_subtitle: '"{feature}" requer um plano {plan}.',
+    paywall_feature_1: 'Acesso a todo o conteúdo',
+    paywall_feature_2: 'Desafios semanais exclusivos',
+    paywall_feature_3: 'Círculos ilimitados',
+    paywall_feature_4: 'Coaching com IA avançado',
+    paywall_upgrade: 'Atualizar para {plan}',
+    paywall_later: 'Talvez depois',
+
+    // Settings (new)
+    settings_app: 'Aplicativo',
+    settings_reload: 'Recarregar app',
+
+    // First Week
+    first_week_title: 'Sua primeira semana!',
+    first_week_subtitle: '2x XP em tudo. Aproveite!',
+    first_week_today_done: 'Feito hoje! Volte amanhã.',
 
     // Affiliate
     aff_title: 'Programa de Afiliadas',
@@ -2925,6 +2998,7 @@ const translations: Record<Language, Record<string, string>> = {
     incomplete_challenge: 'Desafio incompleto',
 
     // Auth
+    auth_save_new_password: 'Salvar senha',
     auth_password_min_8: 'A senha deve ter pelo menos 8 caracteres',
     auth_strength_weak: 'Fraca',
     auth_strength_fair: 'Regular',
@@ -2936,14 +3010,14 @@ const translations: Record<Language, Record<string, string>> = {
     lang_code: 'pt',
 
     // Streak Insurance
-    insurance_title: 'Seguro de Sequencia',
-    insurance_inventory: 'Inventario',
+    insurance_title: 'Seguro de Sequência',
+    insurance_inventory: 'Inventário',
     insurance_freeze: 'Congelamento',
     insurance_shields: 'Escudos',
     insurance_plans: 'Planos',
-    insurance_shield_desc: 'Protege sua sequencia de 1 dia de falha',
-    insurance_freeze_desc: 'Congele sua sequencia por 1 dia sem atividade',
-    insurance_info: 'Seu seguro protege suas sequencias contra falhas inesperadas',
+    insurance_shield_desc: 'Protege sua sequência de 1 dia de falha',
+    insurance_freeze_desc: 'Congele sua sequência por 1 dia sem atividade',
+    insurance_info: 'Seu seguro protege suas sequências contra falhas inesperadas',
     insurance_confirm_title: 'Confirmar compra',
     insurance_success_title: 'Compra bem-sucedida!',
     insurance_error_title: 'Erro na compra',
@@ -3505,7 +3579,7 @@ const translations: Record<Language, Record<string, string>> = {
     onboarding_step1_cycle: 'Suivre mon cycle',
     onboarding_step1_wellness: 'Bien-être général',
     onboarding_step1_growth: 'Développement personnel',
-    onboarding_step2_title: 'Dans quelle phase de votre cycle êtes-vous?',
+    onboarding_step2_title: 'Dans quelle phase de ton cycle es-tu ?',
     onboarding_step3_title: 'Votre situation financière',
     onboarding_step3_income: 'Tranche de revenus',
     onboarding_step4_title: 'Notifications',
@@ -3551,11 +3625,12 @@ const translations: Record<Language, Record<string, string>> = {
     challenges_checkin_error: 'Echec du check-in',
 
     // Onboarding extras
-    onboard_flow_complete_day: 'Completer le jour',
+    onboard_flow_complete_day: 'Compléter le jour {day}',
 
     // Support extras
     support_mail_subject: 'Support Yayika',
     support_mail_body: 'Nom:\nEmail:\nMessage:\n',
+    support_message_label: 'Message',
 
     // Legal
     legal_title: 'Juridique',
@@ -3620,6 +3695,10 @@ const translations: Record<Language, Record<string, string>> = {
     onboarding_start: 'Commencer !',
     onboarding_skip: 'Passer',
 
+    // Notifications
+    notifications_title: 'Notifications',
+    notifications_empty: 'Tu n\'as pas de notifications',
+
     // Splash
     splash_subtitle: 'Ta plateforme de produits numériques',
 
@@ -3642,6 +3721,25 @@ const translations: Record<Language, Record<string, string>> = {
     // Settings
     settings_country_code: 'Code du pays',
     settings_city: 'Ville',
+
+    // Paywall
+    paywall_title: 'Contenu Premium',
+    paywall_subtitle: '"{feature}" nécessite un forfait {plan}.',
+    paywall_feature_1: 'Accès à tout le contenu',
+    paywall_feature_2: 'Défis hebdomadaires exclusifs',
+    paywall_feature_3: 'Cercles illimités',
+    paywall_feature_4: 'Coaching IA avancé',
+    paywall_upgrade: 'Passer au {plan}',
+    paywall_later: 'Peut-être plus tard',
+
+    // Settings (new)
+    settings_app: 'Application',
+    settings_reload: 'Recharger l\'app',
+
+    // First Week
+    first_week_title: 'Ta première semaine !',
+    first_week_subtitle: '2x XP sur tout. Profites-en !',
+    first_week_today_done: 'Fait aujourd\'hui ! Reviens demain.',
 
     // Affiliate
     aff_title: 'Programme d\'Affiliation',
@@ -3912,6 +4010,7 @@ const translations: Record<Language, Record<string, string>> = {
     incomplete_challenge: 'Défi incomplet',
 
     // Auth
+    auth_save_new_password: 'Enregistrer le mot de passe',
     auth_password_min_8: 'Le mot de passe doit contenir au moins 8 caractères',
     auth_strength_weak: 'Faible',
     auth_strength_fair: 'Passable',
@@ -4538,11 +4637,12 @@ const translations: Record<Language, Record<string, string>> = {
     challenges_checkin_error: 'Check-in fehlgeschlagen',
 
     // Onboarding extras
-    onboard_flow_complete_day: 'Tag abschlie\u00dfen',
+    onboard_flow_complete_day: 'Tag {day} abschließen',
 
     // Support extras
     support_mail_subject: 'Yayika Support',
     support_mail_body: 'Name:\nEmail:\nNachricht:\n',
+    support_message_label: 'Nachricht',
 
     // Legal
     legal_title: 'Rechtliches',
@@ -4607,6 +4707,10 @@ const translations: Record<Language, Record<string, string>> = {
     onboarding_start: 'Loslegen!',
     onboarding_skip: 'Überspringen',
 
+    // Notifications
+    notifications_title: 'Benachrichtigungen',
+    notifications_empty: 'Du hast keine Benachrichtigungen',
+
     // Splash
     splash_subtitle: 'Deine Plattform für digitale Produkte',
 
@@ -4629,6 +4733,25 @@ const translations: Record<Language, Record<string, string>> = {
     // Settings
     settings_country_code: 'Ländercode',
     settings_city: 'Stadt',
+
+    // Paywall
+    paywall_title: 'Premium-Inhalte',
+    paywall_subtitle: '"{feature}" erfordert einen {plan}-Plan.',
+    paywall_feature_1: 'Zugriff auf alle Inhalte',
+    paywall_feature_2: 'Exklusive Wochenchallenges',
+    paywall_feature_3: 'Unbegrenzte Kreise',
+    paywall_feature_4: 'Erweitertes KI-Coaching',
+    paywall_upgrade: 'Upgrade auf {plan}',
+    paywall_later: 'Vielleicht später',
+
+    // Settings (new)
+    settings_app: 'App',
+    settings_reload: 'App neu laden',
+
+    // First Week
+    first_week_title: 'Deine erste Woche!',
+    first_week_subtitle: '2x XP bei allem. Nutze es!',
+    first_week_today_done: 'Heute geschafft! Komm morgen wieder.',
 
     // Affiliate
     aff_title: 'Affiliate-Programm',
@@ -4899,6 +5022,7 @@ const translations: Record<Language, Record<string, string>> = {
     incomplete_challenge: 'Unvollständige Challenge',
 
     // Auth
+    auth_save_new_password: 'Passwort speichern',
     auth_password_min_8: 'Passwort muss mindestens 8 Zeichen lang sein',
     auth_strength_weak: 'Schwach',
     auth_strength_fair: 'Mäßig',

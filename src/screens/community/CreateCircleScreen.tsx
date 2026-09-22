@@ -77,7 +77,7 @@ export default function CreateCircleScreen({ navigation }: any) {
 
   const handleCreate = async () => {
     if (!name.trim()) {
-      Alert.alert('', t('circles_name_required') || 'Ingresa un nombre para el círculo');
+      Alert.alert('', t('circles_name_required'));
       return;
     }
     try {
@@ -105,29 +105,29 @@ export default function CreateCircleScreen({ navigation }: any) {
           <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
             <Ionicons name="arrow-back" size={24} color={colors.text} />
           </TouchableOpacity>
-          <Text style={styles.title}>{t('circles_create') || 'Crear Círculo'}</Text>
+          <Text style={styles.title}>{t('circles_create')}</Text>
           <View style={{ width: 32 }} />
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.label}>{t('circles_name') || 'Nombre'}</Text>
+          <Text style={styles.label}>{t('circles_name')}</Text>
           <TextInput
             style={styles.input}
             value={name}
             onChangeText={setName}
-            placeholder={t('circles_name_placeholder') || 'Ej: Mamás Emprendedoras'}
+            placeholder={t('circles_name_placeholder')}
             placeholderTextColor={colors.subtleText}
             maxLength={50}
           />
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.label}>{t('circles_description') || 'Descripción'}</Text>
+          <Text style={styles.label}>{t('circles_description')}</Text>
           <TextInput
             style={[styles.input, styles.textArea]}
             value={description}
             onChangeText={setDescription}
-            placeholder={t('circles_description_placeholder') || '¿De qué trata este círculo?'}
+            placeholder={t('circles_description_placeholder')}
             placeholderTextColor={colors.subtleText}
             multiline
             maxLength={200}
@@ -135,7 +135,7 @@ export default function CreateCircleScreen({ navigation }: any) {
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.label}>{t('circles_emoji') || 'Emoji'}</Text>
+          <Text style={styles.label}>{t('circles_emoji')}</Text>
           <View style={styles.emojiGrid}>
             {EMOJIS.map(e => (
               <TouchableOpacity
@@ -150,7 +150,7 @@ export default function CreateCircleScreen({ navigation }: any) {
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.label}>{t('circles_category') || 'Categoría'}</Text>
+          <Text style={styles.label}>{t('circles_category')}</Text>
           <View style={styles.categoryRow}>
             {CATEGORIES.map(cat => (
               <TouchableOpacity
@@ -159,7 +159,7 @@ export default function CreateCircleScreen({ navigation }: any) {
                 onPress={() => setCategory(cat)}
               >
                 <Text style={[styles.categoryText, category === cat && styles.categoryTextActive]}>
-                  {t('circles_cat_' + cat) || cat}
+                  {t('circles_cat_' + cat)}
                 </Text>
               </TouchableOpacity>
             ))}
@@ -167,7 +167,7 @@ export default function CreateCircleScreen({ navigation }: any) {
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.label}>{t('circles_max_members') || 'Máx. miembros'}</Text>
+          <Text style={styles.label}>{t('circles_max_members')}</Text>
           <TextInput
             style={styles.input}
             value={maxMembers}
@@ -183,7 +183,7 @@ export default function CreateCircleScreen({ navigation }: any) {
             style={styles.toggleRow}
             onPress={() => setIsPrivate(!isPrivate)}
           >
-            <Text style={styles.toggleLabel}>{t('circles_private') || 'Círculo privado'}</Text>
+            <Text style={styles.toggleLabel}>{t('circles_private')}</Text>
             <View style={[styles.toggle, isPrivate ? styles.toggleOn : styles.toggleOff]}>
               <View style={styles.toggleDot} />
             </View>
@@ -198,7 +198,7 @@ export default function CreateCircleScreen({ navigation }: any) {
           {saving ? (
             <ActivityIndicator color={colors.white} />
           ) : (
-            <Text style={styles.saveBtnText}>{t('circles_create_btn') || 'Crear Círculo'}</Text>
+            <Text style={styles.saveBtnText}>{t('circles_create_btn')}</Text>
           )}
         </TouchableOpacity>
       </ScrollView>

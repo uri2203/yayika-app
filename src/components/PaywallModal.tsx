@@ -30,30 +30,29 @@ export default function PaywallModal({ visible, onClose, onUpgrade, featureName,
           </View>
           
           <Text style={[styles.title, { color: colors.text }]}>
-            {t('paywall_title') || 'Contenido Premium'}
+            {t('paywall_title')}
           </Text>
           
           <Text style={[styles.subtitle, { color: colors.textSecondary }]}>
-            {t('paywall_subtitle')?.replace('{feature}', featureName) || 
-             `"${featureName}" requiere un plan ${requiredPlan}.`}
+            {t('paywall_subtitle', { feature: featureName, plan: requiredPlan })}
           </Text>
 
           <View style={styles.features}>
-            <FeatureRow icon="checkmark-circle" text={t('paywall_feature_1') || 'Acceso a todo el contenido'} color={colors.rose} textColor={colors.text} />
-            <FeatureRow icon="checkmark-circle" text={t('paywall_feature_2') || 'Retos semanales exclusivos'} color={colors.rose} textColor={colors.text} />
-            <FeatureRow icon="checkmark-circle" text={t('paywall_feature_3') || 'Círculos ilimitados'} color={colors.rose} textColor={colors.text} />
-            <FeatureRow icon="checkmark-circle" text={t('paywall_feature_4') || 'Coaching con IA avanzado'} color={colors.rose} textColor={colors.text} />
+            <FeatureRow icon="checkmark-circle" text={t('paywall_feature_1')} color={colors.rose} textColor={colors.text} />
+            <FeatureRow icon="checkmark-circle" text={t('paywall_feature_2')} color={colors.rose} textColor={colors.text} />
+            <FeatureRow icon="checkmark-circle" text={t('paywall_feature_3')} color={colors.rose} textColor={colors.text} />
+            <FeatureRow icon="checkmark-circle" text={t('paywall_feature_4')} color={colors.rose} textColor={colors.text} />
           </View>
 
           <TouchableOpacity style={[styles.upgradeBtn, { backgroundColor: colors.rose }]} onPress={onUpgrade}>
             <Text style={[styles.upgradeBtnText, { color: colors.white }]}>
-              {t('paywall_upgrade') || `Upgrade a ${requiredPlan}`}
+              {t('paywall_upgrade', { plan: requiredPlan })}
             </Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.laterBtn} onPress={onClose}>
             <Text style={[styles.laterBtnText, { color: colors.textSecondary }]}>
-              {t('paywall_later') || 'Quizás después'}
+              {t('paywall_later')}
             </Text>
           </TouchableOpacity>
         </View>

@@ -8,7 +8,7 @@ import { getTransformHistory, TransformMonth } from '../../config/retention';
 
 export default function TransformMirror() {
   const { currentColors } = useTheme();
-  const { t, language } = useLanguage();
+  const { t, lang } = useLanguage();
   const colors = currentColors;
   const [history, setHistory] = useState<TransformMonth[]>([]);
   const [loading, setLoading] = useState(true);
@@ -90,7 +90,7 @@ export default function TransformMirror() {
           {history.slice(1, 4).map((month, index) => (
             <View key={index} style={[styles.historyCard, { backgroundColor: colors.background }]}>
               <Text style={[styles.historyMonth, { color: colors.subtleText }]}>
-                {new Date(month.month_date).toLocaleDateString(language, { month: 'short', year: 'numeric' })}
+                {new Date(month.month_date).toLocaleDateString(lang, { month: 'short', year: 'numeric' })}
               </Text>
               <Text style={[styles.historyXP, { color: colors.text }]}>{month.data_snapshot?.xp || 0} {t('common_xp_unit')}</Text>
               <Text style={[styles.historyBadges, { color: colors.subtleText }]}>{month.data_snapshot?.badges || 0} {t('home_my_badges').toLowerCase()}</Text>

@@ -366,7 +366,7 @@ export default function PostDetailScreen({ navigation, route }: PostDetailScreen
           ListEmptyComponent={
             <View style={styles.emptyComments}>
               <Ionicons name="chatbubbles-outline" size={40} color={colors.border} />
-              <Text style={styles.emptyText}>{t('community_first_comment') || 'Sé el primero en comentar'}</Text>
+              <Text style={styles.emptyText}>{t('community_first_comment')}</Text>
             </View>
           }
           ListFooterComponent={
@@ -401,7 +401,7 @@ export default function PostDetailScreen({ navigation, route }: PostDetailScreen
       {reportModalVisible && (
         <View style={[styles.modalOverlay, { backgroundColor: colors.overlay }]}>
           <View style={styles.reportModalContent}>
-            <Text style={styles.reportModalTitle}>{t('community_report_post') || 'Reportar publicación'}</Text>
+            <Text style={styles.reportModalTitle}>{t('community_report_post')}</Text>
             {[
               { key: 'spam', label: t('community_report_spam')  },
               { key: 'inappropriate', label: t('community_report_inappropriate')  },

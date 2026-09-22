@@ -114,7 +114,7 @@ export default function ResetPasswordScreen({ navigation }: any) {
             )}
 
             <Button
-              title={t('auth_reset_new_password_title')}
+              title={t('auth_save_new_password')}
               onPress={handleUpdatePassword}
               loading={loading}
             />

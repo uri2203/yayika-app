@@ -692,7 +692,7 @@ export default function PortalDashboard({ navigation }: any) {
                     size={12}
                     color={colors.white}
                   />
-                  <Text style={styles.phaseText}>{cyclePhase}</Text>
+                  <Text style={styles.phaseText}>{t(`cycle_phase_${cyclePhase}`) || cyclePhase}</Text>
                 </View>
               ) : (
                 <View style={[styles.phaseBadge, { backgroundColor: colors.border }]}>
@@ -716,7 +716,7 @@ export default function PortalDashboard({ navigation }: any) {
           <View style={styles.xpHeader}>
             <View style={styles.xpLeft}>
               <Ionicons name="star" size={20} color={colors.gold} />
-              <Text style={styles.xpValue}>{xpTotal} XP</Text>
+              <Text style={styles.xpValue}>{xpTotal} {t('common_xp_unit')}</Text>
             </View>
             <Text style={styles.xpLevel}>{t('home_level')} {level}</Text>
           </View>
@@ -759,7 +759,7 @@ export default function PortalDashboard({ navigation }: any) {
             <View style={styles.cycleInfo}>
               <Text style={styles.cycleTitle}>{t('home_my_cycle')}</Text>
               <Text style={styles.cyclePhase}>
-                {cyclePhase ? cyclePhase.charAt(0).toUpperCase() + cyclePhase.slice(1) : t('cycle_phase_unknown')}
+                {cyclePhase ? t(`cycle_phase_${cyclePhase}`) || cyclePhase.charAt(0).toUpperCase() + cyclePhase.slice(1) : t('cycle_phase_unknown')}
               </Text>
             </View>
             {energyLevel !== null && (
@@ -854,7 +854,7 @@ export default function PortalDashboard({ navigation }: any) {
                     </Text>
                   </View>
                   <View style={styles.challengeXpBadge}>
-                    <Text style={styles.challengeXpText}>+{challenge.xp_reward} XP</Text>
+                    <Text style={styles.challengeXpText}>+{challenge.xp_reward} {t('common_xp_unit')}</Text>
                   </View>
                 </View>
                 <View style={styles.challengeBar}>

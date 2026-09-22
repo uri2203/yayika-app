@@ -112,7 +112,7 @@ export default function SupportScreen({ navigation }: any) {
               autoCapitalize="none"
             />
 
-            <Text style={[styles.formLabel, { color: colors.subtleText }]}>{t('support_title')}</Text>
+            <Text style={[styles.formLabel, { color: colors.subtleText }]}>{t('support_message_label')}</Text>
             <TextInput
               style={[styles.formInput, styles.formTextarea, { color: colors.text, borderColor: colors.border, backgroundColor: colors.background }]}
               value={formMessage}

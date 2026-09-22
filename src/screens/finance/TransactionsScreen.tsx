@@ -321,7 +321,7 @@ export default function TransactionsScreen({ navigation, route }: TransactionsSc
             </View>
 
             <Text style={styles.inputLabel}>{t('finance_amount') }</Text>
-            <TextInput style={styles.input} placeholder="$0.00" keyboardType="numeric" value={newAmount} onChangeText={setNewAmount} />
+            <TextInput style={styles.input} placeholder={t('finance_amount_placeholder')} keyboardType="numeric" value={newAmount} onChangeText={setNewAmount} />
 
             <Text style={styles.inputLabel}>{t('finance_category') }</Text>
             <TextInput style={styles.input} placeholder={t('finance_category_placeholder') } value={newCategory} onChangeText={setNewCategory} />
@@ -330,7 +330,7 @@ export default function TransactionsScreen({ navigation, route }: TransactionsSc
             <TextInput style={styles.input} placeholder={t('finance_description_placeholder') } value={newDescription} onChangeText={setNewDescription} />
 
             <Text style={styles.inputLabel}>{t('finance_date') }</Text>
-            <TextInput style={styles.input} placeholder="YYYY-MM-DD" value={newDate} onChangeText={setNewDate} />
+            <TextInput style={styles.input} placeholder={t('finance_date_placeholder')} value={newDate} onChangeText={setNewDate} />
 
             <TouchableOpacity
               style={styles.saveButton}

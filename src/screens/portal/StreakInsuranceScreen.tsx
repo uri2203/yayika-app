@@ -66,16 +66,16 @@ export default function StreakInsuranceScreen({ navigation }: any) {
       if (error) throw error;
 
       Alert.alert(
-        t('insurance_success_title') || '¡Compra exitosa!',
-        data?.message || 'Se agregó a tu inventario',
+        t('insurance_success_title'),
+        data?.message || t('insurance_success_title'),
         [{ text: 'OK' }]
       );
       
       await loadData(); // Refresh inventory
     } catch (error: any) {
       Alert.alert(
-        t('insurance_error_title') || 'Error',
-        error.message || 'No se pudo completar la compra',
+        t('insurance_error_title'),
+        error.message || t('insurance_error_title'),
         [{ text: 'OK' }]
       );
     } finally {
@@ -86,11 +86,11 @@ export default function StreakInsuranceScreen({ navigation }: any) {
   const confirmPurchase = (plan: InsurancePlan) => {
     const price = (plan.priceCents / 100).toFixed(2);
     Alert.alert(
-      t('insurance_confirm_title') || '¿Comprar?',
+      t('insurance_confirm_title'),
       `${plan.title}\n$${price} USD`,
       [
-        { text: t('common_cancel') || 'Cancelar', style: 'cancel' },
-        { text: t('common_buy') || 'Comprar', onPress: () => purchasePlan(plan.id) },
+        { text: t('common_cancel'), style: 'cancel' },
+        { text: t('common_buy'), onPress: () => purchasePlan(plan.id) },
       ]
     );
   };
@@ -142,7 +142,7 @@ export default function StreakInsuranceScreen({ navigation }: any) {
           <Ionicons name="arrow-back" size={24} color={colors.text} />
         </TouchableOpacity>
         <Text style={[styles.headerTitle, { color: colors.text }]}>
-          {t('insurance_title') || 'Seguro de Racha'}
+          {t('insurance_title')}
         </Text>
         <View style={{ width: 24 }} />
       </View>
@@ -150,21 +150,21 @@ export default function StreakInsuranceScreen({ navigation }: any) {
       {/* Inventory */}
       <Card style={styles.inventoryCard}>
         <Text style={[styles.inventoryTitle, { color: colors.text }]}>
-          {t('insurance_inventory') || 'Tu Inventario'}
+          {t('insurance_inventory')}
         </Text>
         <View style={styles.inventoryRow}>
           <View style={styles.inventoryItem}>
             <Text style={styles.inventoryIcon}>❄️</Text>
             <Text style={[styles.inventoryCount, { color: colors.text }]}>{inventory.freeze_days}</Text>
             <Text style={[styles.inventoryLabel, { color: colors.textSecondary }]}>
-              {t('insurance_freeze') || 'Pausas'}
+              {t('insurance_freeze')}
             </Text>
           </View>
           <View style={styles.inventoryItem}>
             <Text style={styles.inventoryIcon}>🛡️</Text>
             <Text style={[styles.inventoryCount, { color: colors.text }]}>{inventory.shields}</Text>
             <Text style={[styles.inventoryLabel, { color: colors.textSecondary }]}>
-              {t('insurance_shields') || 'Escudos'}
+              {t('insurance_shields')}
             </Text>
           </View>
         </View>
@@ -172,7 +172,7 @@ export default function StreakInsuranceScreen({ navigation }: any) {
 
       {/* Plans */}
       <Text style={[styles.sectionTitle, { color: colors.text }]}>
-        {t('insurance_plans') || 'Planes Disponibles'}
+        {t('insurance_plans')}
       </Text>
       
       {plans.map((plan) => (
@@ -184,8 +184,8 @@ export default function StreakInsuranceScreen({ navigation }: any) {
               </Text>
               <Text style={[styles.planDesc, { color: colors.textSecondary }]}>
                 {plan.isShield
-                  ? (t('insurance_shield_desc') || 'Protege tu racha automáticamente')
-                  : (t('insurance_freeze_desc') || `${plan.days} día(s) de pausa`)}
+                  ? t('insurance_shield_desc')
+                  : t('insurance_freeze_desc')}
               </Text>
             </View>
             <View style={styles.planRight}>
@@ -201,7 +201,7 @@ export default function StreakInsuranceScreen({ navigation }: any) {
                   <ActivityIndicator size="small" color={colors.white} />
                 ) : (
                   <Text style={styles.buyButtonText}>
-                    {t('common_buy') || 'Comprar'}
+                    {t('common_buy')}
                   </Text>
                 )}
               </TouchableOpacity>
@@ -214,7 +214,7 @@ export default function StreakInsuranceScreen({ navigation }: any) {
       <Card style={styles.infoCard}>
         <Ionicons name="information-circle" size={20} color={colors.primary} />
         <Text style={[styles.infoText, { color: colors.textSecondary }]}>
-          {t('insurance_info') || 'Las pausas se usan automáticamente cuando pierdes un día de racha. Los escudos protegen tu racha actual.'}
+          {t('insurance_info')}
         </Text>
       </Card>
     </SafeAreaView>
