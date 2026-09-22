@@ -14,6 +14,7 @@ import { typography, spacing, borderRadius } from '../../config/theme';
 import { useTheme } from '../../contexts/ThemeContext';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { useAuth } from '../../contexts/AuthContext';
+import HealthDisclaimer from '../../components/HealthDisclaimer';
 import {
   getCycleLog,
   upsertCycleLog,
@@ -471,6 +472,8 @@ export default function CycleLogScreen({ navigation }: any) {
           <Text style={styles.title}>{t('cycle_log_title') }</Text>
           <Text style={styles.subtitle}>{t('cycle_log_subtitle') }</Text>
         </View>
+
+        <HealthDisclaimer type="health" />
 
         {loading ? (
           <ActivityIndicator size="large" color={colors.primary} style={{ marginVertical: 40 }} />

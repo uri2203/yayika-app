@@ -6,6 +6,7 @@ import { typography, spacing, borderRadius } from '../../config/theme';
 import { useTheme } from '../../contexts/ThemeContext';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { useAuth } from '../../contexts/AuthContext';
+import HealthDisclaimer from '../../components/HealthDisclaimer';
 import { getTransactions } from '../../config/api';
 import { Language } from '../../config/i18n';
 
@@ -188,6 +189,8 @@ export default function FinanceDashboardScreen({ navigation }: any) {
           <Text style={styles.title}>{t('finance_title') }</Text>
           <View style={{ width: 32 }} />
         </View>
+
+        <HealthDisclaimer type="finance" />
 
         <View style={styles.incomeCard}>
           <Text style={styles.incomeLabel}>{t('finance_income') }</Text>

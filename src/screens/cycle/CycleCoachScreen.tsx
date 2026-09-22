@@ -13,6 +13,7 @@ import { typography, spacing, borderRadius } from '../../config/theme';
 import { useTheme } from '../../contexts/ThemeContext';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { useAuth } from '../../contexts/AuthContext';
+import HealthDisclaimer from '../../components/HealthDisclaimer';
 import { aiCycleCoach, getDailyMood, getCycleLog } from '../../config/api';
 
 function getPhaseColor(phase: string, colors: any): string {
@@ -286,6 +287,8 @@ export default function CycleCoachScreen({ navigation }: any) {
           <Text style={styles.title}>{t('cycle_coach_title') }</Text>
           <Text style={styles.subtitle}>{t('cycle_coach_subtitle') }</Text>
         </View>
+
+        <HealthDisclaimer type="ai" />
 
         {loading ? (
           <ActivityIndicator size="large" color={colors.primary} style={{ marginVertical: 40 }} />

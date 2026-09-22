@@ -28,6 +28,10 @@ import DailySurprise from '../../components/DailySurprise';
 import PaywallModal from '../../components/PaywallModal';
 import WisdomExchangeCard from '../../components/WisdomExchangeCard';
 import GrowthReflectionCard from '../../components/GrowthReflectionCard';
+import DailyDesireCard from '../../components/DailyDesireCard';
+import SurpriseInsightCard from '../../components/SurpriseInsightCard';
+import EmotionalCheckin from '../../components/EmotionalCheckin';
+import HealthDisclaimer from '../../components/HealthDisclaimer';
 import {
   getProgress,
   getProfile,
@@ -753,18 +757,14 @@ export default function PortalDashboard({ navigation }: any) {
         {/* Daily Surprise */}
         <DailySurprise />
 
+        {/* Emotional Checkin - once per day */}
+        <EmotionalCheckin cyclePhase={(cyclePhase as any) || 'unknown'} onOpenChat={() => navigation.navigate('EmpatheticChat')} />
+
         {/* Daily Desire Card - Empowering Content */}
-        {affirmation ? (
-          <Card style={styles.desireCard}>
-            <View style={styles.desireHeader}>
-              <Ionicons name="heart" size={20} color={colors.rose} />
-              <Text style={[styles.desireTitle, { color: colors.text }]}>
-                {t('home_affirmation')}
-              </Text>
-            </View>
-            <Text style={[styles.desireText, { color: colors.text }]}>{affirmation}</Text>
-          </Card>
-        ) : null}
+        <DailyDesireCard cyclePhase={(cyclePhase as any) || 'unknown'} />
+
+        {/* Surprise Insight */}
+        <SurpriseInsightCard />
 
         {/* Growth Reflection */}
         <GrowthReflectionCard />
