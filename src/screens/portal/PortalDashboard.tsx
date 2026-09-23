@@ -38,9 +38,14 @@ import {
   aiAffirmations,
   aiWeeklyChallenges,
   getCommunityFeed,
-  stripeMarketplaceCheckout,
   getSubscriptions,
 } from '../../config/api';
+
+const MEMBERSHIP_PAYMENT_LINKS: Record<string, string> = {
+  semilla: 'https://buy.stripe.com/00wcN502q0xY2481elgA80f',
+  guerrera: 'https://buy.stripe.com/14A4gzeXk0xY4cg3mtgA80g',
+  diamante: 'https://buy.stripe.com/cNi9ATdTgfsSbEI4qxgA80h',
+};
 
 interface CommunityPost {
   id: string;
@@ -206,13 +211,9 @@ export default function PortalDashboard({ navigation }: any) {
   const handleUpgrade = async () => {
     setPaywallVisible(false);
     try {
-      const result = await stripeMarketplaceCheckout({
-        tier: 'guerrera',
-        success_url: 'yayika://',
-        cancel_url: 'yayika://',
-      });
-      if (result?.url) {
-        Linking.openURL(result.url);
+      const url = MEMBERSHIP_PAYMENT_LINKS.guerrera;
+      if (url) {
+        await Linking.openURL(url);
       }
     } catch (e) {
       console.log('Checkout error:', e);
