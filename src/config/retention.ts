@@ -21,6 +21,10 @@ async function callRetentionFunction<T = any>(name: string, body: Record<string,
     body: JSON.stringify(body),
   });
 
+  if (!res.ok) {
+    throw new Error(`Retention function ${name} failed: ${res.status}`);
+  }
+
   return await res.json();
 }
 

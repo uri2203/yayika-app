@@ -46,7 +46,7 @@ interface EmotionalCheckinProps {
 
 export default function EmotionalCheckin({ cyclePhase, onOpenChat }: EmotionalCheckinProps) {
   const { t, lang } = useLanguage();
-  const { currentColors, isDark } = useTheme();
+  const { currentColors } = useTheme();
   const { user } = useAuth();
   const colors = currentColors;
 
@@ -136,7 +136,7 @@ export default function EmotionalCheckin({ cyclePhase, onOpenChat }: EmotionalCh
             activeOpacity={0.8}
           >
             <Ionicons name="chatbubble-ellipses" size={18} color="#FFFFFF" />
-            <Text style={styles.chatButtonText}>Habla con Laura</Text>
+            <Text style={styles.chatButtonText}>{t('empathetic_chat_title')}</Text>
           </TouchableOpacity>
         )}
       </View>
@@ -146,7 +146,7 @@ export default function EmotionalCheckin({ cyclePhase, onOpenChat }: EmotionalCh
   return (
     <View style={[styles.container, { backgroundColor: colors.card, borderColor: colors.border }]}>
       <Text style={[styles.title, { color: colors.text }]}>{t('empathetic_mood_check')}</Text>
-      <Text style={[styles.subtitle, { color: colors.subtleText }]}>¿Cómo te sientes ahora?</Text>
+      <Text style={[styles.subtitle, { color: colors.subtleText }]}>{t('empathetic_mood_check_now')}</Text>
       <View style={styles.moodGrid}>
         {MOOD_OPTIONS.map((mood, index) => (
           <TouchableOpacity
@@ -154,7 +154,7 @@ export default function EmotionalCheckin({ cyclePhase, onOpenChat }: EmotionalCh
             style={[
               styles.moodItem,
               {
-                backgroundColor: isDark ? colors.background : '#F9F7FC',
+                backgroundColor: colors.background,
                 borderColor: colors.border,
               },
               selectedMood === mood.key && {

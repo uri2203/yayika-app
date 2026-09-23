@@ -35,7 +35,7 @@ export async function registerForPushNotifications(): Promise<string | null> {
   // Save token to database
   const { data: { user } } = await supabase.auth.getUser();
   if (user) {
-    await supabase.from('push_tokens').upsert(
+    const { error } = await supabase.from('yayika_push_tokens').upsert(
       {
         user_id: user.id,
         expo_push_token: token.data,
@@ -44,6 +44,7 @@ export async function registerForPushNotifications(): Promise<string | null> {
       },
       { onConflict: 'user_id' }
     );
+    if (error) throw error;
   }
 
   // Android notification channel
@@ -61,7 +62,8 @@ export async function registerForPushNotifications(): Promise<string | null> {
 export async function unregisterPushNotifications(): Promise<void> {
   const { data: { user } } = await supabase.auth.getUser();
   if (user) {
-    await supabase.from('push_tokens').delete().eq('user_id', user.id);
+    const { error } = await supabase.from('yayika_push_tokens').delete().eq('user_id', user.id);
+    if (error) throw error;
   }
 }
 

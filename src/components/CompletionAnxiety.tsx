@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { View, Text, StyleSheet, Animated, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useLanguage } from '../contexts/LanguageContext';
@@ -28,11 +28,13 @@ export default function CompletionAnxiety({ onItemPress }: CompletionAnxietyProp
   
   const [incompleteItems, setIncompleteItems] = useState<IncompleteItem[]>([]);
   const [dismissed, setDismissed] = useState<string[]>([]);
-  const pulseAnim = new Animated.Value(1);
+  const pulseAnim = useRef(new Animated.Value(1)).current;
 
   useEffect(() => {
     if (!user) return;
-    
+    let cancelled = false;
+    let pulse: { stop: () => void } | null = null;
+
     const loadIncomplete = async () => {
       const items: IncompleteItem[] = [];
       
@@ -60,20 +62,20 @@ export default function CompletionAnxiety({ onItemPress }: CompletionAnxietyProp
       // Check incomplete challenges
       const { data: challenges } = await supabase
         .from('yayika_user_challenges')
-        .select('challenge_id, progress, target')
+        .select('challenge_id, progress, status, completed_at')
         .eq('user_id', user.id)
-        .lt('progress', 'target');
+        .neq('status', 'completed')
+        .is('completed_at', null);
       
       if (challenges) {
         for (const ch of challenges) {
-          const progress = ch.progress / ch.target;
           items.push({
             id: `challenge_${ch.challenge_id}`,
             type: 'challenge',
             title: t('incomplete_challenge') || 'Reto incompleto',
-            progress: ch.progress,
-            total: ch.target,
-            urgency: progress >= 0.8 ? 'high' : progress >= 0.5 ? 'medium' : 'low',
+            progress: 0,
+            total: 1,
+            urgency: 'medium',
           });
         }
       }
@@ -81,7 +83,7 @@ export default function CompletionAnxiety({ onItemPress }: CompletionAnxietyProp
       // Check missing cycle logs (last 3 days)
       const threeDaysAgo = new Date(Date.now() - 3 * 86400000).toISOString().split('T')[0];
       const { data: logs } = await supabase
-        .from('yayika_cycle_logs')
+        .from('yayika_cycle_log')
         .select('logged_at')
         .eq('user_id', user.id)
         .gte('logged_at', threeDaysAgo);
@@ -97,20 +99,28 @@ export default function CompletionAnxiety({ onItemPress }: CompletionAnxietyProp
         });
       }
       
-      setIncompleteItems(items.filter(i => !dismissed.includes(i.id)));
+      if (!cancelled) {
+        setIncompleteItems(items.filter(i => !dismissed.includes(i.id)));
+      }
     };
-    
-    loadIncomplete();
-    
+
+    loadIncomplete().catch(() => {});
+
     // Pulse animation for high urgency items
     if (incompleteItems.some(i => i.urgency === 'high')) {
-      Animated.loop(
+      pulse = Animated.loop(
         Animated.sequence([
           Animated.timing(pulseAnim, { toValue: 1.05, duration: 1000, useNativeDriver: true }),
           Animated.timing(pulseAnim, { toValue: 1, duration: 1000, useNativeDriver: true }),
         ])
-      ).start();
+      );
+      pulse.start();
     }
+
+    return () => {
+      cancelled = true;
+      pulse?.stop();
+    };
   }, [user, dismissed]);
 
   const dismissItem = (id: string) => {

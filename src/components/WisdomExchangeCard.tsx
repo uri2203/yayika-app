@@ -85,12 +85,11 @@ export default function WisdomExchangeCard({ cyclePhase }: Props) {
     if (!shareText.trim() || !user?.id) return;
     setSharing(true);
     try {
-      await supabase.from('yayika_community_posts').insert({
+      const { error } = await supabase.from('yayika_community_posts').insert({
         user_id: user.id,
         content: shareText.trim(),
-        category: 'wisdom',
-        is_wisdom: true,
       });
+      if (error) throw error;
       setShared(true);
       setShareText('');
       setTimeout(() => {

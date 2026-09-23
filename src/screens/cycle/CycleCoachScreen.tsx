@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   View,
   Text,
@@ -27,11 +27,11 @@ function getPhaseColor(phase: string, colors: any): string {
 
 function getPhaseIcon(phase: string): string {
   const key = phase?.toLowerCase() || '';
-  if (key.includes('menstru')) return 'ðŸŒ™';
-  if (key.includes('follicu')) return 'ðŸŒ¸';
-  if (key.includes('ovul')) return 'â˜€ï¸';
-  if (key.includes('lute')) return 'ðŸ‚';
-  return 'ðŸ«§';
+  if (key.includes('menstru')) return '🌙';
+  if (key.includes('follicu')) return '🌸';
+  if (key.includes('ovul')) return '☀️';
+  if (key.includes('lute')) return '🍂';
+  return '🫧';
 }
 
 function EnergyForecastBar({ day, energy, maxEnergy }: { day: string; energy: number; maxEnergy: number }) {

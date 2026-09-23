@@ -40,17 +40,19 @@ export default function StreakBanner({ onPress }: StreakBannerProps) {
     if (!user?.id) return;
 
     const fetchData = async () => {
-      const [streakData, riskData] = await Promise.all([
-        calculateStreak(user.id),
-        checkStreakRisk(user.id),
-      ]);
+      try {
+        const [streakData, riskData] = await Promise.all([
+          calculateStreak(user.id),
+          checkStreakRisk(user.id),
+        ]);
 
-      setStreak(streakData.currentStreak);
-      setLongestStreak(streakData.longestStreak);
-      setTotalDays(streakData.totalDaysLogged);
-      setAtRisk(riskData.atRisk);
-      setHoursLeft(riskData.hoursLeft);
-      setLoaded(true);
+        setStreak(streakData.currentStreak);
+        setLongestStreak(streakData.longestStreak);
+        setTotalDays(streakData.totalDaysLogged);
+        setAtRisk(riskData.atRisk);
+        setHoursLeft(riskData.hoursLeft);
+        setLoaded(true);
+      } catch {}
     };
 
     fetchData();

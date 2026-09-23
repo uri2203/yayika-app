@@ -84,8 +84,7 @@ export async function getWisdomExchange(userId: string): Promise<WisdomEntry[]> 
   try {
     const { data, error } = await supabase
       .from('yayika_community_posts')
-      .select('id, content, category, created_at')
-      .eq('is_wisdom', true)
+      .select('id, content, created_at')
       .order('created_at', { ascending: false })
       .limit(5);
 
@@ -97,7 +96,7 @@ export async function getWisdomExchange(userId: string): Promise<WisdomEntry[]> 
       id: row.id,
       text: row.content,
       phase: 'any',
-      category: row.category || 'general',
+      category: 'general',
     }));
   } catch {
     return ANONYMOUS_WISDOMS_ES;
@@ -111,8 +110,7 @@ export async function getWisdomExchangeLocalized(
   try {
     const { data, error } = await supabase
       .from('yayika_community_posts')
-      .select('id, content, category, created_at')
-      .eq('is_wisdom', true)
+      .select('id, content, created_at')
       .order('created_at', { ascending: false })
       .limit(5);
 
@@ -124,7 +122,7 @@ export async function getWisdomExchangeLocalized(
       id: row.id,
       text: row.content,
       phase: 'any',
-      category: row.category || 'general',
+      category: 'general',
     }));
   } catch {
     return lang === 'en' ? ANONYMOUS_WISDOMS_EN : ANONYMOUS_WISDOMS_ES;
@@ -143,8 +141,7 @@ export async function getMentorMatch(userId: string): Promise<MentorMatch | null
 
     const { data: challenges } = await supabase
       .from('yayika_community_posts')
-      .select('id, user_name, content, category')
-      .eq('category', 'challenge_overcome')
+      .select('id, content, title')
       .order('created_at', { ascending: false })
       .limit(10);
 
@@ -155,8 +152,8 @@ export async function getMentorMatch(userId: string): Promise<MentorMatch | null
 
     return {
       id: match.id,
-      name: match.user_name || 'Una guerrera',
-      challenge_overcome: match.category || 'superó un reto',
+      name: 'Una guerrera',
+      challenge_overcome: match.title || 'superó un reto',
       advice: match.content,
       phase: 'follicular',
     };
@@ -175,12 +172,12 @@ export async function getGrowthReflection(userId: string): Promise<GrowthReflect
     const [currentMonthData, prevMonthData] = await Promise.allSettled([
       supabase
         .from('yayika_community_posts')
-        .select('id, created_at, like_count', { count: 'exact' })
+        .select('id, created_at, reaction_count', { count: 'exact' })
         .eq('user_id', userId)
         .gte('created_at', monthStart),
       supabase
         .from('yayika_community_posts')
-        .select('id, created_at, like_count', { count: 'exact' })
+        .select('id, created_at, reaction_count', { count: 'exact' })
         .eq('user_id', userId)
         .gte('created_at', prevMonthStart)
         .lt('created_at', prevMonthEnd),
@@ -200,7 +197,7 @@ export async function getGrowthReflection(userId: string): Promise<GrowthReflect
       days_logged: daysLogged,
       mood_improved: daysLogged > prevDaysLogged,
       actions_completed: daysLogged * 2,
-      women_connected: Math.min(currentPosts.reduce((sum: number, p: any) => sum + (p.like_count || 0), 0), 50),
+      women_connected: Math.min(currentPosts.reduce((sum: number, p: any) => sum + (p.reaction_count || 0), 0), 50),
       growth_pct: Math.max(0, growthPct),
       prev_month_comparison: prevDaysLogged > 0
         ? `${daysLogged > prevDaysLogged ? '+' : ''}${Math.round(((daysLogged - prevDaysLogged) / prevDaysLogged) * 100)}%`
@@ -222,11 +219,11 @@ export async function getCommunityImpact(userId: string): Promise<CommunityImpac
   try {
     const { data: posts } = await supabase
       .from('yayika_community_posts')
-      .select('id, like_count, comment_count')
+      .select('id, reaction_count, comment_count')
       .eq('user_id', userId);
 
     const totalHelped = (posts || []).reduce(
-      (sum: number, p: any) => sum + (p.like_count || 0) + (p.comment_count || 0),
+      (sum: number, p: any) => sum + (p.reaction_count || 0) + (p.comment_count || 0),
       0
     );
 

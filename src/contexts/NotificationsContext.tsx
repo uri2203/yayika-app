@@ -6,7 +6,7 @@ import { supabase } from '../config/supabase';
 import { useAuth } from './AuthContext';
 import { useLanguage } from './LanguageContext';
 import { aiSmartPush } from '../config/api';
-import { initSmartNotifications } from '../services/smartNotifications';
+import { initSmartNotifications, runAllSmartChecks } from '../services/smartNotifications';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -75,7 +75,12 @@ export function NotificationsProvider({ children }: { children: React.ReactNode 
     }).catch(() => {});
 
     const notificationListener = Notifications.addNotificationReceivedListener(() => {});
-    const responseListener = Notifications.addNotificationResponseReceivedListener(() => {});
+    const responseListener = Notifications.addNotificationResponseReceivedListener((response) => {
+      const type = response?.notification?.request?.content?.data?.type;
+      if (type === 'daily_check' && userRef.current) {
+        runAllSmartChecks(userRef.current.id, lang).catch(() => {});
+      }
+    });
 
     return () => {
       notificationListener.remove();
@@ -87,10 +92,11 @@ export function NotificationsProvider({ children }: { children: React.ReactNode 
     const currentUser = userRef.current;
     if (!currentUser) return;
     try {
-      await supabase.from('push_tokens').upsert(
+      const { error } = await supabase.from('yayika_push_tokens').upsert(
         { user_id: currentUser.id, expo_push_token: token, platform: Platform.OS },
         { onConflict: 'user_id' }
       );
+      if (error) throw error;
     } catch (err) {
       console.warn('[Notifications] Failed to save push token:', err);
     }

@@ -4,7 +4,7 @@ export interface CycleLog {
   id: string;
   user_id: string;
   logged_at: string;
-  energy_level: number | null;
+  energy: number | null;
   mood: string | null;
   symptoms: string[] | null;
   notes: string | null;
@@ -43,7 +43,7 @@ export interface WeeklyComparison {
 export async function getCycleHistory(userId: string, days: number = 30): Promise<CycleLog[]> {
   const since = new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString();
   const { data, error } = await supabase
-    .from('yayika_cycle_logs')
+    .from('yayika_cycle_log')
     .select('*')
     .eq('user_id', userId)
     .gte('logged_at', since)
@@ -54,12 +54,12 @@ export async function getCycleHistory(userId: string, days: number = 30): Promis
 }
 
 export function getEnergyTrend(logs: CycleLog[]): EnergyTrend {
-  const withEnergy = logs.filter((l) => l.energy_level != null);
+  const withEnergy = logs.filter((l) => l.energy != null);
   if (withEnergy.length === 0) {
     return { data: [], average: 0, trend: 'stable', change: 0 };
   }
 
-  const data = withEnergy.map((l) => l.energy_level!);
+  const data = withEnergy.map((l) => l.energy!);
   const average = data.reduce((a, b) => a + b, 0) / data.length;
 
   const half = Math.floor(data.length / 2);
@@ -162,9 +162,9 @@ export function getWeeklyComparison(logs: CycleLog[]): WeeklyComparison {
   });
 
   const avgEnergy = (weekLogs: CycleLog[]) => {
-    const withE = weekLogs.filter((l) => l.energy_level != null);
+    const withE = weekLogs.filter((l) => l.energy != null);
     if (withE.length === 0) return 0;
-    return withE.reduce((a, l) => a + l.energy_level!, 0) / withE.length;
+    return withE.reduce((a, l) => a + l.energy!, 0) / withE.length;
   };
 
   const moodCounts = (weekLogs: CycleLog[]) => {

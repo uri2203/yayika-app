@@ -16,7 +16,7 @@ import { typography, spacing, borderRadius } from '../../config/theme';
 import { useTheme } from '../../contexts/ThemeContext';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { useAuth } from '../../contexts/AuthContext';
-import { aiChat, ChatMessage } from '../../config/api';
+import { ChatMessage } from '../../config/api';
 import { getEmpatheticResponse } from '../../services/empatheticCoachService';
 
 export default function EmpatheticChatScreen({ navigation }: any) {

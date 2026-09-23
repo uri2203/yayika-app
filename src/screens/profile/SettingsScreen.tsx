@@ -1,4 +1,4 @@
-Ôªøimport React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput, Switch, Alert, ActivityIndicator, Modal } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
@@ -6,16 +6,17 @@ import * as Updates from 'expo-updates';
 import { useAuth } from '../../contexts/AuthContext';
 import { useTheme } from '../../contexts/ThemeContext';
 import { useLanguage } from '../../contexts/LanguageContext';
+import { useNotifications } from '../../contexts/NotificationsContext';
 import { Language } from '../../config/i18n';
 import { typography, spacing, borderRadius } from '../../config/theme';
 import { supabase } from '../../config/supabase';
 import Card from '../../components/Card';
 
 const LANGUAGES: { key: Language; label: string }[] = [
-  { key: 'es', label: 'Espa√±ol' },
+  { key: 'es', label: 'EspaÒol' },
   { key: 'en', label: 'English' },
-  { key: 'pt', label: 'Portugu√™s' },
-  { key: 'fr', label: 'Fran√ßais' },
+  { key: 'pt', label: 'PortuguÍs' },
+  { key: 'fr', label: 'FranÁais' },
   { key: 'de', label: 'Deutsch' },
 ];
 
@@ -23,6 +24,7 @@ export default function SettingsScreen({ navigation }: any) {
   const { user, profile } = useAuth();
   const { isDark, toggleTheme, currentColors } = useTheme();
   const { lang, setLanguage, t } = useLanguage();
+  const { expoPushToken, hasPermission, sendSmartPush } = useNotifications();
   const colors = currentColors;
 
   const [displayName, setDisplayName] = useState(profile?.full_name || user?.user_metadata?.name || '');
@@ -57,7 +59,7 @@ export default function SettingsScreen({ navigation }: any) {
           currency_code: currency.trim().toUpperCase(),
         }, { onConflict: 'id' });
       if (error) throw error;
-      Alert.alert(t('common_success') , t('profile_settings') + ' √¢≈ì"');
+      Alert.alert(t('common_success') , t('profile_settings') + ' ‚ú"');
     } catch (err: any) {
       Alert.alert(t('common_error'), err.message || t('common_error'));
     } finally {
@@ -191,7 +193,7 @@ export default function SettingsScreen({ navigation }: any) {
             style={[styles.input, { color: colors.text, borderColor: colors.border, backgroundColor: colors.white }]}
             value={city}
             onChangeText={setCity}
-            placeholder={t('settings_city_placeholder') || 'Ciudad de M√©xico'}
+            placeholder={t('settings_city_placeholder') || 'Ciudad de MÈxico'}
             placeholderTextColor={colors.subtleText}
           />
 
@@ -246,10 +248,18 @@ export default function SettingsScreen({ navigation }: any) {
             <View style={styles.menuLeft}>
               <Ionicons name="notifications-outline" size={22} color={colors.primary} />
               <Text style={[styles.menuText, { color: colors.text }]}>{t('onboard_notif_push')}</Text>
+              {!hasPermission && (
+                <Text style={{ color: colors.error, fontSize: 11, marginLeft: 8 }}>
+                  {t('common_error')}
+                </Text>
+              )}
             </View>
             <Switch
-              value={pushEnabled}
-              onValueChange={setPushEnabled}
+              value={pushEnabled && hasPermission}
+              onValueChange={(v) => {
+                setPushEnabled(v);
+                if (v) sendSmartPush().catch(() => {});
+              }}
               trackColor={{ false: colors.border, true: colors.primary }}
               thumbColor={colors.white}
             />
@@ -296,7 +306,7 @@ export default function SettingsScreen({ navigation }: any) {
                   await Updates.fetchUpdateAsync();
                   await Updates.reloadAsync();
                 } else {
-                  Alert.alert('Yayika', t('update_none_msg') || 'La app est√° actualizada.');
+                  Alert.alert('Yayika', t('update_none_msg') || 'La app est· actualizada.');
                 }
               } catch (e) {
                 Alert.alert('Yayika', t('update_error') || 'Cierra la app y vuelve a abrirla.');

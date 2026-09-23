@@ -46,10 +46,11 @@ export async function getExpoPushToken(): Promise<string | null> {
 
 export async function registerPushToken(userId: string, token: string): Promise<void> {
   try {
-    await supabase.from('push_tokens').upsert(
+    const { error } = await supabase.from('yayika_push_tokens').upsert(
       { user_id: userId, expo_push_token: token, platform: Platform.OS },
       { onConflict: 'user_id' }
     );
+    if (error) throw error;
   } catch (e) {
     console.warn('Failed to register push token:', e);
   }

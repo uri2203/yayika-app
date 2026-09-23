@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput,
   ActivityIndicator, KeyboardAvoidingView, Platform, Alert,
@@ -8,7 +8,6 @@ import { Ionicons } from '@expo/vector-icons';
 import { typography, spacing, borderRadius } from '../../config/theme';
 import { useTheme } from '../../contexts/ThemeContext';
 import { useLanguage } from '../../contexts/LanguageContext';
-import { useAuth } from '../../contexts/AuthContext';
 import { getCommunityFeed, toggleReaction, addComment, reportPost } from '../../config/api';
 import { Language } from '../../config/i18n';
 

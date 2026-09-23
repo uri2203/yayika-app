@@ -48,23 +48,27 @@ export default function BadgeShowcase({ userId, editable = false }: BadgeShowcas
 
   useEffect(() => {
     if (!targetUserId) return;
-    
+    let cancelled = false;
+
     const loadBadges = async () => {
-      // Load all unlocked badges
-      const { data: userBadges } = await supabase
-        .from('yayika_user_badges')
-        .select('badge_id, unlocked_at')
-        .eq('user_id', targetUserId);
+      try {
+        // Load all unlocked badges
+        const { data: userBadges } = await supabase
+          .from('yayika_user_badges')
+          .select('badge_id, unlocked_at')
+          .eq('user_id', targetUserId);
 
-      // Load showcase preference
-      const { data: profile } = await supabase
-        .from('yayika_profiles')
-        .select('badge_showcase')
-        .eq('id', targetUserId)
-        .single();
+        // Load showcase preference
+        const { data: profile } = await supabase
+          .from('yayika_profiles')
+          .select('badge_showcase')
+          .eq('id', targetUserId)
+          .single();
 
-      // Badge definitions
-      const badgeDefs: Record<string, Omit<Badge, 'unlocked_at'>> = {
+        if (cancelled) return;
+
+        // Badge definitions
+        const badgeDefs: Record<string, Omit<Badge, 'unlocked_at'>> = {
         badge_night_owl: { id: 'badge_night_owl', name: t('badge_night_owl_name') || 'Búho Nocturno', icon: '🦉', description: t('badge_night_owl_desc') || 'Check-in después de las 11 PM', rarity: 'rare' },
         badge_early_bird: { id: 'badge_early_bird', name: t('badge_early_bird_name') || 'Madrugadora', icon: '🐦', description: t('badge_early_bird_desc') || 'Check-in antes de las 6 AM', rarity: 'rare' },
         badge_perfectionist: { id: 'badge_perfectionist', name: t('badge_perfectionist_name') || 'Perfeccionista', icon: '💎', description: t('badge_perfectionist_desc') || 'Racha de 7 días', rarity: 'epic' },
@@ -79,17 +83,23 @@ export default function BadgeShowcase({ userId, editable = false }: BadgeShowcas
         badge_referral_first: { id: 'badge_referral_first', name: t('badge_referral_first_name') || 'Embajadora', icon: '🤝', description: t('badge_referral_first_desc') || 'Primera referida', rarity: 'rare' },
       };
 
-      const unlockedBadges: Badge[] = (userBadges || []).map((ub) => ({
-        ...badgeDefs[ub.badge_id],
-        unlocked_at: ub.unlocked_at,
-      })).filter((b) => b.name);
+        const unlockedBadges: Badge[] = (userBadges || []).map((ub) => ({
+          ...badgeDefs[ub.badge_id],
+          unlocked_at: ub.unlocked_at,
+        })).filter((b) => b.name);
 
-      setBadges(unlockedBadges);
-      setShowcase(profile?.badge_showcase || []);
-      setLoading(false);
+        setBadges(unlockedBadges);
+        setShowcase(profile?.badge_showcase || []);
+        setLoading(false);
+      } catch {
+        if (!cancelled) setLoading(false);
+      }
     };
 
     loadBadges();
+    return () => {
+      cancelled = true;
+    };
   }, [targetUserId]);
 
   const toggleShowcase = async (badgeId: string) => {

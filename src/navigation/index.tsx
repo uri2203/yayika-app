@@ -285,7 +285,7 @@ export default function Navigation() {
   useEffect(() => {
     if (pendingResetPassword && session && navRef.current) {
       setPendingResetPassword(false);
-      setTimeout(() => {
+      const timer = setTimeout(() => {
         navRef.current?.navigate('MainTabs', {
           screen: 'Portal',
           params: {
@@ -293,6 +293,7 @@ export default function Navigation() {
           },
         });
       }, 300);
+      return () => clearTimeout(timer);
     }
   }, [pendingResetPassword, session]);
 

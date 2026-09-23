@@ -22,9 +22,10 @@ CREATE TABLE IF NOT EXISTS yayika_mood_entries (
   logged_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 3. Agregar columnas a user_profiles
-ALTER TABLE user_profiles ADD COLUMN IF NOT EXISTS badge_showcase TEXT[] DEFAULT '{}';
-ALTER TABLE user_profiles ADD COLUMN IF NOT EXISTS prestige_level INTEGER DEFAULT 1;
+-- 3. Agregar columnas a yayika_profiles
+ALTER TABLE yayika_profiles ADD COLUMN IF NOT EXISTS badge_showcase TEXT[] DEFAULT '{}';
+ALTER TABLE yayika_profiles ADD COLUMN IF NOT EXISTS prestige_level INTEGER DEFAULT 1;
+ALTER TABLE yayika_profiles ADD COLUMN IF NOT EXISTS notifications_enabled BOOLEAN DEFAULT true;
 
 -- 4. Índices
 CREATE INDEX IF NOT EXISTS idx_surprise_log_user_date ON yayika_surprise_log(user_id, surprise_date);

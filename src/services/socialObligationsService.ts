@@ -173,7 +173,7 @@ export async function getFriendActivity(userId: string): Promise<FriendActivity[
   const userIds = [...new Set(members.map((m) => m.user_id))];
   const { data: profiles } = await supabase
     .from('yayika_profiles')
-    .select('id, display_name, avatar_url')
+    .select('id, full_name, avatar_url')
     .in('id', userIds);
 
   const profileMap = new Map((profiles || []).map((p) => [p.id, p]));
@@ -196,7 +196,7 @@ export async function getFriendActivity(userId: string): Promise<FriendActivity[
     if (!memberEntry) continue;
 
     activities.push({
-      user_name: profile?.display_name || 'Guerrera',
+      user_name: profile?.full_name || 'Guerrera',
       circle_name: `Círculo ${msg.circle_id.slice(0, 6)}`,
       activity_type: 'posted',
       created_at: msg.created_at,

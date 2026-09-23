@@ -25,7 +25,8 @@ export default function App() {
   const [appReady, setAppReady] = useState(false);
 
   useEffect(() => {
-    setTimeout(() => setAppReady(true), 500);
+    const timer = setTimeout(() => setAppReady(true), 500);
+    return () => clearTimeout(timer);
   }, []);
 
   useEffect(() => {
@@ -51,9 +52,9 @@ export default function App() {
   }
 
   return (
-    <ErrorBoundary>
-      <LanguageProvider>
-        <ThemeProvider>
+    <LanguageProvider>
+      <ThemeProvider>
+        <ErrorBoundary>
           <AuthProvider>
             <FeatureFlagsProvider>
               <NotificationsProvider>
@@ -62,9 +63,9 @@ export default function App() {
               </NotificationsProvider>
             </FeatureFlagsProvider>
           </AuthProvider>
-        </ThemeProvider>
-      </LanguageProvider>
-    </ErrorBoundary>
+        </ErrorBoundary>
+      </ThemeProvider>
+    </LanguageProvider>
   );
 }
 

@@ -94,7 +94,7 @@ export default function GrowthReflectionCard() {
 
       <View style={styles.content}>
         <View style={styles.plantContainer}>
-          <View style={styles.plantStem}>
+          <View style={[styles.plantStem, { backgroundColor: colors.border }]}>
             <Animated.View
               style={[
                 styles.plant,
@@ -184,7 +184,6 @@ const styles = StyleSheet.create({
   plantStem: {
     height: 100,
     width: 4,
-    backgroundColor: '#E5E7EB',
     borderRadius: 2,
     justifyContent: 'flex-end',
     alignItems: 'center',

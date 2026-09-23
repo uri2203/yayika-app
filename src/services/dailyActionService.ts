@@ -302,7 +302,7 @@ export async function completeDailyAction(
   const todayEnd = new Date(todayKey + 'T23:59:59Z').toISOString();
 
   const { data: existing } = await supabase
-    .from('daily_action_completions')
+    .from('yayika_daily_action_completions')
     .select('id')
     .eq('user_id', userId)
     .eq('action_id', actionId)
@@ -324,32 +324,32 @@ export async function completeDailyAction(
   const action = actions.find((a) => a.id === actionId);
   const xpReward = action?.xpReward ?? 10;
 
-  await supabase.from('daily_action_completions').insert({
+  const { error: insertError } = await supabase.from('yayika_daily_action_completions').insert({
     user_id: userId,
     action_id: actionId,
     completed_at: new Date().toISOString(),
     xp_awarded: xpReward,
   });
+  if (insertError) throw insertError;
 
   const { data: progress } = await supabase
-    .from('yayika_profiles')
+    .from('yayika_progress')
     .select('xp_total')
-    .eq('id', userId)
-    .single();
+    .eq('user_id', userId)
+    .maybeSingle();
 
-  if (progress) {
-    await supabase
-      .from('yayika_profiles')
-      .update({ xp_total: (progress.xp_total ?? 0) + xpReward })
-      .eq('id', userId);
-  }
+  const nextXp = (progress?.xp_total ?? 0) + xpReward;
+  const { error: xpError } = await supabase
+    .from('yayika_progress')
+    .upsert({ user_id: userId, xp_total: nextXp }, { onConflict: 'user_id' });
+  if (xpError) throw xpError;
 
   return { xpAwarded: xpReward, alreadyCompleted: false };
 }
 
 export async function getDailyStreak(userId: string): Promise<number> {
   const { data } = await supabase
-    .from('daily_action_completions')
+    .from('yayika_daily_action_completions')
     .select('completed_at')
     .eq('user_id', userId)
     .order('completed_at', { ascending: false })
@@ -386,7 +386,7 @@ export async function hasCompletedToday(userId: string): Promise<boolean> {
   const todayEnd = new Date(todayKey + 'T23:59:59Z').toISOString();
 
   const { data } = await supabase
-    .from('daily_action_completions')
+    .from('yayika_daily_action_completions')
     .select('id')
     .eq('user_id', userId)
     .gte('completed_at', todayStart)

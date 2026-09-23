@@ -21,62 +21,98 @@ serve(async (req) => {
     const limit = queryLimit || 20;
 
     if (action === "get_streak_leaderboard") {
-      // Get top users by current streak
-      const { data: leaderboard, error } = await supabase
-        .from("user_profiles")
-        .select("user_id, display_name, streak, xp, avatar_url")
-        .gt("streak", 0)
-        .order("streak", { ascending: false })
-        .order("xp", { ascending: false })
+      const { data: progressRows, error } = await supabase
+        .from("yayika_progress")
+        .select("user_id, streak_days, xp_total")
+        .gt("streak_days", 0)
+        .order("streak_days", { ascending: false })
+        .order("xp_total", { ascending: false })
         .limit(limit);
 
       if (error) throw error;
 
-      // Get current user's rank
+      const userIds = (progressRows || []).map((r) => r.user_id);
+      const { data: profiles } = userIds.length
+        ? await supabase.from("yayika_profiles").select("id, full_name, avatar_url").in("id", userIds)
+        : { data: [] as any[] };
+      const profileMap = new Map((profiles || []).map((p) => [p.id, p]));
+
+      const leaderboard = (progressRows || []).map((r) => ({
+        user_id: r.user_id,
+        display_name: profileMap.get(r.user_id)?.full_name || null,
+        streak: r.streak_days,
+        xp: r.xp_total,
+        avatar_url: profileMap.get(r.user_id)?.avatar_url || null,
+      }));
+
       let myRank = -1;
       if (user_id) {
-        const { count } = await supabase
-          .from("user_profiles")
-          .select("user_id", { count: "exact", head: true })
-          .gt("streak", 0)
-          .gt("streak", leaderboard?.[leaderboard.length - 1]?.streak || 0);
-        myRank = (count || 0) + 1;
+        const { data: mine } = await supabase
+          .from("yayika_progress")
+          .select("streak_days, xp_total")
+          .eq("user_id", user_id)
+          .maybeSingle();
+        if (mine && mine.streak_days > 0) {
+          const { count } = await supabase
+            .from("yayika_progress")
+            .select("user_id", { count: "exact", head: true })
+            .gt("streak_days", mine.streak_days);
+          myRank = (count || 0) + 1;
+        }
       }
 
       return new Response(
-        JSON.stringify({ leaderboard: leaderboard || [], my_rank: myRank }),
+        JSON.stringify({ leaderboard, my_rank: myRank }),
         { headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
 
     if (action === "get_xp_leaderboard") {
-      // Get top users by total XP
-      const { data: leaderboard, error } = await supabase
-        .from("user_profiles")
-        .select("user_id, display_name, streak, xp, avatar_url")
-        .order("xp", { ascending: false })
+      const { data: progressRows, error } = await supabase
+        .from("yayika_progress")
+        .select("user_id, streak_days, xp_total")
+        .order("xp_total", { ascending: false })
         .limit(limit);
 
       if (error) throw error;
 
-      // Get current user's rank
+      const userIds = (progressRows || []).map((r) => r.user_id);
+      const { data: profiles } = userIds.length
+        ? await supabase.from("yayika_profiles").select("id, full_name, avatar_url").in("id", userIds)
+        : { data: [] as any[] };
+      const profileMap = new Map((profiles || []).map((p) => [p.id, p]));
+
+      const leaderboard = (progressRows || []).map((r) => ({
+        user_id: r.user_id,
+        display_name: profileMap.get(r.user_id)?.full_name || null,
+        streak: r.streak_days,
+        xp: r.xp_total,
+        avatar_url: profileMap.get(r.user_id)?.avatar_url || null,
+      }));
+
       let myRank = -1;
       if (user_id) {
-        const { count } = await supabase
-          .from("user_profiles")
-          .select("user_id", { count: "exact", head: true })
-          .gt("xp", leaderboard?.[leaderboard.length - 1]?.xp || 0);
-        myRank = (count || 0) + 1;
+        const { data: mine } = await supabase
+          .from("yayika_progress")
+          .select("xp_total")
+          .eq("user_id", user_id)
+          .maybeSingle();
+        if (mine) {
+          const { count } = await supabase
+            .from("yayika_progress")
+            .select("user_id", { count: "exact", head: true })
+            .gt("xp_total", mine.xp_total || 0);
+          myRank = (count || 0) + 1;
+        }
       }
 
       return new Response(
-        JSON.stringify({ leaderboard: leaderboard || [], my_rank: myRank }),
+        JSON.stringify({ leaderboard, my_rank: myRank }),
         { headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
 
     if (action === "get_active_now") {
-      // Get count of users active in last 5 minutes
       const fiveMinAgo = new Date(Date.now() - 5 * 60 * 1000).toISOString();
       const { count } = await supabase
         .from("yayika_circle_activity")

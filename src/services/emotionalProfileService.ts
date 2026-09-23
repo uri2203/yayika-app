@@ -1,4 +1,3 @@
-import { supabase } from '../config/supabase';
 import { CycleLog, getCycleHistory } from './cycleEvolutionService';
 
 export type ArchetypeKey = 'dreamer' | 'warrior' | 'nurturer' | 'explorer' | 'wise';
@@ -108,18 +107,18 @@ function calculateMoodStability(logs: CycleLog[]): number {
 }
 
 function calculateEnergyPattern(logs: CycleLog[]): 'rising' | 'falling' | 'stable' | 'cyclical' {
-  const withEnergy = logs.filter((l) => l.energy_level != null);
+  const withEnergy = logs.filter((l) => l.energy != null);
   if (withEnergy.length < 5) return 'stable';
 
   const third = Math.floor(withEnergy.length / 3);
   const firstThird = withEnergy.slice(0, third);
   const lastThird = withEnergy.slice(-third);
 
-  const avgFirst = firstThird.reduce((a, l) => a + l.energy_level!, 0) / (firstThird.length || 1);
-  const avgLast = lastThird.reduce((a, l) => a + l.energy_level!, 0) / (lastThird.length || 1);
+  const avgFirst = firstThird.reduce((a, l) => a + l.energy!, 0) / (firstThird.length || 1);
+  const avgLast = lastThird.reduce((a, l) => a + l.energy!, 0) / (lastThird.length || 1);
   const diff = avgLast - avgFirst;
 
-  const energyValues = withEnergy.map((l) => l.energy_level!);
+  const energyValues = withEnergy.map((l) => l.energy!);
   const allMean = energyValues.reduce((a, b) => a + b, 0) / energyValues.length;
   const crossings = energyValues.filter((v, i) =>
     i > 0 && ((v > allMean && energyValues[i - 1] <= allMean) || (v < allMean && energyValues[i - 1] >= allMean))
@@ -225,7 +224,7 @@ function calculateCycleIQ(logs: CycleLog[]): number {
   let score = 0;
 
   const withMood = logs.filter((l) => l.mood).length;
-  const withEnergy = logs.filter((l) => l.energy_level != null).length;
+  const withEnergy = logs.filter((l) => l.energy != null).length;
   const withSymptoms = logs.filter((l) => l.symptoms && l.symptoms.length > 0).length;
 
   score += Math.min(30, (withMood / Math.max(logs.length, 1)) * 30);
@@ -241,7 +240,7 @@ function calculateCycleIQ(logs: CycleLog[]): number {
 function countPowerDays(logs: CycleLog[]): number {
   return logs.filter((l) => {
     const moodScore = l.mood ? (MOOD_SCORES[l.mood] || 0) : 0;
-    const energyHigh = l.energy_level != null && l.energy_level >= 7;
+    const energyHigh = l.energy != null && l.energy >= 7;
     return moodScore >= 4 && energyHigh;
   }).length;
 }
@@ -262,7 +261,7 @@ function getWeeklySummary(logs: CycleLog[]): { day: string; mood: string | null;
     if (dayLogs.length === 0) return { day, mood: null, energy: null };
 
     const moods = dayLogs.filter((l) => l.mood).map((l) => l.mood!);
-    const energies = dayLogs.filter((l) => l.energy_level != null).map((l) => l.energy_level!);
+    const energies = dayLogs.filter((l) => l.energy != null).map((l) => l.energy!);
 
     const moodCounts: Record<string, number> = {};
     moods.forEach((m) => { moodCounts[m] = (moodCounts[m] || 0) + 1; });

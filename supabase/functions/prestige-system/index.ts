@@ -11,13 +11,24 @@ const PRESTIGE_LEVELS = [
   { level: 2, title: { es: "Aprendiz", en: "Apprentice", pt: "Aprendiz", fr: "Apprentie", de: "Lernende" }, requiredXP: 500 },
   { level: 3, title: { es: "Guerrera", en: "Warrior", pt: "Guerreira", fr: "Guerrière", de: "Kriegerin" }, requiredXP: 1500 },
   { level: 4, title: { es: "Veterana", en: "Veteran", pt: "Veterana", fr: "Vétérane", de: "Veteranin" }, requiredXP: 3000 },
-  { level: 5, title: { es: "Élite", en: "Elite", pt: "Élite", fr: "Élite", de: "Elite" }, requiredXP: 5000 },
+  { level: 5, title: { es: "Élite", en: "Elite", pt: "Élite", fr: "Élite", de: "Élite" }, requiredXP: 5000 },
   { level: 6, title: { es: "Maestra", en: "Master", pt: "Mestra", fr: "Maîtresse", de: "Meisterin" }, requiredXP: 8000 },
   { level: 7, title: { es: "Leyenda", en: "Legend", pt: "Lenda", fr: "Légende", de: "Legende" }, requiredXP: 12000 },
   { level: 8, title: { es: "Mítica", en: "Mythic", pt: "Mítica", fr: "Mythique", de: "Mythisch" }, requiredXP: 18000 },
-  { level: 9, title: { es: "Transcendental", en: "Transcendent", pt: "Transcendental", fr: "Transcendante", de: "Transzendente" }, requiredXP: 25000 },
+  { level: 9, title: { es: "Transcendental", en: "Transcendent", pt: "Transcendental", fr: "Transcendant", de: "Transzendente" }, requiredXP: 25000 },
   { level: 10, title: { es: "Divina", en: "Divine", pt: "Divina", fr: "Divine", de: "Göttliche" }, requiredXP: 35000 },
 ];
+
+async function loadUserState(supabase: any, userId: string) {
+  const [{ data: profile }, { data: progress }] = await Promise.all([
+    supabase.from("yayika_profiles").select("id, prestige_level").eq("id", userId).maybeSingle(),
+    supabase.from("yayika_progress").select("xp_total").eq("user_id", userId).maybeSingle(),
+  ]);
+  return {
+    prestige_level: profile?.prestige_level ?? 1,
+    xp: progress?.xp_total ?? 0,
+  };
+}
 
 serve(async (req) => {
   if (req.method === "OPTIONS") {
@@ -33,34 +44,28 @@ serve(async (req) => {
     const { action, user_id } = await req.json();
 
     if (action === "get_prestige") {
-      const { data: profile } = await supabase
-        .from("user_profiles")
-        .select("xp, prestige_level")
-        .eq("user_id", user_id)
-        .single();
-
-      if (!profile) throw new Error("Profile not found");
+      const state = await loadUserState(supabase, user_id);
 
       const currentPrestige = PRESTIGE_LEVELS.find(
-        (p) => p.level === profile.prestige_level
+        (p) => p.level === state.prestige_level
       ) || PRESTIGE_LEVELS[0];
 
       const nextPrestige = PRESTIGE_LEVELS.find(
-        (p) => p.level === profile.prestige_level + 1
+        (p) => p.level === state.prestige_level + 1
       );
 
       const progressToNext = nextPrestige
-        ? ((profile.xp - currentPrestige.requiredXP) /
+        ? ((state.xp - currentPrestige.requiredXP) /
             (nextPrestige.requiredXP - currentPrestige.requiredXP)) *
           100
         : 100;
 
       return new Response(
         JSON.stringify({
-          level: profile.prestige_level,
+          level: state.prestige_level,
           title: currentPrestige.title,
-          xp: profile.xp,
-          progress_to_next: Math.min(progressToNext, 100),
+          xp: state.xp,
+          progress_to_next: Math.max(0, Math.min(progressToNext, 100)),
           next_level: nextPrestige
             ? { level: nextPrestige.level, title: nextPrestige.title, required_xp: nextPrestige.requiredXP }
             : null,
@@ -70,32 +75,24 @@ serve(async (req) => {
     }
 
     if (action === "prestige_up") {
-      const { data: profile } = await supabase
-        .from("user_profiles")
-        .select("xp, prestige_level")
-        .eq("user_id", user_id)
-        .single();
-
-      if (!profile) throw new Error("Profile not found");
+      const state = await loadUserState(supabase, user_id);
 
       const nextPrestige = PRESTIGE_LEVELS.find(
-        (p) => p.level === profile.prestige_level + 1
+        (p) => p.level === state.prestige_level + 1
       );
 
-      if (!nextPrestige || profile.xp < nextPrestige.requiredXP) {
+      if (!nextPrestige || state.xp < nextPrestige.requiredXP) {
         return new Response(
           JSON.stringify({ error: "Not enough XP" }),
           { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
         );
       }
 
-      // Update prestige level
       await supabase
-        .from("user_profiles")
+        .from("yayika_profiles")
         .update({ prestige_level: nextPrestige.level })
-        .eq("user_id", user_id);
+        .eq("id", user_id);
 
-      // Log prestige event
       await supabase.from("yayika_xp_events").insert({
         user_id,
         event_type: "prestige_level_up",

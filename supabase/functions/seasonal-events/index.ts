@@ -41,18 +41,20 @@ serve(async (req: Request) => {
     if (action === 'check_badges') {
       // Check and award secret badges based on conditions
       const badges = [];
+      const now = new Date();
+      const todayIso = now.toISOString();
+      const todayDate = todayIso.split('T')[0];
 
       // Check Night Owl badge (check-in after 11 PM)
       const { data: nightCheckin } = await supabase
-        .from('retention_checkins')
+        .from('yayika_cycle_logs')
         .select('logged_at')
         .eq('user_id', user_id)
-        .extract('hour')
-        .gte(23);
+        .gte('logged_at', `${todayDate}T23:00:00`);
 
       if (nightCheckin && nightCheckin.length > 0) {
         const { error } = await supabase
-          .from('user_badges')
+          .from('yayika_user_badges')
           .upsert({ user_id, badge_id: 'badge_night_owl' }, { onConflict: 'user_id,badge_id' });
         
         if (!error) badges.push('badge_night_owl');
@@ -60,54 +62,47 @@ serve(async (req: Request) => {
 
       // Check Early Bird badge (check-in before 6 AM)
       const { data: earlyCheckin } = await supabase
-        .from('retention_checkins')
+        .from('yayika_cycle_logs')
         .select('logged_at')
         .eq('user_id', user_id)
-        .extract('hour')
-        .lt(6);
+        .lt('logged_at', `${todayDate}T06:00:00`);
 
       if (earlyCheckin && earlyCheckin.length > 0) {
         const { error } = await supabase
-          .from('user_badges')
+          .from('yayika_user_badges')
           .upsert({ user_id, badge_id: 'badge_early_bird' }, { onConflict: 'user_id,badge_id' });
         
         if (!error) badges.push('badge_early_bird');
       }
 
       // Check Perfectionist badge (7 day streak)
-      const { data: profile } = await supabase
-        .from('user_profiles')
-        .select('streak')
+      const { data: progress } = await supabase
+        .from('yayika_progress')
+        .select('streak_days, xp_total')
         .eq('user_id', user_id)
-        .single();
+        .maybeSingle();
 
-      if (profile && profile.streak >= 7) {
+      if (progress && (progress.streak_days || 0) >= 7) {
         const { error } = await supabase
-          .from('user_badges')
+          .from('yayika_user_badges')
           .upsert({ user_id, badge_id: 'badge_perfectionist' }, { onConflict: 'user_id,badge_id' });
         
         if (!error) badges.push('badge_perfectionist');
       }
 
       // Check Legend badge (30 day streak)
-      if (profile && profile.streak >= 30) {
+      if (progress && (progress.streak_days || 0) >= 30) {
         const { error } = await supabase
-          .from('user_badges')
+          .from('yayika_user_badges')
           .upsert({ user_id, badge_id: 'badge_streak_30' }, { onConflict: 'user_id,badge_id' });
         
         if (!error) badges.push('badge_streak_30');
       }
 
       // Check Master badge (1000 XP)
-      const { data: xpData } = await supabase
-        .from('user_profiles')
-        .select('xp')
-        .eq('user_id', user_id)
-        .single();
-
-      if (xpData && xpData.xp >= 1000) {
+      if (progress && (progress.xp_total || 0) >= 1000) {
         const { error } = await supabase
-          .from('user_badges')
+          .from('yayika_user_badges')
           .upsert({ user_id, badge_id: 'badge_xp_1000' }, { onConflict: 'user_id,badge_id' });
         
         if (!error) badges.push('badge_xp_1000');
@@ -122,10 +117,10 @@ serve(async (req: Request) => {
     if (action === 'get_phase_content') {
       // Get content for current cycle phase
       const { data: cycleData } = await supabase
-        .from('cycle_entries')
-        .select('start_date')
+        .from('yayika_cycle_logs')
+        .select('logged_at')
         .eq('user_id', user_id)
-        .order('start_date', { ascending: false })
+        .order('logged_at', { ascending: false })
         .limit(1)
         .single();
 
@@ -136,7 +131,7 @@ serve(async (req: Request) => {
         );
       }
 
-      const lastPeriod = new Date(cycleData.start_date);
+      const lastPeriod = new Date(cycleData.logged_at);
       const now = new Date();
       const daysSincePeriod = Math.floor((now.getTime() - lastPeriod.getTime()) / (1000 * 60 * 60 * 24));
       const cycleDay = (daysSincePeriod % 28) + 1;

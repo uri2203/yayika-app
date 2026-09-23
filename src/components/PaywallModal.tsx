@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Modal, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useTheme } from '../contexts/ThemeContext';
+import { useSubscription } from '../hooks/useSubscription';
 
 interface PaywallModalProps {
   visible: boolean;
@@ -15,7 +16,11 @@ interface PaywallModalProps {
 export default function PaywallModal({ visible, onClose, onUpgrade, featureName, requiredPlan = 'Guerrera' }: PaywallModalProps) {
   const { t } = useLanguage();
   const { currentColors } = useTheme();
+  const { plan, loading: planLoading, isPremium } = useSubscription();
   const colors = currentColors;
+  const planKey = plan.toLowerCase();
+  const requiredKey = requiredPlan.toLowerCase();
+  const alreadyOwned = isPremium && (planKey === requiredKey || planKey === 'diamante');
 
   return (
     <Modal visible={visible} transparent animationType="fade">
@@ -44,11 +49,23 @@ export default function PaywallModal({ visible, onClose, onUpgrade, featureName,
             <FeatureRow icon="checkmark-circle" text={t('paywall_feature_4')} color={colors.rose} textColor={colors.text} />
           </View>
 
-          <TouchableOpacity style={[styles.upgradeBtn, { backgroundColor: colors.rose }]} onPress={onUpgrade}>
-            <Text style={[styles.upgradeBtnText, { color: colors.white }]}>
-              {t('paywall_upgrade', { plan: requiredPlan })}
-            </Text>
-          </TouchableOpacity>
+          {alreadyOwned ? (
+            <View style={[styles.upgradeBtn, { backgroundColor: colors.success }]}>
+              <Text style={[styles.upgradeBtnText, { color: colors.white }]}>
+                {t('paywall_feature_1')}
+              </Text>
+            </View>
+          ) : (
+            <TouchableOpacity
+              style={[styles.upgradeBtn, { backgroundColor: colors.rose, opacity: planLoading ? 0.6 : 1 }]}
+              onPress={onUpgrade}
+              disabled={planLoading}
+            >
+              <Text style={[styles.upgradeBtnText, { color: colors.white }]}>
+                {t('paywall_upgrade', { plan: requiredPlan })}
+              </Text>
+            </TouchableOpacity>
+          )}
 
           <TouchableOpacity style={styles.laterBtn} onPress={onClose}>
             <Text style={[styles.laterBtnText, { color: colors.textSecondary }]}>

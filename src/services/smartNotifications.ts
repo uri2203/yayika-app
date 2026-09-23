@@ -102,10 +102,10 @@ async function scheduleLocalNotification(
 async function getCurrentCyclePhase(userId: string): Promise<CyclePhase | null> {
   try {
     const { data, error } = await supabase
-      .from('yayika_cycle_logs')
-      .select('cycle_day, created_at')
+      .from('yayika_cycle_log')
+      .select('cycle_day, logged_at')
       .eq('user_id', userId)
-      .order('created_at', { ascending: false })
+      .order('logged_at', { ascending: false })
       .limit(1)
       .single();
 
@@ -128,15 +128,15 @@ function dayToPhase(day: number): CyclePhase['phase'] {
 async function getLastCycleLogDate(userId: string): Promise<Date | null> {
   try {
     const { data, error } = await supabase
-      .from('yayika_cycle_logs')
-      .select('created_at')
+      .from('yayika_cycle_log')
+      .select('logged_at')
       .eq('user_id', userId)
-      .order('created_at', { ascending: false })
+      .order('logged_at', { ascending: false })
       .limit(1)
       .single();
 
     if (error || !data) return null;
-    return new Date(data.created_at);
+    return new Date(data.logged_at);
   } catch {
     return null;
   }
@@ -147,10 +147,10 @@ async function getLastCycleLogDate(userId: string): Promise<Date | null> {
 async function getStreakDays(userId: string): Promise<number> {
   try {
     const { data } = await supabase
-      .from('yayika_profiles')
+      .from('yayika_progress')
       .select('streak_days')
-      .eq('id', userId)
-      .single();
+      .eq('user_id', userId)
+      .maybeSingle();
 
     return data?.streak_days ?? 0;
   } catch {
@@ -162,13 +162,13 @@ async function hasCheckedInToday(userId: string): Promise<boolean> {
   try {
     const today = new Date().toISOString().split('T')[0];
     const { data } = await supabase
-      .from('yayika_cycle_logs')
+      .from('yayika_cycle_log')
       .select('id')
       .eq('user_id', userId)
-      .gte('created_at', `${today}T00:00:00`)
-      .lte('created_at', `${today}T23:59:59`)
+      .gte('logged_at', `${today}T00:00:00`)
+      .lte('logged_at', `${today}T23:59:59`)
       .limit(1)
-      .single();
+      .maybeSingle();
 
     return !!data;
   } catch {

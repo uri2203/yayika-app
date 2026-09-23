@@ -239,7 +239,7 @@ export default function EmotionalProfileCard() {
                         {t(a.nameKey)}
                       </Text>
                       {isActive && (
-                        <Text style={[styles.optionActive, { color: a.color }]}>← Tu arquetipo</Text>
+                        <Text style={[styles.optionActive, { color: a.color }]}>← {t('profile_your_archetype')}</Text>
                       )}
                     </View>
                   </View>

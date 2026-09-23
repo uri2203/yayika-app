@@ -68,11 +68,11 @@ async function dailyCheckin(supabase: any, userId: string, body: any) {
 
   // 1. Check if already checked in today
   const { data: existing } = await supabase
-    .from("yayika_checkins")
+    .from("yayika_cycle_logs")
     .select("id")
     .eq("user_id", userId)
-    .gte("created_at", `${today}T00:00:00`)
-    .lt("created_at", `${today}T23:59:59`)
+    .gte("logged_at", `${today}T00:00:00`)
+    .lt("logged_at", `${today}T23:59:59`)
     .limit(1)
     .maybeSingle();
 
@@ -85,13 +85,13 @@ async function dailyCheckin(supabase: any, userId: string, body: any) {
 
   // 2. Insert check-in
   const { error: checkinError } = await supabase
-    .from("yayika_checkins")
+    .from("yayika_cycle_logs")
     .insert({
       user_id: userId,
-      checkin_type: "daily",
       mood: mood || null,
       energy: energy || null,
       notes: notes || null,
+      logged_at: new Date().toISOString(),
     });
 
   if (checkinError) throw checkinError;
@@ -104,17 +104,17 @@ async function dailyCheckin(supabase: any, userId: string, body: any) {
     .single();
 
   const { data: lastCheckin } = await supabase
-    .from("yayika_checkins")
-    .select("created_at")
+    .from("yayika_cycle_logs")
+    .select("logged_at")
     .eq("user_id", userId)
-    .order("created_at", { ascending: false })
+    .order("logged_at", { ascending: false })
     .limit(2)
     .maybeSingle();
 
   let newStreak = 1;
   let freezeUsed = false;
   if (lastCheckin) {
-    const lastDate = new Date(lastCheckin.created_at).toISOString().split("T")[0];
+    const lastDate = new Date(lastCheckin.logged_at).toISOString().split("T")[0];
     const yesterday = new Date(Date.now() - 86400000).toISOString().split("T")[0];
     const twoDaysAgo = new Date(Date.now() - 2 * 86400000).toISOString().split("T")[0];
     
@@ -304,7 +304,7 @@ async function generateSpinResult(supabase: any, userId: string) {
 
 async function getCurrentCycleDay(supabase: any, userId: string) {
   const { data: logs } = await supabase
-    .from("yayika_cycle_log")
+    .from("yayika_cycle_logs")
     .select("cycle_day, logged_at")
     .eq("user_id", userId)
     .order("logged_at", { ascending: false })
@@ -426,13 +426,13 @@ async function updateTransformHistory(supabase: any, userId: string) {
   const monthEnd = new Date(now.getFullYear(), now.getMonth() + 1, 0).toISOString();
 
   const [checkins, badges, challenges, cycles, transactions] = await Promise.all([
-    supabase.from("yayika_checkins").select("id", { count: "exact", head: true })
-      .eq("user_id", userId).gte("created_at", monthStart).lte("created_at", monthEnd),
+    supabase.from("yayika_cycle_logs").select("id", { count: "exact", head: true })
+      .eq("user_id", userId).gte("logged_at", monthStart).lte("logged_at", monthEnd),
     supabase.from("yayika_xp_events").select("id", { count: "exact", head: true })
       .eq("user_id", userId).eq("event_type", "badge").gte("created_at", monthStart),
     supabase.from("yayika_user_challenges").select("id", { count: "exact", head: true })
       .eq("user_id", userId).eq("status", "completed").gte("completed_at", monthStart),
-    supabase.from("yayika_cycle_log").select("id", { count: "exact", head: true })
+    supabase.from("yayika_cycle_logs").select("id", { count: "exact", head: true })
       .eq("user_id", userId).gte("logged_at", monthStart),
     supabase.from("yayika_transactions").select("id", { count: "exact", head: true })
       .eq("user_id", userId).gte("created_at", monthStart),

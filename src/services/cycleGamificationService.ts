@@ -13,9 +13,10 @@ interface CycleLogRow {
   id: string;
   user_id: string;
   logged_at: string;
-  energy_level: number | null;
+  energy: number | null;
   mood: string | null;
   symptoms: string[] | null;
+  phase: string | null;
 }
 
 function getTodayKey(): string {
@@ -29,14 +30,14 @@ function dateKey(iso: string): string {
 export async function logCycleEntry(
   userId: string,
   data: {
-    energy_level?: number;
+    energy?: number;
     mood?: string;
     symptoms?: string[];
     cycle_day?: number;
-    cycle_phase?: string;
+    phase?: string;
   }
 ): Promise<{ xpAwarded: number; totalXp: number }> {
-  const hasAllFields = !!(data.energy_level && data.mood && data.symptoms?.length);
+  const hasAllFields = !!(data.energy && data.mood && data.symptoms?.length);
   let xp = hasAllFields ? 15 : 5;
 
   const todayKey = getTodayKey();
@@ -44,7 +45,7 @@ export async function logCycleEntry(
   const todayEnd = new Date(todayKey + 'T23:59:59Z').toISOString();
 
   const { data: recentLogs } = await supabase
-    .from('yayika_cycle_logs')
+    .from('yayika_cycle_log')
     .select('logged_at')
     .eq('user_id', userId)
     .order('logged_at', { ascending: false })
@@ -57,18 +58,8 @@ export async function logCycleEntry(
     xp += 10;
   }
 
-  await supabase.from('yayika_cycle_logs').insert({
-    user_id: userId,
-    logged_at: new Date().toISOString(),
-    energy_level: data.energy_level ?? null,
-    mood: data.mood ?? null,
-    symptoms: data.symptoms ?? [],
-    cycle_day: data.cycle_day ?? null,
-    cycle_phase: data.cycle_phase ?? null,
-  });
-
   const { data: recentWeek } = await supabase
-    .from('yayika_cycle_logs')
+    .from('yayika_cycle_log')
     .select('logged_at')
     .eq('user_id', userId)
     .gte('logged_at', new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString())
@@ -82,17 +73,17 @@ export async function logCycleEntry(
   }
 
   const { data: progress } = await supabase
-    .from('yayika_profiles')
+    .from('yayika_progress')
     .select('xp_total')
-    .eq('id', userId)
-    .single();
+    .eq('user_id', userId)
+    .maybeSingle();
 
   const newTotal = (progress?.xp_total ?? 0) + xp;
 
-  await supabase
-    .from('yayika_profiles')
-    .update({ xp_total: newTotal })
-    .eq('id', userId);
+  const { error: xpError } = await supabase
+    .from('yayika_progress')
+    .upsert({ user_id: userId, xp_total: newTotal }, { onConflict: 'user_id' });
+  if (xpError) throw xpError;
 
   return { xpAwarded: xp, totalXp: newTotal };
 }
@@ -101,8 +92,8 @@ export async function getCycleAchievements(userId: string): Promise<CycleAchieve
   const achievements: CycleAchievement[] = [];
 
   const { data: allLogs } = await supabase
-    .from('yayika_cycle_logs')
-    .select('logged_at, mood, symptoms, cycle_phase')
+    .from('yayika_cycle_log')
+    .select('logged_at, mood, symptoms, phase')
     .eq('user_id', userId)
     .order('logged_at', { ascending: true });
 
@@ -147,7 +138,7 @@ export async function getCycleAchievements(userId: string): Promise<CycleAchieve
     unlocked: monthDays >= 28,
   });
 
-  const phases = new Set(logs.map((l) => l.cycle_phase).filter(Boolean));
+  const phases = new Set(logs.map((l) => l.phase).filter(Boolean));
   achievements.push({
     id: 'know_body',
     nameKey: 'cycle_achievement_body_name',
@@ -158,11 +149,11 @@ export async function getCycleAchievements(userId: string): Promise<CycleAchieve
 
   const monthlyPhases: Record<string, Set<string>> = {};
   logs.forEach((l) => {
-    if (!l.cycle_phase) return;
+    if (!l.phase) return;
     const d = new Date(l.logged_at);
     const key = `${d.getFullYear()}-${d.getMonth()}`;
     if (!monthlyPhases[key]) monthlyPhases[key] = new Set();
-    monthlyPhases[key].add(l.cycle_phase);
+    monthlyPhases[key].add(l.phase);
   });
   const phaseKeys = Object.keys(monthlyPhases).sort();
   let consecutiveSamePhase = 0;

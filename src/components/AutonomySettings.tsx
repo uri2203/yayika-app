@@ -18,9 +18,9 @@ import { typography, spacing, borderRadius } from '../config/theme';
 const AUTONOMY_STORAGE_KEY = 'yayika_autonomy_settings';
 
 const AI_PERSONALITIES = [
-  { id: 'empatica', labelEs: 'Laura empática', labelEn: 'Empathetic Laura', icon: 'heart' },
-  { id: 'directa', labelEs: 'Laura directa', labelEn: 'Direct Laura', icon: 'flash' },
-  { id: 'divertida', labelEs: 'Laura divertida', labelEn: 'Fun Laura', icon: 'happy' },
+  { id: 'empatica', labelKey: 'autonomy_ai_empatica', icon: 'heart' },
+  { id: 'directa', labelKey: 'autonomy_ai_directa', icon: 'flash' },
+  { id: 'divertida', labelKey: 'autonomy_ai_divertida', icon: 'happy' },
 ] as const;
 
 type AIPersonality = typeof AI_PERSONALITIES[number]['id'];
@@ -115,18 +115,18 @@ export default function AutonomySettings({ visible, onClose }: AutonomySettingsP
       await AsyncStorage.removeItem(AUTONOMY_STORAGE_KEY);
       setSettings(DEFAULT_SETTINGS);
       setShowDeleteConfirm(false);
-      Alert.alert(t('common_success'), 'Datos eliminados');
+      Alert.alert(t('common_success'), t('autonomy_data_deleted'));
     } catch {}
   };
 
   const handleExport = () => {
-    Alert.alert(t('autonomy_export'), 'Función próximamente disponible');
+    Alert.alert(t('autonomy_export'), t('autonomy_export_soon'));
   };
 
-  const frequencyOptions: { value: 'daily' | 'weekly' | 'never'; labelEs: string; labelEn: string }[] = [
-    { value: 'daily', labelEs: 'Diario', labelEn: 'Daily' },
-    { value: 'weekly', labelEs: 'Semanal', labelEn: 'Weekly' },
-    { value: 'never', labelEs: 'Nunca', labelEn: 'Never' },
+  const frequencyOptions: { value: 'daily' | 'weekly' | 'never'; labelKey: string }[] = [
+    { value: 'daily', labelKey: 'autonomy_freq_daily' },
+    { value: 'weekly', labelKey: 'autonomy_freq_weekly' },
+    { value: 'never', labelKey: 'autonomy_freq_never' },
   ];
 
   const currentPersonality = AI_PERSONALITIES.find(p => p.id === settings.aiPersonality);
@@ -151,16 +151,16 @@ export default function AutonomySettings({ visible, onClose }: AutonomySettingsP
           <ScrollView style={styles.scroll} showsVerticalScrollIndicator={false}>
             {/* What to share */}
             <View style={styles.section}>
-              <Text style={[styles.sectionTitle, { color: colors.text }]}>Qué compartir</Text>
+              <Text style={[styles.sectionTitle, { color: colors.text }]}>{t('autonomy_share_what')}</Text>
 
               {[
-                { key: 'shareCycle' as const, label: 'Ciclo' },
-                { key: 'shareMood' as const, label: 'Humor' },
-                { key: 'shareSymptoms' as const, label: 'Síntomas' },
-                { key: 'shareEnergy' as const, label: 'Energía' },
+                { key: 'shareCycle' as const, labelKey: 'autonomy_share_cycle' },
+                { key: 'shareMood' as const, labelKey: 'autonomy_share_mood' },
+                { key: 'shareSymptoms' as const, labelKey: 'autonomy_share_symptoms' },
+                { key: 'shareEnergy' as const, labelKey: 'autonomy_share_energy' },
               ].map((item) => (
                 <View key={item.key} style={[styles.row, { borderBottomColor: colors.border }]}>
-                  <Text style={[styles.rowLabel, { color: colors.text }]}>{item.label}</Text>
+                  <Text style={[styles.rowLabel, { color: colors.text }]}>{t(item.labelKey)}</Text>
                   <Switch
                     value={settings[item.key]}
                     onValueChange={() => toggleShare(item.key)}
@@ -173,15 +173,15 @@ export default function AutonomySettings({ visible, onClose }: AutonomySettingsP
 
             {/* Who to share with */}
             <View style={styles.section}>
-              <Text style={[styles.sectionTitle, { color: colors.text }]}>Con quién</Text>
+              <Text style={[styles.sectionTitle, { color: colors.text }]}>{t('autonomy_share_who')}</Text>
 
               {[
-                { key: 'shareWithAI' as const, label: 'Solo IA' },
-                { key: 'shareWithCircles' as const, label: 'Círculos' },
-                { key: 'shareAnonymous' as const, label: 'Anónimo' },
+                { key: 'shareWithAI' as const, labelKey: 'autonomy_share_ai_only' },
+                { key: 'shareWithCircles' as const, labelKey: 'autonomy_share_circles' },
+                { key: 'shareAnonymous' as const, labelKey: 'autonomy_share_anonymous' },
               ].map((item) => (
                 <View key={item.key} style={[styles.row, { borderBottomColor: colors.border }]}>
-                  <Text style={[styles.rowLabel, { color: colors.text }]}>{item.label}</Text>
+                  <Text style={[styles.rowLabel, { color: colors.text }]}>{t(item.labelKey)}</Text>
                   <Switch
                     value={settings[item.key]}
                     onValueChange={() => toggleWho(item.key)}
@@ -194,7 +194,7 @@ export default function AutonomySettings({ visible, onClose }: AutonomySettingsP
 
             {/* Notification frequency */}
             <View style={styles.section}>
-              <Text style={[styles.sectionTitle, { color: colors.text }]}>Frecuencia</Text>
+              <Text style={[styles.sectionTitle, { color: colors.text }]}>{t('autonomy_frequency')}</Text>
               <View style={styles.frequencyRow}>
                 {frequencyOptions.map((opt) => (
                   <TouchableOpacity
@@ -215,7 +215,7 @@ export default function AutonomySettings({ visible, onClose }: AutonomySettingsP
                         { color: settings.notifFrequency === opt.value ? colors.white : colors.text },
                       ]}
                     >
-                      {opt.labelEs}
+                      {t(opt.labelKey)}
                     </Text>
                   </TouchableOpacity>
                 ))}
@@ -230,7 +230,7 @@ export default function AutonomySettings({ visible, onClose }: AutonomySettingsP
                   <View>
                     <Text style={[styles.rowLabel, { color: colors.text }]}>{t('autonomy_invisible')}</Text>
                     <Text style={[styles.rowSublabel, { color: colors.subtleText }]}>
-                      Oculta de rankings, anónima en círculos
+                      {t('autonomy_invisible_desc')}
                     </Text>
                   </View>
                 </View>
@@ -254,7 +254,7 @@ export default function AutonomySettings({ visible, onClose }: AutonomySettingsP
                 <View style={styles.personalityLeft}>
                   <Ionicons name={currentPersonality?.icon as any || 'person'} size={20} color={colors.primary} />
                   <Text style={[styles.personalityLabel, { color: colors.text }]}>
-                    {currentPersonality?.labelEs || 'Laura empática'}
+                    {t(currentPersonality?.labelKey || 'autonomy_ai_empatica')}
                   </Text>
                 </View>
                 <Ionicons name="chevron-forward" size={18} color={colors.subtleText} />
@@ -277,7 +277,7 @@ export default function AutonomySettings({ visible, onClose }: AutonomySettingsP
               </TouchableOpacity>
 
               <TouchableOpacity
-                style={[styles.dataButton, { backgroundColor: '#FEE2E2', borderColor: colors.error }]}
+                style={[styles.dataButton, { backgroundColor: colors.errorBg, borderColor: colors.error }]}
                 onPress={handleDeleteData}
                 activeOpacity={0.7}
               >
@@ -313,7 +313,7 @@ export default function AutonomySettings({ visible, onClose }: AutonomySettingsP
                   >
                     <Ionicons name={p.icon as any} size={22} color={colors.primary} />
                     <Text style={[styles.personalityOptionLabel, { color: colors.text }]}>
-                      {p.labelEs}
+                      {t(p.labelKey)}
                     </Text>
                     {settings.aiPersonality === p.id && (
                       <Ionicons name="checkmark-circle" size={20} color={colors.primary} />
@@ -341,7 +341,7 @@ export default function AutonomySettings({ visible, onClose }: AutonomySettingsP
                   {t('autonomy_delete')}
                 </Text>
                 <Text style={[styles.deleteDesc, { color: colors.subtleText }]}>
-                  Esta acción eliminará todos tus datos de autonomía. No se puede deshacer.
+                  {t('autonomy_delete_confirm_desc')}
                 </Text>
                 <View style={styles.deleteButtons}>
                   <TouchableOpacity

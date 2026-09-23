@@ -5,8 +5,6 @@ import {
   StyleSheet,
   TouchableOpacity,
   Animated,
-  Modal,
-  Dimensions,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -134,11 +132,12 @@ export default function DailySurprise() {
 
   useEffect(() => {
     checkIfOpened();
-    startShake();
+    const shake = startShake();
+    return () => shake.stop();
   }, []);
 
   const startShake = () => {
-    Animated.loop(
+    const loop = Animated.loop(
       Animated.sequence([
         Animated.timing(shakeAnim, { toValue: -4, duration: 80, useNativeDriver: true }),
         Animated.timing(shakeAnim, { toValue: 4, duration: 80, useNativeDriver: true }),
@@ -147,7 +146,9 @@ export default function DailySurprise() {
         Animated.timing(shakeAnim, { toValue: 0, duration: 80, useNativeDriver: true }),
         Animated.delay(2000),
       ])
-    ).start();
+    );
+    loop.start();
+    return loop;
   };
 
   const checkIfOpened = async () => {
@@ -197,7 +198,7 @@ export default function DailySurprise() {
       insight: colors.primaryLight + '20',
       affirmation: colors.warningBg,
       fact: colors.successBg,
-      challenge: '#FCE7F3',
+      challenge: colors.rose + '15',
       dato: colors.warningBg,
     };
 

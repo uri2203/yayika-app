@@ -47,11 +47,11 @@ export default function ProfileScreen({ navigation }: any) {
         const [subRes, badgeRes, progressRes] = await Promise.all([
           supabase.from('yayika_subscriptions').select('plan').eq('user_id', user.id).order('created_at', { ascending: false }).limit(1).maybeSingle(),
           supabase.from('yayika_xp_events').select('id', { count: 'exact', head: true }).eq('user_id', user.id).eq('event_type', 'badge'),
-          supabase.from('yayika_progress').select('modules_completed').eq('user_id', user.id).maybeSingle(),
+          supabase.from('yayika_progress').select('level, xp_total').eq('user_id', user.id).maybeSingle(),
         ]);
         if (subRes.data) setSubscription(subRes.data);
         if (badgeRes.count != null) setBadgeCount(badgeRes.count);
-        if (progressRes.data?.modules_completed != null) setModuleCount(progressRes.data.modules_completed);
+        if (progressRes.data?.level != null) setModuleCount(progressRes.data.level);
       } catch (err) {
       }
     })();
@@ -268,6 +268,38 @@ export default function ProfileScreen({ navigation }: any) {
             <View style={styles.menuLeft}>
               <Ionicons name="lock-closed-outline" size={22} color={colors.primary} />
               <Text style={[styles.menuText, { color: colors.text }]}>{t('autonomy_title') || 'Mi Control'}</Text>
+            </View>
+            <Ionicons name="chevron-forward" size={20} color={colors.subtleText} />
+          </TouchableOpacity>
+
+          <TouchableOpacity style={[styles.menuItem, { borderBottomColor: colors.border }]} onPress={() => navigation.navigate('Notifications')}>
+            <View style={styles.menuLeft}>
+              <Ionicons name="notifications-outline" size={22} color={colors.primary} />
+              <Text style={[styles.menuText, { color: colors.text }]}>{t('notifications_title')}</Text>
+            </View>
+            <Ionicons name="chevron-forward" size={20} color={colors.subtleText} />
+          </TouchableOpacity>
+
+          <TouchableOpacity style={[styles.menuItem, { borderBottomColor: colors.border }]} onPress={() => navigation.navigate('Rankings')}>
+            <View style={styles.menuLeft}>
+              <Ionicons name="trophy-outline" size={22} color={colors.gold} />
+              <Text style={[styles.menuText, { color: colors.text }]}>{t('rankings_title')}</Text>
+            </View>
+            <Ionicons name="chevron-forward" size={20} color={colors.subtleText} />
+          </TouchableOpacity>
+
+          <TouchableOpacity style={[styles.menuItem, { borderBottomColor: colors.border }]} onPress={() => navigation.navigate('Onboarding')}>
+            <View style={styles.menuLeft}>
+              <Ionicons name="school-outline" size={22} color={colors.turquoise} />
+              <Text style={[styles.menuText, { color: colors.text }]}>{t('onboarding_title')}</Text>
+            </View>
+            <Ionicons name="chevron-forward" size={20} color={colors.subtleText} />
+          </TouchableOpacity>
+
+          <TouchableOpacity style={[styles.menuItem, { borderBottomColor: colors.border }]} onPress={() => navigation.navigate('StreakInsurance')}>
+            <View style={styles.menuLeft}>
+              <Ionicons name="shield-outline" size={22} color={colors.rose} />
+              <Text style={[styles.menuText, { color: colors.text }]}>{t('insurance_title')}</Text>
             </View>
             <Ionicons name="chevron-forward" size={20} color={colors.subtleText} />
           </TouchableOpacity>

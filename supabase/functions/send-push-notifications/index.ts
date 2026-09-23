@@ -19,7 +19,7 @@ serve(async (req: Request) => {
 
     // Get all users with push tokens
     const { data: tokens, error: tokensError } = await supabase
-      .from('push_tokens')
+      .from('yayika_push_tokens')
       .select('user_id, token, platform');
 
     if (tokensError) throw tokensError;
@@ -30,7 +30,7 @@ serve(async (req: Request) => {
       try {
         // Get user's last check-in
         const { data: lastCheckin } = await supabase
-          .from('retention_checkins')
+          .from('yayika_cycle_logs')
           .select('logged_at')
           .eq('user_id', pushToken.user_id)
           .order('logged_at', { ascending: false })
@@ -45,21 +45,13 @@ serve(async (req: Request) => {
 
         // Get user's streak
         const { data: streakData } = await supabase
-          .from('user_profiles')
-          .select('streak')
+          .from('yayika_progress')
+          .select('streak_days')
           .eq('user_id', pushToken.user_id)
-          .single();
+          .maybeSingle();
 
-        const currentStreak = streakData?.streak || 0;
-
-        // Get user's language
-        const { data: profileData } = await supabase
-          .from('user_profiles')
-          .select('language')
-          .eq('user_id', pushToken.user_id)
-          .single();
-
-        const lang = profileData?.language || 'es';
+        const currentStreak = streakData?.streak_days || 0;
+        const lang = 'es';
 
         // Determine notification type and message
         let notificationType = '';
@@ -98,15 +90,15 @@ serve(async (req: Request) => {
         else if (daysSinceCheckin >= 2) {
           // Calculate approximate phase based on days since last period
           const { data: cycleData } = await supabase
-            .from('cycle_entries')
-            .select('start_date')
+            .from('yayika_cycle_logs')
+            .select('logged_at')
             .eq('user_id', pushToken.user_id)
-            .order('start_date', { ascending: false })
+            .order('logged_at', { ascending: false })
             .limit(1)
             .single();
 
           if (cycleData) {
-            const lastPeriod = new Date(cycleData.start_date);
+            const lastPeriod = new Date(cycleData.logged_at);
             const daysSincePeriod = Math.floor((now.getTime() - lastPeriod.getTime()) / (1000 * 60 * 60 * 24));
             const cycleDay = (daysSincePeriod % 28) + 1;
 

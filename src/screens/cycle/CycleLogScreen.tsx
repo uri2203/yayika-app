@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   View,
   Text,
@@ -40,18 +40,18 @@ export default function CycleLogScreen({ navigation }: any) {
   const colors = currentColors;
 
   const PHASES = [
-    { key: 'menstrual', label: t('cycle_phase_menstrual'), color: colors.phaseMenstrual, icon: '🌙' },
-    { key: 'follicular', label: t('cycle_phase_follicular'), color: colors.phaseFollicular, icon: '🌸' },
-    { key: 'ovulatory', label: t('cycle_phase_ovulatory'), color: colors.phaseOvulatory, icon: '☀️' },
-    { key: 'luteal', label: t('cycle_phase_luteal'), color: colors.phaseLuteal, icon: '🍂' },
+    { key: 'menstrual', label: t('cycle_phase_menstrual'), color: colors.phaseMenstrual, icon: '??' },
+    { key: 'follicular', label: t('cycle_phase_follicular'), color: colors.phaseFollicular, icon: '??' },
+    { key: 'ovulatory', label: t('cycle_phase_ovulatory'), color: colors.phaseOvulatory, icon: '??' },
+    { key: 'luteal', label: t('cycle_phase_luteal'), color: colors.phaseLuteal, icon: '??' },
   ];
 
   const MOODS = [
-    { emoji: '😊', label: t('cycle_mood_happy')  },
-    { emoji: '😐', label: t('cycle_mood_neutral')  },
-    { emoji: '😢', label: t('cycle_mood_sad')  },
-    { emoji: '😤', label: t('cycle_mood_irritable')  },
-    { emoji: '😴', label: t('cycle_mood_tired')  },
+    { emoji: '??', label: t('cycle_mood_happy')  },
+    { emoji: '??', label: t('cycle_mood_neutral')  },
+    { emoji: '??', label: t('cycle_mood_sad')  },
+    { emoji: '??', label: t('cycle_mood_irritable')  },
+    { emoji: '??', label: t('cycle_mood_tired')  },
   ];
 
   const SYMPTOMS = [
@@ -120,11 +120,11 @@ export default function CycleLogScreen({ navigation }: any) {
       }
       try {
         const xpResult = await logCycleEntry(user.id, {
-          energy_level: energy,
+          energy,
           mood: selectedMood,
           symptoms: selectedSymptoms,
           cycle_day: cycleDay,
-          cycle_phase: selectedPhase,
+          phase: selectedPhase,
         });
         await updateStreakOnLog(user.id);
         setCelebration({ visible: true, xp: xpResult.xpAwarded });
@@ -213,7 +213,7 @@ export default function CycleLogScreen({ navigation }: any) {
 
   const renderMoodSelector = () => (
     <View style={styles.sectionCard}>
-      <Text style={styles.sectionTitle}>{t('cycle_how_feeling') || '¿Cómo te sientes?'}</Text>
+      <Text style={styles.sectionTitle}>{t('cycle_how_feeling') || '�C�mo te sientes?'}</Text>
       <View style={styles.moodRow}>
         {MOODS.map((m) => {
           const isActive = selectedMood === m.emoji;
@@ -244,7 +244,7 @@ export default function CycleLogScreen({ navigation }: any) {
               onPress={() => toggleSymptom(s)}
             >
               <Text style={[styles.symptomText, isActive && styles.symptomTextSelected]}>
-                {isActive ? 'âœ“ ' : ''}{s}
+                {isActive ? '✓ ' : ''}{s}
               </Text>
             </TouchableOpacity>
           );
@@ -255,7 +255,7 @@ export default function CycleLogScreen({ navigation }: any) {
 
   const renderRecentLogs = () => (
     <View style={styles.sectionCard}>
-      <Text style={styles.sectionTitle}>{t('cycle_recent_logs') || 'Últimos 7 días'}</Text>
+      <Text style={styles.sectionTitle}>{t('cycle_recent_logs') || '�ltimos 7 d�as'}</Text>
       {recentLogs.length === 0 ? (
         <Text style={styles.noLogsText}>{t('cycle_no_logs') }</Text>
       ) : (
@@ -267,7 +267,7 @@ export default function CycleLogScreen({ navigation }: any) {
               <View style={styles.logInfo}>
                 <Text style={styles.logDate}>{log.logged_at?.split('T')[0]}</Text>
                 <Text style={styles.logPhase}>
-                  {phaseData?.icon} {phaseData?.label || log.phase} Â· {t('cycle_day') } {log.cycle_day}
+                  {phaseData?.icon} {phaseData?.label || log.phase} · {t('cycle_day') } {log.cycle_day}
                 </Text>
               </View>
               <View style={styles.logEnergy}>

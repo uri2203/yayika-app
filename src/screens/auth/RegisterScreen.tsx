@@ -83,7 +83,7 @@ export default function RegisterScreen({ navigation }: any) {
     footerLink: { color: colors.primary, fontSize: typography.sizes.md, fontWeight: typography.weights.semibold },
   });
 
-  const handleRegister = async () => {
+  const handleRegister = async (opts?: { acceptLegal?: boolean }) => {
     if (!name.trim()) {
       Alert.alert(t('common_error'), t('auth_fill_all_fields'));
       return;
@@ -100,7 +100,8 @@ export default function RegisterScreen({ navigation }: any) {
       Alert.alert(t('common_error'), t('auth_passwords_dont_match'));
       return;
     }
-    if (!legalAccepted) {
+    const legalOk = opts?.acceptLegal ?? legalAccepted;
+    if (!legalOk) {
       setShowLegalModal(true);
       return;
     }
@@ -114,10 +115,10 @@ export default function RegisterScreen({ navigation }: any) {
     }
   };
 
-  const handleLegalAccept = () => {
+  const handleLegalAccept = async () => {
     setLegalAccepted(true);
     setShowLegalModal(false);
-    handleRegister();
+    await handleRegister({ acceptLegal: true });
   };
 
   const handleLegalDecline = () => {

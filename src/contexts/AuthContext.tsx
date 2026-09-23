@@ -10,7 +10,6 @@ export interface Profile {
   country_code: string;
   city: string;
   currency_code: string;
-  referral_code: string;
 }
 
 export interface Progress {

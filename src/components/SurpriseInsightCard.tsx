@@ -15,7 +15,6 @@ import Card from './Card';
 import {
   calculateEmotionalProfile,
   getSurpriseInsight,
-  EmotionalProfile,
 } from '../services/emotionalProfileService';
 
 interface SurpriseInsightCardProps {

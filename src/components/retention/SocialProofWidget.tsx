@@ -39,24 +39,20 @@ export default function SocialProofWidget({ onPress }: { onPress?: () => void })
 
   useEffect(() => {
     if (proof && proof.activeToday > 0) {
-      animateCounter(proof.activeToday);
+      animatedCount.setValue(0);
+      Animated.timing(animatedCount, {
+        toValue: proof.activeToday,
+        duration: 1200,
+        useNativeDriver: false,
+      }).start();
+
+      const listener = animatedCount.addListener(({ value }) => {
+        setDisplayCount(Math.round(value));
+      });
+
+      return () => animatedCount.removeListener(listener);
     }
   }, [proof?.activeToday]);
-
-  const animateCounter = (target: number) => {
-    animatedCount.setValue(0);
-    Animated.timing(animatedCount, {
-      toValue: target,
-      duration: 1200,
-      useNativeDriver: false,
-    }).start();
-
-    const listener = animatedCount.addListener(({ value }) => {
-      setDisplayCount(Math.round(value));
-    });
-
-    return () => animatedCount.removeListener(listener);
-  };
 
   const loadData = async () => {
     if (!user?.id) return;

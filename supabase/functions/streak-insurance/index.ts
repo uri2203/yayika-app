@@ -69,13 +69,8 @@ serve(async (req) => {
         metadata: { plan_id: plan.id, days: plan.days },
       });
 
-      // Get user language for response
-      const { data: profileData } = await supabase
-        .from("user_profiles")
-        .select("language")
-        .eq("user_id", user_id)
-        .single();
-      const lang = profileData?.language || "es";
+      // Get user language for response (app stores language locally; default es)
+      const lang = "es";
 
       return new Response(
         JSON.stringify({

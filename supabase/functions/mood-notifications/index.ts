@@ -1,4 +1,4 @@
-﻿import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const corsHeaders = {
@@ -79,19 +79,20 @@ serve(async (req) => {
 
     // Get user's push token and language
     const { data: tokenData } = await supabase
-      .from("push_tokens")
+      .from("yayika_push_tokens")
       .select("token, platform")
       .eq("user_id", user_id)
       .limit(1)
       .single();
 
     const { data: profileData } = await supabase
-      .from("user_profiles")
-      .select("language, streak")
-      .eq("user_id", user_id)
-      .single();
+      .from("yayika_profiles")
+      .select("id")
+      .eq("id", user_id)
+      .maybeSingle();
 
-    const lang = profileData?.language || "es";
+    void profileData;
+    const lang = "es";
     const messages = MOOD_MESSAGES[lang] || MOOD_MESSAGES.es;
     const msg = messages[mood] || messages.happy;
 

@@ -27,6 +27,18 @@ export default function ResetPasswordScreen({ navigation }: any) {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  const exitToSafeScreen = () => {
+    const state = navigation.getState?.();
+    const routeNames: string[] = state?.routeNames ?? [];
+    if (routeNames.includes('Login')) {
+      navigation.navigate('Login');
+    } else if (routeNames.includes('Dashboard')) {
+      navigation.navigate('Dashboard');
+    } else {
+      navigation.goBack();
+    }
+  };
+
   const handleUpdatePassword = async () => {
     if (newPassword.length < 8) {
       Alert.alert(t('common_error'), t('auth_password_min_length'));
@@ -43,7 +55,7 @@ export default function ResetPasswordScreen({ navigation }: any) {
       Alert.alert(t('common_error'), error.message);
     } else {
       Alert.alert(t('auth_reset_success'), t('auth_reset_success'), [
-        { text: t('auth_reset_go_login'), onPress: () => navigation.navigate('Login') },
+        { text: t('auth_reset_go_login'), onPress: exitToSafeScreen },
       ]);
     }
   };
@@ -72,7 +84,7 @@ export default function ResetPasswordScreen({ navigation }: any) {
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.flex}>
         <ScrollView contentContainerStyle={styles.scrollContent} keyboardShouldPersistTaps="handled">
-          <TouchableOpacity onPress={() => navigation.navigate('Login')} style={styles.backButton}>
+          <TouchableOpacity onPress={exitToSafeScreen} style={styles.backButton}>
             <Ionicons name="arrow-back" size={24} color={colors.text} />
           </TouchableOpacity>
 

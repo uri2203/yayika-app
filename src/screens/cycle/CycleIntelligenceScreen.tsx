@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   View,
   Text,
@@ -278,15 +278,15 @@ export default function CycleIntelligenceScreen({ navigation }: any) {
             {/* Analytics Cards */}
             <View style={styles.statsRow}>
               <View style={[styles.statCard, { borderLeftColor: colors.phaseMenstrual }]}>
-                <Text style={styles.statValue}>{analytics?.avg_cycle_length ?? 'â€”'}</Text>
+                <Text style={styles.statValue}>{analytics?.avg_cycle_length ?? '—'}</Text>
                 <Text style={styles.statLabel}>{t('cycle_intel_avg_length') }</Text>
               </View>
               <View style={[styles.statCard, { borderLeftColor: colors.phaseFollicular }]}>
-                <Text style={styles.statValue}>{analytics?.total_cycles ?? 'â€”'}</Text>
+                <Text style={styles.statValue}>{analytics?.total_cycles ?? '—'}</Text>
                 <Text style={styles.statLabel}>{t('cycle_intel_total') }</Text>
               </View>
               <View style={[styles.statCard, { borderLeftColor: colors.phaseOvulatory }]}>
-                <Text style={styles.statValue}>{analytics?.regularity_score != null ? `${analytics.regularity_score}%` : 'â€”'}</Text>
+                <Text style={styles.statValue}>{analytics?.regularity_score != null ? `${analytics.regularity_score}%` : '—'}</Text>
                 <Text style={styles.statLabel}>{t('cycle_intel_regularity') }</Text>
               </View>
             </View>

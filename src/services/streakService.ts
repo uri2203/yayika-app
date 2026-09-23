@@ -39,7 +39,7 @@ function getLocalToday(): string {
 export async function calculateStreak(userId: string): Promise<StreakData> {
   try {
     const { data: logs, error } = await supabase
-      .from('yayika_cycle_logs')
+      .from('yayika_cycle_log')
       .select('logged_at')
       .eq('user_id', userId)
       .order('logged_at', { ascending: false })
@@ -110,7 +110,7 @@ function getYesterday(): string {
 export async function checkStreakRisk(userId: string): Promise<StreakRisk> {
   try {
     const { data: logs, error } = await supabase
-      .from('yayika_cycle_logs')
+      .from('yayika_cycle_log')
       .select('logged_at')
       .eq('user_id', userId)
       .order('logged_at', { ascending: false })
@@ -157,21 +157,21 @@ export async function updateStreakOnLog(userId: string): Promise<void> {
     const xpBonus = rewards.xpBonus;
 
     const { data: current } = await supabase
-      .from('yayika_profiles')
+      .from('yayika_progress')
       .select('xp_total, streak_days')
-      .eq('id', userId)
-      .single();
+      .eq('user_id', userId)
+      .maybeSingle();
 
     const currentXp = current?.xp_total ?? 0;
     const newXp = currentXp + 10 + xpBonus;
 
-    await supabase
-      .from('yayika_profiles')
-      .update({
-        streak_days: currentStreak,
-        xp_total: newXp,
-      })
-      .eq('id', userId);
+    const { error } = await supabase
+      .from('yayika_progress')
+      .upsert(
+        { user_id: userId, streak_days: currentStreak, xp_total: newXp },
+        { onConflict: 'user_id' }
+      );
+    if (error) throw error;
   } catch (e) {
     console.warn('[streakService] Failed to update streak:', e);
   }

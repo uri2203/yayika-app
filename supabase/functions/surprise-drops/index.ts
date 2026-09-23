@@ -71,15 +71,15 @@ serve(async (req) => {
       } else if (surprise.type === "streak_boost") {
         value = 1;
         // Boost streak
-        const { data: profile } = await supabase
-          .from("user_profiles")
-          .select("streak")
+        const { data: progress } = await supabase
+          .from("yayika_progress")
+          .select("streak_days")
           .eq("user_id", user_id)
-          .single();
-        if (profile) {
+          .maybeSingle();
+        if (progress) {
           await supabase
-            .from("user_profiles")
-            .update({ streak: profile.streak + value })
+            .from("yayika_progress")
+            .update({ streak_days: (progress.streak_days || 0) + value })
             .eq("user_id", user_id);
         }
       }
@@ -93,12 +93,7 @@ serve(async (req) => {
       });
 
       // Get user language
-      const { data: profileData } = await supabase
-        .from("user_profiles")
-        .select("language")
-        .eq("user_id", user_id)
-        .single();
-      const lang = profileData?.language || "es";
+      const lang = "es";
 
       const title = surprise.title[lang as keyof typeof surprise.title] || surprise.title.es;
       let body = surprise.body[lang as keyof typeof surprise.body] || surprise.body.es;

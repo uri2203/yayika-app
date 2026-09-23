@@ -118,8 +118,8 @@ export default function DailyDesireCard({ cyclePhase }: DailyDesireCardProps) {
 
           {/* Header */}
           <View style={styles.header}>
-            <Animated.View style={[styles.heartIcon, { transform: [{ scale: pulseAnim }] }]}>
-              <Ionicons name="heart" size={24} color={colors.rose || '#F472B6'} />
+            <Animated.View style={[styles.heartIcon, { backgroundColor: colors.rose + '20', transform: [{ scale: pulseAnim }] }]}>
+              <Ionicons name="heart" size={24} color={colors.rose} />
             </Animated.View>
             <Text style={[styles.headerTitle, { color: colors.text }]}>
               {t('desire_title')}
@@ -148,8 +148,8 @@ export default function DailyDesireCard({ cyclePhase }: DailyDesireCardProps) {
           </View>
 
           {/* Body Love */}
-          <View style={[styles.bodyLoveSection, { backgroundColor: colors.rose + '10' || '#F472B610' }]}>
-            <Ionicons name="heart-circle" size={18} color={colors.rose || '#F472B6'} />
+          <View style={[styles.bodyLoveSection, { backgroundColor: colors.rose + '10' }]}>
+            <Ionicons name="heart-circle" size={18} color={colors.rose} />
             <Text style={[styles.bodyLoveTitle, { color: colors.text }]}>
               {t('desire_body_love')}
             </Text>
@@ -255,7 +255,6 @@ const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: 18,
-    backgroundColor: '#F472B620',
     justifyContent: 'center',
     alignItems: 'center',
   },

@@ -17,7 +17,7 @@ import { useTheme } from '../../contexts/ThemeContext';
 import { useFeatureFlags } from '../../contexts/FeatureFlagsContext';
 import { typography, spacing, borderRadius } from '../../config/theme';
 import Card from '../../components/Card';
-import { RetentionCheckin, TransformMirror, FutureSelf, SocialProofWidget } from '../../components/retention';
+import { FutureSelf, SocialProofWidget } from '../../components/retention';
 import CircleActivityFeed from '../../components/CircleActivityFeed';
 import BadgeShowcase from '../../components/BadgeShowcase';
 import CompletionAnxiety from '../../components/CompletionAnxiety';
@@ -31,14 +31,15 @@ import GrowthReflectionCard from '../../components/GrowthReflectionCard';
 import DailyDesireCard from '../../components/DailyDesireCard';
 import SurpriseInsightCard from '../../components/SurpriseInsightCard';
 import EmotionalCheckin from '../../components/EmotionalCheckin';
-import HealthDisclaimer from '../../components/HealthDisclaimer';
+import { FirstWeekBanner } from '../../components/FirstWeekHook';
 import {
   getProgress,
-  getProfile,
+  getCycleLog,
   aiAffirmations,
   aiWeeklyChallenges,
   getCommunityFeed,
   stripeMarketplaceCheckout,
+  getSubscriptions,
 } from '../../config/api';
 
 interface CommunityPost {
@@ -109,9 +110,10 @@ export default function PortalDashboard({ navigation }: any) {
   const [energyLevel, setEnergyLevel] = useState<number | null>(null);
   const [paywallVisible, setPaywallVisible] = useState(false);
   const [paywallFeature, setPaywallFeature] = useState('');
+  const [subscriptionActive, setSubscriptionActive] = useState(false);
 
   const userName = profile?.full_name || user?.user_metadata?.name || t('home_guerrera');
-  const isPremium = profile?.is_premium === true || profile?.plan === 'guerrera';
+  const isPremium = subscriptionActive;
   const xpTotal = localProgress?.xp_total ?? progress?.xp_total ?? 0;
   const streakDays = localProgress?.streak_days ?? progress?.streak_days ?? 0;
   const level = Math.floor(xpTotal / 100) + 1;
@@ -122,11 +124,19 @@ export default function PortalDashboard({ navigation }: any) {
   const fetchData = useCallback(async () => {
     if (!user?.id) return;
     try {
-      const [progressData, challengesData, communityData] = await Promise.allSettled([
+      const [progressData, challengesData, communityData, cycleLogData, subData] = await Promise.allSettled([
         getProgress(user.id),
         aiWeeklyChallenges(),
         getCommunityFeed(undefined, 3, 0),
+        getCycleLog(user.id, 1),
+        getSubscriptions(user.id),
       ]);
+
+      if (subData.status === 'fulfilled') {
+        const sub = subData.value;
+        const active = sub && (sub.status === 'active' || sub.status === 'trialing') && (!sub.current_period_end || new Date(sub.current_period_end) > new Date());
+        setSubscriptionActive(!!active);
+      }
 
       if (progressData.status === 'fulfilled') setLocalProgress(progressData.value);
       if (challengesData.status === 'fulfilled') {
@@ -135,6 +145,11 @@ export default function PortalDashboard({ navigation }: any) {
       }
       if (communityData.status === 'fulfilled') {
         setCommunityPosts((communityData.value.posts || []).slice(0, 3));
+      }
+      if (cycleLogData.status === 'fulfilled') {
+        const log = cycleLogData.value?.[0];
+        if (log?.phase) setCyclePhase(log.phase);
+        if (log?.energy != null) setEnergyLevel(log.energy);
       }
 
       aiAffirmations({ user_id: user.id, lang: t('lang_code') })
@@ -162,12 +177,14 @@ export default function PortalDashboard({ navigation }: any) {
 
   const navigateToTab = (tabName: string, screen?: string) => {
     const parent = navigation.getParent?.();
-    if (parent) {
-      if (screen) {
-        parent.navigate(tabName, { screen });
-      } else {
-        parent.navigate(tabName);
-      }
+    if (!parent) return;
+    const state = parent.getState?.();
+    const exists = state?.routes?.some((r: any) => r.name === tabName);
+    if (!exists) return;
+    if (screen) {
+      parent.navigate(tabName, { screen });
+    } else {
+      parent.navigate(tabName);
     }
   };
 
@@ -745,6 +762,9 @@ export default function PortalDashboard({ navigation }: any) {
           </TouchableOpacity>
         </View>
 
+        {/* First Week Hook */}
+        <FirstWeekBanner />
+
         {/* Emotional Profile */}
         <EmotionalProfileCard />
 
@@ -810,6 +830,17 @@ export default function PortalDashboard({ navigation }: any) {
             <Text style={styles.statLabel}>{t('badges_title')}</Text>
           </View>
         </View>
+
+        {/* Daily Affirmation */}
+        {affirmation ? (
+          <Card style={styles.affirmationCard}>
+            <View style={styles.affirmationHeader}>
+              <Ionicons name="sparkles" size={18} color={colors.gold} />
+              <Text style={styles.affirmationTitle}>{t('home_affirmation')}</Text>
+            </View>
+            <Text style={styles.affirmationText}>{affirmation}</Text>
+          </Card>
+        ) : null}
 
         {/* Cycle Widget */}
         <Card style={styles.cycleCard}>

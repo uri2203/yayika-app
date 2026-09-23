@@ -270,10 +270,10 @@ export async function aiOnboarding(params: OnboardingPreferences) {
   if (!user) throw new Error('Authentication required');
 
   const { error } = await supabase
-    .from('yayika_onboarding')
+    .from('yayika_profiles')
     .upsert(
-      { user_id: user.id, preferences: params },
-      { onConflict: 'user_id' }
+      { id: user.id, onboarding_preferences: params },
+      { onConflict: 'id' }
     );
   if (error) throw error;
   return { success: true };
@@ -411,7 +411,7 @@ export async function upsertCycleLog(userId: string, logDate: string, entry: Rec
 
   const { data, error } = await supabase
     .from('yayika_cycle_log')
-    .insert({ user_id: userId, ...entry })
+    .insert({ user_id: userId, logged_at: `${logDate}T12:00:00`, ...entry })
     .select()
     .single();
   if (error) throw error;
@@ -520,19 +520,20 @@ export async function getLessonProgress(userId: string, moduleId?: string) {
 
 export async function getCheckins(userId: string) {
   const { data, error } = await supabase
-    .from('yayika_checkins')
-    .select('*')
+    .from('yayika_cycle_log')
+    .select('id, mood, energy, notes, logged_at')
     .eq('user_id', userId)
-    .order('created_at', { ascending: false })
+    .order('logged_at', { ascending: false })
     .limit(30);
   if (error) throw error;
   return data;
 }
 
 export async function addCheckin(userId: string, type = 'daily', mood?: number, energy?: number, notes?: string) {
+  void type;
   const { data, error } = await supabase
-    .from('yayika_checkins')
-    .insert({ user_id: userId, checkin_type: type, mood, energy, notes })
+    .from('yayika_cycle_log')
+    .insert({ user_id: userId, mood, energy, notes, logged_at: new Date().toISOString() })
     .select()
     .single();
   if (error) throw error;
@@ -542,20 +543,43 @@ export async function addCheckin(userId: string, type = 'daily', mood?: number, 
 export async function getDailyMood(userId: string) {
   const today = new Date().toISOString().split('T')[0];
   const { data, error } = await supabase
-    .from('yayika_daily_mood')
-    .select('*')
+    .from('yayika_cycle_log')
+    .select('mood')
     .eq('user_id', userId)
-    .eq('logged_date', today)
-    .single();
+    .gte('logged_at', `${today}T00:00:00`)
+    .lte('logged_at', `${today}T23:59:59`)
+    .not('mood', 'is', null)
+    .limit(1)
+    .maybeSingle();
   if (error && error.code !== 'PGRST116') throw error;
   return data;
 }
 
 export async function upsertDailyMood(userId: string, mood: Record<string, any>) {
   const today = new Date().toISOString().split('T')[0];
+  const { data: existing } = await supabase
+    .from('yayika_cycle_log')
+    .select('id')
+    .eq('user_id', userId)
+    .gte('logged_at', `${today}T00:00:00`)
+    .lte('logged_at', `${today}T23:59:59`)
+    .limit(1)
+    .maybeSingle();
+
+  if (existing) {
+    const { data, error } = await supabase
+      .from('yayika_cycle_log')
+      .update(mood)
+      .eq('id', existing.id)
+      .select()
+      .single();
+    if (error) throw error;
+    return data;
+  }
+
   const { data, error } = await supabase
-    .from('yayika_daily_mood')
-    .upsert({ user_id: userId, logged_date: today, ...mood }, { onConflict: 'user_id,logged_date' })
+    .from('yayika_cycle_log')
+    .insert({ user_id: userId, logged_at: new Date().toISOString(), ...mood })
     .select()
     .single();
   if (error) throw error;
@@ -575,9 +599,9 @@ export async function getSubscriptions(userId: string) {
 
 export async function getAffiliate(userId: string) {
   const { data, error } = await supabase
-    .from('yayika_affiliates')
+    .from('yayika_profiles')
     .select('*')
-    .eq('user_id', userId)
+    .eq('id', userId)
     .single();
   if (error && error.code !== 'PGRST116') throw error;
   return data;

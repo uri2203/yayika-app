@@ -26,35 +26,39 @@ export function useFirstWeek(): FirstWeekState {
     if (!user) return;
     
     const loadFirstWeek = async () => {
-      // Get user creation date
-      const { data: profile } = await supabase
-        .from('yayika_profiles')
-        .select('created_at')
-        .eq('id', user.id)
-        .single();
+      try {
+        // Get user creation date
+        const { data: profile } = await supabase
+          .from('yayika_profiles')
+          .select('created_at')
+          .eq('id', user.id)
+          .single();
 
-      if (!profile?.created_at) return;
+        if (!profile?.created_at) return;
 
-      const createdAt = new Date(profile.created_at);
-      const now = new Date();
-      const daysSinceSignup = Math.floor((now.getTime() - createdAt.getTime()) / (1000 * 60 * 60 * 24)) + 1;
-      const isFirstWeek = daysSinceSignup <= 7;
+        const createdAt = new Date(profile.created_at);
+        const now = new Date();
+        const daysSinceSignup = Math.floor((now.getTime() - createdAt.getTime()) / (1000 * 60 * 60 * 24)) + 1;
+        const isFirstWeek = daysSinceSignup <= 7;
 
-      // Check if today's check-in is done
-      const today = now.toISOString().split('T')[0];
-      const { data: todayCheckin } = await supabase
-        .from('yayika_checkins')
-        .select('id')
-        .eq('user_id', user.id)
-        .gte('created_at', today)
-        .maybeSingle();
+        // Check if today's check-in is done
+        const today = now.toISOString().split('T')[0];
+        const { data: todayCheckin } = await supabase
+          .from('yayika_cycle_log')
+          .select('id')
+          .eq('user_id', user.id)
+          .gte('logged_at', `${today}T00:00:00`)
+          .lte('logged_at', `${today}T23:59:59`)
+          .limit(1)
+          .maybeSingle();
 
-      setState({
-        dayNumber: daysSinceSignup,
-        isFirstWeek,
-        todayCompleted: !!todayCheckin,
-        xpMultiplier: isFirstWeek ? 2 : 1,
-      });
+        setState({
+          dayNumber: daysSinceSignup,
+          isFirstWeek,
+          todayCompleted: !!todayCheckin,
+          xpMultiplier: isFirstWeek ? 2 : 1,
+        });
+      } catch {}
     };
 
     loadFirstWeek();
