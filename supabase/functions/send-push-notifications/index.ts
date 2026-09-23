@@ -20,7 +20,7 @@ serve(async (req: Request) => {
     // Get all users with push tokens
     const { data: tokens, error: tokensError } = await supabase
       .from('yayika_push_tokens')
-      .select('user_id, token, platform');
+      .select('user_id, expo_push_token, platform');
 
     if (tokensError) throw tokensError;
 
@@ -35,7 +35,7 @@ serve(async (req: Request) => {
           .eq('user_id', pushToken.user_id)
           .order('logged_at', { ascending: false })
           .limit(1)
-          .single();
+          .maybeSingle();
 
         const now = new Date();
         const lastCheckinDate = lastCheckin ? new Date(lastCheckin.logged_at) : null;
@@ -62,11 +62,11 @@ serve(async (req: Request) => {
         if (daysSinceCheckin >= 1 && now.getHours() >= 20) {
           notificationType = 'checkin_reminder';
           const messages: Record<string, { title: string; body: string }> = {
-            es: { title: '🔥 ¡Hora de tu check-in!', body: 'No olvides registrar tu día. ¡Gana +10 XP!' },
-            en: { title: '🔥 Time for your check-in!', body: 'Don\'t forget to log your day. Earn +10 XP!' },
-            pt: { title: '🔥 Hora do seu check-in!', body: 'Não esqueça de registrar seu dia. Ganhe +10 XP!' },
-            fr: { title: '🔥 C\'est l\'heure du check-in !', body: 'N\'oubliez pas d\'enregistrer votre journée. Gagnez +10 XP !' },
-            de: { title: '🔥 Zeit für dein Check-in!', body: 'Vergiss nicht, deinen Tag einzutragen. Verdiene +10 XP!' },
+            es: { title: 'ðŸ”¥ Â¡Hora de tu check-in!', body: 'No olvides registrar tu dÃ­a. Â¡Gana +10 XP!' },
+            en: { title: 'ðŸ”¥ Time for your check-in!', body: 'Don\'t forget to log your day. Earn +10 XP!' },
+            pt: { title: 'ðŸ”¥ Hora do seu check-in!', body: 'NÃ£o esqueÃ§a de registrar seu dia. Ganhe +10 XP!' },
+            fr: { title: 'ðŸ”¥ C\'est l\'heure du check-in !', body: 'N\'oubliez pas d\'enregistrer votre journÃ©e. Gagnez +10 XP !' },
+            de: { title: 'ðŸ”¥ Zeit fÃ¼r dein Check-in!', body: 'Vergiss nicht, deinen Tag einzutragen. Verdiene +10 XP!' },
           };
           title = messages[lang]?.title || messages.es.title;
           body = messages[lang]?.body || messages.es.body;
@@ -76,11 +76,11 @@ serve(async (req: Request) => {
         else if (currentStreak > 0 && daysSinceCheckin >= 1 && now.getHours() >= 21) {
           notificationType = 'streak_warning';
           const messages: Record<string, { title: string; body: string }> = {
-            es: { title: '⚠️ ¡Tu racha está en peligro!', body: `Llevas ${currentStreak} días. ¡No la pierdas!` },
-            en: { title: '⚠️ Your streak is in danger!', body: `You have ${currentStreak} days. Don't lose it!` },
-            pt: { title: '⚠️ Sua sequência está em perigo!', body: `Você tem ${currentStreak} dias. Não a perca!` },
-            fr: { title: '⚠️ Votre série est en danger !', body: `Vous avez ${currentStreak} jours. Ne la perdez pas !` },
-            de: { title: '⚠️ Deine Serie ist in Gefahr!', body: `Du hast ${currentStreak} Tage. Verlier sie nicht!` },
+            es: { title: 'âš ï¸ Â¡Tu racha estÃ¡ en peligro!', body: `Llevas ${currentStreak} dÃ­as. Â¡No la pierdas!` },
+            en: { title: 'âš ï¸ Your streak is in danger!', body: `You have ${currentStreak} days. Don't lose it!` },
+            pt: { title: 'âš ï¸ Sua sequÃªncia estÃ¡ em perigo!', body: `VocÃª tem ${currentStreak} dias. NÃ£o a perca!` },
+            fr: { title: 'âš ï¸ Votre sÃ©rie est en danger !', body: `Vous avez ${currentStreak} jours. Ne la perdez pas !` },
+            de: { title: 'âš ï¸ Deine Serie ist in Gefahr!', body: `Du hast ${currentStreak} Tage. Verlier sie nicht!` },
           };
           title = messages[lang]?.title || messages.es.title;
           body = messages[lang]?.body || messages.es.body;
@@ -95,7 +95,7 @@ serve(async (req: Request) => {
             .eq('user_id', pushToken.user_id)
             .order('logged_at', { ascending: false })
             .limit(1)
-            .single();
+          .maybeSingle();
 
           if (cycleData) {
             const lastPeriod = new Date(cycleData.logged_at);
@@ -111,34 +111,34 @@ serve(async (req: Request) => {
             notificationType = `phase_${phase}`;
             const messages: Record<string, Record<string, { title: string; body: string }>> = {
               es: {
-                menstrual: { title: '🌙 Fase Menstrual', body: 'Tu cuerpo necesita descanso. Cuida de ti.' },
-                follicular: { title: '🌱 Fase Folicular', body: 'Energía en aumento. ¡Es buen momento para empezar!' },
-                ovulatory: { title: '☀️ Fase Ovulatoria', body: '¡Tu momento de brillar! Aprovecha esta energía.' },
-                luteal: { title: '🍂 Fase Lútea', body: 'Baja la intensidad. Prepara tu cuerpo para el descanso.' },
+                menstrual: { title: 'ðŸŒ™ Fase Menstrual', body: 'Tu cuerpo necesita descanso. Cuida de ti.' },
+                follicular: { title: 'ðŸŒ± Fase Folicular', body: 'EnergÃ­a en aumento. Â¡Es buen momento para empezar!' },
+                ovulatory: { title: 'â˜€ï¸ Fase Ovulatoria', body: 'Â¡Tu momento de brillar! Aprovecha esta energÃ­a.' },
+                luteal: { title: 'ðŸ‚ Fase LÃºtea', body: 'Baja la intensidad. Prepara tu cuerpo para el descanso.' },
               },
               en: {
-                menstrual: { title: '🌙 Menstrual Phase', body: 'Your body needs rest. Take care of yourself.' },
-                follicular: { title: '🌱 Follicular Phase', body: 'Energy rising. Great time to start new things!' },
-                ovulatory: { title: '☀️ Ovulatory Phase', body: 'Your time to shine! Make the most of this energy.' },
-                luteal: { title: '🍂 Luteal Phase', body: 'Slow down. Prepare your body for rest.' },
+                menstrual: { title: 'ðŸŒ™ Menstrual Phase', body: 'Your body needs rest. Take care of yourself.' },
+                follicular: { title: 'ðŸŒ± Follicular Phase', body: 'Energy rising. Great time to start new things!' },
+                ovulatory: { title: 'â˜€ï¸ Ovulatory Phase', body: 'Your time to shine! Make the most of this energy.' },
+                luteal: { title: 'ðŸ‚ Luteal Phase', body: 'Slow down. Prepare your body for rest.' },
               },
               pt: {
-                menstrual: { title: '🌙 Fase Menstrual', body: 'Seu corpo precisa de descanso. Cuide de si.' },
-                follicular: { title: '🌱 Fase Folicular', body: 'Energia aumentando. Bom momento para começar!' },
-                ovulatory: { title: '☀️ Fase Ovulatória', body: 'Sua hora de brilhar! Aproveite essa energia.' },
-                luteal: { title: '🍂 Fase Lútea', body: 'Reduza a intensidade. Prepare seu corpo para o descanso.' },
+                menstrual: { title: 'ðŸŒ™ Fase Menstrual', body: 'Seu corpo precisa de descanso. Cuide de si.' },
+                follicular: { title: 'ðŸŒ± Fase Folicular', body: 'Energia aumentando. Bom momento para comeÃ§ar!' },
+                ovulatory: { title: 'â˜€ï¸ Fase OvulatÃ³ria', body: 'Sua hora de brilhar! Aproveite essa energia.' },
+                luteal: { title: 'ðŸ‚ Fase LÃºtea', body: 'Reduza a intensidade. Prepare seu corpo para o descanso.' },
               },
               fr: {
-                menstrual: { title: '🌙 Phase Menstruelle', body: 'Votre corps a besoin de repos. Prenez soin de vous.' },
-                follicular: { title: '🌱 Phase Folliculaire', body: 'Énergie en hausse. Bon moment pour commencer !' },
-                ovulatory: { title: '☀️ Phase Ovulatoire', body: 'Votre moment de briller ! Profitez de cette énergie.' },
-                luteal: { title: '🍂 Phase Lutéale', body: 'Ralentissez. Préparez votre corps au repos.' },
+                menstrual: { title: 'ðŸŒ™ Phase Menstruelle', body: 'Votre corps a besoin de repos. Prenez soin de vous.' },
+                follicular: { title: 'ðŸŒ± Phase Folliculaire', body: 'Ã‰nergie en hausse. Bon moment pour commencer !' },
+                ovulatory: { title: 'â˜€ï¸ Phase Ovulatoire', body: 'Votre moment de briller ! Profitez de cette Ã©nergie.' },
+                luteal: { title: 'ðŸ‚ Phase LutÃ©ale', body: 'Ralentissez. PrÃ©parez votre corps au repos.' },
               },
               de: {
-                menstrual: { title: '🌙 Menstruationsphase', body: 'Dein Körper braucht Ruhe. Pflege dich.' },
-                follicular: { title: '🌱 Follikelphase', body: 'Energie steigt. Guter Moment um anzufangen!' },
-                ovulatory: { title: '☀️ Ovulationsphase', body: 'Dein Moment zu glänzen! Nutze diese Energie.' },
-                luteal: { title: '🍂 Lutealphase', body: 'Verlangsame. Bereite deinen Körper auf Ruhe vor.' },
+                menstrual: { title: 'ðŸŒ™ Menstruationsphase', body: 'Dein KÃ¶rper braucht Ruhe. Pflege dich.' },
+                follicular: { title: 'ðŸŒ± Follikelphase', body: 'Energie steigt. Guter Moment um anzufangen!' },
+                ovulatory: { title: 'â˜€ï¸ Ovulationsphase', body: 'Dein Moment zu glÃ¤nzen! Nutze diese Energie.' },
+                luteal: { title: 'ðŸ‚ Lutealphase', body: 'Verlangsame. Bereite deinen KÃ¶rper auf Ruhe vor.' },
               },
             };
             title = messages[lang]?.[phase]?.title || messages.es[phase].title;
@@ -147,7 +147,7 @@ serve(async (req: Request) => {
         }
 
         // Send push notification if we have a message
-        if (notificationType && pushToken.token) {
+        if (notificationType && pushToken.expo_push_token) {
           // Use Expo push notification service
           const response = await fetch('https://exp.host/--/api/v2/push/send', {
             method: 'POST',
@@ -155,7 +155,7 @@ serve(async (req: Request) => {
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-              to: pushToken.token,
+              to: pushToken.expo_push_token,
               title,
               body,
               data: { type: notificationType },
