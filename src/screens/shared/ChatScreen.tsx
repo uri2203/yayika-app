@@ -17,6 +17,7 @@ import { useTheme } from '../../contexts/ThemeContext';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { useAuth } from '../../contexts/AuthContext';
 import { aiChat, ChatMessage } from '../../config/api';
+import HealthDisclaimer from '../../components/HealthDisclaimer';
 
 interface Message {
   id: string;
@@ -200,6 +201,8 @@ export default function ChatScreen({ navigation }: any) {
         </View>
         <View style={styles.backBtn} />
       </View>
+
+      <HealthDisclaimer type="ai" />
 
       <KeyboardAvoidingView
         style={styles.chatContainer}

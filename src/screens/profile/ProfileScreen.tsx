@@ -264,6 +264,14 @@ export default function ProfileScreen({ navigation }: any) {
             <Ionicons name="chevron-forward" size={20} color={colors.subtleText} />
           </TouchableOpacity>
 
+          <TouchableOpacity style={[styles.menuItem, { borderBottomColor: colors.border }]} onPress={() => navigation.navigate('AutonomySettings')}>
+            <View style={styles.menuLeft}>
+              <Ionicons name="lock-closed-outline" size={22} color={colors.primary} />
+              <Text style={[styles.menuText, { color: colors.text }]}>{t('autonomy_title') || 'Mi Control'}</Text>
+            </View>
+            <Ionicons name="chevron-forward" size={20} color={colors.subtleText} />
+          </TouchableOpacity>
+
           <TouchableOpacity style={[styles.menuItem, { borderBottomColor: colors.border }]} onPress={() => navigation.navigate('Legal')}>
             <View style={styles.menuLeft}>
               <Ionicons name="document-text-outline" size={22} color={colors.gold} />

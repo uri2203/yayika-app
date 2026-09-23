@@ -17,6 +17,7 @@ import { useTheme } from '../../contexts/ThemeContext';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { useAuth } from '../../contexts/AuthContext';
 import { aiChat, ChatMessage } from '../../config/api';
+import { getEmpatheticResponse } from '../../services/empatheticCoachService';
 
 export default function EmpatheticChatScreen({ navigation }: any) {
   const { currentColors } = useTheme();
@@ -53,10 +54,15 @@ export default function EmpatheticChatScreen({ navigation }: any) {
     setLoading(true);
 
     try {
-      const res = await aiChat(newMessages, t('lang_code'));
+      const empatheticReply = await getEmpatheticResponse(
+        newMessages.map(m => ({ role: m.role as 'user' | 'assistant', content: m.content })),
+        null,
+        null,
+        { lang: t('lang_code') || 'es' }
+      );
       const assistantMsg: ChatMessage = {
         role: 'assistant',
-        content: res.choices?.[0]?.message?.content || 'Estoy aquí para escucharte.',
+        content: empatheticReply,
       };
       setMessages([...newMessages, assistantMsg]);
     } catch {
@@ -88,7 +94,7 @@ export default function EmpatheticChatScreen({ navigation }: any) {
         </TouchableOpacity>
         <View style={styles.headerCenter}>
           <Ionicons name="heart" size={20} color={colors.rose} />
-          <Text style={[styles.headerTitle, { color: colors.text }]}>{t('chat_title')}</Text>
+          <Text style={[styles.headerTitle, { color: colors.text }]}>{t('empathetic_chat_title') || 'Laura'}</Text>
         </View>
         <View style={styles.backButton} />
       </View>

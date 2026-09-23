@@ -15,6 +15,9 @@ import { useTheme } from '../../contexts/ThemeContext';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { useAuth } from '../../contexts/AuthContext';
 import HealthDisclaimer from '../../components/HealthDisclaimer';
+import CelebrationOverlay from '../../components/CelebrationOverlay';
+import { logCycleEntry } from '../../services/cycleGamificationService';
+import { updateStreakOnLog } from '../../services/streakService';
 import {
   getCycleLog,
   upsertCycleLog,
@@ -67,6 +70,7 @@ export default function CycleLogScreen({ navigation }: any) {
   const [energy, setEnergy] = useState(3);
   const [selectedMood, setSelectedMood] = useState<string | null>(null);
   const [selectedSymptoms, setSelectedSymptoms] = useState<string[]>([]);
+  const [celebration, setCelebration] = useState<{ visible: boolean; xp: number }>({ visible: false, xp: 0 });
 
   const fetchData = useCallback(async () => {
     if (!user) return;
@@ -113,6 +117,19 @@ export default function CycleLogScreen({ navigation }: any) {
       });
       if (selectedMood) {
         await upsertDailyMood(user.id, { mood: selectedMood });
+      }
+      try {
+        const xpResult = await logCycleEntry(user.id, {
+          energy_level: energy,
+          mood: selectedMood,
+          symptoms: selectedSymptoms,
+          cycle_day: cycleDay,
+          cycle_phase: selectedPhase,
+        });
+        await updateStreakOnLog(user.id);
+        setCelebration({ visible: true, xp: xpResult.xpAwarded });
+      } catch {
+        // XP non-critical
       }
       Alert.alert(
         t('cycle_saved_title') ,
@@ -504,6 +521,13 @@ export default function CycleLogScreen({ navigation }: any) {
           </>
         )}
       </ScrollView>
+
+      <CelebrationOverlay
+        visible={celebration.visible}
+        type="log_cycle"
+        xp={celebration.xp}
+        onDismiss={() => setCelebration({ visible: false, xp: 0 })}
+      />
     </SafeAreaView>
   );
 }
