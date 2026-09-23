@@ -471,6 +471,7 @@ CREATE POLICY "Users can delete own transactions"
 CREATE TABLE IF NOT EXISTS public.yayika_community_categories (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   name TEXT NOT NULL,
+  slug TEXT,
   icon TEXT,
   color TEXT,
   sort_order INTEGER DEFAULT 0,
@@ -478,6 +479,7 @@ CREATE TABLE IF NOT EXISTS public.yayika_community_categories (
   created_at TIMESTAMPTZ DEFAULT now()
 );
 
+CREATE UNIQUE INDEX IF NOT EXISTS idx_yayika_community_categories_slug ON public.yayika_community_categories(slug);
 CREATE INDEX IF NOT EXISTS idx_yayika_community_categories_active ON public.yayika_community_categories(is_active);
 CREATE INDEX IF NOT EXISTS idx_yayika_community_categories_sort ON public.yayika_community_categories(sort_order);
 
@@ -495,6 +497,11 @@ CREATE TABLE IF NOT EXISTS public.yayika_community_posts (
   category_id UUID REFERENCES public.yayika_community_categories(id) ON DELETE SET NULL,
   title TEXT,
   content TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'active',
+  post_type TEXT NOT NULL DEFAULT 'text',
+  achievement_type TEXT,
+  achievement_data JSONB NOT NULL DEFAULT '{}'::jsonb,
+  reports_count INTEGER NOT NULL DEFAULT 0,
   is_anonymous BOOLEAN DEFAULT false,
   is_pinned BOOLEAN DEFAULT false,
   is_moderated BOOLEAN DEFAULT false,
@@ -572,7 +579,9 @@ CREATE TABLE IF NOT EXISTS public.yayika_community_comments (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
   post_id UUID REFERENCES public.yayika_community_posts(id) ON DELETE CASCADE,
+  parent_id UUID REFERENCES public.yayika_community_comments(id) ON DELETE CASCADE,
   content TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'active',
   is_anonymous BOOLEAN DEFAULT false,
   created_at TIMESTAMPTZ DEFAULT now()
 );
@@ -611,12 +620,12 @@ CREATE TABLE IF NOT EXISTS public.yayika_community_notifications (
   title TEXT,
   message TEXT,
   reference_id UUID,
-  is_read BOOLEAN DEFAULT false,
+  read BOOLEAN DEFAULT false,
   created_at TIMESTAMPTZ DEFAULT now()
 );
 
 CREATE INDEX IF NOT EXISTS idx_yayika_community_notifications_user ON public.yayika_community_notifications(user_id);
-CREATE INDEX IF NOT EXISTS idx_yayika_community_notifications_read ON public.yayika_community_notifications(is_read);
+CREATE INDEX IF NOT EXISTS idx_yayika_community_notifications_read ON public.yayika_community_notifications(read);
 CREATE INDEX IF NOT EXISTS idx_yayika_community_notifications_created ON public.yayika_community_notifications(created_at DESC);
 
 ALTER TABLE public.yayika_community_notifications ENABLE ROW LEVEL SECURITY;

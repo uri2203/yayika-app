@@ -4,15 +4,16 @@
 -- =============================================
 
 -- Community Categories
-INSERT INTO yayika_community_categories (name, icon, color, sort_order) VALUES
-('Emprendimiento', 'rocket', '#9B72CF', 1),
-('Bienestar', 'heart', '#F472B6', 2),
-('Finanzas', 'wallet', '#D4A843', 3),
-('Marketing', 'megaphone', '#2DD4BF', 4),
-('Maternidad', 'baby', '#FB7185', 5),
-('Crecimiento Personal', 'star', '#E8C96A', 6),
-('Salud', 'fitness', '#6EE7B7', 7),
-('Tecnología', 'laptop', '#94A3B8', 8)
+INSERT INTO yayika_community_categories (name, slug, icon, color, sort_order) VALUES
+('Logros', 'logros', 'trophy', '#9B72CF', 0),
+('Emprendimiento', 'emprendimiento', 'rocket', '#9B72CF', 1),
+('Bienestar', 'bienestar', 'heart', '#F472B6', 2),
+('Finanzas', 'finanzas', 'wallet', '#D4A843', 3),
+('Marketing', 'marketing', 'megaphone', '#2DD4BF', 4),
+('Maternidad', 'maternidad', 'baby', '#FB7185', 5),
+('Crecimiento Personal', 'crecimiento-personal', 'star', '#E8C96A', 6),
+('Salud', 'salud', 'fitness', '#6EE7B7', 7),
+('Tecnología', 'tecnologia', 'laptop', '#94A3B8', 8)
 ON CONFLICT DO NOTHING;
 
 -- Weekly Challenges

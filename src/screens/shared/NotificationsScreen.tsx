@@ -20,11 +20,11 @@ function getLocalized(value: any, lang: Language): string {
 interface Notification {
   id: string;
   title: string;
-  body: string;
+  message: string;
   type: string;
   read: boolean;
   created_at: string;
-  data?: Record<string, any>;
+  reference_id?: string;
 }
 
 export default function NotificationsScreen({ navigation }: any) {
@@ -125,7 +125,7 @@ export default function NotificationsScreen({ navigation }: any) {
           {getLocalized(item.title, lang)}
         </Text>
         <Text style={[styles.notificationBody, { color: colors.subtleText }]} numberOfLines={2}>
-          {getLocalized(item.body, lang)}
+          {getLocalized(item.message, lang)}
         </Text>
         <Text style={[styles.notificationTime, { color: colors.subtleText }]}>
           {getTimeAgo(item.created_at)}

@@ -10,6 +10,7 @@ export interface Profile {
   country_code: string;
   city: string;
   currency_code: string;
+  onboarding_completed?: boolean;
 }
 
 export interface Progress {
@@ -24,6 +25,8 @@ interface AuthContextType {
   profile: Profile | null;
   progress: Progress | null;
   loading: boolean;
+  justRegistered: boolean;
+  clearJustRegistered: () => void;
   signIn: (email: string, password: string) => Promise<{ error?: string }>;
   signUp: (email: string, password: string, name: string, legalAcceptedAt?: string) => Promise<{ error?: string }>;
   signOut: () => Promise<void>;
@@ -37,6 +40,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [progress, setProgress] = useState<Progress | null>(null);
   const [loading, setLoading] = useState(true);
+  const [justRegistered, setJustRegistered] = useState(false);
 
   const fetchUserExtras = useCallback(async (userId: string) => {
     try {
@@ -80,18 +84,21 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       options: { data: { name } },
     });
     if (error) return { error: error.message };
-    if (data?.user?.id && legalAcceptedAt) {
-      await supabase.from('yayika_profiles').upsert({
-        id: data.user.id,
-        legal_accepted_at: legalAcceptedAt,
-      }, { onConflict: 'id' });
+    if (data?.user?.id) {
+      const upsertData: Record<string, any> = { id: data.user.id, onboarding_completed: false };
+      if (legalAcceptedAt) upsertData.legal_accepted_at = legalAcceptedAt;
+      await supabase.from('yayika_profiles').upsert(upsertData, { onConflict: 'id' });
+      setJustRegistered(true);
     }
     return {};
   }, []);
 
+  const clearJustRegistered = useCallback(() => setJustRegistered(false), []);
+
   const signOut = useCallback(async () => {
     setProfile(null);
     setProgress(null);
+    setJustRegistered(false);
     await supabase.auth.signOut();
   }, []);
 
@@ -111,6 +118,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         profile,
         progress,
         loading,
+        justRegistered,
+        clearJustRegistered,
         signIn,
         signUp,
         signOut,

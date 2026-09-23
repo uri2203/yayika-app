@@ -15,6 +15,7 @@ import { useTheme } from '../../contexts/ThemeContext';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { useAuth } from '../../contexts/AuthContext';
 import { getOnboardingState, completeOnboardingDay } from '../../config/api';
+import { supabase } from '../../config/supabase';
 
 interface DayTask {
   day: number;
@@ -84,12 +85,16 @@ export default function OnboardingFlowScreen({ navigation }: any) {
         const updatedDays = prev.days_data.map((d) =>
           d.day === day ? { ...d, completed: true, xp_earned: TASK_XP } : d
         );
+        const nowCompleted = result.is_all_done;
+        if (nowCompleted) {
+          supabase.from('yayika_profiles').update({ onboarding_completed: true }).eq('id', user.id).then(() => {});
+        }
         return {
           ...prev,
           days_data: updatedDays,
           completed_days: result.completed_days,
           total_xp_earned: prev.total_xp_earned + TASK_XP,
-          is_completed: result.is_all_done,
+          is_completed: nowCompleted,
           current_day: result.next_day,
         };
       });

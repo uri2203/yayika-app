@@ -259,7 +259,7 @@ function MainNavigator() {
 }
 
 export default function Navigation() {
-  const { session, loading } = useAuth();
+  const { session, loading, justRegistered, clearJustRegistered } = useAuth();
   const { flags, loading: flagsLoading } = useFeatureFlags();
   const navRef = useRef<NavigationContainerRef<any>>(null);
   const [pendingResetPassword, setPendingResetPassword] = useState(false);
@@ -296,6 +296,21 @@ export default function Navigation() {
       return () => clearTimeout(timer);
     }
   }, [pendingResetPassword, session]);
+
+  useEffect(() => {
+    if (justRegistered && session && navRef.current) {
+      const timer = setTimeout(() => {
+        navRef.current?.navigate('MainTabs', {
+          screen: 'Portal',
+          params: {
+            screen: 'Onboarding',
+          },
+        });
+        clearJustRegistered();
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+  }, [justRegistered, session, clearJustRegistered]);
 
   if (loading || flagsLoading) {
     return <LoadingSpinner />;
