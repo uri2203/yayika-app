@@ -2,7 +2,7 @@ import { CyclePhase } from './dailyActionService';
 
 interface DesireContent {
   titleKey: string;
-  message: string;
+  messageKey: string;
   icon: string;
 }
 
@@ -14,27 +14,27 @@ interface SensualTip {
 const DESIRE_MESSAGES: Record<CyclePhase, DesireContent> = {
   menstrual: {
     titleKey: 'desire_title',
-    message: 'Tu cuerpo se está renovando. Honra su ritmo.',
+    messageKey: 'desire_msg_menstrual',
     icon: 'heart',
   },
   follicular: {
     titleKey: 'desire_title',
-    message: 'Tu energía sube — es tu momento de brillar.',
+    messageKey: 'desire_msg_follicular',
     icon: 'sunny',
   },
   ovulatory: {
     titleKey: 'desire_title',
-    message: 'Hoy tu magnetismo está en su punto máximo.',
+    messageKey: 'desire_msg_ovulatory',
     icon: 'flash',
   },
   luteal: {
     titleKey: 'desire_title',
-    message: 'Tu profundidad emocional es tu superpoder.',
+    messageKey: 'desire_msg_luteal',
     icon: 'moon',
   },
   unknown: {
     titleKey: 'desire_title',
-    message: 'Eres única y tu cuerpo lo sabe. Confía en ti.',
+    messageKey: 'desire_msg_unknown',
     icon: 'star',
   },
 };
@@ -45,26 +45,32 @@ const SENSUAL_TIPS: SensualTip[] = [
   { tipKey: 'desire_sensual_tip', icon: 'shirt' },
 ];
 
-const EMPOWERMENT_QUOTES = [
-  { text: '"No me da miedo crecer. Lo que me da miedo es quedarme estancada."', author: 'Mujer empoderada' },
-  { text: '"Mi valor no depende de lo que otros piensen de mí."', author: 'Guerrera Yayika' },
-  { text: '"Soy suficiente tal como soy, y merezco todo lo bueno."', author: 'Mujer consciente' },
-  { text: '"Mi voz importa. Mis decisiones importan. Yo importo."', author: 'Líder femenina' },
-  { text: '"Cada día me elijo a mí misma. Eso es revolucionario."', author: 'Mujer libre' },
-  { text: '"Mi cuerpo es mi hogar, y lo trato con amor."', author: 'Guerrera Yayika' },
-  { text: '"No necesito permiso para brillar."', author: 'Mujer empoderada' },
-  { text: '"Mi ciclo es mi calendario. Mi intuición es mi brújula."', author: 'Mujer intuitiva' },
-];
-
-const BODY_LOVE_MESSAGES: Record<CyclePhase, string> = {
-  menstrual: 'Tu cuerpo se está renovando. Cada célula te ama. Permítete descansar sin culpa — estás haciendo un trabajo increíble.',
-  follicular: 'Tu energía crece como las flores en primavera. Tu cuerpo está listo para nuevas aventuras. Confía en su fuerza.',
-  ovulatory: 'Brillas con luz propia. Tu cuerpo es poderoso, fuerte y magnético. Aprovéchalo hoy.',
-  luteal: 'Tu cuerpo te está pidiendo cuidado. Honra sus señales — eso es amor propio en acción.',
-  unknown: 'Eres una obra maestra en progreso. Tu cuerpo merece tu amor cada día, sin condiciones.',
+const TIP_DETAIL_KEY: Record<string, string> = {
+  water: 'desire_sensual_tip_water',
+  'hand-left': 'desire_sensual_tip_hand',
+  shirt: 'desire_sensual_tip_shirt',
 };
 
-const SENSUAL_TIP_DETAILS: Record<string, string> = {
+const EMPOWERMENT_QUOTES = [
+  { textKey: 'desire_quote_1', authorKey: 'desire_author_empoderada' },
+  { textKey: 'desire_quote_2', authorKey: 'desire_author_guerrera' },
+  { textKey: 'desire_quote_3', authorKey: 'desire_author_consciente' },
+  { textKey: 'desire_quote_4', authorKey: 'desire_author_lider' },
+  { textKey: 'desire_quote_5', authorKey: 'desire_author_libre' },
+  { textKey: 'desire_quote_6', authorKey: 'desire_author_guerrera' },
+  { textKey: 'desire_quote_7', authorKey: 'desire_author_empoderada' },
+  { textKey: 'desire_quote_8', authorKey: 'desire_author_intuitiva' },
+];
+
+const BODY_LOVE_KEYS: Record<CyclePhase, string> = {
+  menstrual: 'desire_body_msg_menstrual',
+  follicular: 'desire_body_msg_follicular',
+  ovulatory: 'desire_body_msg_ovulatory',
+  luteal: 'desire_body_msg_luteal',
+  unknown: 'desire_body_msg_unknown',
+};
+
+const SENSUAL_TIP_DETAILS: Record<string, Record<string, string>> = {
   es: {
     'desire_sensual_tip_water': 'Date un baño con sales y aceites esenciales. Siente cómo el agua abraza tu piel.',
     'desire_sensual_tip_hand': 'Masaje en las manos con crema perfumada. Tus manos merecen ser cuidadas.',
@@ -92,17 +98,6 @@ const SENSUAL_TIP_DETAILS: Record<string, string> = {
   },
 };
 
-function getPhaseKey(phase: CyclePhase): string {
-  const map: Record<CyclePhase, string> = {
-    menstrual: 'water',
-    follicular: 'sunny',
-    ovulatory: 'flash',
-    luteal: 'moon',
-    unknown: 'star',
-  };
-  return map[phase] || 'star';
-}
-
 function getTodayIndex(): number {
   const now = new Date();
   return (now.getFullYear() * 366 + now.getMonth() * 31 + now.getDate()) % EMPOWERMENT_QUOTES.length;
@@ -110,24 +105,27 @@ function getTodayIndex(): number {
 
 export function getDailyDesireContent(cyclePhase: CyclePhase): DesireContent {
   const content = DESIRE_MESSAGES[cyclePhase] || DESIRE_MESSAGES.unknown;
-  return {
-    ...content,
-    message: content.message,
-  };
+  return { ...content };
 }
 
-export function getSensualTip(cyclePhase: CyclePhase): SensualTip & { detail: string } {
+export function getSensualTip(
+  cyclePhase: CyclePhase,
+  lang: string
+): SensualTip & { detail: string } {
   const tipIndex = (getTodayIndex() + (cyclePhase === 'ovulatory' ? 1 : cyclePhase === 'luteal' ? 2 : 0)) % SENSUAL_TIPS.length;
   const tip = SENSUAL_TIPS[tipIndex];
-  const iconKey = tip.icon;
-  const detail = (SENSUAL_TIP_DETAILS as any)[`desire_sensual_tip_${iconKey}`] || tip.tipKey;
+  const detailKey = TIP_DETAIL_KEY[tip.icon];
+  const detail =
+    (SENSUAL_TIP_DETAILS[lang] && SENSUAL_TIP_DETAILS[lang][detailKey]) ||
+    SENSUAL_TIP_DETAILS.es[detailKey] ||
+    tip.tipKey;
   return { ...tip, detail };
 }
 
-export function getEmpowermentQuote(): { text: string; author: string } {
+export function getEmpowermentQuote(): { textKey: string; authorKey: string } {
   return EMPOWERMENT_QUOTES[getTodayIndex()];
 }
 
 export function getBodyLoveMessage(cyclePhase: CyclePhase): string {
-  return BODY_LOVE_MESSAGES[cyclePhase] || BODY_LOVE_MESSAGES.unknown;
+  return BODY_LOVE_KEYS[cyclePhase] || BODY_LOVE_KEYS.unknown;
 }

@@ -68,10 +68,21 @@ export default function DailyDesireCard({ cyclePhase }: DailyDesireCardProps) {
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
   const desireContent = getDailyDesireContent(cyclePhase);
-  const sensualTip = getSensualTip(cyclePhase);
+  const sensualTip = getSensualTip(cyclePhase, lang);
   const empowermentQuote = getEmpowermentQuote();
   const bodyLoveMessage = getBodyLoveMessage(cyclePhase);
   const additionalTips = ADDITIONAL_TIPS[lang] || ADDITIONAL_TIPS.es;
+
+  // The card keeps its pastel gradient in both themes; text/icons on the
+  // pastel surface must use the light palette so it stays readable in dark mode.
+  const onPastel = {
+    text: '#1a1a2e',
+    subtle: '#6b7280',
+    surface: '#FFFFFF',
+    rose: '#F472B6',
+    gold: '#D4A843',
+    primary: '#4E3470',
+  };
 
   useEffect(() => {
     const pulse = Animated.loop(
@@ -118,10 +129,10 @@ export default function DailyDesireCard({ cyclePhase }: DailyDesireCardProps) {
 
           {/* Header */}
           <View style={styles.header}>
-            <Animated.View style={[styles.heartIcon, { backgroundColor: colors.rose + '20', transform: [{ scale: pulseAnim }] }]}>
-              <Ionicons name="heart" size={24} color={colors.rose} />
+            <Animated.View style={[styles.heartIcon, { backgroundColor: onPastel.rose + '20', transform: [{ scale: pulseAnim }] }]}>
+              <Ionicons name="heart" size={24} color={onPastel.rose} />
             </Animated.View>
-            <Text style={[styles.headerTitle, { color: colors.text }]}>
+            <Text style={[styles.headerTitle, { color: onPastel.text }]}>
               {t('desire_title')}
             </Text>
           </View>
@@ -129,44 +140,44 @@ export default function DailyDesireCard({ cyclePhase }: DailyDesireCardProps) {
           {/* Desire Content */}
           <View style={styles.contentSection}>
             <Ionicons name={desireContent.icon as any} size={20} color={phaseGradient[1]} />
-            <Text style={[styles.desireMessage, { color: colors.text }]}>
-              {desireContent.message}
+            <Text style={[styles.desireMessage, { color: onPastel.text }]}>
+              {t(desireContent.messageKey)}
             </Text>
           </View>
 
           {/* Empowerment Quote */}
-          <View style={[styles.quoteSection, { backgroundColor: colors.white + '80' }]}>
-            <Ionicons name="chatbubble-ellipses" size={16} color={colors.gold} />
+          <View style={[styles.quoteSection, { backgroundColor: onPastel.surface + '80' }]}>
+            <Ionicons name="chatbubble-ellipses" size={16} color={onPastel.gold} />
             <View style={styles.quoteTextContainer}>
-              <Text style={[styles.quoteText, { color: colors.text }]} numberOfLines={3}>
-                {empowermentQuote.text}
+              <Text style={[styles.quoteText, { color: onPastel.text }]} numberOfLines={3}>
+                {t(empowermentQuote.textKey)}
               </Text>
-              <Text style={[styles.quoteAuthor, { color: colors.subtleText }]}>
-                — {empowermentQuote.author}
+              <Text style={[styles.quoteAuthor, { color: onPastel.subtle }]}>
+                — {t(empowermentQuote.authorKey)}
               </Text>
             </View>
           </View>
 
           {/* Body Love */}
-          <View style={[styles.bodyLoveSection, { backgroundColor: colors.rose + '10' }]}>
-            <Ionicons name="heart-circle" size={18} color={colors.rose} />
-            <Text style={[styles.bodyLoveTitle, { color: colors.text }]}>
+          <View style={[styles.bodyLoveSection, { backgroundColor: onPastel.rose + '10' }]}>
+            <Ionicons name="heart-circle" size={18} color={onPastel.rose} />
+            <Text style={[styles.bodyLoveTitle, { color: onPastel.text }]}>
               {t('desire_body_love')}
             </Text>
-            <Text style={[styles.bodyLoveText, { color: colors.subtleText }]} numberOfLines={3}>
-              {bodyLoveMessage}
+            <Text style={[styles.bodyLoveText, { color: onPastel.subtle }]} numberOfLines={3}>
+              {t(bodyLoveMessage)}
             </Text>
           </View>
 
           {/* Sensual Tip */}
-          <View style={[styles.tipSection, { backgroundColor: colors.white + '90' }]}>
+          <View style={[styles.tipSection, { backgroundColor: onPastel.surface + '90' }]}>
             <View style={styles.tipHeader}>
-              <Ionicons name={sensualTip.icon as any} size={18} color={colors.primary} />
-              <Text style={[styles.tipTitle, { color: colors.text }]}>
+              <Ionicons name={sensualTip.icon as any} size={18} color={onPastel.primary} />
+              <Text style={[styles.tipTitle, { color: onPastel.text }]}>
                 {t('desire_sensual_tip')}
               </Text>
             </View>
-            <Text style={[styles.tipText, { color: colors.subtleText }]}>
+            <Text style={[styles.tipText, { color: onPastel.subtle }]}>
               {sensualTip.detail}
             </Text>
           </View>
@@ -177,10 +188,10 @@ export default function DailyDesireCard({ cyclePhase }: DailyDesireCardProps) {
             onPress={() => setShowTipsModal(true)}
             activeOpacity={0.7}
           >
-            <Text style={[styles.moreTipsText, { color: colors.primary }]}>
-              Más consejos
+            <Text style={[styles.moreTipsText, { color: onPastel.primary }]}>
+              {t('desire_more_tips')}
             </Text>
-            <Ionicons name="chevron-forward" size={14} color={colors.primary} />
+            <Ionicons name="chevron-forward" size={14} color={onPastel.primary} />
           </TouchableOpacity>
         </View>
       </Animated.View>
@@ -196,7 +207,7 @@ export default function DailyDesireCard({ cyclePhase }: DailyDesireCardProps) {
           <View style={[styles.modalContent, { backgroundColor: colors.background }]}>
             <View style={styles.modalHeader}>
               <Text style={[styles.modalTitle, { color: colors.text }]}>
-                {t('desire_sensual_tip')}
+                {t('desire_more_tips')}
               </Text>
               <TouchableOpacity onPress={() => setShowTipsModal(false)}>
                 <Ionicons name="close" size={24} color={colors.subtleText} />
