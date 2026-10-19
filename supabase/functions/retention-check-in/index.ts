@@ -32,8 +32,14 @@ serve(async (req) => {
     switch (action) {
       case "dailyCheckin":
         return await dailyCheckin(supabase, user.id, body);
-      case "getSpinResult":
-        return await getSpinResult(supabase, user.id);
+      case "getSpinResult": {
+        // dispatch to generateSpinResult — the old code called a non-existent
+        // getSpinResult() and threw "not defined" on every wheel tap
+        const spin = await generateSpinResult(supabase, user.id);
+        return new Response(JSON.stringify(spin), {
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
       case "getTransformHistory":
         return await getTransformHistory(supabase, user.id);
       case "getCircleActivity":
@@ -63,16 +69,32 @@ serve(async (req) => {
 // ============================================================================
 
 async function dailyCheckin(supabase: any, userId: string, body: any) {
-  const today = new Date().toISOString().split("T")[0];
-  const { mood, energy, notes } = body;
+  // Day window in UTC (half-open [today, tomorrow)) — matches logged_at ISO
+  const dayStart = new Date();
+  dayStart.setUTCHours(0, 0, 0, 0);
+  const dayEndMs = dayStart.getTime() + 86400000;
+  const todayStart = dayStart.toISOString();
+  const dayEnd = new Date(dayEndMs).toISOString();
+  const yesterday = new Date(dayStart.getTime() - 86400000).toISOString().split("T")[0];
+  const twoDaysAgo = new Date(dayStart.getTime() - 2 * 86400000).toISOString().split("T")[0];
+
+  // mood/energy arrive as number OR string — cycle_log columns are INTEGER
+  const toInt = (v: any, min: number, max: number) => {
+    if (v === null || v === undefined || v === "") return null;
+    const n = Math.round(Number(v));
+    return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : null;
+  };
+  const mood = toInt(body.mood, 0, 10);
+  const energy = toInt(body.energy, 0, 10);
+  const notes = body.notes;
 
   // 1. Check if already checked in today
   const { data: existing } = await supabase
-    .from("yayika_cycle_logs")
+    .from("yayika_cycle_log")
     .select("id")
     .eq("user_id", userId)
-    .gte("logged_at", `${today}T00:00:00`)
-    .lt("logged_at", `${today}T23:59:59`)
+    .gte("logged_at", todayStart)
+    .lt("logged_at", dayEnd)
     .limit(1)
     .maybeSingle();
 
@@ -85,52 +107,55 @@ async function dailyCheckin(supabase: any, userId: string, body: any) {
 
   // 2. Insert check-in
   const { error: checkinError } = await supabase
-    .from("yayika_cycle_logs")
+    .from("yayika_cycle_log")
     .insert({
       user_id: userId,
-      mood: mood || null,
-      energy: energy || null,
+      mood: mood,
+      energy: energy,
       notes: notes || null,
       logged_at: new Date().toISOString(),
     });
 
   if (checkinError) throw checkinError;
 
-  // 3. Update streak
+  // 3. Update streak — the LAST check-in BEFORE today (never the row just
+  //    inserted; limit(1)+maybeSingle is safe — the old limit(2) version
+  //    compared today's row and reset the streak to 1 every single day)
   const { data: progress } = await supabase
     .from("yayika_progress")
     .select("streak_days, xp_total")
     .eq("user_id", userId)
-    .single();
+    .limit(1)
+    .maybeSingle();
 
   const { data: lastCheckin } = await supabase
-    .from("yayika_cycle_logs")
+    .from("yayika_cycle_log")
     .select("logged_at")
     .eq("user_id", userId)
+    .lt("logged_at", todayStart)
     .order("logged_at", { ascending: false })
-    .limit(2)
+    .limit(1)
     .maybeSingle();
 
   let newStreak = 1;
   let freezeUsed = false;
   if (lastCheckin) {
     const lastDate = new Date(lastCheckin.logged_at).toISOString().split("T")[0];
-    const yesterday = new Date(Date.now() - 86400000).toISOString().split("T")[0];
-    const twoDaysAgo = new Date(Date.now() - 2 * 86400000).toISOString().split("T")[0];
-    
+
     if (lastDate === yesterday) {
       // Consecutive day — extend streak
       newStreak = (progress?.streak_days || 0) + 1;
     } else if (lastDate === twoDaysAgo) {
-      // Missed 1 day — check for streak freeze
+      // Missed 1 day — check for streak freeze (ALWAYS scoped to this user)
       const { data: freezes } = await supabase
         .from("yayika_user_items")
         .select("quantity")
         .eq("user_id", userId)
         .eq("item_type", "streak_freeze")
         .gt("quantity", 0)
+        .limit(1)
         .maybeSingle();
-      
+
       if (freezes && freezes.quantity > 0) {
         // Use a freeze — keep streak alive
         newStreak = (progress?.streak_days || 0) + 1;
@@ -157,14 +182,19 @@ async function dailyCheckin(supabase: any, userId: string, body: any) {
     metadata: { streak: newStreak, mood, energy, freeze_used: freezeUsed },
   });
 
-  // 5. Update progress
-  await supabase
-    .from("yayika_progress")
-    .update({
-      streak_days: newStreak,
-      xp_total: (progress?.xp_total || 0) + xpEarned,
-    })
-    .eq("user_id", userId);
+  // 5. Update progress — CREATE the row when missing (new users have none,
+  //    and a plain UPDATE would silently affect 0 rows forever)
+  const newXp = (progress?.xp_total || 0) + xpEarned;
+  if (progress) {
+    await supabase
+      .from("yayika_progress")
+      .update({ streak_days: newStreak, xp_total: newXp })
+      .eq("user_id", userId);
+  } else {
+    await supabase
+      .from("yayika_progress")
+      .insert({ user_id: userId, streak_days: newStreak, xp_total: newXp, level: Math.floor(newXp / 100) + 1 });
+  }
 
   // 6. Update circle activity
   await supabase
@@ -173,7 +203,7 @@ async function dailyCheckin(supabase: any, userId: string, body: any) {
       {
         user_id: userId,
         last_active_at: new Date().toISOString(),
-        activity_score: (progress?.xp_total || 0) + xpEarned,
+        activity_score: newXp,
       },
       { onConflict: "user_id" }
     );
@@ -194,7 +224,7 @@ async function dailyCheckin(supabase: any, userId: string, body: any) {
     streak: newStreak,
     spin_result: spinResult,
     cycle_reward: cycleReward,
-    level: Math.floor(((progress?.xp_total || 0) + xpEarned) / 100) + 1,
+    level: Math.floor(newXp / 100) + 1,
   }), {
     headers: { ...corsHeaders, "Content-Type": "application/json" },
   });
@@ -266,12 +296,19 @@ async function generateSpinResult(supabase: any, userId: string) {
       .from("yayika_progress")
       .select("xp_total")
       .eq("user_id", userId)
-      .single();
+      .limit(1)
+      .maybeSingle();
 
-    await supabase
-      .from("yayika_progress")
-      .update({ xp_total: (progress?.xp_total || 0) + result.value })
-      .eq("user_id", userId);
+    if (progress) {
+      await supabase
+        .from("yayika_progress")
+        .update({ xp_total: (progress.xp_total || 0) + result.value })
+        .eq("user_id", userId);
+    } else {
+      await supabase
+        .from("yayika_progress")
+        .insert({ user_id: userId, xp_total: result.value, streak_days: 0, level: 1 });
+    }
 
     await supabase.from("yayika_xp_events").insert({
       user_id: userId,
@@ -287,12 +324,19 @@ async function generateSpinResult(supabase: any, userId: string) {
       .from("yayika_progress")
       .select("streak_days")
       .eq("user_id", userId)
-      .single();
+      .limit(1)
+      .maybeSingle();
 
-    await supabase
-      .from("yayika_progress")
-      .update({ streak_days: (progress?.streak_days || 0) + result.value })
-      .eq("user_id", userId);
+    if (progress) {
+      await supabase
+        .from("yayika_progress")
+        .update({ streak_days: (progress.streak_days || 0) + result.value })
+        .eq("user_id", userId);
+    } else {
+      await supabase
+        .from("yayika_progress")
+        .insert({ user_id: userId, streak_days: result.value, xp_total: 0, level: 1 });
+    }
   }
 
   return { already_spun: false, ...result };
@@ -304,7 +348,7 @@ async function generateSpinResult(supabase: any, userId: string) {
 
 async function getCurrentCycleDay(supabase: any, userId: string) {
   const { data: logs } = await supabase
-    .from("yayika_cycle_logs")
+    .from("yayika_cycle_log")
     .select("cycle_day, logged_at")
     .eq("user_id", userId)
     .order("logged_at", { ascending: false })
@@ -342,6 +386,17 @@ async function checkCycleReward(supabase: any, userId: string, cycleDay: number)
 }
 
 async function claimCycleReward(supabase: any, userId: string, rewardId: string, cycleId: string) {
+  // cycleId must be a real uuid (the table has UNIQUE(user_id, reward_id,
+  // cycle_id) — an attacker-controlled arbitrary string would allow infinite
+  // re-claims of the same reward by passing a different cycle_id each time)
+  const uuidRe = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+  if (!cycleId || !uuidRe.test(String(cycleId)) || !rewardId || !uuidRe.test(String(rewardId))) {
+    return new Response(JSON.stringify({ error: "Invalid cycleId/rewardId" }), {
+      status: 400,
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
+  }
+
   // Check if already claimed
   const { data: existing } = await supabase
     .from("yayika_user_cycle_rewards")
@@ -359,12 +414,14 @@ async function claimCycleReward(supabase: any, userId: string, rewardId: string,
     });
   }
 
-  // Get reward details
+  // Get reward details — only ACTIVE rewards are claimable
   const { data: reward } = await supabase
     .from("yayika_cycle_rewards")
     .select("*")
     .eq("id", rewardId)
-    .single();
+    .eq("is_active", true)
+    .limit(1)
+    .maybeSingle();
 
   if (!reward) {
     return new Response(JSON.stringify({ error: "Reward not found" }), {
@@ -386,12 +443,19 @@ async function claimCycleReward(supabase: any, userId: string, rewardId: string,
       .from("yayika_progress")
       .select("xp_total")
       .eq("user_id", userId)
-      .single();
+      .limit(1)
+      .maybeSingle();
 
-    await supabase
-      .from("yayika_progress")
-      .update({ xp_total: (progress?.xp_total || 0) + reward.reward_xp })
-      .eq("user_id", userId);
+    if (progress) {
+      await supabase
+        .from("yayika_progress")
+        .update({ xp_total: (progress.xp_total || 0) + reward.reward_xp })
+        .eq("user_id", userId);
+    } else {
+      await supabase
+        .from("yayika_progress")
+        .insert({ user_id: userId, xp_total: reward.reward_xp, streak_days: 0, level: 1 });
+    }
 
     await supabase.from("yayika_xp_events").insert({
       user_id: userId,
@@ -421,21 +485,21 @@ async function updateTransformHistory(supabase: any, userId: string) {
   const now = new Date();
   const monthDate = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-01`;
 
-  // Count current month data
+  // Count current month data — window is [first day, first day NEXT month)
   const monthStart = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
-  const monthEnd = new Date(now.getFullYear(), now.getMonth() + 1, 0).toISOString();
+  const monthEnd = new Date(now.getFullYear(), now.getMonth() + 1, 1).toISOString();
 
   const [checkins, badges, challenges, cycles, transactions] = await Promise.all([
-    supabase.from("yayika_cycle_logs").select("id", { count: "exact", head: true })
-      .eq("user_id", userId).gte("logged_at", monthStart).lte("logged_at", monthEnd),
+    supabase.from("yayika_cycle_log").select("id", { count: "exact", head: true })
+      .eq("user_id", userId).gte("logged_at", monthStart).lt("logged_at", monthEnd),
     supabase.from("yayika_xp_events").select("id", { count: "exact", head: true })
-      .eq("user_id", userId).eq("event_type", "badge").gte("created_at", monthStart),
+      .eq("user_id", userId).eq("event_type", "badge").gte("created_at", monthStart).lt("created_at", monthEnd),
     supabase.from("yayika_user_challenges").select("id", { count: "exact", head: true })
-      .eq("user_id", userId).eq("status", "completed").gte("completed_at", monthStart),
-    supabase.from("yayika_cycle_logs").select("id", { count: "exact", head: true })
-      .eq("user_id", userId).gte("logged_at", monthStart),
+      .eq("user_id", userId).eq("status", "completed").gte("completed_at", monthStart).lt("completed_at", monthEnd),
+    supabase.from("yayika_cycle_log").select("id", { count: "exact", head: true })
+      .eq("user_id", userId).gte("logged_at", monthStart).lt("logged_at", monthEnd),
     supabase.from("yayika_transactions").select("id", { count: "exact", head: true })
-      .eq("user_id", userId).gte("created_at", monthStart),
+      .eq("user_id", userId).gte("created_at", monthStart).lt("created_at", monthEnd),
   ]);
 
   const { data: progress } = await supabase
@@ -589,14 +653,27 @@ async function getLossWarning(supabase: any, userId: string) {
     severity: daysInactive >= 7 ? "high" : daysInactive >= 3 ? "medium" : "low",
   };
 
-  // Log the warning
-  await supabase.from("yayika_loss_warnings").insert({
-    user_id: userId,
-    warning_type: "inactivity",
-    days_inactive: daysInactive,
-    streak_at_risk: progress?.streak_days || 0,
-    data_at_risk: { xp: progress?.xp_total || 0, badges: badges?.count || 0 },
-  });
+  // Log the warning — at most one row per 24h (this endpoint is called on
+  // every app open; without dedupe the table grows unbounded)
+  const dayAgo = new Date(Date.now() - 86400000).toISOString();
+  const { data: recent } = await supabase
+    .from("yayika_loss_warnings")
+    .select("id")
+    .eq("user_id", userId)
+    .eq("warning_type", "inactivity")
+    .gte("shown_at", dayAgo)
+    .limit(1)
+    .maybeSingle();
+
+  if (!recent) {
+    await supabase.from("yayika_loss_warnings").insert({
+      user_id: userId,
+      warning_type: "inactivity",
+      days_inactive: daysInactive,
+      streak_at_risk: progress?.streak_days || 0,
+      data_at_risk: { xp: progress?.xp_total || 0, badges: badges?.count || 0 },
+    });
+  }
 
   return new Response(JSON.stringify({ warning }), {
     headers: { ...corsHeaders, "Content-Type": "application/json" },
