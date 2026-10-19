@@ -13,10 +13,10 @@ import { supabase } from '../../config/supabase';
 import Card from '../../components/Card';
 
 const LANGUAGES: { key: Language; label: string }[] = [
-  { key: 'es', label: 'EspaÒol' },
+  { key: 'es', label: 'Espa√±ol' },
   { key: 'en', label: 'English' },
-  { key: 'pt', label: 'PortuguÍs' },
-  { key: 'fr', label: 'FranÁais' },
+  { key: 'pt', label: 'Portugu√™s' },
+  { key: 'fr', label: 'Fran√ßais' },
   { key: 'de', label: 'Deutsch' },
 ];
 
@@ -59,7 +59,7 @@ export default function SettingsScreen({ navigation }: any) {
           currency_code: currency.trim().toUpperCase(),
         }, { onConflict: 'id' });
       if (error) throw error;
-      Alert.alert(t('common_success') , t('profile_settings') + ' ‚ú"');
+      Alert.alert(t('common_success') , t('profile_settings') + ' √¢≈ì"');
     } catch (err: any) {
       Alert.alert(t('common_error'), err.message || t('common_error'));
     } finally {
@@ -193,7 +193,7 @@ export default function SettingsScreen({ navigation }: any) {
             style={[styles.input, { color: colors.text, borderColor: colors.border, backgroundColor: colors.white }]}
             value={city}
             onChangeText={setCity}
-            placeholder={t('settings_city_placeholder') || 'Ciudad de MÈxico'}
+            placeholder={t('settings_city_placeholder') || 'Ciudad de M√©xico'}
             placeholderTextColor={colors.subtleText}
           />
 
@@ -306,7 +306,7 @@ export default function SettingsScreen({ navigation }: any) {
                   await Updates.fetchUpdateAsync();
                   await Updates.reloadAsync();
                 } else {
-                  Alert.alert('Yayika', t('update_none_msg') || 'La app est· actualizada.');
+                  Alert.alert('Yayika', t('update_none_msg') || 'La app est√° actualizada.');
                 }
               } catch (e) {
                 Alert.alert('Yayika', t('update_error') || 'Cierra la app y vuelve a abrirla.');
