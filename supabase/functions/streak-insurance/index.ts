@@ -24,7 +24,7 @@ serve(async (req) => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
     );
 
-    const { action, user_id, plan_id } = await req.json();
+    const { action, plan_id } = await req.json();
 
     if (action === "get_plans") {
       return new Response(
@@ -32,6 +32,19 @@ serve(async (req) => {
         { headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
+
+    // Every remaining action acts only on behalf of the caller's own JWT
+    // identity; any user_id in the body is ignored (prevents spoofing
+    // other users' items/XP).
+    const token = (req.headers.get("Authorization") ?? "").replace(/^Bearer\s+/i, "");
+    const { data: authData, error: authErr } = await supabase.auth.getUser(token);
+    if (authErr || !authData?.user) {
+      return new Response(
+        JSON.stringify({ error: "Unauthorized" }),
+        { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+    const user_id = authData.user.id;
 
     if (action === "purchase") {
       const plan = INSURANCE_PLANS.find((p) => p.id === plan_id);
