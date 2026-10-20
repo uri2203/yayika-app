@@ -1,6 +1,5 @@
-import { supabase } from './supabase';
+import { supabase, SUPABASE_URL, SUPABASE_ANON_KEY } from './supabase';
 
-const SUPABASE_URL = 'https://odbhxiymteppgaqqdsoy.supabase.co';
 const FUNCTIONS_URL = `${SUPABASE_URL}/functions/v1`;
 
 async function getToken(): Promise<string | null> {
@@ -15,7 +14,7 @@ async function callFunction<T = any>(
 ): Promise<T> {
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
-    apikey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9kYmh4aXltdGVwcGdhcXFkc295Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwOTc1NjUsImV4cCI6MjA5NTY3MzU2NX0.-AMG1zoszc05NJjAkXmm7kCZJuN3RA2OIzZRs221gkc',
+    apikey: SUPABASE_ANON_KEY,
   };
 
   const token = await getToken();
