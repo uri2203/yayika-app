@@ -51,7 +51,17 @@ serve(async (req: Request) => {
           .maybeSingle();
 
         const currentStreak = streakData?.streak_days || 0;
-        const lang = 'es';
+
+        // Get user's preferred language for localized notifications
+        const { data: profileData } = await supabase
+          .from('yayika_profiles')
+          .select('lang')
+          .eq('id', pushToken.user_id)
+          .maybeSingle();
+        const rawLang = profileData?.lang;
+        const lang = typeof rawLang === 'string' && ['es', 'en', 'pt', 'fr', 'de'].includes(rawLang)
+          ? rawLang
+          : 'es';
 
         // Determine notification type and message
         let notificationType = '';

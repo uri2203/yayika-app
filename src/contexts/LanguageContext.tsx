@@ -1,5 +1,6 @@
 import React, { createContext, useCallback, useContext, useState, useEffect, ReactNode } from 'react';
 import { Language, t as translate, getSavedLanguage, saveLanguage, getLanguageName } from '../config/i18n';
+import { supabase } from '../config/supabase';
 
 interface LanguageContextType {
   lang: Language;
@@ -15,13 +16,27 @@ const LanguageContext = createContext<LanguageContextType>({
   getLanguageName: () => '',
 });
 
+function syncLangToProfile(lang: Language) {
+  supabase.auth
+    .getUser()
+    .then(({ data, error }) => {
+      const uid = data?.user?.id;
+      if (error || !uid) return;
+      return supabase.from('yayika_profiles').update({ lang }).eq('id', uid);
+    })
+    .catch(() => {});
+}
+
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [lang, setLangState] = useState<Language>('es');
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     getSavedLanguage()
-      .then((saved) => setLangState(saved))
+      .then((saved) => {
+        setLangState(saved);
+        syncLangToProfile(saved);
+      })
       .catch(() => {})
       .finally(() => setLoaded(true));
   }, []);
@@ -29,6 +44,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   const setLanguage = useCallback((newLang: Language) => {
     setLangState(newLang);
     saveLanguage(newLang).catch(() => {});
+    syncLangToProfile(newLang);
   }, []);
 
   const t = useCallback(
