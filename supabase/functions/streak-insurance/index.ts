@@ -13,6 +13,39 @@ const INSURANCE_PLANS = [
   { id: "shield", days: 1, priceCents: 199, currency: "usd", title: { es: "Escudo de Racha", en: "Streak Shield", pt: "Escudo de Sequência", fr: "Bouclier de Série", de: "Serien-Schild" }, isShield: true },
 ];
 
+function stripeKeyFromEnv(): string {
+  const primary = Deno.env.get("STRIPE_SECRET_KEY") ?? "";
+  if (primary.startsWith("sk_live_") || primary.startsWith("sk_test_")) return primary;
+  return Deno.env.get("SERVICE_ROLE_KEY") ?? "";
+}
+
+async function verifyInsurancePayment(
+  paymentIntentId: string,
+  plan: { priceCents: number; currency: string }
+): Promise<string | null> {
+  const key = stripeKeyFromEnv();
+  if (!key) return "Payment verification unavailable";
+  const r = await fetch(`https://api.stripe.com/v1/payment_intents/${paymentIntentId}`, {
+    headers: { Authorization: `Bearer ${key}` },
+  });
+  if (!r.ok) return "Payment not found";
+  const pi = await r.json();
+  if (pi.status !== "succeeded") return "Payment not completed";
+  if (pi.amount !== plan.priceCents || pi.currency !== plan.currency) {
+    return "Payment amount mismatch";
+  }
+  if (pi.metadata?.insurance_claimed === "1") return "Payment already used";
+  await fetch(`https://api.stripe.com/v1/payment_intents/${paymentIntentId}`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${key}`,
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    body: new URLSearchParams({ "metadata[insurance_claimed]": "1" }),
+  });
+  return null;
+}
+
 serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response("ok", { headers: corsHeaders });
@@ -24,7 +57,7 @@ serve(async (req) => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
     );
 
-    const { action, plan_id } = await req.json();
+    const { action, plan_id, payment_intent_id } = await req.json();
 
     if (action === "get_plans") {
       return new Response(
@@ -49,6 +82,24 @@ serve(async (req) => {
     if (action === "purchase") {
       const plan = INSURANCE_PLANS.find((p) => p.id === plan_id);
       if (!plan) throw new Error("Invalid plan");
+
+      const requirePayment =
+        (Deno.env.get("REQUIRE_STRIPE_PAYMENT") ?? "0") === "1";
+      if (requirePayment || payment_intent_id) {
+        if (!payment_intent_id) {
+          return new Response(
+            JSON.stringify({ error: "payment_required" }),
+            { status: 402, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+          );
+        }
+        const payErr = await verifyInsurancePayment(payment_intent_id, plan);
+        if (payErr) {
+          return new Response(
+            JSON.stringify({ error: payErr }),
+            { status: 402, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+          );
+        }
+      }
 
       // Check if user already has active insurance
       const { data: existing } = await supabase
