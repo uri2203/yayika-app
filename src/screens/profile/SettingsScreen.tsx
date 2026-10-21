@@ -9,7 +9,7 @@ import { useLanguage } from '../../contexts/LanguageContext';
 import { useNotifications } from '../../contexts/NotificationsContext';
 import { Language } from '../../config/i18n';
 import { typography, spacing, borderRadius } from '../../config/theme';
-import { supabase } from '../../config/supabase';
+import { supabase, SUPABASE_URL, SUPABASE_ANON_KEY } from '../../config/supabase';
 import Card from '../../components/Card';
 
 const LANGUAGES: { key: Language; label: string }[] = [
@@ -65,6 +65,40 @@ export default function SettingsScreen({ navigation }: any) {
     } finally {
       setSaving(false);
     }
+  };
+
+  const handleDeleteAccount = () => {
+    Alert.alert(
+      t('delete_account_confirm_title'),
+      t('delete_account_confirm_msg'),
+      [
+        { text: t('common_cancel'), style: 'cancel' },
+        {
+          text: t('delete_account_button'),
+          style: 'destructive',
+          onPress: async () => {
+            try {
+              const { data: sessionData } = await supabase.auth.getSession();
+              const token = sessionData?.session?.access_token;
+              if (!token) return;
+              const res = await fetch(`${SUPABASE_URL}/functions/v1/account-deletion`, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  apikey: SUPABASE_ANON_KEY,
+                  Authorization: `Bearer ${token}`,
+                },
+                body: '{}',
+              });
+              if (!res.ok) throw new Error('delete_failed');
+              await supabase.auth.signOut();
+            } catch {
+              Alert.alert(t('common_error'), t('delete_account_error'));
+            }
+          },
+        },
+      ]
+    );
   };
 
   const styles = StyleSheet.create({
@@ -315,6 +349,20 @@ export default function SettingsScreen({ navigation }: any) {
           >
             <Ionicons name="refresh" size={20} color={colors.white} />
             <Text style={[styles.saveButtonText, { color: colors.white }]}>{t('settings_reload') || 'Recargar app'}</Text>
+          </TouchableOpacity>
+        </Card>
+
+        <Card style={styles.sectionCard}>
+          <Text style={[styles.sectionTitle, { color: colors.subtleText }]}>{t('settings_danger')}</Text>
+          <Text style={{ color: colors.subtleText, fontSize: typography.sizes.sm, marginBottom: spacing.sm }}>
+            {t('delete_account_desc')}
+          </Text>
+          <TouchableOpacity
+            style={[styles.saveButton, { backgroundColor: colors.error, marginTop: spacing.sm }]}
+            onPress={handleDeleteAccount}
+          >
+            <Ionicons name="trash-outline" size={20} color={colors.white} />
+            <Text style={[styles.saveButtonText, { color: colors.white }]}>{t('delete_account_button')}</Text>
           </TouchableOpacity>
         </Card>
 

@@ -954,6 +954,12 @@ const translations: Record<Language, Record<string, string>> = {
     // Settings (new)
     settings_app: 'Aplicación',
     settings_reload: 'Recargar app',
+    settings_danger: 'Zona de peligro',
+    delete_account_desc: 'Elimina tu cuenta y todos tus datos personales de forma permanente. Tus registros de compra se conservan solo por obligaciones fiscales.',
+    delete_account_button: 'Eliminar mi cuenta',
+    delete_account_confirm_title: '¿Eliminar tu cuenta?',
+    delete_account_confirm_msg: 'Esta acción es permanente y borrará tu perfil, progreso, ciclo y datos personales. No se puede deshacer.',
+    delete_account_error: 'No se pudo eliminar la cuenta. Intenta de nuevo más tarde o escribe a admin@yayika.com.',
 
     // First Week
     first_week_title: '¡Tu primera semana!',
@@ -2118,6 +2124,12 @@ const translations: Record<Language, Record<string, string>> = {
     // Settings (new)
     settings_app: 'App',
     settings_reload: 'Reload app',
+    settings_danger: 'Danger zone',
+    delete_account_desc: 'Permanently delete your account and all personal data. Purchase records are kept only for tax obligations.',
+    delete_account_button: 'Delete my account',
+    delete_account_confirm_title: 'Delete your account?',
+    delete_account_confirm_msg: 'This is permanent and will erase your profile, progress, cycle and personal data. It cannot be undone.',
+    delete_account_error: 'Could not delete the account. Try again later or email admin@yayika.com.',
 
     // First Week
     first_week_title: 'Your first week!',
@@ -3301,6 +3313,12 @@ const translations: Record<Language, Record<string, string>> = {
     // Settings (new)
     settings_app: 'Aplicativo',
     settings_reload: 'Recarregar app',
+    settings_danger: 'Zona de perigo',
+    delete_account_desc: 'Exclua sua conta e todos os dados pessoais de forma permanente. Registros de compra são mantidos apenas por obrigações fiscais.',
+    delete_account_button: 'Excluir minha conta',
+    delete_account_confirm_title: 'Excluir sua conta?',
+    delete_account_confirm_msg: 'Isso é permanente e apagará seu perfil, progresso, ciclo e dados pessoais. Não pode ser desfeito.',
+    delete_account_error: 'Não foi possível excluir a conta. Tente novamente mais tarde ou escreva para admin@yayika.com.',
 
     // First Week
     first_week_title: 'Sua primeira semana!',
@@ -4629,6 +4647,12 @@ const translations: Record<Language, Record<string, string>> = {
     // Settings (new)
     settings_app: 'Application',
     settings_reload: 'Recharger l\'app',
+    settings_danger: 'Zone dangereuse',
+    delete_account_desc: 'Supprime définitivement ton compte et toutes tes données personnelles. Les enregistrements d\'achat sont conservés uniquement pour les obligations fiscales.',
+    delete_account_button: 'Supprimer mon compte',
+    delete_account_confirm_title: 'Supprimer ton compte ?',
+    delete_account_confirm_msg: 'C\'est permanent : ton profil, progression, cycle et données personnelles seront effacés. Action irréversible.',
+    delete_account_error: 'Impossible de supprimer le compte. Réessaie plus tard ou écris à admin@yayika.com.',
 
     // First Week
     first_week_title: 'Ta première semaine !',
@@ -5907,6 +5931,12 @@ const translations: Record<Language, Record<string, string>> = {
     // Settings (new)
     settings_app: 'App',
     settings_reload: 'App neu laden',
+    settings_danger: 'Gefahrenzone',
+    delete_account_desc: 'Lösche dein Konto und alle personenbezogenen Daten dauerhaft. Kaufaufzeichnungen werden nur aus steuerlichen Gründen aufbewahrt.',
+    delete_account_button: 'Mein Konto löschen',
+    delete_account_confirm_title: 'Konto wirklich löschen?',
+    delete_account_confirm_msg: 'Das ist endgültig: Profil, Fortschritt, Zyklus und persönliche Daten werden gelöscht. Nicht widerrufbar.',
+    delete_account_error: 'Konto konnte nicht gelöscht werden. Versuche es später erneut oder schreibe an admin@yayika.com.',
 
     // First Week
     first_week_title: 'Deine erste Woche!',
