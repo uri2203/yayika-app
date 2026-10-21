@@ -69,6 +69,21 @@ serve(async (req) => {
     return new Response("ok", { headers: corsHeaders });
   }
 
+  // Internal notification automation: only the service-role caller is allowed.
+  const bearer = (req.headers.get("Authorization") ?? "").replace(/^Bearer\s+/i, "");
+  let isService = false;
+  if (bearer && bearer.split(".").length === 3) {
+    try {
+      const payload = JSON.parse(atob(bearer.split(".")[1].replace(/-/g, "+").replace(/_/g, "/")));
+      isService = payload.role === "service_role" && String(payload.iss || "").includes("supabase");
+    } catch { isService = false; }
+  }
+  if (!isService) {
+    return new Response(JSON.stringify({ error: "Unauthorized" }), {
+      status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
+  }
+
   try {
     const supabase = createClient(
       Deno.env.get("SUPABASE_URL") ?? "",

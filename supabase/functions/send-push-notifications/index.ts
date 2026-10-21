@@ -11,6 +11,23 @@ serve(async (req: Request) => {
     return new Response('ok', { headers: corsHeaders });
   }
 
+  // Internal cron-only function: only the service-role caller is allowed.
+  // The gateway (verify_jwt=true) already validated the JWT signature,
+  // so checking the role claim is safe.
+  const bearer = (req.headers.get('Authorization') ?? '').replace(/^Bearer\s+/i, '');
+  let isService = false;
+  if (bearer && bearer.split('.').length === 3) {
+    try {
+      const payload = JSON.parse(atob(bearer.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')));
+      isService = payload.role === 'service_role' && String(payload.iss || '').includes('supabase');
+    } catch { isService = false; }
+  }
+  if (!isService) {
+    return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+      status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    });
+  }
+
   try {
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
@@ -189,6 +206,14 @@ serve(async (req: Request) => {
         console.error(`Error processing user ${pushToken.user_id}:`, e);
       }
     }
+
+    // heartbeat for cron-health-check (daily job, 20-21 UTC)
+    await supabase.from('yayika_cron_heartbeat').upsert({
+      job: 'send-push-notifications',
+      ran_at: new Date().toISOString(),
+      ok: true,
+      detail: `processed=${results.length}`,
+    }, { onConflict: 'job' });
 
     return new Response(
       JSON.stringify({ success: true, processed: results.length, results }),
