@@ -7,10 +7,10 @@ const corsHeaders = {
 };
 
 const INSURANCE_PLANS = [
-  { id: "freeze_1", days: 1, priceCents: 99, currency: "usd", title: { es: "1 Día de Pausa", en: "1 Day Freeze", pt: "1 Dia de Pausa", fr: "1 Jour de Pause", de: "1 Tag Pause" } },
-  { id: "freeze_3", days: 3, priceCents: 249, currency: "usd", title: { es: "3 Días de Pausa", en: "3 Day Freeze", pt: "3 Dias de Pausa", fr: "3 Jours de Pause", de: "3 Tage Pause" } },
-  { id: "freeze_7", days: 7, priceCents: 499, currency: "usd", title: { es: "1 Semana de Pausa", en: "1 Week Freeze", pt: "1 Semana de Pausa", fr: "1 Semaine de Pause", de: "1 Woche Pause" } },
-  { id: "shield", days: 1, priceCents: 199, currency: "usd", title: { es: "Escudo de Racha", en: "Streak Shield", pt: "Escudo de Sequência", fr: "Bouclier de Série", de: "Serien-Schild" }, isShield: true },
+  { id: "freeze_1", days: 1, priceCents: 99, currency: "usd", payment_url: "https://buy.stripe.com/aFa14hg1fde23VE5tt1oI05", title: { es: "1 Día de Pausa", en: "1 Day Freeze", pt: "1 Dia de Pausa", fr: "1 Jour de Pause", de: "1 Tag Pause" } },
+  { id: "freeze_3", days: 3, priceCents: 249, currency: "usd", payment_url: "https://buy.stripe.com/5kQ14h02hgqe0Js9JJ1oI06", title: { es: "3 Días de Pausa", en: "3 Day Freeze", pt: "3 Dias de Pausa", fr: "3 Jours de Pause", de: "3 Tage Pause" } },
+  { id: "freeze_7", days: 7, priceCents: 499, currency: "usd", payment_url: "https://buy.stripe.com/4gMbIV4ix2zoak25tt1oI07", title: { es: "1 Semana de Pausa", en: "1 Week Freeze", pt: "1 Semana de Pausa", fr: "1 Semaine de Pause", de: "1 Woche Pause" } },
+  { id: "shield", days: 1, priceCents: 199, currency: "usd", payment_url: "https://buy.stripe.com/7sY00dg1f3Ds2RA1dd1oI08", title: { es: "Escudo de Racha", en: "Streak Shield", pt: "Escudo de Sequência", fr: "Bouclier de Série", de: "Serien-Schild" }, isShield: true },
 ];
 
 function stripeKeyFromEnv(): string {
@@ -83,19 +83,46 @@ serve(async (req) => {
       const plan = INSURANCE_PLANS.find((p) => p.id === plan_id);
       if (!plan) throw new Error("Invalid plan");
 
-      const requirePayment =
-        (Deno.env.get("REQUIRE_STRIPE_PAYMENT") ?? "0") === "1";
-      if (requirePayment || payment_intent_id) {
-        if (!payment_intent_id) {
-          return new Response(
-            JSON.stringify({ error: "payment_required" }),
-            { status: 402, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-          );
-        }
+      if (payment_intent_id) {
+        // Direct PaymentIntent verification (future native SDK builds)
         const payErr = await verifyInsurancePayment(payment_intent_id, plan);
         if (payErr) {
           return new Response(
             JSON.stringify({ error: payErr }),
+            { status: 402, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+          );
+        }
+      } else {
+        // Payment Link flow: claim an unclaimed purchase recorded by stripe-webhook
+        const { data: purchase } = await supabase
+          .from("yayika_purchases")
+          .select("id")
+          .eq("insurance_plan_id", plan.id)
+          .is("claimed_at", null)
+          .or(`user_id.eq.${user_id},user_email.eq.${authData.user.email ?? "none"}`)
+          .order("created_at", { ascending: false })
+          .limit(1)
+          .maybeSingle();
+
+        if (!purchase) {
+          return new Response(
+            JSON.stringify({ error: "payment_not_found" }),
+            { status: 402, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+          );
+        }
+
+        // Atomic claim: only one request can flip claimed_at
+        const { data: claimed } = await supabase
+          .from("yayika_purchases")
+          .update({ claimed_at: new Date().toISOString() })
+          .eq("id", purchase.id)
+          .is("claimed_at", null)
+          .select("id")
+          .maybeSingle();
+
+        if (!claimed) {
+          return new Response(
+            JSON.stringify({ error: "payment_already_used" }),
             { status: 402, headers: { ...corsHeaders, "Content-Type": "application/json" } }
           );
         }
@@ -133,8 +160,16 @@ serve(async (req) => {
         metadata: { plan_id: plan.id, days: plan.days },
       });
 
-      // Get user language for response (app stores language locally; default es)
-      const lang = "es";
+      // Localized response using the caller's profile language
+      const { data: prof } = await supabase
+        .from("yayika_profiles")
+        .select("lang")
+        .eq("id", user_id)
+        .maybeSingle();
+      const lang =
+        typeof prof?.lang === "string" && ["es", "en", "pt", "fr", "de"].includes(prof.lang)
+          ? prof.lang
+          : "es";
 
       return new Response(
         JSON.stringify({

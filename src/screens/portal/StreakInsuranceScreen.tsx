@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
+import * as WebBrowser from 'expo-web-browser';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { useTheme } from '../../contexts/ThemeContext';
 import { useAuth } from '../../contexts/AuthContext';
@@ -12,6 +13,7 @@ interface InsurancePlan {
   id: string;
   days: number;
   priceCents: number;
+  payment_url?: string;
   title: string;
   isShield?: boolean;
 }
@@ -57,21 +59,41 @@ export default function StreakInsuranceScreen({ navigation }: any) {
     }
   };
 
-  const purchasePlan = async (planId: string) => {
-    setPurchasing(planId);
+  const purchasePlan = async (plan: InsurancePlan) => {
+    if (!plan.payment_url) {
+      Alert.alert(t('insurance_error_title'), t('insurance_payment_pending'), [{ text: 'OK' }]);
+      return;
+    }
+    setPurchasing(plan.id);
     try {
+      // Open the Stripe Payment Link in an in-app browser; the webhook
+      // records the purchase and this claim grants the inventory
+      await WebBrowser.openBrowserAsync(plan.payment_url);
+
       const { data, error } = await supabase.functions.invoke('streak-insurance', {
-        body: { action: 'purchase', user_id: user?.id, plan_id: planId },
+        body: { action: 'purchase', plan_id: plan.id },
       });
 
-      if (error) throw error;
+      if (error) {
+        const status = (error as any)?.context?.status;
+        if (status === 402) {
+          Alert.alert(t('insurance_error_title'), t('insurance_payment_pending'), [{ text: 'OK' }]);
+          return;
+        }
+        throw error;
+      }
+      if (data?.error === 'payment_not_found' || data?.error === 'payment_already_used') {
+        Alert.alert(t('insurance_error_title'), t('insurance_payment_pending'), [{ text: 'OK' }]);
+        return;
+      }
+      if (data?.error) throw new Error(data.error);
 
       Alert.alert(
         t('insurance_success_title'),
         data?.message || t('insurance_success_title'),
         [{ text: 'OK' }]
       );
-      
+
       await loadData(); // Refresh inventory
     } catch (error: any) {
       Alert.alert(
@@ -91,7 +113,7 @@ export default function StreakInsuranceScreen({ navigation }: any) {
       `${plan.title}\n$${price} USD`,
       [
         { text: t('common_cancel'), style: 'cancel' },
-        { text: t('common_buy'), onPress: () => purchasePlan(plan.id) },
+        { text: t('common_buy'), onPress: () => purchasePlan(plan) },
       ]
     );
   };

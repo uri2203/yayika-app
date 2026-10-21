@@ -206,6 +206,9 @@ serve(async (req) => {
             stripe_session_id: session.id,
             stripe_customer_id:
               typeof session.customer === "string" ? session.customer : null,
+            payment_intent_id:
+              typeof session.payment_intent === "string" ? session.payment_intent : null,
+            insurance_plan_id: session.metadata?.insurance_plan_id ?? null,
           });
           if (error) console.error("Error logging purchase:", error);
         }

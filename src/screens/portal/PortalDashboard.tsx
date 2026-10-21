@@ -7,8 +7,8 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   RefreshControl,
-  Linking,
 } from 'react-native';
+import * as WebBrowser from 'expo-web-browser';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '../../contexts/AuthContext';
@@ -213,7 +213,12 @@ export default function PortalDashboard({ navigation }: any) {
     try {
       const url = MEMBERSHIP_PAYMENT_LINKS.guerrera;
       if (url) {
-        await Linking.openURL(url);
+        await WebBrowser.openBrowserAsync(url);
+        // The Stripe webhook activates the membership asynchronously;
+        // poll a few times so the paywall unlocks without an app restart
+        fetchData();
+        setTimeout(fetchData, 8000);
+        setTimeout(fetchData, 20000);
       }
     } catch (e) {
       console.log('Checkout error:', e);

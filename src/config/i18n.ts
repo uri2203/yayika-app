@@ -1008,6 +1008,7 @@ const translations: Record<Language, Record<string, string>> = {
     insurance_confirm_title: 'Confirmar compra',
     insurance_success_title: '¡Compra exitosa!',
     insurance_error_title: 'Error en la compra',
+  insurance_payment_pending: 'Aún no se confirma tu pago. Si ya pagaste, espera unos segundos y vuelve a intentarlo.',
     common_buy: 'Comprar',
 
     // Circles categories
@@ -2308,6 +2309,7 @@ const translations: Record<Language, Record<string, string>> = {
     insurance_confirm_title: 'Confirm purchase',
     insurance_success_title: 'Purchase successful!',
     insurance_error_title: 'Purchase error',
+  insurance_payment_pending: 'Your payment is not confirmed yet. If you already paid, wait a few seconds and try again.',
     common_buy: 'Buy',
 
     // Circles categories
@@ -3610,6 +3612,7 @@ const translations: Record<Language, Record<string, string>> = {
     insurance_confirm_title: 'Confirmar compra',
     insurance_success_title: 'Compra bem-sucedida!',
     insurance_error_title: 'Erro na compra',
+  insurance_payment_pending: 'Seu pagamento ainda não foi confirmado. Se você já pagou, aguarde alguns segundos e tente novamente.',
     common_buy: 'Comprar',
 
     // Circles categories
@@ -4937,6 +4940,7 @@ const translations: Record<Language, Record<string, string>> = {
     insurance_confirm_title: 'Confirmer l\'achat',
     insurance_success_title: 'Achat réussi!',
     insurance_error_title: 'Erreur d\'achat',
+  insurance_payment_pending: 'Ton paiement n\'est pas encore confirmé. Si tu as déjà payé, patiente quelques secondes et réessaie.',
     common_buy: 'Acheter',
 
     // Circles categories
@@ -6214,6 +6218,7 @@ const translations: Record<Language, Record<string, string>> = {
     insurance_confirm_title: 'Kauf bestätigen',
     insurance_success_title: 'Kauf erfolgreich!',
     insurance_error_title: 'Kauffehler',
+  insurance_payment_pending: 'Deine Zahlung wurde noch nicht bestätigt. Wenn du bereits bezahlt hast, warte einige Sekunden und versuche es erneut.',
     common_buy: 'Kaufen',
 
     // Circles categories
