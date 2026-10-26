@@ -199,6 +199,25 @@ console.log('== 5. Config de build (app.json / eas.json) ==');
   if (bad === 0) pass('build', 'app.json: ids, version/runtime sync, plugins y assets OK; eas.json con production');
 }
 
+/* ---------- 6. Textos: ?? dentro de comillas (emoji/mojibake corrompido) ---------- */
+console.log('== 6. Textos (?? corruptos) ==');
+{
+  let bad = 0;
+  for (const f of tsFiles) {
+    const src = fs.readFileSync(f, 'utf8');
+    const strRe = /(['"])((?:\\.|(?!\1)[^\\\n])*)\1/g;
+    let m;
+    while ((m = strRe.exec(src))) {
+      if (m[2].includes('??')) {
+        const line = src.slice(0, m.index).split('\n').length;
+        fail('textos', `${path.relative(ROOT, f)}:${line}: ?? dentro de string (emoji corrupto): ${m[0].slice(0, 70)}`);
+        bad++;
+      }
+    }
+  }
+  if (bad === 0) pass('textos', 'sin ?? corruptos en strings de src');
+}
+
 /* ---------- Resultado ---------- */
 console.log(`\n========================================`);
 if (fails === 0) {

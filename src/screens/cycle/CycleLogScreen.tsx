@@ -40,18 +40,18 @@ export default function CycleLogScreen({ navigation }: any) {
   const colors = currentColors;
 
   const PHASES = [
-    { key: 'menstrual', label: t('cycle_phase_menstrual'), color: colors.phaseMenstrual, icon: '??' },
-    { key: 'follicular', label: t('cycle_phase_follicular'), color: colors.phaseFollicular, icon: '??' },
-    { key: 'ovulatory', label: t('cycle_phase_ovulatory'), color: colors.phaseOvulatory, icon: '??' },
-    { key: 'luteal', label: t('cycle_phase_luteal'), color: colors.phaseLuteal, icon: '??' },
+    { key: 'menstrual', label: t('cycle_phase_menstrual'), color: colors.phaseMenstrual, icon: '🌙' },
+    { key: 'follicular', label: t('cycle_phase_follicular'), color: colors.phaseFollicular, icon: '🌸' },
+    { key: 'ovulatory', label: t('cycle_phase_ovulatory'), color: colors.phaseOvulatory, icon: '☀️' },
+    { key: 'luteal', label: t('cycle_phase_luteal'), color: colors.phaseLuteal, icon: '🍂' },
   ];
 
   const MOODS = [
-    { emoji: '??', label: t('cycle_mood_happy')  },
-    { emoji: '??', label: t('cycle_mood_neutral')  },
-    { emoji: '??', label: t('cycle_mood_sad')  },
-    { emoji: '??', label: t('cycle_mood_irritable')  },
-    { emoji: '??', label: t('cycle_mood_tired')  },
+    { emoji: '😊', label: t('cycle_mood_happy')  },
+    { emoji: '😐', label: t('cycle_mood_neutral')  },
+    { emoji: '😔', label: t('cycle_mood_sad')  },
+    { emoji: '😤', label: t('cycle_mood_irritable')  },
+    { emoji: '😴', label: t('cycle_mood_tired')  },
   ];
 
   const SYMPTOMS = [
