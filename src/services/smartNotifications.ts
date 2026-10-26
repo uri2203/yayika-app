@@ -263,7 +263,7 @@ function getStaleLogMessage(lang: Language): { title: string; body: string } {
 }
 
 function getStreakAtRiskMessage(lang: Language, days: number): { title: string; body: string } {
-  const tr = (key: string) => translate(lang, key);
+  const tr = (key: string, params?: Record<string, string | number>) => translate(lang, key, params);
   return {
     title: tr('smart_notif_streak_at_risk_title'),
     body: tr('smart_notif_streak_at_risk_body', { days }),
@@ -276,7 +276,7 @@ function getStreakLostMessage(lang: Language): { title: string; body: string } {
 }
 
 function getStreakMilestoneMessage(lang: Language, days: number): { title: string; body: string } {
-  const tr = (key: string) => translate(lang, key);
+  const tr = (key: string, params?: Record<string, string | number>) => translate(lang, key, params);
   return {
     title: tr('smart_notif_streak_milestone_title'),
     body: tr('smart_notif_streak_milestone_body', { days }),
@@ -284,7 +284,7 @@ function getStreakMilestoneMessage(lang: Language, days: number): { title: strin
 }
 
 function getCircleMissedMessage(lang: Language, circleName: string, postCount: number): { title: string; body: string } {
-  const tr = (key: string) => translate(lang, key);
+  const tr = (key: string, params?: Record<string, string | number>) => translate(lang, key, params);
   return {
     title: tr('smart_notif_circle_missed_title'),
     body: tr('smart_notif_circle_missed_body', { name: circleName, count: postCount }),
@@ -292,7 +292,7 @@ function getCircleMissedMessage(lang: Language, circleName: string, postCount: n
 }
 
 function getDailyActionMessage(lang: Language, phase: CyclePhase['phase']): { title: string; body: string } {
-  const tr = (key: string) => translate(lang, key);
+  const tr = (key: string, params?: Record<string, string | number>) => translate(lang, key, params);
   const action = translate(lang, `smart_notif_action_${phase}`);
   return {
     title: tr('smart_notif_daily_action_title'),

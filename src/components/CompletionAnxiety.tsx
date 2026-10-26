@@ -33,7 +33,7 @@ export default function CompletionAnxiety({ onItemPress }: CompletionAnxietyProp
   useEffect(() => {
     if (!user) return;
     let cancelled = false;
-    let pulse: { stop: () => void } | null = null;
+    let pulse: ReturnType<typeof Animated.loop> | null = null;
 
     const loadIncomplete = async () => {
       const items: IncompleteItem[] = [];

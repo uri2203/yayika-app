@@ -17,7 +17,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { getRankings, RankingEntry } from '../../config/api';
 
 const PODIUM_HEIGHTS: Record<number, number> = { 1: 80, 2: 64, 3: 52 };
-const safeName = (name: any) => (typeof name === 'string' && name.trim()) ;
+const safeName = (name: any) => (typeof name === 'string' ? name.trim() : '');
 const safeNum = (n: any) => (typeof n === 'number' && !isNaN(n)) ? n : 0;
 
 export default function RankingsScreen({ navigation }: any) {

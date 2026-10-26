@@ -27,7 +27,7 @@ export default function RegisterScreen({ navigation }: any) {
   const { currentColors } = useTheme();
   const colors = currentColors;
 
-  const getPasswordStrength = (pw: string): { label: string; color: string; width: string } => {
+  const getPasswordStrength = (pw: string): { label: string; color: string; width: `${number}%` } => {
     let score = 0;
     if (pw.length >= 8) score++;
     if (pw.length >= 12) score++;

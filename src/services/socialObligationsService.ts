@@ -89,7 +89,6 @@ export async function getCircleActivity(userId: string): Promise<CircleActivityI
 
   const circleNames: Record<string, string> = {};
   for (const cid of circleIds) {
-    const circleMembers = members.filter((m) => m.circle_id === cid);
     circleNames[cid] = `Círculo ${cid.slice(0, 6)}`;
   }
 
@@ -99,7 +98,7 @@ export async function getCircleActivity(userId: string): Promise<CircleActivityI
     const memberCount = members.filter((m) => m.circle_id === cid).length;
 
     const userPostsInCircle = posts.filter(
-      (p) => circleMembers.some((m) => m.circle_id === cid && m.user_id === p.user_id)
+      (p: { user_id: string }) => members.some((m: { circle_id: string; user_id: string }) => m.circle_id === cid && m.user_id === p.user_id)
     );
 
     const myLastPost = userPostsInCircle.find((p) => p.user_id === userId);

@@ -939,7 +939,6 @@ const translations: Record<Language, Record<string, string>> = {
     challenges_checkin_error: 'Error en el check-in',
 
     // Onboarding extras
-    onboard_flow_complete_day: 'Completar día {day}',
 
     // Paywall
     paywall_title: 'Contenido Premium',
@@ -2083,7 +2082,6 @@ const translations: Record<Language, Record<string, string>> = {
     onboard_flow_xp_total: '{xp} XP earned',
     onboard_flow_day: 'Day {day}',
     onboard_flow_tasks: 'Tasks for the day',
-    onboard_flow_complete_day: 'Complete day {day}',
     onboard_flow_locked: 'Complete the previous day first',
     onboard_flow_congrats: 'Congratulations!',
     onboard_flow_completion_msg: 'You completed all onboarding. You earned {xp} XP',
@@ -3460,7 +3458,6 @@ const translations: Record<Language, Record<string, string>> = {
     onboard_flow_xp_total: '{xp} XP ganhos',
     onboard_flow_day: 'Dia {day}',
     onboard_flow_tasks: 'Tarefas do dia',
-    onboard_flow_complete_day: 'Completar dia {day}',
     onboard_flow_locked: 'Complete o dia anterior primeiro',
     onboard_flow_congrats: 'Parabéns!',
     onboard_flow_completion_msg: 'Voc\u00ea completou todo o onboarding. Ganhou {xp} XP',
@@ -4769,7 +4766,6 @@ const translations: Record<Language, Record<string, string>> = {
     onboard_flow_xp_total: '{xp} XP gagnés',
     onboard_flow_day: 'Jour {day}',
     onboard_flow_tasks: 'Tâches du jour',
-    onboard_flow_complete_day: 'Compléter le jour {day}',
     onboard_flow_locked: 'Complète le jour précédent d\'abord',
     onboard_flow_congrats: 'Félicitations !',
     onboard_flow_completion_msg: 'Tu as complété tout l\'onboarding. Tu as gagné {xp} XP',
@@ -6078,7 +6074,6 @@ const translations: Record<Language, Record<string, string>> = {
     onboard_flow_xp_total: '{xp} XP verdient',
     onboard_flow_day: 'Tag {day}',
     onboard_flow_tasks: 'Aufgaben des Tages',
-    onboard_flow_complete_day: 'Tag {day} abschließen',
     onboard_flow_locked: 'Schließe zuerst den vorherigen Tag ab',
     onboard_flow_congrats: 'Herzlichen Glückwunsch!',
     onboard_flow_completion_msg: 'Du hast das gesamte Onboarding abgeschlossen. Du hast {xp} XP verdient',

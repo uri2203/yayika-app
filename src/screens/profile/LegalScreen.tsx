@@ -25,7 +25,7 @@ export default function LegalScreen({ navigation }: any) {
   const { currentColors } = useTheme();
   const { t, lang } = useLanguage();
   const colors = currentColors;
-  const texts = LEGAL_TEXTS[lang] || LEGAL_TEXTS.es;
+  const texts: Record<string, string> = (LEGAL_TEXTS[lang] || LEGAL_TEXTS.es) as Record<string, string>;
 
   const [expandedDoc, setExpandedDoc] = useState<string | null>(null);
 

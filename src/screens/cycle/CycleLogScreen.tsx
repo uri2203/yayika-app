@@ -121,7 +121,7 @@ export default function CycleLogScreen({ navigation }: any) {
       try {
         const xpResult = await logCycleEntry(user.id, {
           energy,
-          mood: selectedMood,
+          mood: selectedMood ?? undefined,
           symptoms: selectedSymptoms,
           cycle_day: cycleDay,
           phase: selectedPhase,
