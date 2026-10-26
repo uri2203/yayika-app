@@ -90,6 +90,16 @@ console.log('== 4. Sitio publico ==');
   }
 }
 
+/* 5. Tabla de analytics (tracker de la web depende de ella) */
+console.log('== 5. Tabla yayika_analytics ==');
+{
+  const an = await rest('yayika_analytics?select=id&limit=1');
+  if (an.status === 404) fail('analytics', 'yayika_analytics no existe (404): el tracker web fallaria en silencio');
+  else if (an.status === 200 && an.body.trim() === '[]') pass('analytics', 'existe; anon SELECT = 0 filas (RLS insert-only ok)');
+  else if (an.status === 401 || an.status === 403) pass('analytics', `existe; anon sin acceso a SELECT (${an.status})`);
+  else fail('analytics', `status ${an.status}: ${an.body.slice(0, 80)}`);
+}
+
 console.log(`\n========================================`);
 if (fails === 0) {
   console.log(`QA LIVE: PASS (${warns} avisos)`);
