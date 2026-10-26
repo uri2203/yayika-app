@@ -190,42 +190,6 @@ export async function aiSmartPush(params: SmartPushParams) {
   }>('ai-smart-push', params, true);
 }
 
-// ──── Stripe Marketplace Checkout ───────────────────
-export async function stripeMarketplaceCheckout(params: {
-  tier: string;
-  price_id?: string;
-  success_url?: string;
-  cancel_url?: string;
-}) {
-  return callFunction<{
-    url: string;
-    session_id: string;
-  }>('stripe-marketplace-checkout', params, true);
-}
-
-// ──── Stripe Connect Onboard ────────────────────────
-export async function stripeConnectOnboard() {
-  return callFunction<{
-    url: string;
-  }>('stripe-connect-onboard', {}, true);
-}
-
-// ──── Stripe Connect Payout ─────────────────────────
-export async function stripeConnectPayout(params?: { amount?: number }) {
-  return callFunction<{
-    success: boolean;
-    balance?: number;
-    message?: string;
-  }>('stripe-connect-payout', params ?? {}, true);
-}
-
-// ──── Stripe Connect Dashboard ──────────────────────
-export async function stripeConnectDashboard() {
-  return callFunction<{
-    url: string;
-  }>('stripe-connect-dashboard', {}, true);
-}
-
 // ──── Product Catalog ────────────────────────────────
 export async function getProductCatalog(category?: string) {
   return callFunction<{
@@ -616,12 +580,10 @@ export interface GanaConYayikaResponse {
       available: number;
       paidOut: number;
       referrals: number;
-      marketplace: number;
       mentoring: number;
     };
     stats: {
       referralsCount: number;
-      productsSold: number;
       mentoringSessions: number;
     };
     recent: {
