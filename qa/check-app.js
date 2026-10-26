@@ -158,6 +158,47 @@ console.log('== 4. Edge functions ==');
   if (bad === 0) pass('edge', `${dirs.length} functions con index.ts; ${PROTECTED_FNS.length} protegidas verificadas`);
 }
 
+/* ---------- 5. app.json / eas.json (listado de tiendas) ---------- */
+console.log('== 5. Config de build (app.json / eas.json) ==');
+{
+  let bad = 0;
+  try {
+    const raw = fs.readFileSync(path.join(ROOT, 'app.json'), 'utf8').replace(/^﻿/, '');
+    const e = JSON.parse(raw).expo;
+    const req = (cond, msg) => { if (!cond) { fail('build', msg); bad++; } };
+    req(e, 'app.json: sin bloque expo');
+    if (e) {
+      req(e.scheme === 'yayika', `scheme esperado "yayika" (deep links), actual: ${e.scheme}`);
+      req(!!(e.ios && e.ios.bundleIdentifier), 'falta ios.bundleIdentifier');
+      req(!!(e.android && e.android.package), 'falta android.package');
+      req(/^\d+\.\d+\.\d+$/.test(e.version || ''), `version invalida: ${e.version}`);
+      req(!!e.runtimeVersion, 'falta runtimeVersion');
+      req(e.runtimeVersion === e.version, `runtimeVersion (${e.runtimeVersion}) != version (${e.version})`);
+      const plugins = (e.plugins || []).map((p) => (Array.isArray(p) ? p[0] : p));
+      for (const p of ['expo-notifications', 'expo-secure-store', 'expo-localization']) {
+        req(plugins.includes(p), `plugin ausente: ${p}`);
+      }
+      const assetOf = (v) => (typeof v === 'string' ? v : v && v.image);
+      const assets = [
+        ['icon', e.icon],
+        ['splash', assetOf(e.splash)],
+        ['adaptiveIcon', assetOf(e.android && e.android.adaptiveIcon)],
+      ].filter(([, v]) => v);
+      for (const [name, v] of assets) req(fs.existsSync(path.join(ROOT, v)), `asset ${name} no existe: ${v}`);
+      const easPath = path.join(ROOT, 'eas.json');
+      req(fs.existsSync(easPath), 'falta eas.json');
+      if (fs.existsSync(easPath)) {
+        const eas = JSON.parse(fs.readFileSync(easPath, 'utf8').replace(/^﻿/, ''));
+        req(!!(eas.build && eas.build.production), 'eas.json: sin perfil "production"');
+      }
+    }
+  } catch (err) {
+    fail('build', `error leyendo app.json/eas.json: ${err.message}`);
+    bad++;
+  }
+  if (bad === 0) pass('build', 'app.json: ids, version/runtime sync, plugins y assets OK; eas.json con production');
+}
+
 /* ---------- Resultado ---------- */
 console.log(`\n========================================`);
 if (fails === 0) {
