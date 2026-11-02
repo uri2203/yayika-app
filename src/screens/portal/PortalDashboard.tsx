@@ -292,6 +292,11 @@ export default function PortalDashboard({ navigation }: any) {
       fontWeight: typography.weights.bold,
       color: colors.gold,
     },
+    headerActions: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: spacing.sm,
+    },
     xpCard: {
       marginBottom: spacing.lg,
     },
@@ -759,13 +764,21 @@ export default function PortalDashboard({ navigation }: any) {
               )}
             </View>
           </View>
-          <TouchableOpacity
-            style={styles.streakBadge}
-            onPress={() => navigateInStack('Profile')}
-          >
-            <Ionicons name="flame" size={18} color={colors.gold} />
-            <Text style={styles.streakText}>{streakDays}</Text>
-          </TouchableOpacity>
+          <View style={styles.headerActions}>
+            <TouchableOpacity
+              style={styles.streakBadge}
+              onPress={() => navigation.navigate('EmpatheticChat')}
+            >
+              <Ionicons name="chatbubble-ellipses" size={18} color={colors.primary} />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.streakBadge}
+              onPress={() => navigateInStack('Profile')}
+            >
+              <Ionicons name="flame" size={18} color={colors.gold} />
+              <Text style={styles.streakText}>{streakDays}</Text>
+            </TouchableOpacity>
+          </View>
         </View>
 
         {/* First Week Hook */}
