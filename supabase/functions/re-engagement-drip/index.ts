@@ -71,6 +71,15 @@ serve(async (req) => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
     );
 
+    // Optional language override supplied by the caller (cron may omit the body).
+    let bodyLang: string | undefined;
+    try {
+      const body = await req.json();
+      bodyLang = body?.lang;
+    } catch {
+      // No JSON body supplied — fall back to Spanish below.
+    }
+
     // Find users inactive for 1, 3, 7, or 14 days
     const now = new Date();
     const thresholds = [1, 3, 7, 14];
@@ -105,7 +114,7 @@ serve(async (req) => {
           .maybeSingle();
 
         void 0;
-        const lang = "es";
+        const lang = bodyLang || "es";
         const streak = progress?.streak_days || 0;
         const msg = MESSAGES[lang]?.[days] || MESSAGES.es[days];
 

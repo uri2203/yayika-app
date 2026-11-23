@@ -52,7 +52,7 @@ serve(async (req) => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
     );
 
-    const { user_id, action } = await req.json();
+    const { user_id, action, lang: bodyLang } = await req.json();
 
     if (action === "roll_surprise") {
       // Check if user already got a surprise today
@@ -107,8 +107,8 @@ serve(async (req) => {
         value,
       });
 
-      // Get user language
-      const lang = "es";
+      // Get user language (from the request body, defaulting to Spanish)
+      const lang = bodyLang || "es";
 
       const title = surprise.title[lang as keyof typeof surprise.title] || surprise.title.es;
       let body = surprise.body[lang as keyof typeof surprise.body] || surprise.body.es;

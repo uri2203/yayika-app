@@ -90,7 +90,7 @@ serve(async (req) => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
     );
 
-    const { user_id, mood, intensity } = await req.json();
+    const { user_id, mood, intensity, lang: bodyLang } = await req.json();
 
     // Get user's push token and language
     const { data: tokenData } = await supabase
@@ -107,7 +107,7 @@ serve(async (req) => {
       .maybeSingle();
 
     void profileData;
-    const lang = "es";
+    const lang = bodyLang || "es";
     const messages = MOOD_MESSAGES[lang] || MOOD_MESSAGES.es;
     const msg = messages[mood] || messages.happy;
 
