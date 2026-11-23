@@ -1,8 +1,10 @@
 const { Client } = require('pg');
 const tls = require('tls');
 const net = require('net');
+const { requireEnv } = require('./_env');
 
 async function tryConnect() {
+  const password = requireEnv('SUPABASE_DB_PASSWORD');
   // The pooler needs SNI - let's force it via ssl.servername
   const configs = [
     // Pooler with SNI hostname
@@ -10,7 +12,7 @@ async function tryConnect() {
       host: 'aws-0-us-east-1.pooler.supabase.com',
       port: 6543,
       user: 'postgres',
-      password: '1Qawsedrftg#$$$$$',
+      password,
       database: 'postgres',
       ssl: { rejectUnauthorized: false, servername: 'odbhxiymteppgaqqdsoy' },
       connectionTimeoutMillis: 10000
@@ -20,7 +22,7 @@ async function tryConnect() {
       host: 'aws-0-us-east-1.pooler.supabase.com',
       port: 6543,
       user: 'postgres',
-      password: '1Qawsedrftg#$$$$$',
+      password,
       database: 'postgres',
       ssl: { rejectUnauthorized: false, servername: 'odbhxiymteppgaqqdsoy.supabase.co' },
       connectionTimeoutMillis: 10000
@@ -30,7 +32,7 @@ async function tryConnect() {
       host: '2600:1f16:1109:3f02:2021:b0f2:6caa:fef6',
       port: 5432,
       user: 'postgres',
-      password: '1Qawsedrftg#$$$$$',
+      password,
       database: 'postgres',
       ssl: { rejectUnauthorized: false },
       connectionTimeoutMillis: 10000,

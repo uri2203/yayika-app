@@ -47,7 +47,7 @@ serve(async (req: Request) => {
 
       // Check Night Owl badge (check-in after 11 PM)
       const { data: nightCheckin } = await supabase
-        .from('yayika_cycle_logs')
+        .from('yayika_cycle_log')
         .select('logged_at')
         .eq('user_id', user_id)
         .gte('logged_at', `${todayDate}T23:00:00`);
@@ -62,7 +62,7 @@ serve(async (req: Request) => {
 
       // Check Early Bird badge (check-in before 6 AM)
       const { data: earlyCheckin } = await supabase
-        .from('yayika_cycle_logs')
+        .from('yayika_cycle_log')
         .select('logged_at')
         .eq('user_id', user_id)
         .lt('logged_at', `${todayDate}T06:00:00`);
@@ -117,7 +117,7 @@ serve(async (req: Request) => {
     if (action === 'get_phase_content') {
       // Get content for current cycle phase
       const { data: cycleData } = await supabase
-        .from('yayika_cycle_logs')
+        .from('yayika_cycle_log')
         .select('logged_at')
         .eq('user_id', user_id)
         .order('logged_at', { ascending: false })

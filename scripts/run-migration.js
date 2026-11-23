@@ -1,8 +1,10 @@
 const https = require('https');
 const fs = require('fs');
+const { requireEnv, requireFlag } = require('./_env');
 
-const SERVICE_ROLE = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9kYmh4aXltdGVwcGdhcXFkc295Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4MDA5NzU2NSwiZXhwIjoyMDk1NjczNTY1fQ.YE96WnvMAHGA6TFeXEU7pM0aeVgQlH1NunCtQICgazA';
-const PROJECT_REF = 'odbhxiymteppgaqqdsoy';
+// The Management API expects a Personal Access Token, not the service_role JWT.
+const ACCESS_TOKEN = requireEnv('SUPABASE_ACCESS_TOKEN');
+const PROJECT_REF = process.env.SUPABASE_PROJECT_REF || 'odbhxiymteppgaqqdsoy';
 
 function runSQL(sql) {
   return new Promise((resolve, reject) => {
@@ -13,7 +15,7 @@ function runSQL(sql) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${SERVICE_ROLE}`,
+        'Authorization': `Bearer ${ACCESS_TOKEN}`,
         'Content-Length': Buffer.byteLength(body)
       }
     };
@@ -32,6 +34,7 @@ function runSQL(sql) {
 }
 
 async function main() {
+  requireFlag('SUPABASE_ALLOW_DB_WRITES', 'This script applies migrations against the database.');
   const sql = fs.readFileSync('supabase/migrations/007_surprise_mood_prestige.sql', 'utf8');
   console.log('=== Running migration 007 ===');
   const result = await runSQL(sql);

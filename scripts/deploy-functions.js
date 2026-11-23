@@ -1,15 +1,28 @@
 const https = require('https');
 const fs = require('fs');
-const PAT = 'sbp_v0_5e4fb6e8f9bdddfa24ac5f84df0ae2fd0d31655f';
+const { requireEnv } = require('./_env');
+const PAT = requireEnv('SUPABASE_ACCESS_TOKEN');
+const PROJECT_REF = process.env.SUPABASE_PROJECT_REF || 'odbhxiymteppgaqqdsoy';
+
+// JWT verification is enabled by default. Only functions that cannot receive a
+// Supabase JWT are exempt. In particular, stripe-webhook authenticates with the
+// Stripe signature and must stay public at the gateway.
+const VERIFY_JWT = {
+  'stripe-webhook': false,
+};
+
+function shouldVerifyJwt(slug) {
+  return VERIFY_JWT[slug] !== false;
+}
 
 async function updateFunction(slug) {
   const file = 'supabase/functions/' + slug + '/index.ts';
   const code = fs.readFileSync(file, 'utf8');
-  const body = JSON.stringify({ slug: slug, name: slug, body: code, verify_jwt: false });
+  const body = JSON.stringify({ slug: slug, name: slug, body: code, verify_jwt: shouldVerifyJwt(slug) });
   return new Promise((resolve) => {
     const opts = {
       hostname: 'api.supabase.com',
-      path: '/v1/projects/odbhxiymteppgaqqdsoy/functions/' + slug,
+      path: `/v1/projects/${PROJECT_REF}/functions/` + slug,
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -44,7 +57,7 @@ async function main() {
   return new Promise((resolve) => {
     const opts = {
       hostname: 'api.supabase.com',
-      path: '/v1/projects/odbhxiymteppgaqqdsoy/functions',
+      path: `/v1/projects/${PROJECT_REF}/functions`,
       method: 'GET',
       headers: { 'Authorization': 'Bearer ' + PAT }
     };

@@ -1,7 +1,9 @@
 const { Client } = require('pg');
 const dns = require('dns');
+const { requireEnv } = require('./_env');
 
 async function tryConnect() {
+  const password = requireEnv('SUPABASE_DB_PASSWORD');
   // Force IPv4 resolution
   return new Promise(async (resolve) => {
     // Try the pooler with proper session mode setup
@@ -9,7 +11,7 @@ async function tryConnect() {
       host: 'aws-0-us-east-1.pooler.supabase.com',
       port: 6543,
       user: 'postgres',
-      password: '1Qawsedrftg#$$$$$',
+      password,
       database: 'postgres',
       ssl: { 
         rejectUnauthorized: false,
@@ -38,7 +40,7 @@ async function tryConnect() {
       host: 'aws-0-us-east-1.pooler.supabase.com',
       port: 6543,
       user: 'postgres.odbhxiymteppgaqqdsoy',
-      password: '1Qawsedrftg#$$$$$',
+      password,
       database: 'postgres',
       ssl: { rejectUnauthorized: false },
       connectionTimeoutMillis: 15000,

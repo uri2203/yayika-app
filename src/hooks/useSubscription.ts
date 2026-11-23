@@ -36,9 +36,19 @@ export function useSubscription() {
     }
     try {
       const sub = await getSubscriptions(user.id);
-      const plan = (sub?.plan || 'free') as PlanTier;
+      const plan = (sub?.plan || sub?.plan_id || 'free') as PlanTier;
       const status = sub?.status || 'inactive';
-      const isActive = status === 'active';
+      const now = Date.now();
+
+      const periodEnd = sub?.current_period_end ? new Date(sub.current_period_end).getTime() : null;
+      const periodValid = periodEnd === null || (Number.isFinite(periodEnd) && periodEnd > now);
+
+      const graceEnd = sub?.grace_period_end ? new Date(sub.grace_period_end).getTime() : null;
+      const inGracePeriod = status === 'past_due' && graceEnd !== null && Number.isFinite(graceEnd) && graceEnd > now;
+
+      const isActive =
+        ((status === 'active' || status === 'trialing') && periodValid) || inGracePeriod;
+
       setState({ plan, status, loading: false, isActive, isPremium: isActive && plan !== 'free' });
     } catch {
       setState({ plan: 'free', status: 'inactive', loading: false, isActive: false, isPremium: false });
@@ -48,8 +58,10 @@ export function useSubscription() {
   useEffect(() => { refresh(); }, [refresh]);
 
   const hasAccess = useCallback((requiredPlan: PlanTier) => {
-    return PLAN_HIERARCHY[state.plan] >= PLAN_HIERARCHY[requiredPlan];
-  }, [state.plan]);
+    if (requiredPlan === 'free') return true;
+    const currentTier = PLAN_HIERARCHY[state.plan] ?? 0;
+    return state.isActive && currentTier >= PLAN_HIERARCHY[requiredPlan];
+  }, [state.isActive, state.plan]);
 
   return { ...state, refresh, hasAccess };
 }

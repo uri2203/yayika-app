@@ -39,7 +39,7 @@ socket.on('data', (chunk) => {
       sslBuf.writeInt32BE(80877103, 4);
       socket.write(sslBuf);
     } else if (data.length >= 1 && data[0] === 0x4e) {
-      console.log('Got 'N' (No SSL), data:', data.toString('utf8'));
+      console.log("Got 'N' (No SSL), data:", data.toString('utf8'));
     } else {
       console.log('Response:', data.toString('utf8').substring(0, 200));
     }

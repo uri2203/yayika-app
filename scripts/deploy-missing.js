@@ -1,6 +1,18 @@
 const https = require('https');
 const fs = require('fs');
-const PAT = 'sbp_v0_5e4fb6e8f9bdddfa24ac5f84df0ae2fd0d31655f';
+const { requireEnv } = require('./_env');
+const PAT = requireEnv('SUPABASE_ACCESS_TOKEN');
+const PROJECT_REF = process.env.SUPABASE_PROJECT_REF || 'odbhxiymteppgaqqdsoy';
+
+// These functions are called from the app with a session token or from pg_cron
+// with the service_role token, so the gateway can verify the JWT.
+const VERIFY_JWT = {
+  'stripe-webhook': false,
+};
+
+function shouldVerifyJwt(slug) {
+  return VERIFY_JWT[slug] !== false;
+}
 
 const functionsToCreate = [
   'retention-check-in',
@@ -15,12 +27,12 @@ async function createFunction(slug) {
   if (!fs.existsSync(file)) { console.log(slug + ': NOT FOUND - skipping'); return; }
   
   const code = fs.readFileSync(file, 'utf8');
-  const body = JSON.stringify({ slug: slug, name: slug, body: code, verify_jwt: false });
+  const body = JSON.stringify({ slug: slug, name: slug, body: code, verify_jwt: shouldVerifyJwt(slug) });
   
   return new Promise((resolve) => {
     const opts = {
       hostname: 'api.supabase.com',
-      path: '/v1/projects/odbhxiymteppgaqqdsoy/functions',
+      path: `/v1/projects/${PROJECT_REF}/functions`,
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

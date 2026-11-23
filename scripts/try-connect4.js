@@ -1,7 +1,9 @@
 const { Client } = require('pg');
+const { requireEnv, requireFlag } = require('./_env');
 
 async function tryAll() {
-  const password = encodeURIComponent('1Qawsedrftg#$$$$$');
+  requireFlag('SUPABASE_ALLOW_DB_WRITES', 'This script applies a migration against the database.');
+  const password = encodeURIComponent(requireEnv('SUPABASE_DB_PASSWORD'));
   
   const urls = [
     // Session pooler with project ref in user
@@ -13,7 +15,7 @@ async function tryAll() {
   ];
 
   for (const url of urls) {
-    console.log('Trying:', url.substring(0, 80) + '...');
+    console.log('Trying:', url.replace(/:[^:@]+@/, ':***@').substring(0, 80) + '...');
     try {
       const c = new Client({ connectionString: url, connectionTimeoutMillis: 10000 });
       await c.connect();

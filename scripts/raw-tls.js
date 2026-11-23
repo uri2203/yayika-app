@@ -1,6 +1,7 @@
 const tls = require('tls');
 const net = require('net');
 const { Client } = require('pg');
+const { requireEnv } = require('./_env');
 
 // Try raw TLS to see if SNI works
 const socket = tls.connect({
@@ -18,7 +19,7 @@ const socket = tls.connect({
     const c = new Client({
       stream: socket,
       user: 'postgres.odbhxiymteppgaqqdsoy',
-      password: 'UAxLqf6yOiBe3qY4',
+      password: requireEnv('SUPABASE_DB_PASSWORD'),
       database: 'postgres'
     });
     await c.connect();

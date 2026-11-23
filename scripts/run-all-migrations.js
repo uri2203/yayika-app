@@ -1,7 +1,9 @@
 const { Client } = require('pg');
+const { requireEnv, requireFlag } = require('./_env');
 
 async function tryAll() {
-  const password = encodeURIComponent('1Qawsedrftg#$$$$$');
+  requireFlag('SUPABASE_ALLOW_DB_WRITES', 'This script applies migrations against the database.');
+  const password = encodeURIComponent(requireEnv('SUPABASE_DB_PASSWORD'));
   
   const configs = [
     {
@@ -15,7 +17,7 @@ async function tryAll() {
   ];
 
   for (const cfg of configs) {
-    console.log('Trying:', cfg.connectionString.substring(0, 80) + '...');
+    console.log('Trying:', cfg.connectionString.replace(/:[^:@]+@/, ':***@').substring(0, 80) + '...');
     try {
       const c = new Client({ ...cfg, connectionTimeoutMillis: 10000 });
       await c.connect();

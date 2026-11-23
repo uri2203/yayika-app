@@ -1,12 +1,14 @@
 const https = require('https');
-const PAT = 'sbp_v0_5e4fb6e8f9bdddfa24ac5f84df0ae2fd0d31655f';
+const { requireEnv, requireFlag } = require('./_env');
+const PAT = requireEnv('SUPABASE_ACCESS_TOKEN');
+const PROJECT_REF = process.env.SUPABASE_PROJECT_REF || 'odbhxiymteppgaqqdsoy';
 
 function runSQL(sql) {
   return new Promise((resolve, reject) => {
     const body = JSON.stringify({ query: sql });
     const opts = {
       hostname: 'api.supabase.com',
-      path: '/v1/projects/odbhxiymteppgaqqdsoy/database/query',
+      path: `/v1/projects/${PROJECT_REF}/database/query`,
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -29,6 +31,7 @@ function runSQL(sql) {
 }
 
 async function main() {
+  requireFlag('SUPABASE_ALLOW_DB_WRITES', 'This script executes DDL against the database.');
   const steps = [
     // First check what columns exist
     `SELECT column_name, data_type FROM information_schema.columns WHERE table_name = 'yayika_circles' ORDER BY ordinal_position`,
