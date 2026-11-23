@@ -16,9 +16,9 @@
 --   which bypasses RLS and these grants.
 -- ============================================================================
 
-REVOKE INSERT, UPDATE, DELETE ON public.yayika_subscriptions FROM anon, authenticated;
-REVOKE INSERT, UPDATE, DELETE ON public.yayika_user_purchases FROM anon, authenticated;
-REVOKE INSERT, UPDATE, DELETE ON public.yayika_user_items FROM anon, authenticated;
+REVOKE INSERT, UPDATE, DELETE, TRUNCATE ON public.yayika_subscriptions FROM anon, authenticated;
+REVOKE INSERT, UPDATE, DELETE, TRUNCATE ON public.yayika_user_purchases FROM anon, authenticated;
+REVOKE INSERT, UPDATE, DELETE, TRUNCATE ON public.yayika_user_items FROM anon, authenticated;
 
 -- Verify after applying (all should be false):
 -- SELECT has_table_privilege('authenticated', 'public.yayika_subscriptions', 'UPDATE');
