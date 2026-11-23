@@ -55,7 +55,7 @@ if (!lr.ok) {
 const { access_token } = await lr.json();
 
 const rows = [];
-async function call(fn, body, lang, expected = 'ok', token = access_token) {
+async function call(fn, body, lang, expected = 'ok', token = access_token, screen = '-') {
   const started = Date.now();
   let status = 0;
   let text = '';
@@ -76,9 +76,28 @@ async function call(fn, body, lang, expected = 'ok', token = access_token) {
     : expected === 'dedupe' ? [200, 400].includes(status)
     : expected === 'upstream' ? [200, 502].includes(status)
     : status === 200;
-  const row = { ts: new Date().toISOString(), day: state.day, run: state.runIndex, fn, lang, action: body.action || '-', status, ok, expected, ms: Date.now() - started, sample };
+  const row = { ts: new Date().toISOString(), day: state.day, run: state.runIndex, screen, fn, lang, action: body.action || '-', status, ok, expected, ms: Date.now() - started, sample };
   rows.push(row);
   return { ...row, body: text };
+}
+
+// Lectura REST directa tal como la hace la app (useSubscription).
+async function rest(table, query, screen) {
+  const started = Date.now();
+  let status = 0;
+  let text = '';
+  try {
+    const r = await fetch(`${SB}/rest/v1/${table}?${query}`, {
+      headers: { apikey: ANON, Authorization: `Bearer ${access_token}` },
+    });
+    status = r.status;
+    text = await r.text();
+  } catch (e) {
+    text = `NETWORK_ERROR ${e.message}`;
+  }
+  const sample = text.slice(0, 2000);
+  rows.push({ ts: new Date().toISOString(), day: state.day, run: state.runIndex, screen, fn: `REST/${table}`, lang: 'app', action: 'select', status, ok: status === 200, expected: 'ok', ms: Date.now() - started, sample });
+  return { status, text };
 }
 
 // Idiomas rotativos: 2 por ejecución; en 10 ejecuciones se cubren los 5 dos veces.
@@ -116,6 +135,33 @@ await call('ai-wellness-planner', { cycle_phase: 'follicular', energy_level: 4, 
 await call('ai-financial-coach', { cycle_phase: 'follicular', lang: llmLang }, llmLang, 'upstream');
 await call('ai-cycle-coach', { cycle_phase: 'follicular', lang: llmLang }, llmLang, 'upstream');
 await call('ai-chat', { messages: [{ role: 'user', content: 'Hola' }], lang: llmLang }, llmLang, 'upstream');
+
+// ============================================================
+// APP — mismas pantallas y contratos que usa la app Expo.
+// ============================================================
+const subRead = await rest('yayika_subscriptions', 'select=plan,status,current_period_end,grace_period_end&order=created_at.desc&limit=1', 'PortalDashboard');
+let hasAccess = false;
+try {
+  const sub = JSON.parse(subRead.text)?.[0];
+  const now = Date.now();
+  const periodValid = sub?.current_period_end ? new Date(sub.current_period_end).getTime() > now : false;
+  const graceValid = sub?.grace_period_end ? new Date(sub.grace_period_end).getTime() > now : false;
+  hasAccess = !!sub && (((sub.status === 'active' || sub.status === 'trialing') && periodValid) || (sub.status === 'past_due' && graceValid));
+} catch {}
+
+await call('ai-product-catalog', { action: 'getCatalog', lang: llmLang }, llmLang, 'ok', access_token, 'PortalDashboard');
+await call('ai-affirmations', { cycle_phase: 'follicular', lang: llmLang }, llmLang, 'upstream', access_token, 'PortalDashboard');
+await call('ai-growth-coach', { lang: llmLang }, llmLang, 'ok', access_token, 'PortalDashboard');
+await call('ai-wellness-planner', { cycle_phase: 'follicular', lang: llmLang }, llmLang, 'upstream', access_token, 'PortalDashboard');
+await call('ai-smart-push', { cycle_phase: 'follicular', lang: llmLang }, llmLang, 'ok', access_token, 'Notificaciones');
+if (productId) await call('ai-product-catalog', { action: 'getProductDetail', product_id: productId, lang: llmLang }, llmLang, 'ok', access_token, 'Cursos');
+await call('ai-cycle-coach', { cycle_phase: 'follicular', lang: llmLang }, llmLang, 'upstream', access_token, 'Ciclo');
+await call('ai-cycle-intelligence', { action: 'getDashboard', lang: llmLang }, llmLang, 'ok', access_token, 'Ciclo');
+await call('ai-weekly-challenges', { action: 'getWeeklyChallenges', lang: llmLang }, llmLang, 'ok', access_token, 'Retos');
+await call('ai-community', { action: 'getFeed', lang: llmLang }, llmLang, 'ok', access_token, 'Comunidad');
+await call('ai-community', { action: 'getNotifications', lang: llmLang }, llmLang, 'ok', access_token, 'Comunidad');
+await call('ai-financial-coach', { cycle_phase: 'follicular', lang: llmLang }, llmLang, 'upstream', access_token, 'Finanzas');
+await call('ai-onboarding', { action: 'getState', lang: llmLang }, llmLang, 'ok', access_token, 'Onboarding');
 
 // Pico controlado: 40 lecturas paralelas en lotes de 10, 5 idiomas.
 const stressTargets = [
@@ -167,5 +213,7 @@ const checkin = rows.find((r) => r.action === 'dailyCheckin');
 console.log(`NOCHE ${state.day}/7 · ronda ${state.runIndex} · ${today}`);
 console.log(`Idiomas: ${langs.join(', ')} | llamadas: ${rows.length} | fallos: ${fails.length} | p50=${p50}ms p95=${p95}ms`);
 if (fails.length) console.log('Fallos: ' + fails.map((f) => `${f.fn}/${f.lang}/${f.status}`).join(', '));
+const screens = [...new Set(rows.map((r) => r.screen).filter((s) => s !== '-'))];
 console.log(`Engagement → check-in: ${checkin ? checkin.status : 'ya registrado'} | ruleta: ${spins.map((s) => s.status).join(',') || '-'}`);
+console.log(`App → pantallas: ${screens.join(', ')} | paywall hasAccess=${hasAccess}`);
 if (state.finished) console.log('CAMPAÑA TERMINADA — ver qa/results/live-user-sim.jsonl');
