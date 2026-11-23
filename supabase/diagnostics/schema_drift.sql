@@ -54,7 +54,7 @@ WHERE schemaname = 'public'
     'yayika_purchases',
     'yayika_user_purchases',
     'yayika_xp_events',
-    'yayika_spins',
+    'yayika_reward_spins',
     'yayika_affiliates',
     'yayika_affiliate_referrals'
   )
@@ -73,7 +73,8 @@ WHERE n.nspname = 'public'
     'yayika_purchases',
     'yayika_user_purchases',
     'yayika_xp_events',
-    'yayika_spins',
+    'yayika_reward_spins',
+    'yayika_push_tokens',
     'yayika_affiliates'
   )
 ORDER BY c.relname;

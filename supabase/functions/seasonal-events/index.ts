@@ -17,7 +17,7 @@ serve(async (req: Request) => {
     
     const supabase = createClient(supabaseUrl, supabaseKey);
 
-    const { action, user_id } = await req.json();
+    const { action } = await req.json();
 
     if (action === 'get_active') {
       // Get current active seasonal event
@@ -37,6 +37,27 @@ serve(async (req: Request) => {
         { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
+
+    // Every user-scoped action must use the authenticated caller's id, never
+    // a user_id supplied in the body (service-role client = full DB access).
+    const authHeader = req.headers.get('Authorization') || '';
+    if (!authHeader.startsWith('Bearer ')) {
+      return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+        status: 401,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+    const userClient = createClient(supabaseUrl, Deno.env.get('SUPABASE_ANON_KEY')!, {
+      global: { headers: { Authorization: authHeader } },
+    });
+    const { data: { user }, error: authError } = await userClient.auth.getUser();
+    if (authError || !user) {
+      return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+        status: 401,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+    const user_id = user.id;
 
     if (action === 'check_badges') {
       // Check and award secret badges based on conditions

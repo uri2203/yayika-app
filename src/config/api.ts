@@ -37,7 +37,7 @@ export interface ChatMessage { role: 'system' | 'user' | 'assistant'; content: s
 
 export async function aiChat(messages: ChatMessage[], lang = 'es') {
   return callFunction<{ choices: { message: { content: string } }[] }>(
-    'ai-chat', { messages, lang }
+    'ai-chat', { messages, lang }, true
   );
 }
 
@@ -55,7 +55,7 @@ export interface CycleCoachParams {
 
 export async function aiCycleCoach(params: CycleCoachParams) {
   return callFunction<{ coaching: string; phase: string; day: number | null; lang: string; source?: string }>(
-    'ai-cycle-coach', params
+    'ai-cycle-coach', params, true
   );
 }
 
@@ -111,7 +111,7 @@ export interface FinancialCoachParams {
 
 export async function aiFinancialCoach(params: FinancialCoachParams) {
   return callFunction<{ advice: string; lang: string }>(
-    'ai-financial-coach', params
+    'ai-financial-coach', params, true
   );
 }
 
@@ -148,7 +148,7 @@ export interface AffirmationParams {
 
 export async function aiAffirmations(params: AffirmationParams) {
   return callFunction<{ affirmation: string; type: string; phase?: string; lang: string; cached: boolean }>(
-    'ai-affirmations', params
+    'ai-affirmations', params, true
   );
 }
 
@@ -169,7 +169,7 @@ export async function aiWellnessPlanner(params: WellnessParams) {
       tip: string;
     };
     lang: string;
-  }>('ai-wellness-planner', params);
+  }>('ai-wellness-planner', params, true);
 }
 
 // ──── AI Smart Push ──────────────────────────────────
