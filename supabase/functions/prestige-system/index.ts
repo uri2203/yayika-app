@@ -24,8 +24,10 @@ async function loadUserState(supabase: any, userId: string) {
     supabase.from("yayika_profiles").select("id, prestige_level").eq("id", userId).maybeSingle(),
     supabase.from("yayika_progress").select("xp_total").eq("user_id", userId).maybeSingle(),
   ]);
+  // Live profiles may contain 0 from older data; the public ladder is 1-10.
+  const rawLevel = profile?.prestige_level ?? 1;
   return {
-    prestige_level: profile?.prestige_level ?? 1,
+    prestige_level: Math.min(PRESTIGE_LEVELS.length, Math.max(1, rawLevel)),
     xp: progress?.xp_total ?? 0,
   };
 }

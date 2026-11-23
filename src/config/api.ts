@@ -612,9 +612,17 @@ export async function aiGanaConYayika(params: { lang: string }) {
 
 // ──── Affiliate: Share & Earn ────────────────────────
 export interface ShareEarnResponse {
-  share_message: string;
-  share_link: string;
-  earnings: number;
+  stats: {
+    total_shares: number;
+    total_views: number;
+    total_clicks: number;
+    total_conversions: number;
+    referral_signups: number;
+    share_streak: number;
+    best_share_streak: number;
+    xp_earned: number;
+    recent_cards: any[];
+  };
 }
 
 export async function aiShareEarn(params: { lang: string }) {
