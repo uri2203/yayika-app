@@ -4,6 +4,8 @@ $ErrorActionPreference = 'Continue'
 $sdk = 'C:\Users\Sistemas\AppData\Local\Android\Sdk'
 $env:ANDROID_HOME = $sdk
 $env:ANDROID_SDK_ROOT = $sdk
+# Permite emulación por software (TCG) cuando no hay acelerador disponible.
+$env:ANDROID_I_WANT_MY_TCG = 'yes'
 $adb = Join-Path $sdk 'platform-tools\adb.exe'
 $emu = Join-Path $sdk 'emulator\emulator.exe'
 
