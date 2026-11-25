@@ -1,4 +1,5 @@
 name: Build Android APK (x86_64)
+# Compilación en la nube: evita consumir RAM local (8 GB).
 
 on:
   workflow_dispatch:
