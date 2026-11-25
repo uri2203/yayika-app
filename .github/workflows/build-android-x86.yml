@@ -1,0 +1,55 @@
+name: Build Android APK (x86_64)
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'android/**'
+      - 'src/**'
+      - 'package.json'
+      - 'app.json'
+      - '.github/workflows/build-android-x86.yml'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: android-actions/setup-android@v3
+
+      - name: Install Android SDK packages
+        run: |
+          yes | sdkmanager --licenses > /dev/null 2>&1 || true
+          sdkmanager "platforms;android-36" "build-tools;36.0.0" "ndk;27.1.12297006"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build x86_64 APK
+        run: |
+          chmod +x android/gradlew
+          cd android
+          ./gradlew assembleRelease -PreactNativeArchitectures=x86_64 --no-daemon
+
+      - name: Verify ABI
+        run: |
+          APK=android/app/build/outputs/apk/release/app-release.apk
+          unzip -l "$APK" | grep -E 'lib/x86_64|lib/arm64' || true
+          test -f "$APK"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: yayika-app-x86_64
+          path: android/app/build/outputs/apk/release/app-release.apk
+          retention-days: 30
