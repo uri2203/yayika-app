@@ -4,7 +4,7 @@ $ErrorActionPreference = 'Continue'
 $sdk = 'C:\Users\Sistemas\AppData\Local\Android\Sdk'
 $env:ANDROID_HOME = $sdk
 $env:ANDROID_SDK_ROOT = $sdk
-# Permite emulación por software (TCG) cuando no hay acelerador disponible.
+# El APK de la app es arm64; el AVD ARM necesita emulación TCG.
 $env:ANDROID_I_WANT_MY_TCG = 'yes'
 $adb = Join-Path $sdk 'platform-tools\adb.exe'
 $emu = Join-Path $sdk 'emulator\emulator.exe'
@@ -15,7 +15,10 @@ function Test-Emulator {
 }
 
 if (-not (Test-Emulator)) {
-  Start-Process -FilePath $emu -ArgumentList '-avd yayika -no-window -noaudio -no-boot-anim -accel off -port 5554' -WindowStyle Hidden | Out-Null
+  # Quita procesos qemu huérfanos que bloquean el mismo AVD.
+  Get-Process -Name 'qemu-system-x86_64-headless','qemu-system-x86_64','qemu-system-aarch64-headless' -ErrorAction SilentlyContinue | Stop-Process -Force
+  & $adb kill-server 2>$null
+  Start-Process -FilePath $emu -ArgumentList '-avd yayika-arm -no-window -noaudio -no-boot-anim -accel off -port 5554' -WindowStyle Hidden | Out-Null
   & $adb wait-for-device
   for ($i = 0; $i -lt 90; $i++) {
     $boot = & $adb shell getprop sys.boot_completed 2>$null
@@ -34,7 +37,8 @@ if (-not (Test-Emulator)) {
 $appiumUp = $false
 try { $appiumUp = (Invoke-WebRequest -Uri 'http://127.0.0.1:4723/status' -TimeoutSec 3 -UseBasicParsing).StatusCode -eq 200 } catch {}
 if (-not $appiumUp) {
-  Start-Process -FilePath 'appium' -ArgumentList '--base-path /' -WindowStyle Hidden | Out-Null
+  $appiumIndex = 'C:\Users\Sistemas\AppData\Roaming\npm\node_modules\appium\index.js'
+  Start-Process -FilePath 'node' -ArgumentList "`"$appiumIndex`" --base-path /" -WindowStyle Hidden | Out-Null
   for ($i = 0; $i -lt 20; $i++) {
     Start-Sleep -Seconds 2
     try { if ((Invoke-WebRequest -Uri 'http://127.0.0.1:4723/status' -TimeoutSec 2 -UseBasicParsing).StatusCode -eq 200) { $appiumUp = $true; break } } catch {}
