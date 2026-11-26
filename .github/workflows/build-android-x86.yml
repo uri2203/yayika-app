@@ -1,6 +1,10 @@
 name: Build Android APK (x86_64)
 # Compilación en la nube: evita consumir RAM local (8 GB). Reintento.
 
+concurrency:
+  group: android-x86-${{ github.ref }}
+  cancel-in-progress: true
+
 on:
   workflow_dispatch:
   push:
@@ -50,16 +54,16 @@ jobs:
         run: |
           chmod +x android/gradlew
           cd android
-          ./gradlew assembleRelease -PreactNativeArchitectures=x86_64 --no-daemon
+          ./gradlew assembleDebug -PreactNativeArchitectures=x86_64 --no-daemon
 
       - name: Verify ABI
         run: |
-          APK=android/app/build/outputs/apk/release/app-release.apk
+          APK=android/app/build/outputs/apk/debug/app-debug.apk
           unzip -l "$APK" | grep -E 'lib/x86_64|lib/arm64' || true
           test -f "$APK"
 
       - uses: actions/upload-artifact@v4
         with:
           name: yayika-app-x86_64
-          path: android/app/build/outputs/apk/release/app-release.apk
+          path: android/app/build/outputs/apk/debug/app-debug.apk
           retention-days: 30
