@@ -59,20 +59,26 @@ jobs:
         run: |
           python3 -c 'import glob,sys; bad=[f for f in glob.glob("assets/*.png") if open(f,"rb").read(8)!=bytes([137,80,78,71,13,10,26,10])]; sys.exit("invalid PNG: "+str(bad) if bad else 0)'
 
+      - name: Embed JS bundle for offline UI tests
+        run: |
+          npx expo export:embed --platform android --dev false --minify false \
+            --bundle-output android/app/src/main/assets/index.android.bundle \
+            --assets-dest android/app/src/main/res
+
       - name: Build x86_64 APK
         run: |
           chmod +x android/gradlew
           cd android
-          ./gradlew assembleRelease -PreactNativeArchitectures=x86_64 -Pandroid.enableMinifyInReleaseBuilds=false -Pandroid.enableShrinkResourcesInReleaseBuilds=false --no-daemon
+          ./gradlew assembleDebug -PreactNativeArchitectures=x86_64 --no-daemon
 
       - name: Verify ABI
         run: |
-          APK=android/app/build/outputs/apk/release/app-release.apk
+          APK=android/app/build/outputs/apk/debug/app-debug.apk
           unzip -l "$APK" | grep -E 'lib/x86_64|lib/arm64' || true
           test -f "$APK"
 
       - uses: actions/upload-artifact@v4
         with:
           name: yayika-app-x86_64
-          path: android/app/build/outputs/apk/release/app-release.apk
+          path: android/app/build/outputs/apk/debug/app-debug.apk
           retention-days: 30
