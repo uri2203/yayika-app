@@ -65,10 +65,7 @@ jobs:
             npm install -g appium@4.0.1 --no-audit --no-fund
             appium driver install uiautomator2
             appium --base-path / > /tmp/appium.log 2>&1 &
-            for i in $(seq 1 30); do
-              if curl -sf http://127.0.0.1:4723/status > /dev/null; then echo "APPIUM OK"; break; fi
-              sleep 2
-            done
+            for i in $(seq 1 30); do curl -sf http://127.0.0.1:4723/status > /dev/null && break; sleep 2; done; echo "APPIUM listo"
             adb shell settings put secure lock_screen_lock_after_timeout 0
             adb shell settings put system screen_off_timeout 2147483647
             YAYIKA_TEST_EMAIL=test@yayika.com \
