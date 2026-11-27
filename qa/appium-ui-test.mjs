@@ -64,7 +64,11 @@ async function runCase(test) {
           'appium:locale': test.locale,
           'appium:noReset': false,
           'appium:fullReset': true,
-          'appium:newCommandTimeout': 180,
+          'appium:newCommandTimeout': 300,
+          'appium:adbExecTimeout': 120000,
+          'appium:uiautomator2ServerInstallTimeout': 180000,
+          'appium:uiautomator2ServerLaunchTimeout': 180000,
+          'appium:ignoreHiddenApiPolicyError': true,
         },
       },
     });
