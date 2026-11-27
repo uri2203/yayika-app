@@ -24,7 +24,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
           cache: npm
 
       - uses: actions/setup-java@v4
@@ -65,12 +65,11 @@ jobs:
             npm install -g appium@4.0.1 --no-audit --no-fund
             appium driver install uiautomator2
             appium --base-path / > /tmp/appium.log 2>&1 &
-            for i in $(seq 1 30); do curl -sf http://127.0.0.1:4723/status > /dev/null && break; sleep 2; done; echo "APPIUM listo"
+            for i in $(seq 1 30); do curl -sf http://127.0.0.1:4723/status > /dev/null && break; sleep 2; done; curl -sf http://127.0.0.1:4723/status || (cat /tmp/appium.log; exit 1); echo "APPIUM OK"
             adb shell settings put secure lock_screen_lock_after_timeout 0
             adb shell settings put system screen_off_timeout 2147483647
-            YAYIKA_TEST_EMAIL=test@yayika.com \
-            YAYIKA_TEST_PASSWORD=Yayika2026 \
-            node qa/appium-ui-test.mjs
+            mkdir -p qa/results/ui; cp /tmp/appium.log qa/results/ui/appium.log || true
+            YAYIKA_TEST_EMAIL=test@yayika.com YAYIKA_TEST_PASSWORD=Yayika2026 node qa/appium-ui-test.mjs
 
       - uses: actions/upload-artifact@v4
         if: always()
