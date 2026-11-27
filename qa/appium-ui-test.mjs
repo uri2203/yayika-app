@@ -73,6 +73,12 @@ async function runCase(test) {
     result.steps.push('session');
 
     await sleep(4000);
+    // Dismiss Android system dialogs that can cover the app on slow emulators.
+    for (const label of ['Wait', 'Got it', 'OK']) {
+      const btn = await find(session, 'xpath', `//*[@text='${label}']`, 1500);
+      if (btn) { try { await req('POST', `/session/${session}/element/${btn}/click`, {}); } catch {} }
+    }
+    await sleep(1500);
     const emailEl = await find(session, 'xpath', '//android.widget.EditText[1]', 30000);
     if (!emailEl) throw new Error('No apareció el campo email');
     await req('POST', `/session/${session}/element/${emailEl}/value`, { text: EMAIL });
